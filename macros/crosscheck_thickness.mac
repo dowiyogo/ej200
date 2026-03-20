@@ -1,0 +1,17 @@
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+
+/run/initialize
+
+# Enable a lightweight check that prints the primary mu- path length inside the bar volume.
+/ej200/check/enable true
+/ej200/check/maxPrintEvents 1
+
+# Start outside the bar and shoot along +Z so the mu- traverses the full 10 mm thickness.
+/gun/direction 0 0 1
+/gun/position 0 0 -6 mm
+
+/run/beamOn 1
+

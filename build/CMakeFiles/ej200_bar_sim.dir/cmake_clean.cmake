@@ -1,0 +1,27 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/ej200_bar_sim.dir/main.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/main.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/ActionInitialization.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/ActionInitialization.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/DetectorConstruction.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/DetectorConstruction.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/EventAction.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/EventAction.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/Materials.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/Materials.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/PrimaryGeneratorAction.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/PrimaryGeneratorAction.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/RunAction.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/RunAction.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/SiPMSD.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/SiPMSD.cc.o.d"
+  "CMakeFiles/ej200_bar_sim.dir/src/SteppingAction.cc.o"
+  "CMakeFiles/ej200_bar_sim.dir/src/SteppingAction.cc.o.d"
+  "ej200_bar_sim"
+  "ej200_bar_sim.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/ej200_bar_sim.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

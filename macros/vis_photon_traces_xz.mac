@@ -1,0 +1,24 @@
+/control/verbose 1
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+/vis/open OGL 1200x800-0+0
+/vis/viewer/set/style wireframe
+/vis/drawVolume
+
+# Look along +Y so the screen is the X-Z plane.
+/vis/viewer/set/viewpointVector 0 1 0
+/vis/viewer/set/projection orthogonal
+/vis/viewer/set/autoRefresh true
+
+# Trajectories (this can get very heavy if you run many events).
+/vis/scene/add/trajectories smooth
+/vis/scene/endOfEventAction accumulate 1
+
+/run/initialize
+/run/beamOn 1
+
+/vis/viewer/flush
+/vis/viewer/save photon_traces_xz.png
+

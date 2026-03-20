@@ -1,0 +1,18 @@
+/control/verbose 2
+/run/verbose 2
+/event/verbose 0
+/tracking/verbose 0
+
+# Initialize first so physics is constructed.
+/run/initialize
+
+############################################
+# Dump processes for optical photon
+############################################
+/particle/select opticalphoton
+/process/list
+
+# Optional: dump also for the primary mu-
+/particle/select mu-
+/process/list
+
