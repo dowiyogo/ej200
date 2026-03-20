@@ -1,0 +1,90 @@
+# =========================
+# Build / CMake
+# =========================
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+compile_commands.json
+install_manifest.txt
+
+# =========================
+# Binaries / libraries
+# =========================
+*.o
+*.obj
+*.so
+*.a
+*.la
+*.lo
+*.out
+*.exe
+*.dll
+*.dylib
+*.app
+
+# Ejecutables comunes del proyecto
+ej200_bar_sim
+*.x
+
+# =========================
+# Geant4 / ROOT outputs
+# =========================
+*.root
+*.csv
+*.tsv
+
+# Logs y salidas de corrida
+*.log
+*.tmp
+*.bak
+
+# =========================
+# Analysis outputs
+# =========================
+analysis/*.pdf
+analysis/*.png
+analysis/*.jpg
+analysis/*.jpeg
+analysis/*.svg
+
+# Si también generas figuras en la raíz
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.svg
+
+# =========================
+# Python cache
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
