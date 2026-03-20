@@ -1,5 +1,0 @@
-# Called by scan.mac via /control/loop — one step per x position.
-# {xpos} is substituted by Geant4 control loop.
-
-/gun/position {xpos} 60 0 mm
-/run/beamOn 200
