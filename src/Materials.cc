@@ -77,12 +77,25 @@ G4Material* CreateEJ200() {
     G4double absL[nOpt]  = {3.8*m,  3.8*m,  3.8*m,  3.8*m};
     //G4double rayl[nOpt]  = {1.5*m,  1.5*m,  1.5*m,  1.5*m};
 
+    // Rayleigh parameterization:
+    // L_R(lambda) = L_R(lambdaRef) * (lambda/lambdaRef)^4
+    // Choose lambdaRef = 425 nm (EJ-200 emission peak) and
+    // start with L_R(425 nm) = 1.5 m as a modeling parameter.
+    const G4double lambdaRef = 425.0 * nm;
+    const G4double rayleighRef425 = 1.5 * m;
+
+    G4double rayl[nOpt];
+    for (G4int i = 0; i < nOpt; ++i) {
+        const G4double lambda = hc / eOpt[i];
+        rayl[i] = rayleighRef425 * std::pow(lambda / lambdaRef, 4.0);
+    }
+
     auto* mpt = new G4MaterialPropertiesTable();
 
     // Refractive index, bulk absorption, Rayleigh scattering
     mpt->AddProperty("RINDEX",    eOpt, rIdx, nOpt);
     mpt->AddProperty("ABSLENGTH", eOpt, absL, nOpt);
-    //mpt->AddProperty("RAYLEIGH",  eOpt, rayl, nOpt);
+    mpt->AddProperty("RAYLEIGH",  eOpt, rayl, nOpt);
 
     // Scintillation (G4 v11+ property names)
     mpt->AddProperty("SCINTILLATIONCOMPONENT1", photonE, spectrum, nEm);
