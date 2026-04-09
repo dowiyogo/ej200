@@ -185,4 +185,27 @@ G4OpticalSurface* CreateSiPMSurface() {
     return surf;
 }
 
+// ---------------------------------------------------------------------------
+G4Material* CreateMylar() {
+    // Mylar (biaxially oriented PET film) used as simplified reflective wrap.
+    // With RINDEX = 1.65, the critical angle for total internal reflection at
+    // the Mylar–air boundary is arcsin(1/1.65) ≈ 37.3°.  Photons escaping the
+    // bar (n=1.58) and entering the Mylar (n=1.65) that then hit the outer
+    // Mylar–air interface at shallow angles are totally reflected back, acting
+    // as a passive TIR mirror without requiring a G4OpticalSurface on the air.
+    auto* nist = G4NistManager::Instance();
+    G4Material* mat = nist->FindOrBuildMaterial("G4_MYLAR");
+
+    const G4int n = 4;
+    G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
+    G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("RINDEX", e, r, n);
+    // Mylar is transparent at optical wavelengths; omit ABSLENGTH so G4 does
+    // not apply bulk absorption inside the 25 µm film.
+    mat->SetMaterialPropertiesTable(mpt);
+    return mat;
+}
+
 } // namespace Materials

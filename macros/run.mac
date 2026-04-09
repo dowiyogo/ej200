@@ -8,11 +8,30 @@
 /event/verbose   0
 /tracking/verbose 0
 
+# ── Detector geometry ────────────────────────────────────────
+# Top SiPM pitch (triggers ReinitializeGeometry).
+# Valid range: ~10–73 mm for 20 SiPMs within the 1.4 m bar.
+# Common values: 40, 50, 70 (default), 80 mm
+#/det/topSiPMPitch 70 mm
+
 /run/initialize
 
+# ── SiPM electronics ─────────────────────────────────────────
+# Electronic time-jitter sigma (default: 20 ps = 0.020 ns)
+#/sipm/jitterSigma 0.020 ns
+
+# ── Muon gun ─────────────────────────────────────────────────
 /gun/particle  mu-
 /gun/energy    1 GeV
-/gun/position  0 60 0 mm
-/gun/direction 0 -1 0
+
+# Option A — direct position + vertical incidence (default)
+/muon/angle    0
+/muon/gunX     0 mm
+
+# Option B — midpoint between two top SiPMs (uncomment to use)
+# /muon/midpointSiPMs 9 10
+
+# Option C — tilted muon (angle in degrees from -Z vertical)
+# /muon/angle 30
 
 /run/beamOn 1000

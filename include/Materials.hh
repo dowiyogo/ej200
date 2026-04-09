@@ -12,6 +12,12 @@ namespace Materials {
 // yield=10 000 ph/MeV, tau1=2.1 ns, bulk att. length=3.8 m.
 G4Material* CreateEJ200();
 
+// Mylar wrapping film (G4_MYLAR base).
+// RINDEX = 1.65 across the optical range.  Used as a thin physical-volume
+// wrapper around the scintillator bar to provide reflection via TIR and
+// Fresnel equations without requiring a G4OpticalSurface at the air boundary.
+G4Material* CreateMylar();
+
 // Optical coupling material for SiPM volumes (G4_SILICON_DIOXIDE base).
 // RINDEX set to 1.58 to match the bar and eliminate TIR at the bar–SiPM
 // interface — equivalent to perfect optical grease coupling.

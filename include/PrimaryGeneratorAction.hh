@@ -1,35 +1,55 @@
 #pragma once
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
+#include "globals.hh"
 
 class G4Event;
+class G4GenericMessenger;
 
 // --------------------------------------------------------------------------
 // PrimaryGeneratorAction
 //
-// Default: vertical mu- (PDG ID –13) a y=+60 mm (sobre la cara +Y del bar,
-// que termina en y=+30 mm), dirigido hacia abajo (0, -1, 0), energia 4 GeV.
-// Con esta posicion el muon entra por la cara superior y atraviesa los 60 mm
-// completos del bar antes de salir por la cara inferior.
+// Default: vertical mu- through the bar centre (X=0, angle=0°).
+//   Position : (0, 0, +60 mm) — 55 mm above the +Z bar face
+//   Direction: (0, 0, -1)     — straight down
+//   Energy   : 1 GeV
 //
-// Configurable via macros:
-//   /gun/particle        mu-
-//   /gun/energy          4 GeV
-//   /gun/position        0 60 0 mm
-//   /gun/direction       0 -1 0
+// ── New UI commands (available after /run/initialize) ──────────────────────
 //
-// Para el scan longitudinal (scan.mac):
-//   /gun/position {xpos} 60 0 mm   ← y=60 mm siempre, x varía
-//   /control/loop scan.mac xpos -650 650 70
-//   (scan.mac sets /gun/position {xpos} 0 0 mm)
+//  /muon/angle <deg>
+//      Incidence angle θ from the -Z vertical axis, in the XZ plane.
+//      Direction becomes (sinθ, 0, -cosθ).
+//      Positive θ tilts toward +X.  Example: /muon/angle 30 deg
+//
+//  /muon/midpointSiPMs <i> <j>
+//      Place the gun X at the geometric midpoint between top SiPMs i and j
+//      (0-based indices, e.g. "9 10" for the central gap).
+//      Reads the current pitch from DetectorConstruction at event time, so
+//      it remains valid after /det/topSiPMPitch changes.
+//
+//  /muon/gunX <x> mm
+//      Set gun X position directly in mm (overrides midpoint if set last).
+//
+// The standard /gun/* commands still work for particle type and energy.
 // --------------------------------------------------------------------------
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
   public:
     PrimaryGeneratorAction();
-    ~PrimaryGeneratorAction() override = default;
+    ~PrimaryGeneratorAction() override;
 
     void GeneratePrimaries(G4Event*) override;
 
+    // Called by messenger commands
+    void SetAngleDeg      (G4double deg);
+    void SetMidpointSiPMs (G4String indices);  // format: "i j"
+    void SetGunXmm        (G4double xMm);
+
   private:
-    G4ParticleGun fGun;
+    G4ParticleGun       fGun;
+    G4GenericMessenger* fMessenger   = nullptr;
+
+    G4double fAngleDeg   = 0.0;    // incidence angle [degrees]
+    G4double fGunX       = 0.0;    // override X position [G4 internal = mm]
+    G4int    fMidSiPM1   = -1;     // < 0 → use fGunX directly
+    G4int    fMidSiPM2   = -1;
 };

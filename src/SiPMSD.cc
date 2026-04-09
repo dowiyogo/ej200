@@ -5,6 +5,7 @@
 #include "G4AnalysisManager.hh"
 #include "G4Event.hh"
 #include "G4EventManager.hh"
+#include "G4GenericMessenger.hh"
 #include "G4OpticalPhoton.hh"
 #include "G4Step.hh"
 #include "G4SystemOfUnits.hh"
@@ -13,8 +14,8 @@
 #include "Randomize.hh"
 
 // ---------------------------------------------------------------------------
-// Tabla PDE — Hamamatsu S13360-6025 (celda 25 µm, 6×6 mm²)
-// 33 puntos, 300–940 nm.  Fuente: datasheet Hamamatsu S13360 series.
+// PDE table — Hamamatsu S13360-6025 (25 µm cell, 6×6 mm²)
+// 33 points, 300–940 nm.  Source: Hamamatsu S13360 series datasheet.
 // ---------------------------------------------------------------------------
 namespace {
     constexpr G4int    kNPDE   = 33;
@@ -35,13 +36,26 @@ namespace {
 SiPMSD::SiPMSD(const G4String& name)
     : G4VSensitiveDetector(name)
 {
-    // Construir la curva PDE usando G4MaterialPropertyVector::InsertValues().
-    // InsertValues() mantiene orden ascendente de energía automáticamente.
-    // hc = 1239.84193 eV·nm
+    // Build PDE curve in ascending energy order
     const G4double hc = 1239.84193 * eV * nm;
-    for (G4int i = 0; i < kNPDE; ++i) {
+    for (G4int i = 0; i < kNPDE; ++i)
         fPDEVec.InsertValues(hc / (kWL_nm[i] * nm), kPDE[i]);
-    }
+
+    // ── UI messenger ─────────────────────────────────────────────────────────
+    fMessenger = new G4GenericMessenger(this, "/sipm/", "SiPM detector control");
+
+    auto& cmd = fMessenger->DeclareMethodWithUnit(
+        "jitterSigma", "ns",
+        &SiPMSD::SetJitterSigma,
+        "Set electronic time-jitter sigma [ns].\n"
+        "  Default: 0.020 ns (= 20 ps).\n"
+        "  Example: /sipm/jitterSigma 0.050 ns");
+    cmd.SetParameterName("sigma", false);
+    cmd.SetRange("sigma >= 0");
+}
+
+SiPMSD::~SiPMSD() {
+    delete fMessenger;
 }
 
 // ---------------------------------------------------------------------------
@@ -49,7 +63,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
 {
     auto* track = step->GetTrack();
 
-    // Solo fotones opticos entrando desde una frontera geometrica
+    // Only optical photons entering from a geometry boundary
     if (track->GetDefinition() != G4OpticalPhoton::Definition()) return false;
 
     auto* pre = step->GetPreStepPoint();
@@ -58,19 +72,9 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         return false;
     }
 
-    // ── Identificar el SiPM por copy number ─────────────────────────────────
-    //
-    // FIX: se usa G4Track::GetVolume() en lugar de
-    //      pre->GetTouchableHandle()->GetCopyNumber().
-    //
-    // En pasos que empiezan en una frontera (fGeomBoundary), el touchable
-    // del punto pre puede devolver el volumen ANTERIOR (la barra, copyNo=0)
-    // en ciertas implementaciones de Geant4 11.x, haciendo que todos los
-    // hits aparezcan en SiPM 0 (extremo izquierdo) y el otro extremo
-    // quede aparentemente vacio.
-    //
-    // G4Track::GetVolume() siempre devuelve el volumen actual del track
-    // (el SiPM recien entrado) de forma inequivoca en cualquier version.
+    // ── Identify SiPM by copy number ────────────────────────────────────────
+    // G4Track::GetVolume() always returns the current volume of the track,
+    // avoiding the pre-step touchable ambiguity at geometry boundaries.
     auto* pv = track->GetVolume();
     if (pv == nullptr) {
         track->SetTrackStatus(fStopAndKill);
@@ -78,15 +82,21 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     }
     const G4int globalId = pv->GetCopyNo();
 
-    // Cinematica del foton
-    const G4double energy     = pre->GetKineticEnergy();
-    const G4double energy_eV  = energy / eV;
-    const G4double wl_nm      = (energy_eV > 0.0) ? (1239.84193 / energy_eV) : 0.0;
-    const G4double time_ns    = track->GetGlobalTime() / ns;
-    const G4ThreeVector pos   = pre->GetPosition();
+    // ── Photon kinematics ────────────────────────────────────────────────────
+    const G4double energy    = pre->GetKineticEnergy();
+    const G4double energy_eV = energy / eV;
+    const G4double wl_nm     = (energy_eV > 0.0) ? (1239.84193 / energy_eV) : 0.0;
 
-    // Trial de Bernoulli con PDE
-    // G4MaterialPropertyVector::Value() interpola linealmente con clamping
+    // ── Electronic time jitter ───────────────────────────────────────────────
+    // Simulate the timing resolution of the readout electronics by smearing
+    // the photon arrival time with a Gaussian of zero mean and sigma = fJitterSigma.
+    // G4RandGauss::shoot(mean, sigma) draws from the CLHEP Gaussian RNG.
+    const G4double jitter  = G4RandGauss::shoot(0.0, fJitterSigma);
+    const G4double time_ns = (track->GetGlobalTime() + jitter) / ns;
+
+    const G4ThreeVector pos = pre->GetPosition();
+
+    // ── PDE Bernoulli trial ──────────────────────────────────────────────────
     const G4double pde      = GetPDE(energy);
     const G4bool   detected = (G4UniformRand() < pde);
 
@@ -108,34 +118,23 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         am->FillNtupleIColumn(0, 1, DetectorConstruction::FaceType(globalId));
         am->FillNtupleIColumn(0, 2, globalId);
         am->FillNtupleIColumn(0, 3, DetectorConstruction::LocalId(globalId));
-        am->FillNtupleDColumn(0, 4, time_ns);
+        am->FillNtupleDColumn(0, 4, time_ns);          // ← jitter-smeared time
         am->FillNtupleDColumn(0, 5, energy_eV);
         am->FillNtupleDColumn(0, 6, wl_nm);
         am->FillNtupleDColumn(0, 7, pde);
         am->FillNtupleDColumn(0, 8, pos.x() / mm);
         am->FillNtupleDColumn(0, 9, pos.y() / mm);
         am->FillNtupleDColumn(0, 10, pos.z() / mm);
-        // Posicion x del muon primario: extraida del EventAction en
-        // BeginOfEventAction desde el G4PrimaryVertex.  Es constante para
-        // todos los fotones del mismo evento y permite segmentar el analisis
-        // por posicion longitudinal sin recurrir a metadatos externos.
         const G4double gunX = ea ? ea->GetGunXmm() : 0.0;
         am->FillNtupleDColumn(0, 11, gunX);
         am->AddNtupleRow(0);
     }
 
-    // Matar el foton en cualquier caso (plano absorbente)
     track->SetTrackStatus(fStopAndKill);
     return detected;
 }
 
 // ---------------------------------------------------------------------------
-G4double SiPMSD::GetPDE(G4double energy) const
-{
-    // G4MaterialPropertyVector::Value() hace interpolacion lineal con clamping:
-    //   energy < E_min  -> PDE[0]   (= 0.000 en 940 nm, la mas baja)
-    //   energy > E_max  -> PDE[N-1] (= 0.000 en 300 nm, la mas alta)
-    // Nota: la tabla esta en orden ascendente de energia (longitudes de onda
-    // descendentes), como exige G4PhysicsVector.
+G4double SiPMSD::GetPDE(G4double energy) const {
     return fPDEVec.Value(energy);
 }

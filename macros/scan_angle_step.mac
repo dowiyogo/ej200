@@ -1,0 +1,7 @@
+# ============================================================
+# scan_angle_step.mac — single step of angular scan
+# Called by scan_angle.mac with alias {angle} in degrees.
+# ============================================================
+
+/muon/angle {angle}
+/run/beamOn 500

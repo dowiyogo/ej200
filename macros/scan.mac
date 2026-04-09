@@ -8,11 +8,21 @@
 /event/verbose   0
 /tracking/verbose 0
 
+# ── Detector geometry ────────────────────────────────────────
+# Uncomment and set the desired top-SiPM pitch before initializing.
+# The number of active top SiPMs is computed automatically.
+#/det/topSiPMPitch 50 mm   # 5 cm pitch
+#/det/topSiPMPitch 80 mm   # 8 cm pitch
+
 /run/initialize
 
+# ── SiPM electronics ─────────────────────────────────────────
+#/sipm/jitterSigma 0.020 ns
+
+# ── Muon gun ─────────────────────────────────────────────────
 /gun/particle  mu-
 /gun/energy    1 GeV
-/gun/direction 0 -1 0
+/muon/angle    0
 
-# Loop: 21 positions from -650 to +650 mm, step 65 mm
+# Loop: positions from -650 to +650 mm, step 65 mm
 /control/loop macros/scan_step.mac xpos -650 650 65

@@ -3,11 +3,16 @@
 /event/verbose 0
 /tracking/verbose 0
 
+# Initialize physics and geometry FIRST so the scene has extent
+/run/initialize
+
 /vis/open OGL 1200x800-0+0
 /vis/viewer/set/style wireframe
 /vis/drawVolume
 
 # Look along +Y so the screen is the X-Z plane.
+# Up vector must NOT be parallel to the view direction (Y); use Z instead.
+/vis/viewer/set/upVector 0 0 1
 /vis/viewer/set/viewpointVector 0 1 0
 /vis/viewer/set/projection orthogonal
 /vis/viewer/set/autoRefresh true
@@ -16,9 +21,6 @@
 /vis/scene/add/trajectories smooth
 /vis/scene/endOfEventAction accumulate 1
 
-/run/initialize
 /run/beamOn 1
-
-/vis/viewer/flush
-/vis/viewer/save photon_traces_xz.png
+# Window stays open — save manually from the Qt menu (File > Save As...)
 

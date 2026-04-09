@@ -30,8 +30,8 @@ Global IDs   Face         Count   Description
 |---|---|---|
 | SiPM surface | `LogicalSkinSurface` (global) | `LogicalBorderSurface` per SiPM |
 | Optical coupling | Air (n=1.0) → TIR at ~39° | Coupling material n=1.58 (no TIR) |
-| PDE | Manual C++ interpolation in SD | `DETECTIONEFFICIENCY` in surface MPT |
-| Wrapping | None / default | Tyvek-like, R=0.95, `dielectric_metal` |
+| PDE | Not applied | Manual Bernoulli trial in `SiPMSD::ProcessHits()` via `GetPDE()` |
+| Wrapping | None / default | `dielectric_dielectric polished` (TIR-based, bar–air interface) |
 | Top SiPMs | Only 2nd half of bar (bug) | Full bar length (−665 to +665 mm) |
 | EventAction | Bug (AddEndLeftHit unconditional) | SiPMSD → EventAction → RunAction |
 | Materials class | Inline in DetectorConstruction | Separate `Materials` namespace |
@@ -67,11 +67,15 @@ make -j$(nproc)
 
 ## Run
 
+The muon (1 GeV μ⁻) starts 60 mm above the bar centre on the wide face (+Z),
+travels in the **−Z direction**, and traverses the full 10 mm thickness of the bar.
+Scans step along the **X axis** (longitudinal direction).
+
 ```bash
-# Standard production (1000 events, mu- at centre)
+# Standard production (1000 events, mu- at bar centre x=0)
 ./ej200_bar_sim -m macros/run.mac
 
-# Full longitudinal scan (21 x positions × 200 events each)
+# Full longitudinal scan (21 x positions × 200 events each, −650 → +650 mm)
 ./ej200_bar_sim -m macros/scan.mac
 
 # Interactive visualisation
@@ -83,24 +87,39 @@ make -j$(nproc)
 ## Analysis
 
 ```bash
-pip install uproot numpy matplotlib pandas
-python ../analysis/analyze.py photon_hits.root
+pip install uproot numpy matplotlib pandas scipy
+
+# General plots (single-position or scan data)
+python analysis/analyze.py photon_hits.root
+
+# Temporal resolution vs longitudinal position (requires scan data)
+python analysis/resolution_vs_x.py photon_hits.root
 ```
 
-Produces:
+### `analyze.py` outputs
+
 - `photons_per_sipm.pdf` — total hits per SiPM
-- `top_sipm_profile.pdf` — **key plot**: top SiPM hits vs x-position (validates full coverage)
+- `top_sipm_profile.pdf` — top SiPM hits vs x-position (validates full coverage)
 - `arrival_time.pdf` — timing spectrum per face type
 - `wavelength.pdf` — detected photon wavelength spectrum
-- `end_asymmetry.pdf` — (L−R)/(L+R) for position reconstruction
+- `end_asymmetry.pdf` — (L−R)/(L+R) asymmetry distribution
+
+### `resolution_vs_x.py` outputs (scan data required)
+
+- `resolution_vs_x.pdf` — **key thesis plot**: σ_t [ps] vs x for end and top SiPMs
+- `fpt_dist_end.pdf` — first-photon-time distributions at 3 representative positions (end SiPMs)
+- `fpt_dist_top.pdf` — first-photon-time distributions at 3 representative positions (top SiPMs)
+- `asymmetry_vs_x.pdf` — end-SiPM charge asymmetry ⟨(N_L−N_R)/(N_L+N_R)⟩ vs x (position reconstruction)
+- `n_photons_vs_x.pdf` — mean detected photons per event vs x, by face type
 
 ---
 
 ## PDE table
 
 Hamamatsu S13360-6025 (33 points, 300–940 nm). Peak PDE ≈ 40.5% at 460 nm.
-Stored in the `SiPMSurface` MPT (`DETECTIONEFFICIENCY`) and interpolated by
-`SiPMSD::GetPDE()` using `G4PhysicsVector::Value()`.
+Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
+`SiPMSD::GetPDE()` using linear interpolation. Applied as a Bernoulli trial in
+`SiPMSD::ProcessHits()`.
 
 ---
 
