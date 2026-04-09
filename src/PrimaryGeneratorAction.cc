@@ -50,13 +50,14 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 
     // /muon/gunX <x> mm  — direct X override
     {
-        auto& cmd = fMessenger->DeclarePropertyWithUnit(
-            "gunX", "mm", fGunX,
+        auto& cmd = fMessenger->DeclareMethodWithUnit(
+            "gunX", "mm",
+            &PrimaryGeneratorAction::SetGunXmm,
             "Set gun X position directly [mm].\n"
             "  Clears any midpointSiPMs setting.\n"
             "  Example: /muon/gunX 0 mm");
         (void)cmd;
-        // Changing fGunX clears the midpoint mode
+        cmd.SetParameterName("x", false);
     }
 }
 
@@ -83,19 +84,22 @@ void PrimaryGeneratorAction::SetMidpointSiPMs(G4String indices) {
     }
     fMidSiPM1 = a;
     fMidSiPM2 = b;
+    fUseDirectGunX = false;
 }
 
 // ---------------------------------------------------------------------------
 void PrimaryGeneratorAction::SetGunXmm(G4double xMm) {
-    fGunX    = xMm;   // xMm already in G4 internal units (mm=1) from DeclarePropertyWithUnit
-    fMidSiPM1 = -1;   // clear midpoint mode
-    fMidSiPM2 = -1;
+    fGunX          = xMm;   // xMm already in G4 internal units (mm=1)
+    fUseDirectGunX = true;
+    fMidSiPM1      = -1;   // clear midpoint mode
+    fMidSiPM2      = -1;
 }
 
 // ---------------------------------------------------------------------------
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
     // ── Resolve X position ───────────────────────────────────────────────────
-    G4double gunX = fGunX;
+    const G4ThreeVector basePos = fGun.GetParticlePosition();
+    G4double gunX = basePos.x();
 
     if (fMidSiPM1 >= 0 && fMidSiPM2 >= 0) {
         // Look up the current pitch and count from DetectorConstruction
@@ -112,8 +116,10 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
             gunX = 0.5 * (x1 + x2);
         } else {
             G4cerr << "[PrimaryGeneratorAction] Cannot resolve DetectorConstruction "
-                      "for midpoint calculation; using fGunX.\n";
+                      "for midpoint calculation; using current /gun/position X.\n";
         }
+    } else if (fUseDirectGunX) {
+        gunX = fGunX;
     }
 
     // ── Resolve momentum direction from angle ────────────────────────────────
@@ -123,11 +129,9 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
     const G4double sinT  = std::sin(theta);
     const G4double cosT  = std::cos(theta);
 
-    // Gun position: above the bar (+Z face is at kBarHalfZ = 5 mm).
-    // Keep Y=0 (centre of bar width) and place the gun 55 mm above the top face.
-    // X is set to gunX; Z stays at +60 mm regardless of angle so the muon
-    // always enters through the top face even at large angles.
-    fGun.SetParticlePosition({gunX, 0.0, 60.0 * mm});
+    // Preserve the current /gun/position Y and Z coordinates.
+    // Only X is overridden by /muon/gunX or /muon/midpointSiPMs.
+    fGun.SetParticlePosition({gunX, basePos.y(), basePos.z()});
     fGun.SetParticleMomentumDirection({sinT, 0.0, -cosT});
 
     fGun.GeneratePrimaryVertex(event);

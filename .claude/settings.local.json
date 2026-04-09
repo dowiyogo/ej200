@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/c/root_v6.24.02/bin/root.exe -l:*)"
+    ]
+  }
+}

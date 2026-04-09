@@ -28,9 +28,11 @@ class G4GenericMessenger;
 //      it remains valid after /det/topSiPMPitch changes.
 //
 //  /muon/gunX <x> mm
-//      Set gun X position directly in mm (overrides midpoint if set last).
+//      Set gun X position directly in mm. This clears midpoint mode.
 //
-// The standard /gun/* commands still work for particle type and energy.
+// The standard /gun/* commands still work for particle type, energy, and
+// position. If no /muon/gunX or /muon/midpointSiPMs override is active, the
+// current /gun/position X coordinate is preserved.
 // --------------------------------------------------------------------------
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
   public:
@@ -48,8 +50,9 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
     G4ParticleGun       fGun;
     G4GenericMessenger* fMessenger   = nullptr;
 
-    G4double fAngleDeg   = 0.0;    // incidence angle [degrees]
-    G4double fGunX       = 0.0;    // override X position [G4 internal = mm]
-    G4int    fMidSiPM1   = -1;     // < 0 → use fGunX directly
+    G4double fAngleDeg      = 0.0;    // incidence angle [degrees]
+    G4double fGunX          = 0.0;    // direct X override [G4 internal = mm]
+    G4bool   fUseDirectGunX = false;  // true after /muon/gunX
+    G4int    fMidSiPM1      = -1;     // >= 0 → use midpoint mode
     G4int    fMidSiPM2   = -1;
 };

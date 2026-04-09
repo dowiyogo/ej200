@@ -82,6 +82,10 @@ Scans step along the **X axis** (longitudinal direction).
 ./ej200_bar_sim
 ```
 
+For longitudinal scans, prefer `/muon/gunX` over `/gun/position` in macros so
+the event-level `gun_x_mm` written to the ntuple tracks the intended scan
+coordinate unambiguously.
+
 ---
 
 ## Analysis
