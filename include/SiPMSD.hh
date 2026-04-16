@@ -24,23 +24,36 @@ class G4GenericMessenger;
 class SiPMSD : public G4VSensitiveDetector
 {
   public:
+    enum class SensorModel : G4int {
+        kBroadcomNUVMT14M = 0,
+        kHamamatsuS13360  = 1
+    };
+
     explicit SiPMSD(const G4String& name);
     ~SiPMSD() override;
 
     G4bool ProcessHits(G4Step* step, G4TouchableHistory*) override;
 
-    // Configurable jitter sigma (G4 internal time units)
-    void     SetJitterSigma(G4double sigma) { fJitterSigma = sigma; }
-    G4double GetJitterSigma() const         { return fJitterSigma; }
+    void     SetSPTRSigma(G4double sigma)        { fSPTRSigma = sigma; }
+    G4double GetSPTRSigma() const                { return fSPTRSigma; }
+
+    void     SetElectronicsSigma(G4double sigma) { fElectronicsSigma = sigma; }
+    G4double GetElectronicsSigma() const         { return fElectronicsSigma; }
+
+    void        SetSensorModelByName(const G4String& modelName);
+    SensorModel GetSensorModel() const { return fSensorModel; }
+    G4int       GetSensorModelId() const;
+    G4String    GetSensorModelName() const;
 
   private:
     G4double GetPDE(G4double energy) const;
+    void     ApplySensorDefaults(SensorModel model);
 
     G4MaterialPropertyVector fPDEVec;
 
-    // Jitter sigma in G4 internal units (nanoseconds scale).
-    // Default: 20 ps = 0.020 ns.
-    G4double fJitterSigma = 20.0e-3;  // 1 G4 time unit = 1 ns → 20e-3 = 20 ps
+    SensorModel fSensorModel      = SensorModel::kBroadcomNUVMT14M;
+    G4double    fSPTRSigma        = 30.0e-3;
+    G4double    fElectronicsSigma = 30.0e-3;
 
     G4GenericMessenger* fMessenger = nullptr;
 };

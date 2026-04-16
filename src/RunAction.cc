@@ -28,6 +28,8 @@ RunAction::RunAction() {
     am->CreateNtupleIColumn("global_id");
     am->CreateNtupleIColumn("local_id");
     am->CreateNtupleDColumn("time_ns");
+    am->CreateNtupleDColumn("time_raw_ns");
+    am->CreateNtupleDColumn("sptr_jitter_ns");
     am->CreateNtupleDColumn("energy_eV");
     am->CreateNtupleDColumn("wl_nm");
     am->CreateNtupleDColumn("pde");
@@ -35,6 +37,9 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("y_mm");
     am->CreateNtupleDColumn("z_mm");
     am->CreateNtupleDColumn("gun_x_mm");
+    am->CreateNtupleIColumn("sensor_model_id");
+    am->CreateNtupleDColumn("sensor_sptr_sigma_ns");
+    am->CreateNtupleDColumn("electronics_sigma_ns");
     am->FinishNtuple();
 }
 

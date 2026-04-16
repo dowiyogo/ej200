@@ -1,0 +1,9 @@
+# Called by vis_scan_png.mac via /control/loop
+# {xpos} is substituted by Geant4.
+
+/vis/viewer/flush
+/muon/gunX {xpos} mm
+/run/beamOn 1
+/vis/viewer/refresh
+/vis/viewer/flush
+/vis/ogl/export vis_scan_png/trace_x_{xpos}.pdf

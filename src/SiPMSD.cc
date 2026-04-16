@@ -13,6 +13,9 @@
 #include "G4VPhysicalVolume.hh"
 #include "Randomize.hh"
 
+#include <algorithm>
+#include <cctype>
+
 // ---------------------------------------------------------------------------
 // PDE table — Hamamatsu S13360-6025 (25 µm cell, 6×6 mm²)
 // 33 points, 300–940 nm.  Source: Hamamatsu S13360 series datasheet.
@@ -44,14 +47,29 @@ SiPMSD::SiPMSD(const G4String& name)
     // ── UI messenger ─────────────────────────────────────────────────────────
     fMessenger = new G4GenericMessenger(this, "/sipm/", "SiPM detector control");
 
-    auto& cmd = fMessenger->DeclareMethodWithUnit(
-        "jitterSigma", "ns",
-        &SiPMSD::SetJitterSigma,
-        "Set electronic time-jitter sigma [ns].\n"
-        "  Default: 0.020 ns (= 20 ps).\n"
-        "  Example: /sipm/jitterSigma 0.050 ns");
-    cmd.SetParameterName("sigma", false);
-    cmd.SetRange("sigma >= 0");
+    auto& sensorCmd = fMessenger->DeclareMethod(
+        "sensorModel",
+        &SiPMSD::SetSensorModelByName,
+        "Set SiPM model. Supported values: Broadcom, Hamamatsu.\n"
+        "  Broadcom  -> SPTR sigma = 0.030 ns (30 ps)\n"
+        "  Hamamatsu -> SPTR sigma = 0.150 ns (150 ps)");
+    sensorCmd.SetParameterName("model", false);
+
+    auto& sptrCmd = fMessenger->DeclareMethodWithUnit(
+        "sptrSigma", "ns",
+        &SiPMSD::SetSPTRSigma,
+        "Override the SiPM SPTR sigma [ns].\n"
+        "  Defaults: Broadcom = 0.030 ns, Hamamatsu = 0.150 ns.");
+    sptrCmd.SetParameterName("sigma", false);
+    sptrCmd.SetRange("sigma >= 0");
+
+    auto& elecCmd = fMessenger->DeclareMethodWithUnit(
+        "electronicsSigma", "ns",
+        &SiPMSD::SetElectronicsSigma,
+        "Set FastIC+ electronics jitter RMS [ns].\n"
+        "  Default: 0.030 ns (= 30 ps).");
+    elecCmd.SetParameterName("sigma", false);
+    elecCmd.SetRange("sigma >= 0");
 }
 
 SiPMSD::~SiPMSD() {
@@ -87,12 +105,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4double energy_eV = energy / eV;
     const G4double wl_nm     = (energy_eV > 0.0) ? (1239.84193 / energy_eV) : 0.0;
 
-    // ── Electronic time jitter ───────────────────────────────────────────────
-    // Simulate the timing resolution of the readout electronics by smearing
-    // the photon arrival time with a Gaussian of zero mean and sigma = fJitterSigma.
-    // G4RandGauss::shoot(mean, sigma) draws from the CLHEP Gaussian RNG.
-    const G4double jitter  = G4RandGauss::shoot(0.0, fJitterSigma);
-    const G4double time_ns = (track->GetGlobalTime() + jitter) / ns;
+    const G4double rawTimeNs = track->GetGlobalTime() / ns;
 
     const G4ThreeVector pos = pre->GetPosition();
 
@@ -101,6 +114,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4bool   detected = (G4UniformRand() < pde);
 
     if (detected) {
+        const G4double sptrJitterNs = G4RandGauss::shoot(0.0, fSPTRSigma) / ns;
+        const G4double timeNs       = rawTimeNs + sptrJitterNs;
         const G4int eventId =
             G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
 
@@ -118,15 +133,20 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         am->FillNtupleIColumn(0, 1, DetectorConstruction::FaceType(globalId));
         am->FillNtupleIColumn(0, 2, globalId);
         am->FillNtupleIColumn(0, 3, DetectorConstruction::LocalId(globalId));
-        am->FillNtupleDColumn(0, 4, time_ns);          // ← jitter-smeared time
-        am->FillNtupleDColumn(0, 5, energy_eV);
-        am->FillNtupleDColumn(0, 6, wl_nm);
-        am->FillNtupleDColumn(0, 7, pde);
-        am->FillNtupleDColumn(0, 8, pos.x() / mm);
-        am->FillNtupleDColumn(0, 9, pos.y() / mm);
-        am->FillNtupleDColumn(0, 10, pos.z() / mm);
+        am->FillNtupleDColumn(0, 4, timeNs);
+        am->FillNtupleDColumn(0, 5, rawTimeNs);
+        am->FillNtupleDColumn(0, 6, sptrJitterNs);
+        am->FillNtupleDColumn(0, 7, energy_eV);
+        am->FillNtupleDColumn(0, 8, wl_nm);
+        am->FillNtupleDColumn(0, 9, pde);
+        am->FillNtupleDColumn(0, 10, pos.x() / mm);
+        am->FillNtupleDColumn(0, 11, pos.y() / mm);
+        am->FillNtupleDColumn(0, 12, pos.z() / mm);
         const G4double gunX = ea ? ea->GetGunXmm() : 0.0;
-        am->FillNtupleDColumn(0, 11, gunX);
+        am->FillNtupleDColumn(0, 13, gunX);
+        am->FillNtupleIColumn(0, 14, GetSensorModelId());
+        am->FillNtupleDColumn(0, 15, fSPTRSigma / ns);
+        am->FillNtupleDColumn(0, 16, fElectronicsSigma / ns);
         am->AddNtupleRow(0);
     }
 
@@ -136,5 +156,37 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
 
 // ---------------------------------------------------------------------------
 G4double SiPMSD::GetPDE(G4double energy) const {
-    return fPDEVec.Value(energy);
+    return std::clamp(fPDEVec.Value(energy), 0.0, 1.0);
+}
+
+void SiPMSD::SetSensorModelByName(const G4String& modelName) {
+    G4String lowered = modelName;
+    std::transform(
+        lowered.begin(), lowered.end(), lowered.begin(),
+        [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+
+    if (lowered == "broadcom" || lowered == "broadcomnuvmt14m" || lowered == "nuv-mt14m") {
+        ApplySensorDefaults(SensorModel::kBroadcomNUVMT14M);
+        return;
+    }
+
+    if (lowered == "hamamatsu" || lowered == "s13360" || lowered == "s13360-6025") {
+        ApplySensorDefaults(SensorModel::kHamamatsuS13360);
+    }
+}
+
+void SiPMSD::ApplySensorDefaults(SensorModel model) {
+    fSensorModel = model;
+    fSPTRSigma   = (model == SensorModel::kBroadcomNUVMT14M) ? 30.0e-3 : 150.0e-3;
+}
+
+G4int SiPMSD::GetSensorModelId() const {
+    return static_cast<G4int>(fSensorModel);
+}
+
+G4String SiPMSD::GetSensorModelName() const {
+    if (fSensorModel == SensorModel::kHamamatsuS13360) {
+        return "Hamamatsu S13360";
+    }
+    return "Broadcom NUV-MT 14M";
 }

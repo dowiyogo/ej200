@@ -37,6 +37,32 @@ COLORS = {
     "top":       "#4dac26",
 }
 
+
+def compute_dcfd_time(times_ns, fraction=0.14):
+    """
+    Reconstruye el tiempo de cruce dCFD a partir del tren temporal de PEs.
+    La amplitud del pulso se aproxima como N_PE y el umbral es fraction*N_PE.
+    """
+    times = np.sort(np.asarray(times_ns, dtype=float))
+    n = len(times)
+    if n == 0:
+        return np.nan
+
+    threshold = fraction * n
+    counts = np.arange(1, n + 1, dtype=float)
+    idx = np.searchsorted(counts, threshold, side="left")
+
+    if idx <= 0:
+        return float(times[0])
+    if np.isclose(counts[idx], threshold):
+        return float(times[idx])
+
+    t0, t1 = times[idx - 1], times[idx]
+    y0, y1 = counts[idx - 1], counts[idx]
+    if np.isclose(t1, t0):
+        return float(t1)
+    return float(t0 + (threshold - y0) * (t1 - t0) / (y1 - y0))
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def load_data(root_file: str) -> pd.DataFrame:
@@ -52,20 +78,31 @@ def load_data(root_file: str) -> pd.DataFrame:
     return df
 
 
-def first_photon_time(df: pd.DataFrame, face_mask) -> pd.DataFrame:
+def dcfd_time_per_event(df: pd.DataFrame, face_mask,
+                        fraction: float = 0.14,
+                        electronics_sigma_ps: float = 30.0,
+                        seed: int = 12345) -> pd.DataFrame:
     """
-    Calcula el tiempo del primer foton (FPT) por evento para los SiPMs
-    seleccionados por face_mask (serie booleana).
+    Calcula el tiempo dCFD por evento para los SiPMs seleccionados.
+    Al tiempo dCFD se le suma un jitter FastIC+ gaussiano de 30 ps RMS.
 
-    Retorna DataFrame con columnas: event_id, gun_x_mm, fpt_ns
+    Retorna DataFrame con columnas: event_id, gun_x_mm, dcfd_time_ns
     """
     sub = df[face_mask][["event_id", "gun_x_mm", "time_ns"]].copy()
-    # Primer foton = minimo de time_ns dentro del evento
-    fpt = (sub.groupby("event_id")
-              .agg(fpt_ns=("time_ns", "min"),
-                   gun_x_mm=("gun_x_mm", "first"))
-              .reset_index())
-    return fpt
+    rows = []
+    rng = np.random.default_rng(seed)
+
+    for event_id, grp in sub.groupby("event_id"):
+        t_dcfd = compute_dcfd_time(grp["time_ns"].to_numpy(), fraction=fraction)
+        if np.isnan(t_dcfd):
+            continue
+        rows.append({
+            "event_id": event_id,
+            "gun_x_mm": grp["gun_x_mm"].iloc[0],
+            "dcfd_time_ns": t_dcfd + rng.normal(0.0, electronics_sigma_ps * 1e-3),
+        })
+
+    return pd.DataFrame(rows)
 
 
 def gauss(x, mu, sigma, A):
@@ -116,18 +153,18 @@ def fit_fpt_distribution(times_ns, n_bins=40):
 
 def compute_resolution_vs_x(df: pd.DataFrame, face_label: str, face_mask):
     """
-    Para cada posicion gun_x_mm, calcula el FPT de todos los eventos y
+    Para cada posicion gun_x_mm, calcula el tiempo dCFD de todos los eventos y
     ajusta una Gaussiana.  Retorna DataFrame con:
         x_mm, sigma_ns, sigma_err_ns, mu_ns, n_events
     """
-    fpt = first_photon_time(df, face_mask)
-    if len(fpt) == 0:
+    t_evt = dcfd_time_per_event(df, face_mask)
+    if len(t_evt) == 0:
         print(f"  [!] {face_label}: sin hits, salteando.")
         return pd.DataFrame()
 
     rows = []
-    for x_val, grp in fpt.groupby("gun_x_mm"):
-        times = grp["fpt_ns"].values
+    for x_val, grp in t_evt.groupby("gun_x_mm"):
+        times = grp["dcfd_time_ns"].values
         mu, sigma, sigma_err = fit_fpt_distribution(times)
         rows.append({
             "x_mm":       x_val,
@@ -196,14 +233,14 @@ def plot_resolution_vs_x(results: dict, out_pdf: str):
 def plot_fpt_examples(df: pd.DataFrame, x_positions_mm, out_pdf: str,
                       face_mask, face_label: str):
     """
-    Distribucion del FPT (con ajuste Gaussiano) para tres posiciones
+    Distribucion del tiempo dCFD (con ajuste Gaussiano) para tres posiciones
     representativas: centro, cuarto de barra, extremo.
     """
-    fpt = first_photon_time(df, face_mask)
-    if len(fpt) == 0:
+    t_evt = dcfd_time_per_event(df, face_mask)
+    if len(t_evt) == 0:
         return
 
-    x_vals = sorted(fpt["gun_x_mm"].unique())
+    x_vals = sorted(t_evt["gun_x_mm"].unique())
     # Seleccionar las tres posiciones mas cercanas a lo pedido
     chosen = []
     for target in x_positions_mm:
@@ -217,7 +254,7 @@ def plot_fpt_examples(df: pd.DataFrame, x_positions_mm, out_pdf: str,
         axes = [axes]
 
     for ax, x_val in zip(axes, chosen):
-        times = fpt[fpt["gun_x_mm"] == x_val]["fpt_ns"].values
+        times = t_evt[t_evt["gun_x_mm"] == x_val]["dcfd_time_ns"].values
         mu, sigma, sigma_err = fit_fpt_distribution(times, n_bins=30)
 
         lo, hi = np.percentile(times, [1, 99])
@@ -234,12 +271,12 @@ def plot_fpt_examples(df: pd.DataFrame, x_positions_mm, out_pdf: str,
                           + fr"$\sigma$={sigma*1e3:.0f}±{sigma_err*1e3:.0f} ps")
 
         ax.set_title(f"{face_label}\n$x$ = {x_val:.0f} mm", fontsize=11)
-        ax.set_xlabel("FPT [ns]", fontsize=11)
+        ax.set_xlabel("dCFD time [ns]", fontsize=11)
         ax.set_ylabel("Eventos / bin" if ax == axes[0] else "", fontsize=11)
         ax.legend(fontsize=9)
         ax.grid(alpha=0.35)
 
-    fig.suptitle("Distribucion del primer foton detectado (FPT)", fontsize=13, y=1.02)
+    fig.suptitle("Distribucion del timestamp dCFD reconstruido", fontsize=13, y=1.02)
     fig.tight_layout()
     fig.savefig(out_pdf, bbox_inches="tight")
     print(f"  → {out_pdf}")
@@ -394,7 +431,7 @@ def main():
     mask_top   = df["face_type"] == 2
 
     # ── Calcular sigma_t vs x ────────────────────────────────────────────────
-    print("\nCalculando FPT y ajustando Gaussianas…")
+    print("\nCalculando tiempos dCFD y ajustando Gaussianas…")
     results = {}
     results["end_left"]  = compute_resolution_vs_x(df, "End izquierdo", mask_left)
     results["end_right"] = compute_resolution_vs_x(df, "End derecho",   mask_right)

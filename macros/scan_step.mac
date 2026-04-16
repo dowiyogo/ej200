@@ -2,4 +2,4 @@
 # {xpos} is substituted by Geant4 control loop.
 
 /muon/gunX {xpos} mm
-/run/beamOn 200
+/run/beamOn 20000

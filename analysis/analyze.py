@@ -24,6 +24,65 @@ TOP_POSITIONS_MM = np.linspace(-665, 665, N_TOP_SIPMS)  # centros x de top SiPMs
 
 FACE_NAMES = {0: "End left (−X)", 1: "End right (+X)", 2: "Top (+Y face)"}
 COLORS     = {0: "#2166ac",        1: "#d6604d",        2: "#4dac26"}
+SENSOR_NAMES = {0: "Broadcom NUV-MT 14M", 1: "Hamamatsu S13360"}
+
+
+def compute_dcfd_time(times_ns: np.ndarray, fraction: float = 0.14) -> float:
+    """dCFD sobre timestamps de fotoelectrones con interpolacion lineal."""
+    times = np.sort(np.asarray(times_ns, dtype=float))
+    n = len(times)
+    if n == 0:
+        return np.nan
+
+    threshold = fraction * n
+    counts = np.arange(1, n + 1, dtype=float)
+    idx = np.searchsorted(counts, threshold, side="left")
+
+    if idx <= 0:
+        return float(times[0])
+    if np.isclose(counts[idx], threshold):
+        return float(times[idx])
+
+    t0, t1 = times[idx - 1], times[idx]
+    y0, y1 = counts[idx - 1], counts[idx]
+    if np.isclose(t1, t0):
+        return float(t1)
+    return float(t0 + (threshold - y0) * (t1 - t0) / (y1 - y0))
+
+
+def build_dcfd_table(df: pd.DataFrame, electronics_sigma_ps: float = 30.0,
+                     fraction: float = 0.14, seed: int = 12345) -> pd.DataFrame:
+    """Reconstruye el timestamp por evento y cara usando dCFD al 14%."""
+    rows = []
+    rng = np.random.default_rng(seed)
+
+    group_cols = ["event_id", "face_type"]
+    if "gun_x_mm" in df.columns:
+        group_cols.append("gun_x_mm")
+
+    for keys, grp in df.groupby(group_cols):
+        if len(group_cols) == 3:
+            event_id, face_type, gun_x_mm = keys
+        else:
+            event_id, face_type = keys
+            gun_x_mm = 0.0
+
+        dcfd_time = compute_dcfd_time(grp["time_ns"].to_numpy(), fraction=fraction)
+        if np.isnan(dcfd_time):
+            continue
+
+        elec_jitter_ns = rng.normal(0.0, electronics_sigma_ps * 1e-3)
+        rows.append({
+            "event_id": event_id,
+            "face_type": face_type,
+            "gun_x_mm": gun_x_mm,
+            "n_pe": len(grp),
+            "dcfd_time_ns": dcfd_time,
+            "electronics_jitter_ns": elec_jitter_ns,
+            "measured_time_ns": dcfd_time + elec_jitter_ns,
+        })
+
+    return pd.DataFrame(rows)
 
 # ─────────────────────────────────────────────────────────────────────────────
 def load_data(root_file: str) -> pd.DataFrame:
@@ -31,14 +90,24 @@ def load_data(root_file: str) -> pd.DataFrame:
         tree = f["sipm_hits"]
         # Columnas base — siempre presentes
         base_cols = ["event_id", "face_type", "global_id", "local_id",
-                     "time_ns", "energy_eV", "wl_nm", "pde",
+                     "time_ns", "time_raw_ns", "sptr_jitter_ns",
+                     "energy_eV", "wl_nm", "pde",
                      "x_mm", "y_mm", "z_mm"]
         # gun_x_mm se agrego en v3; toleramos ntuples viejos sin ella
         available = tree.keys()
-        cols = base_cols + (["gun_x_mm"] if "gun_x_mm" in available else [])
+        extra_cols = [
+            col for col in
+            ["gun_x_mm", "sensor_model_id", "sensor_sptr_sigma_ns", "electronics_sigma_ns"]
+            if col in available
+        ]
+        cols = [col for col in base_cols if col in available] + extra_cols
         df = tree.arrays(cols, library="pd")
         if "gun_x_mm" not in df.columns:
             df["gun_x_mm"] = 0.0   # placeholder para compatibilidad
+        if "time_raw_ns" not in df.columns:
+            df["time_raw_ns"] = df["time_ns"]
+        if "sptr_jitter_ns" not in df.columns:
+            df["sptr_jitter_ns"] = 0.0
     print(f"Loaded {len(df):,} detected photons from '{root_file}'")
     return df
 
@@ -105,7 +174,7 @@ def plot_top_sipm_profile(df: pd.DataFrame, out: str = "top_sipm_profile.pdf"):
 
 
 def plot_arrival_time(df: pd.DataFrame, out: str = "arrival_time.pdf"):
-    """Arrival-time distribution per face type (shows bar transit time)."""
+    """Arrival-time distribution per face type with SPTR-smearing included."""
     fig, ax = plt.subplots(figsize=(9, 4))
     tmax = df["time_ns"].quantile(0.995)
 
@@ -120,6 +189,32 @@ def plot_arrival_time(df: pd.DataFrame, out: str = "arrival_time.pdf"):
     ax.set_xlabel("Arrival time [ns]", fontsize=12)
     ax.set_ylabel("Counts / bin", fontsize=12)
     ax.set_title("Optical photon arrival-time spectrum", fontsize=13)
+    ax.legend()
+    ax.grid(alpha=0.4)
+    fig.tight_layout()
+    fig.savefig(out, bbox_inches="tight")
+    print(f"  → {out}")
+    plt.close(fig)
+
+
+def plot_dcfd_time(df: pd.DataFrame, out: str = "dcfd_time.pdf"):
+    """Distribucion del tiempo reconstruido por dCFD al 14%."""
+    dcfd = build_dcfd_table(df)
+    if dcfd.empty:
+        print("  [skip] dcfd_time: no hay eventos con fotoelectrones")
+        return
+
+    fig, ax = plt.subplots(figsize=(9, 4))
+    for face in [0, 1, 2]:
+        sub = dcfd[dcfd["face_type"] == face]["measured_time_ns"]
+        if len(sub) == 0:
+            continue
+        ax.hist(sub, bins=60, color=COLORS[face], label=FACE_NAMES[face],
+                histtype="step", linewidth=1.5)
+
+    ax.set_xlabel("dCFD time + electronics jitter [ns]", fontsize=12)
+    ax.set_ylabel("Events / bin", fontsize=12)
+    ax.set_title("Muon timestamp reconstructed with 14% dCFD", fontsize=13)
     ax.legend()
     ax.grid(alpha=0.4)
     fig.tight_layout()
@@ -195,6 +290,14 @@ def print_summary(df: pd.DataFrame):
     for face, grp in df.groupby("face_type"):
         print(f"  {FACE_NAMES[face]:<22}: {len(grp):>8,}  "
               f"({100*len(grp)/total:.1f}%)")
+    if "sensor_model_id" in df.columns:
+        sensor_id = int(df["sensor_model_id"].mode().iloc[0])
+        sptr_sigma = df.get("sensor_sptr_sigma_ns", pd.Series([np.nan])).iloc[0]
+        elec_sigma = df.get("electronics_sigma_ns", pd.Series([np.nan])).iloc[0]
+        print("-"*55)
+        print(f"  Sensor model          : {SENSOR_NAMES.get(sensor_id, sensor_id)}")
+        print(f"  SPTR sigma            : {sptr_sigma*1e3:.1f} ps")
+        print(f"  Electronics sigma     : {elec_sigma*1e3:.1f} ps")
     print("="*55 + "\n")
 
 
@@ -214,6 +317,7 @@ if __name__ == "__main__":
     plot_photons_per_sipm   (df)
     plot_top_sipm_profile   (df)
     plot_arrival_time       (df)
+    plot_dcfd_time          (df)
     plot_wavelength         (df)
     plot_end_asymmetry      (df)
     print("Done.")
