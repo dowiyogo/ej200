@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <map>
 #include <numeric>
 #include <optional>
 #include <random>
@@ -73,6 +74,23 @@ struct FitResult {
     double sigmaNs = std::numeric_limits<double>::quiet_NaN();
     double sigmaErrNs = std::numeric_limits<double>::quiet_NaN();
 };
+
+std::string FaceLabel(int faceType) {
+    switch (faceType) {
+        case 0: return "End Left";
+        case 1: return "End Right";
+        case 2: return "Top";
+        default: return "Face " + std::to_string(faceType);
+    }
+}
+
+std::string HistOutForFace(const std::string& histOut, int faceType) {
+    const fs::path path(histOut);
+    const fs::path dir = path.parent_path();
+    const std::string ext = path.has_extension() ? path.extension().string() : std::string();
+    const std::string stem = path.stem().string();
+    return (dir / fs::path(stem + "_face" + std::to_string(faceType) + ext)).string();
+}
 
 void PrintUsage(const char* prog) {
     std::cout
@@ -306,7 +324,12 @@ void WriteCsv(const std::string& path, const std::vector<EventResult>& results) 
     }
 }
 
-FitResult FitResolution(const std::vector<EventResult>& results, const Config& cfg) {
+FitResult FitResolution(
+    const std::vector<EventResult>& results,
+    const Config& cfg,
+    const std::string& histOutPath,
+    const std::string& histTitle
+) {
     FitResult fit;
     if (results.empty()) return fit;
 
@@ -359,6 +382,7 @@ FitResult FitResolution(const std::vector<EventResult>& results, const Config& c
         TCanvas canvas("cDcfd", "dCFD timing", 900, 600);
         hist.SetLineColor(kAzure + 2);
         hist.SetFillColorAlpha(kAzure - 9, 0.65);
+        hist.SetTitle(histTitle.c_str());
         hist.Draw("hist");
         if (hist.GetEntries() >= 5 && std::isfinite(fit.sigmaNs) && fit.sigmaNs > 0.0) {
             TF1 drawGaus("drawGaus", "gaus", hist.GetXaxis()->GetXmin(), hist.GetXaxis()->GetXmax());
@@ -367,7 +391,7 @@ FitResult FitResolution(const std::vector<EventResult>& results, const Config& c
             drawGaus.SetLineWidth(2);
             drawGaus.Draw("same");
         }
-        canvas.SaveAs(cfg.histOut.c_str());
+        canvas.SaveAs(histOutPath.c_str());
     }
 
     return fit;
@@ -471,7 +495,11 @@ int main(int argc, char** argv) {
     }
 
     WriteCsv(cfg.csvOut, results);
-    const FitResult fit = FitResolution(results, cfg);
+
+    std::map<int, std::vector<EventResult>> resultsByFace;
+    for (const auto& row : results) {
+        resultsByFace[row.faceType].push_back(row);
+    }
 
     std::cout << std::fixed << std::setprecision(6);
     std::cout << "Archivos procesados: " << addedFiles << "\n";
@@ -483,12 +511,22 @@ int main(int argc, char** argv) {
     std::cout << "Paso temporal: " << cfg.dtPs << " ps\n";
     std::cout << "Sigma transit-time: " << cfg.transitSigmaPs << " ps\n";
     std::cout << "Jitter electronica: " << cfg.electronicsSigmaPs << " ps\n";
-    std::cout << "Tiempo medio reconstruido: " << fit.meanNs << " ns\n";
-    std::cout << "Resolucion temporal sigma_t: " << fit.sigmaNs * 1e3 << " ps\n";
-    std::cout << "Error estadistico del sigma: " << fit.sigmaErrNs * 1e3 << " ps\n";
     std::cout << "CSV: " << cfg.csvOut << "\n";
-    if (cfg.savePlot) {
-        std::cout << "Histograma: " << cfg.histOut << "\n";
+    for (const auto& [faceType, faceRows] : resultsByFace) {
+        const std::string histOutPath = HistOutForFace(cfg.histOut, faceType);
+        const std::string histTitle =
+            "Distribucion temporal reconstruida con waveform SiPM + dCFD 14% (" +
+            FaceLabel(faceType) + ");t_{dCFD} [ns];Eventos / bin";
+        const FitResult fit = FitResolution(faceRows, cfg, histOutPath, histTitle);
+
+        std::cout << "[Cara " << faceType << " - " << FaceLabel(faceType) << "] "
+                  << "Eventos: " << faceRows.size()
+                  << ", tiempo medio: " << fit.meanNs << " ns"
+                  << ", sigma_t: " << fit.sigmaNs * 1e3 << " ps"
+                  << ", error sigma: " << fit.sigmaErrNs * 1e3 << " ps\n";
+        if (cfg.savePlot) {
+            std::cout << "Histograma cara " << faceType << ": " << histOutPath << "\n";
+        }
     }
 
     return 0;

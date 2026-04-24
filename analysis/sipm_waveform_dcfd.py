@@ -30,6 +30,13 @@ import uproot
 from scipy.optimize import curve_fit
 
 
+FACE_LABELS = {
+    0: "End Left",
+    1: "End Right",
+    2: "Top",
+}
+
+
 def gauss(x: np.ndarray, mu: float, sigma: float, amplitude: float) -> np.ndarray:
     return amplitude * np.exp(-0.5 * ((x - mu) / sigma) ** 2)
 
@@ -45,6 +52,17 @@ class WaveformResult:
     amplitude_pe: float
     t_peak_ns: float
     gun_x_mm: float
+
+
+def face_label(face_type: int) -> str:
+    return FACE_LABELS.get(face_type, f"Face {face_type}")
+
+
+def hist_out_for_face(hist_out: str, face_type: int) -> str:
+    path = pathlib.Path(hist_out)
+    suffix = "".join(path.suffixes)
+    stem = path.name[: -len(suffix)] if suffix else path.name
+    return str(path.with_name(f"{stem}_face{face_type}{suffix}"))
 
 
 def parse_args() -> argparse.Namespace:
@@ -461,7 +479,14 @@ def plot_example_waveform(
     plt.close(fig)
 
 
-def plot_time_histogram(df: pd.DataFrame, args: argparse.Namespace, mu_ns: float, sigma_ns: float) -> None:
+def plot_time_histogram(
+    df: pd.DataFrame,
+    args: argparse.Namespace,
+    mu_ns: float,
+    sigma_ns: float,
+    output_path: str,
+    face_type: int,
+) -> None:
     import matplotlib.pyplot as plt
 
     fig, ax = plt.subplots(figsize=(9, 4.5))
@@ -480,10 +505,12 @@ def plot_time_histogram(df: pd.DataFrame, args: argparse.Namespace, mu_ns: float
         ax.plot(x, gauss(x, mu_ns, sigma_ns, area / (sigma_ns * np.sqrt(2.0 * np.pi))), color="#922b21", lw=2.0)
     ax.set_xlabel("Tiempo dCFD [ns]")
     ax.set_ylabel("Eventos / bin")
-    ax.set_title("Distribucion temporal reconstruida con waveform SiPM + dCFD 14%")
+    ax.set_title(
+        f"Distribucion temporal reconstruida con waveform SiPM + dCFD 14% ({face_label(face_type)})"
+    )
     ax.grid(alpha=0.3)
     fig.tight_layout()
-    fig.savefig(args.hist_out, dpi=160, bbox_inches="tight")
+    fig.savefig(output_path, dpi=160, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -524,8 +551,14 @@ def main() -> int:
     df = pd.DataFrame([vars(item) for item in results])
     df.to_csv(args.csv_out, index=False)
 
-    mu_ns, sigma_ns, sigma_err_ns = fit_resolution(df["t_dcfd_ns"].to_numpy())
-    plot_time_histogram(df, args, mu_ns, sigma_ns)
+    face_results: list[tuple[int, int, float, float, float, str]] = []
+    for face_type, face_df in df.groupby("face_type", sort=True):
+        mu_ns, sigma_ns, sigma_err_ns = fit_resolution(face_df["t_dcfd_ns"].to_numpy())
+        hist_path = hist_out_for_face(args.hist_out, int(face_type))
+        plot_time_histogram(face_df, args, mu_ns, sigma_ns, hist_path, int(face_type))
+        face_results.append(
+            (int(face_type), len(face_df), mu_ns, sigma_ns, sigma_err_ns, hist_path)
+        )
 
     if args.plot_waveform:
         plot_example_waveform(files[0], args, rng, kernel_t_ns, kernel)
@@ -539,11 +572,16 @@ def main() -> int:
     print(f"Paso temporal: {args.dt_ps:.1f} ps")
     print(f"Sigma transit-time: {args.transit_sigma_ps:.1f} ps")
     print(f"Jitter electronica: {args.electronics_sigma_ps:.1f} ps")
-    print(f"Tiempo medio reconstruido: {mu_ns:.6f} ns")
-    print(f"Resolucion temporal sigma_t: {sigma_ns * 1e3:.2f} ps")
-    print(f"Error estadistico del sigma: {sigma_err_ns * 1e3:.2f} ps")
     print(f"CSV: {args.csv_out}")
-    print(f"Histograma: {args.hist_out}")
+    for face_type, n_events, mu_ns, sigma_ns, sigma_err_ns, hist_path in face_results:
+        print(
+            f"[Cara {face_type} - {face_label(face_type)}] "
+            f"Eventos: {n_events}, "
+            f"tiempo medio: {mu_ns:.6f} ns, "
+            f"sigma_t: {sigma_ns * 1e3:.2f} ps, "
+            f"error sigma: {sigma_err_ns * 1e3:.2f} ps"
+        )
+        print(f"Histograma cara {face_type}: {hist_path}")
     if args.plot_waveform:
         print(f"Waveform ejemplo: {args.waveform_out}")
 

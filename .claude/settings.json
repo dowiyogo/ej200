@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /mnt/d/SHiP/ej200/build/*.root)",
+      "Bash(ls /mnt/d/SHiP/ej200/*.root)",
+      "Bash(root -l:*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(grep -v \"^Info\\\\|^Warning\\\\|Error in <T\\\\|^\\\\-\\\\-\\\\|^$\")",
+      "Bash(xargs ls:*)"
+    ]
+  }
+}
