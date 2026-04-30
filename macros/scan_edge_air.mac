@@ -1,0 +1,18 @@
+# ============================================================
+# scan_edge_air.mac — edge scan with air edge caps
+# Usage: ./ej200_bar_sim -m macros/scan_edge_air.mac
+# ============================================================
+
+/control/verbose 0
+/run/verbose     0
+/event/verbose   0
+/tracking/verbose 0
+
+/det/edgeWrap air
+/run/initialize
+
+/gun/particle  mu-
+/gun/energy    1 GeV
+/muon/angle    0
+
+/control/loop macros/scan_edge_step.mac xpos 600 700 10

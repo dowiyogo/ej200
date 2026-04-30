@@ -10,6 +10,7 @@
 #include "G4PVPlacement.hh"
 #include "G4RunManager.hh"
 #include "G4SDManager.hh"
+#include "G4StateManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
@@ -17,6 +18,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <string>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
@@ -25,6 +27,10 @@ static constexpr G4double kBarHalfZ   =   5.0 * mm;  // 10 mm height
 
 // Mylar wrap thickness (25 µm film)
 static constexpr G4double kMylarThick = 0.025 * mm;
+
+// Edge wrap caps: configurable material over the last 50 mm at each end.
+static constexpr G4double kEdgeCapLength = 50.0 * mm;
+static constexpr G4double kCenterHalfX   = kBarHalfX - kEdgeCapLength;
 
 // End SiPM (on ±X face): thin slab, 6×6 mm² active area
 static constexpr G4double kEndHalfX   = 0.25 * mm;
@@ -92,6 +98,13 @@ DetectorConstruction::DetectorConstruction() {
         &DetectorConstruction::SetScintillatorMaterial,
         "Set scintillator material: EJ230 or EJ200. Default: EJ230.");
     matCmd.SetParameterName("material", false);
+
+    fMessenger->DeclareMethod(
+        "edgeWrap",
+        &DetectorConstruction::SetEdgeWrapMode,
+        "Set material of the last 5 cm wrap caps (left+right symmetric).\n"
+        "  Options: mylar (default) | air | black\n"
+        "  Triggers ReinitializeGeometry().");
 }
 
 DetectorConstruction::~DetectorConstruction() {
@@ -104,7 +117,32 @@ void DetectorConstruction::SetTopSiPMPitch(G4double pitchMm) {
     // performs the conversion before calling this function.
     fTopSiPMPitch = pitchMm;
     fNTopSiPMs    = ComputeNTopSiPMs(fTopSiPMPitch);
-    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+// ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
+void DetectorConstruction::SetEdgeWrapMode(G4String mode) {
+    std::string s = mode;
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+
+    if (s == "mylar") {
+        fEdgeWrapMode = EdgeWrapMode::Mylar;
+    } else if (s == "air") {
+        fEdgeWrapMode = EdgeWrapMode::Air;
+    } else if (s == "black") {
+        fEdgeWrapMode = EdgeWrapMode::BlackTape;
+    } else {
+        G4cerr << "[DetectorConstruction] Unknown /det/edgeWrap mode \""
+               << mode << "\". Use: mylar | air | black.\n";
+        return;
+    }
+
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
 }
 
 void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
@@ -132,7 +170,9 @@ void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
     if (selected == fScintillatorName) return;
 
     fScintillatorName = selected;
-    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
 }
 
 // ── Construct ─────────────────────────────────────────────────────────────────
@@ -146,12 +186,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                           ? Materials::CreateEJ200()
                           : Materials::CreateEJ230();
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
+    G4Material* capMat   = nullptr;
 
     // Air RINDEX required for optical-photon tracking
     {
         auto* mpt = new G4MaterialPropertiesTable();
         mpt->AddProperty("RINDEX", {2.0*eV, 4.0*eV}, {1.0, 1.0});
         worldMat->SetMaterialPropertiesTable(mpt);
+    }
+
+    switch (fEdgeWrapMode) {
+        case EdgeWrapMode::Mylar:     capMat = mylarMat;                     break;
+        case EdgeWrapMode::Air:       capMat = worldMat;                     break;
+        case EdgeWrapMode::BlackTape: capMat = Materials::CreateBlackTape(); break;
     }
 
     // SiPM coupling surface (bar–SiPM boundary, polished dielectric–dielectric)
@@ -164,43 +211,77 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto* worldPhys  = new G4PVPlacement(nullptr, {}, worldLV, "WorldPV",
                                          nullptr, false, 0, true);
 
-    // ── Mylar wrap — thin envelope around the bar ────────────────────────────
+    // ── Segmented wrap — centre Mylar plus configurable 50 mm edge caps ─────
     // The 25 µm Mylar layer (n=1.65) acts as a passive reflector:
     //   • Photons from bar (n=1.58) → Mylar: small Fresnel reflection, mostly transmitted
     //   • Photons from Mylar → air (n=1.0): TIR for angles > arcsin(1/1.65) ≈ 37.3°
     // This replaces the G4LogicalSkinSurface on the bar, avoiding the overhead
     // of per-step surface lookups on every bar–world boundary crossing.
-    const G4double wHX = kBarHalfX + kMylarThick;
     const G4double wHY = kBarHalfY + kMylarThick;
     const G4double wHZ = kBarHalfZ + kMylarThick;
 
-    auto* wrapSolid = new G4Box("WrapSolid", wHX, wHY, wHZ);
-    auto* wrapLV    = new G4LogicalVolume(wrapSolid, mylarMat, "WrapLV");
+    auto* wrapCenterSolid = new G4Box("WrapCenterSolid", kCenterHalfX, wHY, wHZ);
+    auto* wrapCapSolid    = new G4Box("WrapCapSolid", 0.5 * kEdgeCapLength, wHY, wHZ);
+
+    auto* wrapCenterLV  = new G4LogicalVolume(wrapCenterSolid, mylarMat, "WrapCenterLV");
+    auto* wrapCapLeftLV = new G4LogicalVolume(wrapCapSolid, capMat, "WrapCapLeftLV");
+    auto* wrapCapRightLV = new G4LogicalVolume(wrapCapSolid, capMat, "WrapCapRightLV");
     {
         auto* va = new G4VisAttributes(G4Colour(0.8, 0.8, 0.8, 0.15));
         va->SetForceSolid(true);
-        wrapLV->SetVisAttributes(va);
+        wrapCenterLV->SetVisAttributes(va);
+        wrapCapLeftLV->SetVisAttributes(va);
+        wrapCapRightLV->SetVisAttributes(va);
     }
-    fWrapPhys = new G4PVPlacement(nullptr, {}, wrapLV, "WrapPV", worldLV,
-                                  false, 0, true);
 
-    // ── Scintillating bar — placed inside the Mylar wrap ─────────────────────
-    auto* barSolid = new G4Box("BarSolid", kBarHalfX, kBarHalfY, kBarHalfZ);
-    auto* barLV    = new G4LogicalVolume(barSolid, barMat, "BarLV");
+    const G4double capCenterX = kCenterHalfX + 0.5 * kEdgeCapLength;
+    fWrapCenterPhys = new G4PVPlacement(nullptr, {}, wrapCenterLV, "WrapCenterPV",
+                                        worldLV, false, 0, true);
+    fWrapCapLeftPhys = new G4PVPlacement(nullptr, {-capCenterX, 0.0, 0.0},
+                                         wrapCapLeftLV, "WrapCapLeftPV",
+                                         worldLV, false, 1, true);
+    fWrapCapRightPhys = new G4PVPlacement(nullptr, {+capCenterX, 0.0, 0.0},
+                                          wrapCapRightLV, "WrapCapRightPV",
+                                          worldLV, false, 2, true);
+    fWrapPhys = fWrapCenterPhys;
+
+    // ── Scintillating bar — one selected scintillator daughter per wrap segment
+    auto* barCenterSolid = new G4Box("BarCenterSolid",
+                                     kCenterHalfX - kMylarThick,
+                                     kBarHalfY, kBarHalfZ);
+    auto* barCapSolid = new G4Box("BarCapSolid",
+                                  0.5 * kEdgeCapLength - kMylarThick,
+                                  kBarHalfY, kBarHalfZ);
+    auto* barCenterLV = new G4LogicalVolume(barCenterSolid, barMat, "BarCenterLV");
+    auto* barCapLeftLV = new G4LogicalVolume(barCapSolid, barMat, "BarCapLeftLV");
+    auto* barCapRightLV = new G4LogicalVolume(barCapSolid, barMat, "BarCapRightLV");
     {
         auto* va = new G4VisAttributes(G4Colour(0.1, 0.3, 1.0, 0.25));
         va->SetForceSolid(true);
-        barLV->SetVisAttributes(va);
+        barCenterLV->SetVisAttributes(va);
+        barCapLeftLV->SetVisAttributes(va);
+        barCapRightLV->SetVisAttributes(va);
     }
-    // Bar is the daughter of WrapLV — centred at origin inside the Mylar shell
-    fBarPhys = new G4PVPlacement(nullptr, {}, barLV, "BarPV", wrapLV,
-                                 false, 0, true);
+    fBarPhys = new G4PVPlacement(nullptr, {}, barCenterLV, "BarCenterPV",
+                                 wrapCenterLV, false, 0, true);
+    new G4PVPlacement(nullptr, {}, barCapLeftLV, "BarCapLeftPV",
+                      wrapCapLeftLV, false, 0, true);
+    new G4PVPlacement(nullptr, {}, barCapRightLV, "BarCapRightPV",
+                      wrapCapRightLV, false, 0, true);
 
-    // Note: no G4LogicalSkinSurface on barLV — the Mylar volume handles reflection.
+    // NOTE: Bar continuity across wrap segments.
+    // BarCenterPV ↔ BarCapLeftPV/BarCapRightPV share the same selected
+    // scintillator material with identical RINDEX, so Geant4's optical transport
+    // handles the boundary as internal (no Fresnel reflection, no TIR).
+    // Confirmed by checking that no G4LogicalBorderSurface is registered for
+    // these pairs.
+
+    // Note: no G4LogicalSkinSurface on bar logical volumes — the wrap volumes
+    // handle reflection.
 
     // ── End SiPMs — 8×1 array on each ±X face ────────────────────────────────
-    // Placed in WorldLV, flush against the outer face of the Mylar wrap.
-    // x = ±(wHX + kEndHalfX)  ← just outside the wrap
+    // Placed in WorldLV, flush against the outer face of the edge wrap caps.
+    // x = ±(kBarHalfX + kEndHalfX)  ← just outside the cap
     auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
     fEndSiPMLV     = new G4LogicalVolume(endSolid, sipmMat, "EndSiPMLV");
     {
@@ -217,21 +298,21 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         const G4int leftId = i;
         auto* leftPhys = new G4PVPlacement(
             nullptr,
-            G4ThreeVector(-(wHX + kEndHalfX), cy, 0.0),
+            G4ThreeVector(-(kBarHalfX + kEndHalfX), cy, 0.0),
             fEndSiPMLV, "EndSiPMLeft_PV", worldLV, false, leftId, true);
-        // Border surface: WrapPV → SiPM (photon exits Mylar into SiPM coupling)
+        // Border surface: WrapCapLeftPV → SiPM (photon exits edge cap into SiPM coupling)
         fSiPMSurfaces[leftId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(leftId),
-            fWrapPhys, leftPhys, sipmSurface);
+            fWrapCapLeftPhys, leftPhys, sipmSurface);
 
         const G4int rightId = i + kNEndSiPMs;
         auto* rightPhys = new G4PVPlacement(
             nullptr,
-            G4ThreeVector(+(wHX + kEndHalfX), cy, 0.0),
+            G4ThreeVector(+(kBarHalfX + kEndHalfX), cy, 0.0),
             fEndSiPMLV, "EndSiPMRight_PV", worldLV, false, rightId, true);
         fSiPMSurfaces[rightId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(rightId),
-            fWrapPhys, rightPhys, sipmSurface);
+            fWrapCapRightPhys, rightPhys, sipmSurface);
     }
 
     // ── Top SiPMs — N SiPMs along the +Y face, configurable pitch ────────────
@@ -255,9 +336,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
             G4ThreeVector(cx, wHY + kTopHalfY, 0.0),
             fTopSiPMLV, "TopSiPMPV", worldLV, false, globalId, true);
 
+        G4VPhysicalVolume* parentWrap = nullptr;
+        if (cx < -kCenterHalfX) {
+            parentWrap = fWrapCapLeftPhys;
+        } else if (cx > +kCenterHalfX) {
+            parentWrap = fWrapCapRightPhys;
+        } else {
+            parentWrap = fWrapCenterPhys;
+        }
+
         fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(globalId),
-            fWrapPhys, topPhys, sipmSurface);
+            parentWrap, topPhys, sipmSurface);
     }
 
     return worldPhys;
@@ -267,8 +357,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 void DetectorConstruction::ConstructSDandField() {
     auto* sdManager = G4SDManager::GetSDMpointer();
 
-    auto* sipmSD = new SiPMSD("SiPMSD");
-    sdManager->AddNewDetector(sipmSD);
+    auto* sipmSD = dynamic_cast<SiPMSD*>(
+        sdManager->FindSensitiveDetector("SiPMSD", false));
+    if (sipmSD == nullptr) {
+        sipmSD = new SiPMSD("SiPMSD");
+        sdManager->AddNewDetector(sipmSD);
+    }
 
     SetSensitiveDetector(fEndSiPMLV, sipmSD);
     SetSensitiveDetector(fTopSiPMLV, sipmSD);

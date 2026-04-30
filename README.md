@@ -82,6 +82,11 @@ Scans step along the **X axis** (longitudinal direction).
 ./ej200_bar_sim -m macros/scan_edge.mac
 python analysis/edge_resolution.py
 
+# Compare edge wrapping modes in the last 5 cm of the bar
+./ej200_bar_sim -m macros/scan_edge_air.mac
+./ej200_bar_sim -m macros/scan_edge_black.mac
+python analysis/compare_edge_wraps.py mylar air black
+
 # Interactive visualisation
 ./ej200_bar_sim
 ```
@@ -122,6 +127,9 @@ python analysis/resolution_vs_x_dCFD.py photon_hits.root
 
 # Edge timing/light-yield study
 python analysis/edge_resolution.py photon_hits_run*.root --label mylar
+
+# Edge-wrap comparison from three directories containing edge_summary.csv
+python analysis/compare_edge_wraps.py mylar air black
 ```
 
 ### `analyze_dCFD.py` outputs
