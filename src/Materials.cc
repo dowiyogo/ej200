@@ -208,4 +208,21 @@ G4Material* CreateMylar() {
     return mat;
 }
 
+// ---------------------------------------------------------------------------
+G4Material* CreateBlackTape() {
+    auto* nist = G4NistManager::Instance();
+    G4Material* mat = nist->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
+
+    const G4int n = 4;
+    G4double e[n]   = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
+    G4double r[n]   = {1.50,   1.50,   1.50,   1.50};
+    G4double abs[n] = {1.0*um, 1.0*um, 1.0*um, 1.0*um};
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("RINDEX",    e, r,   n);
+    mpt->AddProperty("ABSLENGTH", e, abs, n);
+    mat->SetMaterialPropertiesTable(mpt);
+    return mat;
+}
+
 } // namespace Materials
