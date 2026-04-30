@@ -89,6 +89,14 @@ python analysis/compare_edge_wraps.py mylar air black
 
 # Interactive visualisation
 ./ej200_bar_sim
+
+# Top-readout event displays for a muon between top SiPMs 9 and 10
+./ej200_bar_sim -m macros/event_display_top_midpoint.mac
+./ej200_bar_sim -m macros/event_display_top_lateral.mac
+./ej200_bar_sim -m macros/event_display_top_3d.mac
+
+# Batch HepRep export for later HepRApp inspection
+./ej200_bar_sim -m macros/event_display_top_batch.mac
 ```
 
 For longitudinal scans, prefer `/muon/gunX` over `/gun/position` in macros so
@@ -130,6 +138,9 @@ python analysis/edge_resolution.py photon_hits_run*.root --label mylar
 
 # Edge-wrap comparison from three directories containing edge_summary.csv
 python analysis/compare_edge_wraps.py mylar air black
+
+# Top-readout cross-talk for /muon/midpointSiPMs 9 10 data
+python analysis/topreadout_crosstalk.py photon_hits_run*.root
 ```
 
 ### `analyze_dCFD.py` outputs
