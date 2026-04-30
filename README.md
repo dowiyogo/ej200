@@ -78,6 +78,10 @@ Scans step along the **X axis** (longitudinal direction).
 # Full longitudinal scan (21 x positions × 200 events each, −650 → +650 mm)
 ./ej200_bar_sim -m macros/scan.mac
 
+# Edge scan: 11 positions × 500 events from x=+600 to +700 mm
+./ej200_bar_sim -m macros/scan_edge.mac
+python analysis/edge_resolution.py
+
 # Interactive visualisation
 ./ej200_bar_sim
 ```
@@ -115,6 +119,9 @@ python analysis/analyze_dCFD.py photon_hits.root
 python analysis/resolution_vs_x_dCFD.py photon_hits.root
 # FPT-only legacy variant:
 # python analysis/resolution_vs_x_FPT.py photon_hits.root
+
+# Edge timing/light-yield study
+python analysis/edge_resolution.py photon_hits_run*.root --label mylar
 ```
 
 ### `analyze_dCFD.py` outputs
