@@ -56,6 +56,7 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     am->SetFileName(fname.str());
     am->OpenFile();
 
+    G4OpticalParameters::Instance()->SetScintFiniteRiseTime(true);
     G4OpticalParameters::Instance()->SetScintTrackSecondariesFirst(true);
 }
 
@@ -74,7 +75,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         outFile += ".root";
 
     G4cout
-        << "\n=== EJ-200 Bar Run Summary ==="
+        << "\n=== EJ Scintillator Bar Run Summary ==="
         << "\n  Run ID                : " << run->GetRunID()
         << "\n  Events run            : " << nEvents
         << "\n  Events with ≥1 hit    : " << fNEventsWithHits.GetValue()

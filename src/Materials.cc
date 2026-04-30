@@ -1,5 +1,7 @@
 #include "Materials.hh"
 
+#include "G4Element.hh"
+#include "G4Material.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4NistManager.hh"
 #include "G4SystemOfUnits.hh"
@@ -8,6 +10,24 @@
 #include <cmath>
 
 namespace Materials {
+
+namespace {
+G4Material* FindOrBuildPVT(const G4String& name, G4double density) {
+    if (auto* existing = G4Material::GetMaterial(name, false)) {
+        return existing;
+    }
+
+    auto* nist = G4NistManager::Instance();
+    auto* carbon = nist->FindOrBuildElement("C");
+    auto* hydrogen = nist->FindOrBuildElement("H");
+
+    // Polyvinyltoluene repeat unit, consistent with Eljen EJ-230 base.
+    auto* mat = new G4Material(name, density, 2);
+    mat->AddElement(carbon, 9);
+    mat->AddElement(hydrogen, 10);
+    return mat;
+}
+} // namespace
 
 // ---------------------------------------------------------------------------
 G4Material* CreateEJ200() {
@@ -109,6 +129,67 @@ G4Material* CreateEJ200() {
 }
 
 // ---------------------------------------------------------------------------
+G4Material* CreateEJ230() {
+    // EJ-230 is a fast-timing polyvinyltoluene scintillator.  The material is
+    // intentionally distinct from the NIST PVT material used by CreateEJ200()
+    // so both scintillators can coexist without overwriting each other's MPT.
+    G4Material* mat = FindOrBuildPVT("EJ-230", 1.023 * g / cm3);
+
+    // EJ-228/EJ-230 emission spectrum digitized from the Eljen datasheet plot.
+    // Peak emission is at 391 nm.  Wavelengths are stored in descending order
+    // so the converted photon energies are ascending, as required by Geant4.
+    const G4int nEm = 29;
+    G4double wl_nm[nEm] = {
+        500, 490, 480, 470, 460, 450, 440, 430, 425, 420,
+        415, 410, 405, 400, 395, 391, 388, 385, 382, 380,
+        378, 375, 372, 370, 365, 360, 355, 350, 345
+    };
+    G4double relOut[nEm] = {
+        0.005, 0.010, 0.020, 0.040, 0.070, 0.115, 0.180, 0.280, 0.350, 0.420,
+        0.500, 0.620, 0.750, 0.900, 0.980, 1.000, 0.985, 0.960, 0.900, 0.830,
+        0.720, 0.560, 0.380, 0.260, 0.120, 0.050, 0.020, 0.006, 0.000
+    };
+
+    const G4double hc = 1239.84193 * eV * nm;
+
+    G4double photonE[nEm], spectrum[nEm];
+    for (G4int i = 0; i < nEm; ++i) {
+        photonE[i] = hc / (wl_nm[i] * nm);
+        spectrum[i] = relOut[i];
+    }
+
+    const G4int nOpt = 4;
+    G4double eOpt[nOpt] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
+    G4double rIdx[nOpt] = {1.58, 1.58, 1.58, 1.58};
+    G4double absL[nOpt] = {120.0*cm, 120.0*cm, 120.0*cm, 120.0*cm};
+
+    // Keep the same Rayleigh model as EJ-200, referenced to the EJ-230 peak.
+    const G4double lambdaRef = 391.0 * nm;
+    const G4double rayleighRef391 = 1.5 * m;
+
+    G4double rayl[nOpt];
+    for (G4int i = 0; i < nOpt; ++i) {
+        const G4double lambda = hc / eOpt[i];
+        rayl[i] = rayleighRef391 * std::pow(lambda / lambdaRef, 4.0);
+    }
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("RINDEX",    eOpt, rIdx, nOpt);
+    mpt->AddProperty("ABSLENGTH", eOpt, absL, nOpt);
+    mpt->AddProperty("RAYLEIGH",  eOpt, rayl, nOpt);
+
+    mpt->AddProperty("SCINTILLATIONCOMPONENT1", photonE, spectrum, nEm);
+    mpt->AddConstProperty("SCINTILLATIONYIELD",         9700.0 / MeV);
+    mpt->AddConstProperty("RESOLUTIONSCALE",            1.0);
+    mpt->AddConstProperty("SCINTILLATIONRISETIME1",     0.5 * ns);
+    mpt->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 1.5 * ns);
+    mpt->AddConstProperty("SCINTILLATIONYIELD1",        1.0);
+
+    mat->SetMaterialPropertiesTable(mpt);
+    return mat;
+}
+
+// ---------------------------------------------------------------------------
 G4Material* CreateSiPMCoupling() {
     // Use SiO2 as the base material and override RINDEX to match the bar.
     // This models a perfect optical-coupling compound between bar and SiPM,
@@ -118,7 +199,7 @@ G4Material* CreateSiPMCoupling() {
 
     const G4int n = 4;
     G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
-    G4double r[n] = {1.58,   1.58,   1.58,   1.58};  // matched to EJ-200
+    G4double r[n] = {1.58,   1.58,   1.58,   1.58};  // matched to EJ-200/EJ-230
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("RINDEX", e, r, n);
@@ -145,37 +226,13 @@ G4OpticalSurface* CreateSiPMSurface() {
     // SiPM detection surface.
     // dielectric_dielectric | polished: photon enters the SiPM volume via
     // Snell's law (no TIR since n_SiPM = n_bar = 1.58 via coupling material).
-    // DETECTIONEFFICIENCY is read by SiPMSD::ProcessHits and applied manually.
-    // PDE data from Hamamatsu S13360-6025 (or equivalent 6 mm SiPM, 25 μm cell).
+    // PDE is selected and applied manually in SiPMSD::ProcessHits.
 
     auto* surf = new G4OpticalSurface("SiPMSurface");
     surf->SetType(dielectric_dielectric);
     surf->SetModel(unified);
     surf->SetFinish(polished);
     surf->SetSigmaAlpha(0.0);
-
-    const G4double hc = 1239.84193 * eV * nm;
-
-    const G4int n = 33;
-    G4double wl_nm[n] = {
-        300, 320, 340, 360, 380, 400, 420, 440, 460, 480, 500,
-        520, 540, 560, 580, 600, 620, 640, 660, 680, 700,
-        720, 740, 760, 780, 800, 820, 840, 860, 880, 900,
-        920, 940
-    };
-    G4double pde[n] = {
-        0.000, 0.050, 0.120, 0.180, 0.260, 0.330, 0.380, 0.400,
-        0.405, 0.403, 0.390, 0.370, 0.340, 0.310, 0.280, 0.240,
-        0.210, 0.180, 0.150, 0.120, 0.100, 0.080, 0.060, 0.050,
-        0.040, 0.030, 0.025, 0.020, 0.015, 0.010, 0.008, 0.004, 0.001
-    };
-
-    // Convert wavelengths to photon energies; G4 requires ascending energy order.
-    G4double energy[n], detEff[n];
-    for (G4int i = 0; i < n; ++i) {
-        energy[n - 1 - i]  = hc / wl_nm[i];
-        detEff[n - 1 - i]  = pde[i];
-    }
 
     auto* mpt = new G4MaterialPropertiesTable();
     // No DETECTIONEFFICIENCY here — PDE is applied manually in SiPMSD.

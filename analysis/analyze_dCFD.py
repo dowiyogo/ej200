@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-analyze.py — análisis de photon_hits.root generado por ej200_v2
+analyze_dCFD.py — análisis de photon_hits.root generado por ej200_v2
 Requiere: uproot, numpy, matplotlib, pandas
 
 Uso:
-    python analysis/analyze.py                     # lee photon_hits.root
-    python analysis/analyze.py mi_archivo.root
+    python analysis/analyze_dCFD.py                     # lee photon_hits.root
+    python analysis/analyze_dCFD.py mi_archivo.root
 """
 
 import sys

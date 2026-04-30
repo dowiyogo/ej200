@@ -13,12 +13,19 @@
 # Valid range: ~10–73 mm for 20 SiPMs within the 1.4 m bar.
 # Common values: 40, 50, 70 (default), 80 mm
 #/det/topSiPMPitch 70 mm
+/det/scintillatorMaterial EJ230
 
 /run/initialize
 
-# ── SiPM electronics ─────────────────────────────────────────
-# Electronic time-jitter sigma (default: 20 ps = 0.020 ns)
-#/sipm/jitterSigma 0.020 ns
+# ── SiPM model/electronics ───────────────────────────────────
+# Supported examples:
+#   Broadcom / AFBR-S4N66P024M
+#   S14160-6010PS  (Hamamatsu S14160, 10 um pixels)
+#   S14160-6015PS  (Hamamatsu S14160, 15 um pixels)
+#   Hamamatsu / S13360-6025  (legacy curve)
+/sipm/sensorModel Broadcom
+#/sipm/sptrSigma 0.030 ns
+#/sipm/electronicsSigma 0.030 ns
 
 # ── Muon gun ─────────────────────────────────────────────────
 /gun/particle  mu-

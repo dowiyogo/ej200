@@ -1,4 +1,4 @@
-# ej200_v2 — EJ-200 Scintillating Bar + SiPM Simulation (v2)
+# ej200_v2 — EJ-200/EJ-230 Scintillating Bar + SiPM Simulation (v2)
 
 Improved version of `scintillator_geant4` (Repo1), incorporating the best
 practices from `simple_g4sim_scint_sipm` (Repo2).
@@ -9,7 +9,7 @@ practices from `simple_g4sim_scint_sipm` (Repo2).
 
 | Volume | Dimensions | Material |
 |---|---|---|
-| EJ-200 bar | 1400 × 60 × 10 mm | `G4_PLASTIC_SC_VINYLTOLUENE` + EJ-200 optical props |
+| EJ-230 bar (default) | 1400 × 60 × 10 mm | Polyvinyltoluene + EJ-230 optical props |
 | End SiPMs (×16) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 | Top SiPMs (×20) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 
@@ -86,6 +86,21 @@ For longitudinal scans, prefer `/muon/gunX` over `/gun/position` in macros so
 the event-level `gun_x_mm` written to the ntuple tracks the intended scan
 coordinate unambiguously.
 
+The SiPM model is selected in the macro after `/run/initialize`, for example:
+
+```tcl
+/sipm/sensorModel Broadcom
+#/sipm/sensorModel S14160-6010PS
+#/sipm/sensorModel S14160-6015PS
+```
+
+The scintillator material is selected before `/run/initialize`:
+
+```tcl
+/det/scintillatorMaterial EJ230
+#/det/scintillatorMaterial EJ200
+```
+
 ---
 
 ## Analysis
@@ -93,14 +108,16 @@ coordinate unambiguously.
 ```bash
 pip install uproot numpy matplotlib pandas scipy
 
-# General plots (single-position or scan data)
-python analysis/analyze.py photon_hits.root
+# General plots (single-position or scan data, includes dCFD timing)
+python analysis/analyze_dCFD.py photon_hits.root
 
 # Temporal resolution vs longitudinal position (requires scan data)
-python analysis/resolution_vs_x.py photon_hits.root
+python analysis/resolution_vs_x_dCFD.py photon_hits.root
+# FPT-only legacy variant:
+# python analysis/resolution_vs_x_FPT.py photon_hits.root
 ```
 
-### `analyze.py` outputs
+### `analyze_dCFD.py` outputs
 
 - `photons_per_sipm.pdf` — total hits per SiPM
 - `top_sipm_profile.pdf` — top SiPM hits vs x-position (validates full coverage)
@@ -108,7 +125,7 @@ python analysis/resolution_vs_x.py photon_hits.root
 - `wavelength.pdf` — detected photon wavelength spectrum
 - `end_asymmetry.pdf` — (L−R)/(L+R) asymmetry distribution
 
-### `resolution_vs_x.py` outputs (scan data required)
+### `resolution_vs_x_dCFD.py` outputs (scan data required)
 
 - `resolution_vs_x.pdf` — **key thesis plot**: σ_t [ps] vs x for end and top SiPMs
 - `fpt_dist_end.pdf` — first-photon-time distributions at 3 representative positions (end SiPMs)
@@ -118,12 +135,20 @@ python analysis/resolution_vs_x.py photon_hits.root
 
 ---
 
-## PDE table
+## SiPM/MPPC characteristics
 
-Hamamatsu S13360-6025 (33 points, 300–940 nm). Peak PDE ≈ 40.5% at 460 nm.
-Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
-`SiPMSD::GetPDE()` using linear interpolation. Applied as a Bernoulli trial in
-`SiPMSD::ProcessHits()`.
+`SiPMSD` applies PDE manually with linear interpolation over the selected sensor
+curve and stores `sensor_model_id`, `sensor_sptr_sigma_ns`, and
+`electronics_sigma_ns` in the ntuple.
+
+Supported sensor curves.  SPTR values are simulation defaults; the supplied
+datasheets provide the PDE/electrical curves but do not quote a numeric SPTR
+sigma for every model.
+
+- `Broadcom` / `AFBR-S4N66P024M`: Broadcom AFBR-S4N66P024M datasheet curve, 250–900 nm, peak PDE 63% at 420 nm, default SPTR sigma 30 ps.
+- `S14160-6010PS` / `S14160-3010PS` / `S14160-1310PS`: Hamamatsu S14160 10 um-pixel MPPC curve, 290–900 nm, peak PDE 18% at 460 nm, default SPTR sigma 150 ps.
+- `S14160-6015PS` / `S14160-3015PS` / `S14160-1315PS`: Hamamatsu S14160 15 um-pixel MPPC curve, 290–900 nm, peak PDE 32% at 460 nm, default SPTR sigma 150 ps.
+- `Hamamatsu` / `S13360-6025`: legacy Hamamatsu S13360-6025 curve, 300–940 nm, peak PDE about 40.5% at 460 nm.
 
 ---
 

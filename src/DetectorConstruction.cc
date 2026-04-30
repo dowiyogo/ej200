@@ -13,6 +13,10 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
+#include "G4ios.hh"
+
+#include <algorithm>
+#include <cctype>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
@@ -82,6 +86,12 @@ DetectorConstruction::DetectorConstruction() {
         "  Common values: 40 (4 cm), 50 (5 cm), 70 (7 cm, default).");
     cmd.SetParameterName("pitch", false);
     cmd.SetRange("pitch > 0");
+
+    auto& matCmd = fMessenger->DeclareMethod(
+        "scintillatorMaterial",
+        &DetectorConstruction::SetScintillatorMaterial,
+        "Set scintillator material: EJ230 or EJ200. Default: EJ230.");
+    matCmd.SetParameterName("material", false);
 }
 
 DetectorConstruction::~DetectorConstruction() {
@@ -97,6 +107,34 @@ void DetectorConstruction::SetTopSiPMPitch(G4double pitchMm) {
     G4RunManager::GetRunManager()->ReinitializeGeometry();
 }
 
+void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
+    G4String lowered = materialName;
+    std::transform(
+        lowered.begin(), lowered.end(), lowered.begin(),
+        [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    lowered.erase(
+        std::remove_if(
+            lowered.begin(), lowered.end(),
+            [](unsigned char ch) { return ch == '-' || ch == '_' || ch == ' '; }),
+        lowered.end());
+
+    G4String selected;
+    if (lowered == "ej230") {
+        selected = "EJ230";
+    } else if (lowered == "ej200") {
+        selected = "EJ200";
+    } else {
+        G4cerr << "[DetectorConstruction] Unknown /det/scintillatorMaterial '"
+               << materialName << "'. Keeping " << fScintillatorName << G4endl;
+        return;
+    }
+
+    if (selected == fScintillatorName) return;
+
+    fScintillatorName = selected;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+}
+
 // ── Construct ─────────────────────────────────────────────────────────────────
 G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto* nist = G4NistManager::Instance();
@@ -104,7 +142,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     // ── Materials ────────────────────────────────────────────────────────────
     G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
     G4Material* mylarMat = Materials::CreateMylar();
-    G4Material* barMat   = Materials::CreateEJ200();
+    G4Material* barMat   = (fScintillatorName == "EJ200")
+                          ? Materials::CreateEJ200()
+                          : Materials::CreateEJ230();
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
 
     // Air RINDEX required for optical-photon tracking

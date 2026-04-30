@@ -1,7 +1,8 @@
 #pragma once
-#include "G4MaterialPropertyVector.hh"
 #include "G4VSensitiveDetector.hh"
 #include "globals.hh"
+
+#include <vector>
 
 class G4GenericMessenger;
 
@@ -9,12 +10,12 @@ class G4GenericMessenger;
 // SiPMSD — sensitive detector for all SiPM volumes (end-left, end-right, top).
 //
 // PDE is applied via a Bernoulli trial with linear interpolation over the
-// Hamamatsu S13360-6025 table (300–940 nm, 33 points).
+// selected sensor model curve.
 //
 // Electronic jitter:
 //   The registered hit time is  t_hit = t_global + Gauss(0, σ_jitter).
-//   Default σ_jitter = 20 ps.  Configurable via:
-//     /sipm/jitterSigma <value> ns   (e.g. /sipm/jitterSigma 0.020 ns)
+//   Configurable via:
+//     /sipm/sptrSigma <value> ns   (e.g. /sipm/sptrSigma 0.030 ns)
 //
 // Copy-number convention (set by DetectorConstruction):
 //   0 –  7  →  end-left  (face -X)
@@ -25,8 +26,10 @@ class SiPMSD : public G4VSensitiveDetector
 {
   public:
     enum class SensorModel : G4int {
-        kBroadcomNUVMT14M = 0,
-        kHamamatsuS13360  = 1
+        kBroadcomAFBRS4N66P024M = 0,
+        kHamamatsuS13360        = 1,
+        kHamamatsuS14160_10um   = 2,
+        kHamamatsuS14160_15um   = 3
     };
 
     explicit SiPMSD(const G4String& name);
@@ -48,10 +51,12 @@ class SiPMSD : public G4VSensitiveDetector
   private:
     G4double GetPDE(G4double energy) const;
     void     ApplySensorDefaults(SensorModel model);
+    void     LoadPDECurve(SensorModel model);
 
-    G4MaterialPropertyVector fPDEVec;
+    std::vector<G4double> fPDEWavelengthNm;
+    std::vector<G4double> fPDEValue;
 
-    SensorModel fSensorModel      = SensorModel::kBroadcomNUVMT14M;
+    SensorModel fSensorModel      = SensorModel::kBroadcomAFBRS4N66P024M;
     G4double    fSPTRSigma        = 30.0e-3;
     G4double    fElectronicsSigma = 30.0e-3;
 

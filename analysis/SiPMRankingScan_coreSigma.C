@@ -171,7 +171,7 @@ bool Contains(const std::vector<T>& v, const T& value) {
 
 }  // namespace
 
-void SiPMRankingScan(Int_t mode = kFirstPhoton, Int_t nParam = 1, Int_t minEvents = 50) {
+void SiPMRankingScan_coreSigma(Int_t mode = kFirstPhoton, Int_t nParam = 1, Int_t minEvents = 50) {
     TChain chain("sipm_hits");
     if (!AddScanFiles(chain)) {
         std::cerr << "Error: no se encontraron archivos del scan." << std::endl;

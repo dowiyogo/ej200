@@ -15,9 +15,13 @@ target_include_directories(ej200_bar_sim PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(ej200_bar_sim ${Geant4_LIBRARIES})
 
 file(COPY macros DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_custom_command(TARGET ej200_bar_sim POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${PROJECT_SOURCE_DIR}/macros
+            ${CMAKE_CURRENT_BINARY_DIR}/macros)
 
 enable_testing()
 add_test(NAME smoke_test COMMAND ej200_bar_sim -m macros/test.mac)
 set_tests_properties(smoke_test PROPERTIES
-    PASS_REGULAR_EXPRESSION "=== EJ-200 Bar Run Summary ==="
+    PASS_REGULAR_EXPRESSION "=== EJ Scintillator Bar Run Summary ==="
     TIMEOUT 120)

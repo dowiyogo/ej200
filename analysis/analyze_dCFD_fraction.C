@@ -39,10 +39,10 @@ double dCFDTime(const std::vector<double>& hitTimes, double fraction = 0.14) {
 }
 } // namespace
 
-void analyze_dCFD(const char* firstFile = "photon_hits_run000.root",
-                  int faceToAnalyze = 0,
-                  double fraction = 0.14,
-                  double electronicsSigmaPs = 30.0) {
+void analyze_dCFD_fraction(const char* firstFile = "photon_hits_run000.root",
+                           int faceToAnalyze = 0,
+                           double fraction = 0.14,
+                           double electronicsSigmaPs = 30.0) {
     TChain *chain = new TChain("sipm_hits");
     if (!gSystem->AccessPathName(firstFile)) {
         chain->Add(firstFile);

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-resolution_vs_x.py — Resolucion temporal sigma_t vs posicion longitudinal x
+resolution_vs_x_dCFD.py — Resolucion temporal sigma_t vs posicion longitudinal x
 
 Figura central de la tesis: compara end SiPMs vs top SiPMs.
 
@@ -8,9 +8,9 @@ Requiere el ntuple sipm_hits producido por scan.mac (21 posiciones, 200
 eventos cada una).  El campo gun_x_mm identifica la posicion del muon.
 
 Uso:
-    python analysis/resolution_vs_x.py                    # photon_hits.root
-    python analysis/resolution_vs_x.py mi_scan.root
-    python analysis/resolution_vs_x.py scan.root --out tesis_fig4.pdf
+    python analysis/resolution_vs_x_dCFD.py                    # photon_hits.root
+    python analysis/resolution_vs_x_dCFD.py mi_scan.root
+    python analysis/resolution_vs_x_dCFD.py scan.root --out tesis_fig4.pdf
 """
 
 import sys

@@ -2,6 +2,7 @@
 #include "DetectorConstruction.hh"
 
 #include "FTFP_BERT.hh"
+#include "G4OpticalParameters.hh"
 #include "G4OpticalPhysics.hh"
 #include "G4RunManagerFactory.hh"
 #include "G4UIExecutive.hh"
@@ -17,6 +18,7 @@ int main(int argc, char** argv) {
         G4RunManagerFactory::CreateRunManager(G4RunManagerType::Default);
 
     auto* physics = new FTFP_BERT(0);
+    G4OpticalParameters::Instance()->SetScintFiniteRiseTime(true);
     physics->RegisterPhysics(new G4OpticalPhysics(0));
 
     runManager->SetUserInitialization(new DetectorConstruction());

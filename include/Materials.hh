@@ -12,6 +12,12 @@ namespace Materials {
 // yield=10 000 ph/MeV, tau1=2.1 ns, bulk att. length=3.8 m.
 G4Material* CreateEJ200();
 
+// EJ-230 fast-timing plastic scintillator (polyvinyltoluene base).
+// Emission spectrum from Eljen EJ-228/EJ-230 datasheet (peak 391 nm),
+// n=1.58, yield=9700 ph/MeV, rise=0.5 ns, decay=1.5 ns,
+// bulk attenuation length=120 cm.
+G4Material* CreateEJ230();
+
 // Mylar wrapping film (G4_MYLAR base).
 // RINDEX = 1.65 across the optical range.  Used as a thin physical-volume
 // wrapper around the scintillator bar to provide reflection via TIR and
@@ -29,8 +35,8 @@ G4Material* CreateSiPMCoupling();
 G4OpticalSurface* CreateBarSurface();
 
 // SiPM optical surface.
-// dielectric_dielectric | polished | DETECTIONEFFICIENCY = PDE(λ)
-// PDE table from Hamamatsu S13360 series (33 points, 300–940 nm).
+// dielectric_dielectric | polished; PDE is applied manually in SiPMSD from
+// the selected sensor datasheet curve.
 // Apply as G4LogicalBorderSurface(bar → sipmPhys) for every SiPM volume.
 G4OpticalSurface* CreateSiPMSurface();
 
