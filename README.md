@@ -78,6 +78,10 @@ Scans step along the **X axis** (longitudinal direction).
 # Full longitudinal scan (21 x positions × 200 events each, −650 → +650 mm)
 ./ej200_bar_sim -m macros/scan.mac
 
+# Edge scan: 11 positions × 500 events from x=+600 to +700 mm
+./ej200_bar_sim -m macros/scan_edge.mac
+python analysis/edge_resolution.py
+
 # Interactive visualisation
 ./ej200_bar_sim
 ```
@@ -98,6 +102,9 @@ python analysis/analyze.py photon_hits.root
 
 # Temporal resolution vs longitudinal position (requires scan data)
 python analysis/resolution_vs_x.py photon_hits.root
+
+# Edge timing/light-yield study
+python analysis/edge_resolution.py photon_hits_run*.root --label mylar
 ```
 
 ### `analyze.py` outputs
