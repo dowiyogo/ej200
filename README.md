@@ -141,6 +141,10 @@ python analysis/compare_edge_wraps.py mylar air black
 
 # Top-readout cross-talk for /muon/midpointSiPMs 9 10 data
 python analysis/topreadout_crosstalk.py photon_hits_run*.root
+
+# Sum-of-N electronics emulation (FastIC+ threshold in p.e.)
+python analysis/grouped_resolution.py photon_hits_merged.root --threshold 4
+root -l -q 'analysis/grouped_resolution.C("photon_hits_merged.root",4)'
 ```
 
 ### `analyze_dCFD.py` outputs
