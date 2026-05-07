@@ -78,7 +78,10 @@ def resolution_vs_x(event_face, faces):
             "sigma_err_ns": sigma_err,
             "n_events_with_hits": len(grp),
         })
-    return pd.DataFrame(rows)
+    return pd.DataFrame(
+        rows,
+        columns=["x_mm", "mu_ns", "sigma_ns", "sigma_err_ns", "n_events_with_hits"],
+    )
 
 
 def lightyield_vs_x(event_face):
