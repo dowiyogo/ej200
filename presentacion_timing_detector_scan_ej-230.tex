@@ -1,0 +1,657 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title{Timing Detector Analysis}
+\author{SHiP Experiment}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contenido}
+  \tableofcontents
+\end{frame}
+
+\section{FPT vs n}
+
+\begin{frame}[fragile]
+  \frametitle{Run 000 | x = -650 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-650mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -650 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 000 | x = -650 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-650mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -650 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 000 | x = -650 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-650mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -650 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 001 | x = -585 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-585mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -585 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 001 | x = -585 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-585mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -585 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 001 | x = -585 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-585mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -585 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 002 | x = -520 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-520mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -520 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 002 | x = -520 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-520mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -520 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 002 | x = -520 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-520mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -520 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 003 | x = -455 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-455mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -455 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 003 | x = -455 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-455mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -455 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 003 | x = -455 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-455mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -455 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 004 | x = -390 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-390mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -390 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 004 | x = -390 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-390mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -390 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 004 | x = -390 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-390mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -390 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 005 | x = -325 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-325mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -325 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 005 | x = -325 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-325mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -325 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 005 | x = -325 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-325mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -325 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 006 | x = -260 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-260mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -260 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 006 | x = -260 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-260mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -260 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 006 | x = -260 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-260mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -260 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 007 | x = -195 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-195mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -195 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 007 | x = -195 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-195mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -195 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 007 | x = -195 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-195mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -195 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 008 | x = -130 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-130mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -130 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 008 | x = -130 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-130mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -130 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 008 | x = -130 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-130mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -130 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 009 | x = -65 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-65mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -65 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 009 | x = -65 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-65mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -65 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 009 | x = -65 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_-65mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = -65 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 010 | x = +0 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+0mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +0 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 010 | x = +0 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+0mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +0 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 010 | x = +0 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+0mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +0 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 011 | x = +65 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+65mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +65 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 011 | x = +65 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+65mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +65 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 011 | x = +65 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+65mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +65 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 012 | x = +130 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+130mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +130 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 012 | x = +130 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+130mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +130 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 012 | x = +130 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+130mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +130 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 013 | x = +195 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+195mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +195 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 013 | x = +195 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+195mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +195 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 013 | x = +195 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+195mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +195 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 014 | x = +260 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+260mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +260 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 014 | x = +260 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+260mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +260 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 014 | x = +260 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+260mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +260 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 015 | x = +325 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+325mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +325 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 015 | x = +325 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+325mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +325 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 015 | x = +325 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+325mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +325 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 016 | x = +390 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+390mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +390 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 016 | x = +390 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+390mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +390 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 016 | x = +390 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+390mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +390 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 017 | x = +455 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+455mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +455 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 017 | x = +455 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+455mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +455 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 017 | x = +455 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+455mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +455 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 018 | x = +520 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+520mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +520 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 018 | x = +520 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+520mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +520 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 018 | x = +520 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+520mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +520 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 019 | x = +585 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+585mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +585 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 019 | x = +585 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+585mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +585 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 019 | x = +585 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+585mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +585 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 020 | x = +650 mm | End-left}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+650mm_left.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +650 mm -- End-left SiPMs (IDs 0-7)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 020 | x = +650 mm | End-right}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+650mm_right.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +650 mm -- End-right SiPMs (IDs 8-15)
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Run 020 | x = +650 mm | Top}
+  \begin{center}
+    \includegraphics[width=0.90\textwidth,height=0.80\textheight,keepaspectratio]{fpt_png/muon_+650mm_top.png}
+
+    \vspace{0.1cm}
+    \small Muon @ x = +650 mm -- Top SiPMs (IDs 16-35)
+  \end{center}
+\end{frame}
+
+\end{document}
