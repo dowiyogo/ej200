@@ -1,0 +1,39 @@
+# ============================================================
+# event_display_top_lateral.mac - lateral view of top-readout midpoint event.
+# Usage: ./ej200_bar_sim -m macros/event_display_top_lateral.mac
+# ============================================================
+
+/control/verbose 0
+/run/verbose     0
+/event/verbose   0
+/tracking/verbose 0
+
+/run/initialize
+
+/vis/open OGL 1600x900-0+0
+/vis/viewer/set/background white
+/vis/drawVolume
+/vis/scene/add/axes 0 0 0 100 mm
+/vis/scene/add/eventID
+
+/tracking/storeTrajectory 1
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/vis/modeling/trajectories/drawByParticleID-0/set mu-           red
+/vis/modeling/trajectories/drawByParticleID-0/set e-            yellow
+/vis/modeling/trajectories/drawByParticleID-0/set gamma         green
+/vis/scene/add/hits
+/vis/scene/endOfEventAction accumulate 1
+
+# Camera: lateral view, looking along +Z to see XY plane
+/vis/viewer/set/upVector 0 1 0
+/vis/viewer/set/viewpointVector 0 0 1
+/vis/viewer/set/projection orthogonal
+
+/gun/particle  mu-
+/gun/energy    1 GeV
+/muon/midpointSiPMs 9 10
+/muon/angle    0
+
+/run/beamOn 1

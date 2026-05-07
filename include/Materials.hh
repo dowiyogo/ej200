@@ -18,6 +18,15 @@ G4Material* CreateEJ200();
 // Fresnel equations without requiring a G4OpticalSurface at the air boundary.
 G4Material* CreateMylar();
 
+// Reflective wrapping surface for explicit reflector panels.
+// Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
+G4OpticalSurface* CreateBarSkinReflector();
+
+// Black absorbing tape — high-density polymer with extremely short absorption
+// length and low refractive index, used to simulate "black tape" / "vinyl"
+// edge wrapping that absorbs all incident photons.
+G4Material* CreateBlackTape();
+
 // Optical coupling material for SiPM volumes (G4_SILICON_DIOXIDE base).
 // RINDEX set to 1.58 to match the bar and eliminate TIR at the bar–SiPM
 // interface — equivalent to perfect optical grease coupling.

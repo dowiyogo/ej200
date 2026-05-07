@@ -1,0 +1,21 @@
+# ============================================================
+# macros/diag_optical.mac — diagnostico optico detallado
+# Corre 1 evento con tracking verbose SOLO para fotones opticos.
+# Uso: ./build/ej200_bar_sim -m macros/diag_optical.mac 2>&1 | head -500
+# ============================================================
+
+/control/verbose 0
+/run/verbose     1
+/event/verbose   0
+
+# Solo queremos ver el tracking de fotones opticos, no del muon
+/tracking/verbose 0
+
+/run/initialize
+
+/gun/particle mu-
+/gun/energy   1 GeV
+/muon/gunX    0 mm
+/muon/angle   0
+
+/run/beamOn 1

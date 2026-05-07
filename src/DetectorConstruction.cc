@@ -10,17 +10,18 @@
 #include "G4PVPlacement.hh"
 #include "G4RunManager.hh"
 #include "G4SDManager.hh"
+#include "G4StateManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
+
+#include <algorithm>
+#include <string>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
 static constexpr G4double kBarHalfY   =  30.0 * mm;  // 60 mm width
 static constexpr G4double kBarHalfZ   =   5.0 * mm;  // 10 mm height
-
-// Mylar wrap thickness (25 µm film)
-static constexpr G4double kMylarThick = 0.025 * mm;
 
 // End SiPM (on ±X face): thin slab, 6×6 mm² active area
 static constexpr G4double kEndHalfX   = 0.25 * mm;
@@ -82,6 +83,12 @@ DetectorConstruction::DetectorConstruction() {
         "  Common values: 40 (4 cm), 50 (5 cm), 70 (7 cm, default).");
     cmd.SetParameterName("pitch", false);
     cmd.SetRange("pitch > 0");
+
+    fMessenger->DeclareMethod(
+        "edgeWrap",
+        &DetectorConstruction::SetEdgeWrapMode,
+        "Legacy no-op. The Mylar wrap volume was removed; reflection is handled\n"
+        "by explicit reflector panels around BarLV.");
 }
 
 DetectorConstruction::~DetectorConstruction() {
@@ -94,7 +101,15 @@ void DetectorConstruction::SetTopSiPMPitch(G4double pitchMm) {
     // performs the conversion before calling this function.
     fTopSiPMPitch = pitchMm;
     fNTopSiPMs    = ComputeNTopSiPMs(fTopSiPMPitch);
-    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+// ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
+void DetectorConstruction::SetEdgeWrapMode(G4String mode) {
+    G4cout << "[DetectorConstruction] /det/edgeWrap " << mode
+           << " ignored: WrapLV was removed in fix/geometry-bar-in-world.\n";
 }
 
 // ── Construct ─────────────────────────────────────────────────────────────────
@@ -103,7 +118,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     // ── Materials ────────────────────────────────────────────────────────────
     G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
-    G4Material* mylarMat = Materials::CreateMylar();
     G4Material* barMat   = Materials::CreateEJ200();
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
 
@@ -124,27 +138,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto* worldPhys  = new G4PVPlacement(nullptr, {}, worldLV, "WorldPV",
                                          nullptr, false, 0, true);
 
-    // ── Mylar wrap — thin envelope around the bar ────────────────────────────
-    // The 25 µm Mylar layer (n=1.65) acts as a passive reflector:
-    //   • Photons from bar (n=1.58) → Mylar: small Fresnel reflection, mostly transmitted
-    //   • Photons from Mylar → air (n=1.0): TIR for angles > arcsin(1/1.65) ≈ 37.3°
-    // This replaces the G4LogicalSkinSurface on the bar, avoiding the overhead
-    // of per-step surface lookups on every bar–world boundary crossing.
-    const G4double wHX = kBarHalfX + kMylarThick;
-    const G4double wHY = kBarHalfY + kMylarThick;
-    const G4double wHZ = kBarHalfZ + kMylarThick;
-
-    auto* wrapSolid = new G4Box("WrapSolid", wHX, wHY, wHZ);
-    auto* wrapLV    = new G4LogicalVolume(wrapSolid, mylarMat, "WrapLV");
-    {
-        auto* va = new G4VisAttributes(G4Colour(0.8, 0.8, 0.8, 0.15));
-        va->SetForceSolid(true);
-        wrapLV->SetVisAttributes(va);
-    }
-    fWrapPhys = new G4PVPlacement(nullptr, {}, wrapLV, "WrapPV", worldLV,
-                                  false, 0, true);
-
-    // ── Scintillating bar — placed inside the Mylar wrap ─────────────────────
+    // ── Scintillating bar — direct WorldLV daughter ──────────────────────────
     auto* barSolid = new G4Box("BarSolid", kBarHalfX, kBarHalfY, kBarHalfZ);
     auto* barLV    = new G4LogicalVolume(barSolid, barMat, "BarLV");
     {
@@ -152,15 +146,58 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         va->SetForceSolid(true);
         barLV->SetVisAttributes(va);
     }
-    // Bar is the daughter of WrapLV — centred at origin inside the Mylar shell
-    fBarPhys = new G4PVPlacement(nullptr, {}, barLV, "BarPV", wrapLV,
-                                 false, 0, true);
+    fBarPhys = new G4PVPlacement(nullptr, {}, barLV, "BarPV",
+                                 worldLV, false, 0, true);
 
-    // Note: no G4LogicalSkinSurface on barLV — the Mylar volume handles reflection.
+    // ── Reflective panels on non-SiPM faces — models Al-foil + black film ────
+    // Explicit sibling volumes avoid global skin surfaces shadowing SiPM faces.
+    // The +Y face is left open for Top SiPMs; end faces are left to End SiPMs.
+    auto* reflector = Materials::CreateBarSkinReflector();
+    const G4double foilHalfT = 0.5 * um;
+    auto* reflYMinusSolid = new G4Box("ReflectorYMinusSolid",
+                                      kBarHalfX, foilHalfT, kBarHalfZ);
+    auto* reflZSolid = new G4Box("ReflectorZSolid",
+                                 kBarHalfX, kBarHalfY, foilHalfT);
+    auto* reflXSolid = new G4Box("ReflectorXSolid",
+                                 foilHalfT, kBarHalfY, kBarHalfZ);
+    auto* reflYMinusLV = new G4LogicalVolume(reflYMinusSolid, worldMat,
+                                             "ReflectorYMinusLV");
+    auto* reflZLV = new G4LogicalVolume(reflZSolid, worldMat, "ReflectorZLV");
+    auto* reflXLV = new G4LogicalVolume(reflXSolid, worldMat, "ReflectorXLV");
+    reflYMinusLV->SetVisAttributes(G4VisAttributes::GetInvisible());
+    reflZLV->SetVisAttributes(G4VisAttributes::GetInvisible());
+    reflXLV->SetVisAttributes(G4VisAttributes::GetInvisible());
+
+    auto* reflYMinusPhys = new G4PVPlacement(
+        nullptr, {0.0, -(kBarHalfY + foilHalfT), 0.0},
+        reflYMinusLV, "ReflectorYMinusPV", worldLV, false, 0, true);
+    auto* reflXMinusPhys = new G4PVPlacement(
+        nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
+        reflXLV, "ReflectorXMinusPV", worldLV, false, 1, true);
+    auto* reflXPlusPhys = new G4PVPlacement(
+        nullptr, {+(kBarHalfX + foilHalfT), 0.0, 0.0},
+        reflXLV, "ReflectorXPlusPV", worldLV, false, 2, true);
+    auto* reflZMinusPhys = new G4PVPlacement(
+        nullptr, {0.0, 0.0, -(kBarHalfZ + foilHalfT)},
+        reflZLV, "ReflectorZMinusPV", worldLV, false, 3, true);
+    auto* reflZPlusPhys = new G4PVPlacement(
+        nullptr, {0.0, 0.0, +(kBarHalfZ + foilHalfT)},
+        reflZLV, "ReflectorZPlusPV", worldLV, false, 4, true);
+
+    new G4LogicalBorderSurface("BarReflector_YMinus",
+                               fBarPhys, reflYMinusPhys, reflector);
+    new G4LogicalBorderSurface("BarReflector_XMinus",
+                               fBarPhys, reflXMinusPhys, reflector);
+    new G4LogicalBorderSurface("BarReflector_XPlus",
+                               fBarPhys, reflXPlusPhys, reflector);
+    new G4LogicalBorderSurface("BarReflector_ZMinus",
+                               fBarPhys, reflZMinusPhys, reflector);
+    new G4LogicalBorderSurface("BarReflector_ZPlus",
+                               fBarPhys, reflZPlusPhys, reflector);
 
     // ── End SiPMs — 8×1 array on each ±X face ────────────────────────────────
-    // Placed in WorldLV, flush against the outer face of the Mylar wrap.
-    // x = ±(wHX + kEndHalfX)  ← just outside the wrap
+    // Placed as BarLV daughters, flush with the ±X faces of the bar.
+    // x = ±(kBarHalfX - kEndHalfX)
     auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
     fEndSiPMLV     = new G4LogicalVolume(endSolid, sipmMat, "EndSiPMLV");
     {
@@ -177,27 +214,27 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         const G4int leftId = i;
         auto* leftPhys = new G4PVPlacement(
             nullptr,
-            G4ThreeVector(-(wHX + kEndHalfX), cy, 0.0),
-            fEndSiPMLV, "EndSiPMLeft_PV", worldLV, false, leftId, true);
-        // Border surface: WrapPV → SiPM (photon exits Mylar into SiPM coupling)
+            G4ThreeVector(-(kBarHalfX - kEndHalfX), cy, 0.0),
+            fEndSiPMLV, "EndSiPMLeft_PV", barLV, false, leftId, true);
+        // Border surface: BarPV → SiPM
         fSiPMSurfaces[leftId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(leftId),
-            fWrapPhys, leftPhys, sipmSurface);
+            fBarPhys, leftPhys, sipmSurface);
 
         const G4int rightId = i + kNEndSiPMs;
         auto* rightPhys = new G4PVPlacement(
             nullptr,
-            G4ThreeVector(+(wHX + kEndHalfX), cy, 0.0),
-            fEndSiPMLV, "EndSiPMRight_PV", worldLV, false, rightId, true);
+            G4ThreeVector(+(kBarHalfX - kEndHalfX), cy, 0.0),
+            fEndSiPMLV, "EndSiPMRight_PV", barLV, false, rightId, true);
         fSiPMSurfaces[rightId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(rightId),
-            fWrapPhys, rightPhys, sipmSurface);
+            fBarPhys, rightPhys, sipmSurface);
     }
 
     // ── Top SiPMs — N SiPMs along the +Y face, configurable pitch ────────────
     // N = fNTopSiPMs is computed from fTopSiPMPitch (default 70 mm → 20 SiPMs).
-    // Placed in WorldLV, flush against the +Y outer face of the Mylar wrap.
-    // y = wHY + kTopHalfY  ← just above the wrap top face
+    // Placed as BarLV daughters, flush with the +Y face of the bar.
+    // y = kBarHalfY - kTopHalfY
     auto* topSolid = new G4Box("TopSiPMSolid", kTopHalfX, kTopHalfY, kTopHalfZ);
     fTopSiPMLV     = new G4LogicalVolume(topSolid, sipmMat, "TopSiPMLV");
     {
@@ -212,12 +249,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
         auto* topPhys = new G4PVPlacement(
             nullptr,
-            G4ThreeVector(cx, wHY + kTopHalfY, 0.0),
-            fTopSiPMLV, "TopSiPMPV", worldLV, false, globalId, true);
+            G4ThreeVector(cx, kBarHalfY - kTopHalfY, 0.0),
+            fTopSiPMLV, "TopSiPMPV", barLV, false, globalId, true);
 
         fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
             "SiPMSurf_" + std::to_string(globalId),
-            fWrapPhys, topPhys, sipmSurface);
+            fBarPhys, topPhys, sipmSurface);
     }
 
     return worldPhys;
@@ -227,8 +264,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 void DetectorConstruction::ConstructSDandField() {
     auto* sdManager = G4SDManager::GetSDMpointer();
 
-    auto* sipmSD = new SiPMSD("SiPMSD");
-    sdManager->AddNewDetector(sipmSD);
+    auto* sipmSD = dynamic_cast<SiPMSD*>(
+        sdManager->FindSensitiveDetector("SiPMSD", false));
+    if (sipmSD == nullptr) {
+        sipmSD = new SiPMSD("SiPMSD");
+        sdManager->AddNewDetector(sipmSD);
+    }
 
     SetSensitiveDetector(fEndSiPMLV, sipmSD);
     SetSensitiveDetector(fTopSiPMLV, sipmSD);

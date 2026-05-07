@@ -21,3 +21,8 @@ add_test(NAME smoke_test COMMAND ej200_bar_sim -m macros/test.mac)
 set_tests_properties(smoke_test PROPERTIES
     PASS_REGULAR_EXPRESSION "=== EJ-200 Bar Run Summary ==="
     TIMEOUT 120)
+
+add_test(NAME edge_scan_smoke COMMAND ej200_bar_sim -m macros/scan_edge.mac)
+set_tests_properties(edge_scan_smoke PROPERTIES
+    PASS_REGULAR_EXPRESSION "=== EJ-200 Bar Run Summary ==="
+    TIMEOUT 600)

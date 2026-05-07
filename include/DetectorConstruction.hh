@@ -12,27 +12,26 @@ class G4GenericMessenger;
 // --------------------------------------------------------------------------
 // DetectorConstruction
 //
-// Geometry: 1.4 m × 60 mm × 10 mm EJ-200 bar wrapped in a thin Mylar film
-// (25 µm, n=1.65) implemented as a nested physical volume.  The Mylar layer
-// provides reflection via TIR at the Mylar–air interface without requiring a
-// G4OpticalSurface on the outer boundary, improving simulation speed.
-//
 // Volume hierarchy:
 //   WorldPV (air)
-//     └─ WrapPV (Mylar, bar + 25 µm on every face)
-//          └─ BarPV (EJ-200)
-//     ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
-//     ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
-//     └─ TopSiPMPV       × N   (global IDs 16…15+N)
+//     ├─ BarPV (EJ-200)
+//     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
+//     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
+//     │   └─ TopSiPMPV       × N   (global IDs 16…15+N)
+//     └─ Reflector*PV panels (optical border surfaces, R=0.98)
+//
+// The Mylar wrap volume was removed in fix/geometry-bar-in-world.
+// Optical reflection is now handled by explicit reflector panels on the
+// non-SiPM faces; SiPMs are BarLV daughters with BarPV→SiPM border surfaces.
 //
 // N (number of top SiPMs) is computed from the configurable pitch so that all
 // SiPMs remain inside the bar footprint.  Default pitch = 70 mm → N = 20.
 //
 // UI command (available after /run/initialize):
 //   /det/topSiPMPitch <value> mm   — triggers ReinitializeGeometry()
+//   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
-// Border surfaces: WrapPV → each SiPM physical volume (not BarPV → SiPM,
-// because the Mylar layer is geometrically between bar and SiPM).
+// Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
@@ -56,6 +55,9 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4double GetTopSiPMPitch() const { return fTopSiPMPitch; }
     G4int    GetNTopSiPMs()    const { return fNTopSiPMs; }
 
+    // Legacy edge-wrap command — retained as a no-op for old macros
+    void SetEdgeWrapMode(G4String mode);
+
     // Helpers for analysis (independent of pitch/count)
     static G4int FaceType(G4int globalId);  // 0=end_left, 1=end_right, 2=top
     static G4int LocalId (G4int globalId);  // index within face
@@ -66,8 +68,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
     G4LogicalVolume*   fEndSiPMLV  = nullptr;
     G4LogicalVolume*   fTopSiPMLV  = nullptr;
-    G4VPhysicalVolume* fBarPhys    = nullptr;
-    G4VPhysicalVolume* fWrapPhys   = nullptr;  // Mylar envelope
+    G4VPhysicalVolume* fBarPhys          = nullptr;
 
     G4double           fTopSiPMPitch = 70.0;  // G4 internal units (1 = 1 mm)
     G4int              fNTopSiPMs    = 20;

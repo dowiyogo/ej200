@@ -1,0 +1,65 @@
+YIELD AUDIT REPORT
+==================
+Fecha: Wed May  6 23:41:09 -04 2026
+Branch: diag/photon-yield-audit
+Commit: 51ca4ff
+
+--- Salida de simulacion ---
+=== EJ-200 Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 1000
+  Events with ≥1 hit    : 1000
+  End-left  photons     : 1245
+  End-right photons     : 1274
+  Top SiPM  photons     : 16528
+  Scint photons generated: 18885234
+  Total photons detected : 19047
+  Detection efficiency   : 0.1009 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+=== Boundary Census (diagnostic) ===
+  Bar → Mylar crossings    : 19323474
+  Mylar → World (escaped)  : 18680701
+  Mylar → Mylar (TIR/refl) : 3
+  Mylar → SiPM (entering)  : 42278
+  Killed in WorldLV        : 18736017
+====================================
+
+--- Analisis ROOT ---
+
+Processing diag/yield_audit.C("photon_hits_run000.root")...
+
+=== YIELD AUDIT REPORT ===
+  Archivo            : photon_hits_run000.root
+  Entradas en TTree  : 19047
+  Eventos con hits   : 1000
+  Media N_pe/evento  : 19.047
+  Max N_pe/evento    : 18.5
+  Por cara:
+    End-left : 1245 (6.53646%)
+    End-right : 1274 (6.68872%)
+    Top : 16528 (86.7748%)
+  Estimado generados/evento : ~20000
+  Eficiencia total estimada : ~0.095235 %
+  REFERENCIA Betancourt 2020: ~175 ph/evt (ambos ends)
+  DEFICIT factor            : ~9.1878x
+==========================
+
+Info in <TCanvas::Print>: pdf file diag/yield_audit.pdf has been created
+  -> diag/yield_audit.pdf
+
+--- Interpretacion esperada ---
+Referencia experimental (Betancourt 2020):
+  ~175 fotones/evento en ambos ends combinados para muon central
+  sigma_t ~ 85 ps
+
+Criterios de diagnostico:
+  N_pe/evento < 10   -> Problema severo de transporte o generacion
+  N_pe/evento 10-50  -> Reflector insuficiente o absorcion bulk alta
+  N_pe/evento 50-150 -> Geometria SiPM o PDE limitando
+  N_pe/evento > 150  -> Aceptable para comparar con experimento
+
+Relacion Bar->Mylar / Mylar->SiPM esperada:
+  Si Bar->Mylar >> Mylar->SiPM * 100 -> fotones atrapados o absorbidos
+  Si Mylar->World > Mylar->SiPM * 10 -> reflector insuficiente
