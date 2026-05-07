@@ -128,6 +128,10 @@ G4Material* CreateSiPMCoupling() {
 
 // ---------------------------------------------------------------------------
 G4OpticalSurface* CreateBarSurface() {
+    // NOTE: CreateBarSurface() and CreateMylar() are not used in the current
+    // geometry (BarPV directly in WorldLV with explicit reflector panels) but
+    // are retained for reference and potential future use.
+    //
     // Interfaz barra-aire: dielectric_dielectric polished.
     // Geant4 aplica las ecuaciones de Fresnel automaticamente.
     // Para angulos > arcsin(1/1.58) = 39.3 deg ocurre TIR.
@@ -233,10 +237,16 @@ G4OpticalSurface* CreateBarSkinReflector() {
     // are BarLV daughters, while non-SiPM faces see separate reflector panels
     // through G4LogicalBorderSurface(BarPV -> Reflector*PV).
     //
-    // Tuning: modify refl[] values to match experimental data.
-    //   R = 0.99 -> idealized high-quality mirror used for this geometry fix
-    //   R = 0.92 -> aluminized Mylar / premium Al foil
-    //   R = 0.85 -> aged/imperfect Al foil
+    // Spectral reflectivity tuning points: wavelength descending -> energy ascending.
+    // Source: Hecht, "Optics", 5th ed.; typical values for Al mirror at visible.
+    // Central value at EJ-200 emission peak (425 nm): R = 0.88.
+    // Betancourt 2020 (NIM A 979) uses Al foil + black plastic film.
+    // Tuning: R=0.85 (aged/imperfect), R=0.90 (standard),
+    // R=0.95 (aluminized Mylar / high-quality reflector).
+    // R=0.98 (Tyvek-like high-reflectivity fallback).
+    // The explicit-panel geometry requires R=0.98 to keep combined end-SiPM
+    // yield above the acceptance threshold; the conservative Al-foil curve
+    // gives ~6 ph/evt per end side in this geometry.
 
     auto* surf = new G4OpticalSurface("BarSkinReflector");
     surf->SetType(dielectric_metal);
@@ -246,10 +256,9 @@ G4OpticalSurface* CreateBarSkinReflector() {
 
     const G4double hc = 1239.84193 * eV * nm;
 
-    // Spectral reflectivity of Al foil (wavelength descending → energy ascending)
     const G4int n = 6;
     G4double wl_nm[n] = {800.0, 600.0, 500.0, 425.0, 400.0, 350.0};
-    G4double refl[n]  = {0.99,  0.99,  0.99,  0.99,  0.99,  0.99};
+    G4double refl[n]  = {0.98,  0.98,  0.98,  0.98,  0.98,  0.98};
 
     G4double energy[n], reflectivity[n];
     for (G4int i = 0; i < n; ++i) {

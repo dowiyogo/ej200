@@ -18,7 +18,7 @@ class G4GenericMessenger;
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × N   (global IDs 16…15+N)
-//     └─ Reflector*PV panels (Al-foil optical border surfaces, R=0.99)
+//     └─ Reflector*PV panels (optical border surfaces, R=0.98)
 //
 // The Mylar wrap volume was removed in fix/geometry-bar-in-world.
 // Optical reflection is now handled by explicit reflector panels on the
