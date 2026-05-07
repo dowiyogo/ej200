@@ -5,6 +5,7 @@
 #include "G4Box.hh"
 #include "G4GenericMessenger.hh"
 #include "G4LogicalBorderSurface.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
@@ -173,9 +174,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                          nullptr, false, 0, true);
 
     // ── Segmented wrap — centre Mylar plus configurable 50 mm edge caps ─────
-    // The 25 um film is the physical wrapping volume.  Its outer face gets an
-    // explicit Al-foil optical surface below; confinement is not left to Mylar
-    // TIR alone.
+    // The 25 um film remains as the physical wrapping/coupling volume.  Optical
+    // reflection is applied directly on the EJ-200 bar below via skin surfaces.
     const G4double wHY = kBarHalfY + kMylarThick;
     const G4double wHZ = kBarHalfZ + kMylarThick;
 
@@ -204,18 +204,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                           worldLV, false, 2, true);
     fWrapPhys = fWrapCenterPhys;
 
-    // Reflective surface on the OUTER face of all wrap segments.
-    // Direction: WrapPV -> WorldPV (photon leaving wrap toward air).
-    // dielectric_metal: photon reflected back; no refraction into WorldPV.
-    // This models the Al-foil wrapping used in the SHiP prototype.
-    auto* reflector = Materials::CreateWrapReflectorSurface();
-    new G4LogicalBorderSurface("WrapRefl_Center",
-                               fWrapCenterPhys, worldPhys, reflector);
-    new G4LogicalBorderSurface("WrapRefl_CapLeft",
-                               fWrapCapLeftPhys, worldPhys, reflector);
-    new G4LogicalBorderSurface("WrapRefl_CapRight",
-                               fWrapCapRightPhys, worldPhys, reflector);
-
     // ── Scintillating bar — one EJ-200 daughter inside each wrap segment ─────
     // The scintillator sub-bars are tangent in X: no internal Mylar gap at the
     // center/cap boundaries.  Only the external Y/Z faces and the +/-X end caps
@@ -243,14 +231,25 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     new G4PVPlacement(nullptr, {}, barCapRightLV, "BarCapRightPV",
                       wrapCapRightLV, false, 0, true);
 
+    // ── Reflective skin surface on the wrap — models Al-foil wrapping ───────
+    // G4LogicalSkinSurface applies to all faces of each Mylar WrapLV segment.
+    // For faces touching SiPM volumes, the G4LogicalBorderSurface registered
+    // below (WrapPV -> SiPMPhys) has higher priority and takes effect instead.
+    // For all other faces (wrap -> air), this dielectric_metal surface reflects
+    // photons back into the wrap/bar system with R(λ) = 0.85–0.92 (Al foil).
+    auto* wrapReflector = Materials::CreateWrapSkinReflector();
+    new G4LogicalSkinSurface("WrapReflector_Center", wrapCenterLV, wrapReflector);
+    new G4LogicalSkinSurface("WrapReflector_CapLeft", wrapCapLeftLV, wrapReflector);
+    new G4LogicalSkinSurface("WrapReflector_CapRight", wrapCapRightLV, wrapReflector);
+
     // NOTE: Bar continuity across wrap segments.
     // BarCenterPV ↔ BarCapLeftPV/BarCapRightPV share the same EJ-200 material with
     // identical RINDEX, so Geant4's optical transport handles the boundary as
     // internal (no Fresnel reflection, no TIR). Confirmed by checking that no
     // G4LogicalBorderSurface is registered for these pairs.
 
-    // Note: no G4LogicalSkinSurface on bar logical volumes — the wrap volumes
-    // handle reflection.
+    // Reflection is handled by the WrapReflector skin surfaces above.  The wrap
+    // volumes remain as thin optical coupling/material layers around the bar.
 
     // ── End SiPMs — 8×1 array on each ±X face ────────────────────────────────
     // Placed in WorldLV, flush against the outer face of the edge wrap caps.

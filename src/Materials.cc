@@ -226,24 +226,32 @@ G4Material* CreateBlackTape() {
 }
 
 // ---------------------------------------------------------------------------
-G4OpticalSurface* CreateWrapReflectorSurface() {
-    // Models the aluminum foil wrapping used in the SHiP Timing Detector
-    // (Betancourt et al., NIM A 979, 2020, sec. 1).
+G4OpticalSurface* CreateWrapSkinReflector() {
+    // Reflective surface applied as G4LogicalSkinSurface on the Mylar wrap.
+    // Models aluminum foil wrapping (Betancourt 2020, sec. 1).
     //
-    // dielectric_metal: photon stays on the bar side; no refraction into air.
-    //   Reflected with probability R(λ), absorbed with 1-R(λ).
+    // G4LogicalSkinSurface is used instead of G4LogicalBorderSurface(WrapPV
+    // -> WorldPV) because the mother-daughter topology (WrapPV is daughter of
+    // WorldPV) causes G4OpBoundaryProcess to skip the border surface lookup.
+    // A skin surface on WrapLV has no such limitation for Wrap -> World steps.
     //
-    // Reflectivity data: freshly evaporated Al, 350–800 nm.
-    // Source: Hecht, "Optics", 5th ed., Appendix 3; typical Al mirror values.
-    // Use R = 0.90 as conservative central value at 425 nm (EJ-200 peak).
+    // Priority rule (Geant4 source, G4OpBoundaryProcess.cc):
+    //   1. G4LogicalBorderSurface (highest)
+    //   2. G4LogicalSkinSurface
+    // Therefore the border surfaces registered for each SiPM (WrapPV ->
+    // SiPMPhys) still take effect and are NOT overridden by this skin surface.
     //
-    // To tune to data:
-    //   R = 0.95 -> aluminized Mylar, good quality
-    //   R = 0.90 -> aluminum foil, standard
-    //   R = 0.85 -> aged / imperfect Al foil
-    //   Use groundfrontpainted + R=0.98 for Tyvek diffuse reflector.
+    // The skin surface covers ALL faces of WrapLV. For the SiPM faces, the
+    // WrapPV -> SiPMPhys border surface wins; for all other wrap-air faces,
+    // this reflector applies.
+    //
+    // Tuning: modify refl[] values to match experimental data.
+    //   R = 0.92 -> aluminized Mylar, premium quality
+    //   R = 0.90 -> aluminum foil, standard (Betancourt 2020 baseline)
+    //   R = 0.85 -> aged/imperfect Al foil
+    //   R = 0.98 + groundfrontpainted -> Tyvek diffuse reflector
 
-    auto* surf = new G4OpticalSurface("WrapReflector");
+    auto* surf = new G4OpticalSurface("WrapSkinReflector");
     surf->SetType(dielectric_metal);
     surf->SetModel(unified);
     surf->SetFinish(polished);
@@ -264,8 +272,6 @@ G4OpticalSurface* CreateWrapReflectorSurface() {
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("REFLECTIVITY", energy, reflectivity, n);
-    // EFFICIENCY is intentionally absent (default = 0): this surface only
-    // reflects or absorbs; it does NOT detect photons.
     surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }
