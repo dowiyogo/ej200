@@ -140,8 +140,8 @@ def plot_resolution(res_end, res_top, breakdown_x, threshold_ns, out_pdf):
             continue
         ok = df["sigma_ns"].notna() & (df["sigma_ns"] > 0)
         sub = df[ok]
-        ax.errorbar(sub["x_mm"], sub["sigma_ns"] * 1e3,
-                    yerr=sub["sigma_err_ns"] * 1e3,
+        ax.errorbar(sub["x_mm"].to_numpy(), (sub["sigma_ns"] * 1e3).to_numpy(),
+                    yerr=(sub["sigma_err_ns"] * 1e3).to_numpy(),
                     marker=marker, lw=1.8, ms=5, capsize=3,
                     color=color, label=label)
     if not np.isnan(breakdown_x):
@@ -169,10 +169,10 @@ def plot_lightyield(summary, out_pdf):
         "npe_top": ("Top", "#4dac26", "s"),
     }
     for col, (label, color, marker) in styles.items():
-        ax.plot(summary["x_mm"], summary[col], marker=marker, lw=1.7,
+        ax.plot(summary["x_mm"].to_numpy(), summary[col].to_numpy(), marker=marker, lw=1.7,
                 color=color, label=label)
     ax2 = ax.twinx()
-    ax2.plot(summary["x_mm"], summary["frac_dead_events"], color="black",
+    ax2.plot(summary["x_mm"].to_numpy(), summary["frac_dead_events"].to_numpy(), color="black",
              marker="x", lw=1.3, ls="--", label="Dead event fraction")
     ax.set_xlabel("Muon x [mm]")
     ax.set_ylabel(r"$\langle N_{pe}\rangle$ per event")

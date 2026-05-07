@@ -101,7 +101,7 @@ def main():
     frac_near = len(near) / total if total else np.nan
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
-    ax.bar(occ["relative_index"], occ["hits_per_event"], width=0.8,
+    ax.bar(occ["relative_index"].to_numpy(), occ["hits_per_event"].to_numpy(), width=0.8,
            color="#4dac26", edgecolor="black", linewidth=0.5)
     ax.axvline(args.left - midpoint, color="#2166ac", ls="--", lw=1.2,
                label=f"flanking {args.left}")

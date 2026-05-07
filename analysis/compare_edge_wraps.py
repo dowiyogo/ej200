@@ -45,14 +45,14 @@ def main():
     for label, df in loaded:
         key = label.lower()
         color = colors.get(key, None)
-        ax_sig.plot(df["x_mm"], df["sigma_end_ps"], marker="o", lw=1.8,
+        ax_sig.plot(df["x_mm"].to_numpy(), df["sigma_end_ps"].to_numpy(), marker="o", lw=1.8,
                     color=color, label=f"{label} end")
         if "sigma_top_ps" in df:
-            ax_sig.plot(df["x_mm"], df["sigma_top_ps"], marker="s", lw=1.2,
+            ax_sig.plot(df["x_mm"].to_numpy(), df["sigma_top_ps"].to_numpy(), marker="s", lw=1.2,
                         ls="--", color=color, alpha=0.75, label=f"{label} top")
-        ax_npe.plot(df["x_mm"], df["npe_left"] + df["npe_right"],
+        ax_npe.plot(df["x_mm"].to_numpy(), (df["npe_left"] + df["npe_right"]).to_numpy(),
                     marker="o", lw=1.8, color=color, label=f"{label} end L+R")
-        ax_npe.plot(df["x_mm"], df["npe_top"],
+        ax_npe.plot(df["x_mm"].to_numpy(), df["npe_top"].to_numpy(),
                     marker="s", lw=1.2, ls="--", color=color, alpha=0.75,
                     label=f"{label} top")
 
