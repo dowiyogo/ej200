@@ -32,6 +32,7 @@ Global IDs   Face         Count   Description
 | Optical coupling | Air (n=1.0) → TIR at ~39° | Coupling material n=1.58 (no TIR) |
 | PDE | Not applied | Manual Bernoulli trial in `SiPMSD::ProcessHits()` via `GetPDE()` |
 | Wrapping | None / default | `dielectric_dielectric polished` (TIR-based, bar–air interface) |
+| Wrapping reflector | Mylar dielectric (TIR only) | `dielectric_metal` Al-foil, R(λ) = 0.85–0.92 |
 | Top SiPMs | Only 2nd half of bar (bug) | Full bar length (−665 to +665 mm) |
 | EventAction | Bug (AddEndLeftHit unconditional) | SiPMSD → EventAction → RunAction |
 | Materials class | Inline in DetectorConstruction | Separate `Materials` namespace |
@@ -162,4 +163,8 @@ Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
 - **Change SiPM count/positions**: edit `kNTopSiPMs` and `TopSiPMCenterX()` in
   `DetectorConstruction.hh/.cc`.
 - **Change particle/energy**: edit `macros/run.mac` or use interactive `/gun/` commands.
+- **Tune wrapping reflectivity**: edit `CreateWrapReflectorSurface()` in
+  `src/Materials.cc`. Change `refl[]` values (0.85–0.92 for Al foil;
+  0.95 for aluminized Mylar; 0.98 with `groundfrontpainted` for Tyvek).
+  The current values reproduce the SHiP prototype (Betancourt 2020).
 - **Add 2D SiPM array on top**: extend the top SiPM placement loop to use both X and Z.

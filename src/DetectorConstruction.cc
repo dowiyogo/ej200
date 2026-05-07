@@ -173,11 +173,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                          nullptr, false, 0, true);
 
     // ── Segmented wrap — centre Mylar plus configurable 50 mm edge caps ─────
-    // The 25 µm Mylar layer (n=1.65) acts as a passive reflector:
-    //   • Photons from bar (n=1.58) → Mylar: small Fresnel reflection, mostly transmitted
-    //   • Photons from Mylar → air (n=1.0): TIR for angles > arcsin(1/1.65) ≈ 37.3°
-    // This replaces the G4LogicalSkinSurface on the bar, avoiding the overhead
-    // of per-step surface lookups on every bar–world boundary crossing.
+    // The 25 um film is the physical wrapping volume.  Its outer face gets an
+    // explicit Al-foil optical surface below; confinement is not left to Mylar
+    // TIR alone.
     const G4double wHY = kBarHalfY + kMylarThick;
     const G4double wHZ = kBarHalfZ + kMylarThick;
 
@@ -206,12 +204,27 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                           worldLV, false, 2, true);
     fWrapPhys = fWrapCenterPhys;
 
+    // Reflective surface on the OUTER face of all wrap segments.
+    // Direction: WrapPV -> WorldPV (photon leaving wrap toward air).
+    // dielectric_metal: photon reflected back; no refraction into WorldPV.
+    // This models the Al-foil wrapping used in the SHiP prototype.
+    auto* reflector = Materials::CreateWrapReflectorSurface();
+    new G4LogicalBorderSurface("WrapRefl_Center",
+                               fWrapCenterPhys, worldPhys, reflector);
+    new G4LogicalBorderSurface("WrapRefl_CapLeft",
+                               fWrapCapLeftPhys, worldPhys, reflector);
+    new G4LogicalBorderSurface("WrapRefl_CapRight",
+                               fWrapCapRightPhys, worldPhys, reflector);
+
     // ── Scintillating bar — one EJ-200 daughter inside each wrap segment ─────
+    // The scintillator sub-bars are tangent in X: no internal Mylar gap at the
+    // center/cap boundaries.  Only the external Y/Z faces and the +/-X end caps
+    // carry the 25 um wrap.
     auto* barCenterSolid = new G4Box("BarCenterSolid",
-                                     kCenterHalfX - kMylarThick,
+                                     kCenterHalfX,
                                      kBarHalfY, kBarHalfZ);
     auto* barCapSolid = new G4Box("BarCapSolid",
-                                  0.5 * kEdgeCapLength - kMylarThick,
+                                  0.5 * kEdgeCapLength,
                                   kBarHalfY, kBarHalfZ);
     auto* barCenterLV = new G4LogicalVolume(barCenterSolid, barMat, "BarCenterLV");
     auto* barCapLeftLV = new G4LogicalVolume(barCapSolid, barMat, "BarCapLeftLV");

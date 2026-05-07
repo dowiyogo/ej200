@@ -18,6 +18,14 @@ G4Material* CreateEJ200();
 // Fresnel equations without requiring a G4OpticalSurface at the air boundary.
 G4Material* CreateMylar();
 
+// Reflective wrapping surface (aluminum foil + black film, Betancourt 2020).
+// dielectric_metal | polished | REFLECTIVITY = 0.85–0.92 (Al foil, 350–800 nm).
+// Apply as G4LogicalBorderSurface(WrapPV → WorldPV) so photons hitting the
+// outer face of any wrap segment are reflected back into the bar.
+// At each wavelength, the photon is reflected with probability R(λ) or
+// absorbed (lost) with probability 1-R(λ). No refraction into WorldPV.
+G4OpticalSurface* CreateWrapReflectorSurface();
+
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"
 // edge wrapping that absorbs all incident photons.

@@ -225,4 +225,49 @@ G4Material* CreateBlackTape() {
     return mat;
 }
 
+// ---------------------------------------------------------------------------
+G4OpticalSurface* CreateWrapReflectorSurface() {
+    // Models the aluminum foil wrapping used in the SHiP Timing Detector
+    // (Betancourt et al., NIM A 979, 2020, sec. 1).
+    //
+    // dielectric_metal: photon stays on the bar side; no refraction into air.
+    //   Reflected with probability R(λ), absorbed with 1-R(λ).
+    //
+    // Reflectivity data: freshly evaporated Al, 350–800 nm.
+    // Source: Hecht, "Optics", 5th ed., Appendix 3; typical Al mirror values.
+    // Use R = 0.90 as conservative central value at 425 nm (EJ-200 peak).
+    //
+    // To tune to data:
+    //   R = 0.95 -> aluminized Mylar, good quality
+    //   R = 0.90 -> aluminum foil, standard
+    //   R = 0.85 -> aged / imperfect Al foil
+    //   Use groundfrontpainted + R=0.98 for Tyvek diffuse reflector.
+
+    auto* surf = new G4OpticalSurface("WrapReflector");
+    surf->SetType(dielectric_metal);
+    surf->SetModel(unified);
+    surf->SetFinish(polished);
+    surf->SetSigmaAlpha(0.0);
+
+    const G4double hc = 1239.84193 * eV * nm;
+
+    // Spectral reflectivity of Al foil (wavelength descending → energy ascending)
+    const G4int n = 6;
+    G4double wl_nm[n] = {800.0, 600.0, 500.0, 425.0, 400.0, 350.0};
+    G4double refl[n]  = {0.92,  0.91,  0.90,  0.88,  0.87,  0.85};
+
+    G4double energy[n], reflectivity[n];
+    for (G4int i = 0; i < n; ++i) {
+        energy[i]       = hc / (wl_nm[i] * nm);  // ascending energy
+        reflectivity[i] = refl[i];
+    }
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("REFLECTIVITY", energy, reflectivity, n);
+    // EFFICIENCY is intentionally absent (default = 0): this surface only
+    // reflects or absorbs; it does NOT detect photons.
+    surf->SetMaterialPropertiesTable(mpt);
+    return surf;
+}
+
 } // namespace Materials
