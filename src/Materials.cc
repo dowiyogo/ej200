@@ -226,32 +226,19 @@ G4Material* CreateBlackTape() {
 }
 
 // ---------------------------------------------------------------------------
-G4OpticalSurface* CreateWrapSkinReflector() {
-    // Reflective surface applied as G4LogicalSkinSurface on the Mylar wrap.
-    // Models aluminum foil wrapping (Betancourt 2020, sec. 1).
+G4OpticalSurface* CreateBarSkinReflector() {
+    // Reflective surface applied to explicit foil panels around the EJ-200 bar.
     //
-    // G4LogicalSkinSurface is used instead of G4LogicalBorderSurface(WrapPV
-    // -> WorldPV) because the mother-daughter topology (WrapPV is daughter of
-    // WorldPV) causes G4OpBoundaryProcess to skip the border surface lookup.
-    // A skin surface on WrapLV has no such limitation for Wrap -> World steps.
-    //
-    // Priority rule (Geant4 source, G4OpBoundaryProcess.cc):
-    //   1. G4LogicalBorderSurface (highest)
-    //   2. G4LogicalSkinSurface
-    // Therefore the border surfaces registered for each SiPM (WrapPV ->
-    // SiPMPhys) still take effect and are NOT overridden by this skin surface.
-    //
-    // The skin surface covers ALL faces of WrapLV. For the SiPM faces, the
-    // WrapPV -> SiPMPhys border surface wins; for all other wrap-air faces,
-    // this reflector applies.
+    // BarPV is a direct WorldLV daughter in fix/geometry-bar-in-world. SiPMs
+    // are BarLV daughters, while non-SiPM faces see separate reflector panels
+    // through G4LogicalBorderSurface(BarPV -> Reflector*PV).
     //
     // Tuning: modify refl[] values to match experimental data.
-    //   R = 0.92 -> aluminized Mylar, premium quality
-    //   R = 0.90 -> aluminum foil, standard (Betancourt 2020 baseline)
+    //   R = 0.99 -> idealized high-quality mirror used for this geometry fix
+    //   R = 0.92 -> aluminized Mylar / premium Al foil
     //   R = 0.85 -> aged/imperfect Al foil
-    //   R = 0.98 + groundfrontpainted -> Tyvek diffuse reflector
 
-    auto* surf = new G4OpticalSurface("WrapSkinReflector");
+    auto* surf = new G4OpticalSurface("BarSkinReflector");
     surf->SetType(dielectric_metal);
     surf->SetModel(unified);
     surf->SetFinish(polished);
@@ -262,7 +249,7 @@ G4OpticalSurface* CreateWrapSkinReflector() {
     // Spectral reflectivity of Al foil (wavelength descending → energy ascending)
     const G4int n = 6;
     G4double wl_nm[n] = {800.0, 600.0, 500.0, 425.0, 400.0, 350.0};
-    G4double refl[n]  = {0.92,  0.91,  0.90,  0.88,  0.87,  0.85};
+    G4double refl[n]  = {0.99,  0.99,  0.99,  0.99,  0.99,  0.99};
 
     G4double energy[n], reflectivity[n];
     for (G4int i = 0; i < n; ++i) {

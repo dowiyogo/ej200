@@ -18,11 +18,9 @@ G4Material* CreateEJ200();
 // Fresnel equations without requiring a G4OpticalSurface at the air boundary.
 G4Material* CreateMylar();
 
-// Reflective wrapping surface applied as G4LogicalSkinSurface on WrapLV.
-// Models aluminum foil (Betancourt 2020): dielectric_metal, R(λ) = 0.85–0.92.
-// Priority over G4LogicalBorderSurface(WrapPV→SiPM) is LOWER for skin,
-// so SiPM border surfaces still take effect normally.
-G4OpticalSurface* CreateWrapSkinReflector();
+// Reflective wrapping surface for explicit reflector panels.
+// Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
+G4OpticalSurface* CreateBarSkinReflector();
 
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"

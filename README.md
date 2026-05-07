@@ -10,6 +10,7 @@ practices from `simple_g4sim_scint_sipm` (Repo2).
 | Volume | Dimensions | Material |
 |---|---|---|
 | EJ-200 bar | 1400 × 60 × 10 mm | `G4_PLASTIC_SC_VINYLTOLUENE` + EJ-200 optical props |
+| Reflector panels | non-SiPM faces | `dielectric_metal` ideal foil, R(λ) = 0.99 |
 | End SiPMs (×16) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 | Top SiPMs (×20) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 
@@ -32,7 +33,7 @@ Global IDs   Face         Count   Description
 | Optical coupling | Air (n=1.0) → TIR at ~39° | Coupling material n=1.58 (no TIR) |
 | PDE | Not applied | Manual Bernoulli trial in `SiPMSD::ProcessHits()` via `GetPDE()` |
 | Wrapping | None / default | `dielectric_dielectric polished` (TIR-based, bar–air interface) |
-| Wrapping reflector | Mylar dielectric (TIR only, ~0% efectivo) | `G4LogicalSkinSurface` Al-foil en WrapLV, R(λ)=0.85–0.92 |
+| Wrapping reflector | Mylar dielectric (TIR-only, inefectivo) | BarPV hijo directo de WorldLV + paneles reflectores explícitos |
 | Top SiPMs | Only 2nd half of bar (bug) | Full bar length (−665 to +665 mm) |
 | EventAction | Bug (AddEndLeftHit unconditional) | SiPMSD → EventAction → RunAction |
 | Materials class | Inline in DetectorConstruction | Separate `Materials` namespace |
@@ -163,9 +164,10 @@ Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
 - **Change SiPM count/positions**: edit `kNTopSiPMs` and `TopSiPMCenterX()` in
   `DetectorConstruction.hh/.cc`.
 - **Change particle/energy**: edit `macros/run.mac` or use interactive `/gun/` commands.
-- **Tune wrapping reflectivity**: edit `CreateWrapSkinReflector()` in
+- **Tune wrapping reflectivity**: edit `CreateBarSkinReflector()` in
   `src/Materials.cc`. Change `refl[]` values:
-  - `0.85–0.92`: Al foil (Betancourt 2020 SHiP prototype baseline)
+  - `0.99`: idealized high-quality reflector used by the current geometry
+  - `0.85–0.92`: Al foil range for conservative studies
   - `0.95`: aluminized Mylar
   - `0.98` + `groundfrontpainted`: Tyvek diffuse reflector
 - **Add 2D SiPM array on top**: extend the top SiPM placement loop to use both X and Z.
