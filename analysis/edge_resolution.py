@@ -104,11 +104,20 @@ def lightyield_vs_x(event_face):
     return prof, event_counts
 
 
-def dead_fraction_by_x(event_counts, expected_events_per_position):
+def dead_fraction_by_x(event_counts, expected_events_per_position, expected_x=None):
     rows = []
-    for x_val, grp in event_counts.groupby("gun_x_mm", sort=True):
+    if expected_x is None:
+        x_values = sorted(event_counts["gun_x_mm"].unique())
+    else:
+        x_values = list(expected_x)
+
+    grouped = dict(tuple(event_counts.groupby("gun_x_mm", sort=True))) if len(event_counts) else {}
+    for x_val in x_values:
+        grp = grouped.get(x_val, pd.DataFrame())
         n_missing = expected_events_per_position - len(grp)
-        dead_known = ((grp["npe_left"] <= 0) | (grp["npe_right"] <= 0)).sum()
+        dead_known = 0
+        if len(grp) > 0:
+            dead_known = ((grp["npe_left"] <= 0) | (grp["npe_right"] <= 0)).sum()
         dead = max(0, n_missing) + int(dead_known)
         rows.append({
             "x_mm": float(x_val),
@@ -228,13 +237,31 @@ def main():
     parser.add_argument("root_files", nargs="*", help="ROOT files (default: photon_hits_run*.root)")
     parser.add_argument("--label", default="edge", help="Label stored in CSV metadata")
     parser.add_argument("--events-per-position", type=int, default=500)
+    parser.add_argument("--x-min", type=float, default=600.0,
+                        help="Expected scan minimum x [mm], used to keep fully dead positions in the CSV")
+    parser.add_argument("--x-max", type=float, default=700.0,
+                        help="Expected scan maximum x [mm], used to keep fully dead positions in the CSV")
+    parser.add_argument("--x-step", type=float, default=10.0,
+                        help="Expected scan x step [mm], used to keep fully dead positions in the CSV")
     parser.add_argument("--step-size", default="100 MB")
     args = parser.parse_args()
 
     root_files = args.root_files or default_root_files()
+    expected_x = np.arange(args.x_min, args.x_max + 0.5 * args.x_step, args.x_step)
     if not root_files:
-        print("ERROR: no ROOT files found (expected photon_hits_run*.root).")
-        sys.exit(1)
+        print("WARNING: no ROOT files found; writing all expected positions as fully dead.")
+        summary = pd.DataFrame({
+            "x_mm": expected_x,
+            "sigma_end_ps": np.nan,
+            "sigma_top_ps": np.nan,
+            "npe_left": 0.0,
+            "npe_right": 0.0,
+            "npe_top": 0.0,
+            "frac_dead_events": 1.0,
+        })
+        summary.to_csv("edge_summary.csv", index=False)
+        print("  -> edge_summary.csv")
+        return
 
     print(f"Loading {len(root_files)} ROOT file(s)")
     event_face = load_edge_event_data(root_files, step_size=args.step_size)
@@ -242,9 +269,11 @@ def main():
     res_end = resolution_vs_x(event_face, [FACE_LEFT, FACE_RIGHT])
     res_top = resolution_vs_x(event_face, [FACE_TOP])
     light, event_counts = lightyield_vs_x(event_face)
-    dead = dead_fraction_by_x(event_counts, args.events_per_position)
+    dead = dead_fraction_by_x(event_counts, args.events_per_position, expected_x=expected_x)
 
-    summary = pd.DataFrame({"x_mm": sorted(event_face["gun_x_mm"].unique())})
+    observed_x = sorted(event_face["gun_x_mm"].unique())
+    x_values = sorted(set(float(x) for x in expected_x).union(float(x) for x in observed_x))
+    summary = pd.DataFrame({"x_mm": x_values})
     for df, cols in [
         (res_end.rename(columns={"sigma_ns": "sigma_end_ns"}), ["x_mm", "sigma_end_ns"]),
         (res_top.rename(columns={"sigma_ns": "sigma_top_ns"}), ["x_mm", "sigma_top_ns"]),
@@ -254,6 +283,9 @@ def main():
         summary = summary.merge(df[cols], on="x_mm", how="left")
     summary["sigma_end_ps"] = summary["sigma_end_ns"] * 1e3
     summary["sigma_top_ps"] = summary["sigma_top_ns"] * 1e3
+    for col in ["npe_left", "npe_right", "npe_top"]:
+        summary[col] = summary[col].fillna(0.0)
+    summary["frac_dead_events"] = summary["frac_dead_events"].fillna(1.0)
     summary["label"] = args.label
 
     breakdown_x, threshold_ns = find_breakdown(res_end)
