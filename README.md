@@ -10,6 +10,7 @@ practices from `simple_g4sim_scint_sipm` (Repo2).
 | Volume | Dimensions | Material |
 |---|---|---|
 | EJ-200 bar | 1400 × 60 × 10 mm | `G4_PLASTIC_SC_VINYLTOLUENE` + EJ-200 optical props |
+| Reflector panels | non-SiPM faces | `dielectric_metal` high-quality reflector, R(λ) = 0.98 |
 | End SiPMs (×16) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 | Top SiPMs (×20) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
 
@@ -32,6 +33,7 @@ Global IDs   Face         Count   Description
 | Optical coupling | Air (n=1.0) → TIR at ~39° | Coupling material n=1.58 (no TIR) |
 | PDE | Not applied | Manual Bernoulli trial in `SiPMSD::ProcessHits()` via `GetPDE()` |
 | Wrapping | None / default | `dielectric_dielectric polished` (TIR-based, bar–air interface) |
+| Wrapping reflector | Mylar dielectric (TIR-only, inefectivo) | BarPV hijo directo de WorldLV + paneles reflectores explícitos, R(λ)=0.98 |
 | Top SiPMs | Only 2nd half of bar (bug) | Full bar length (−665 to +665 mm) |
 | EventAction | Bug (AddEndLeftHit unconditional) | SiPMSD → EventAction → RunAction |
 | Materials class | Inline in DetectorConstruction | Separate `Materials` namespace |
@@ -78,8 +80,25 @@ Scans step along the **X axis** (longitudinal direction).
 # Full longitudinal scan (21 x positions × 200 events each, −650 → +650 mm)
 ./ej200_bar_sim -m macros/scan.mac
 
+# Edge scan: 11 positions × 500 events from x=+600 to +700 mm
+./ej200_bar_sim -m macros/scan_edge.mac
+python analysis/edge_resolution.py
+
+# Compare edge wrapping modes in the last 5 cm of the bar
+./ej200_bar_sim -m macros/scan_edge_air.mac
+./ej200_bar_sim -m macros/scan_edge_black.mac
+python analysis/compare_edge_wraps.py mylar air black
+
 # Interactive visualisation
 ./ej200_bar_sim
+
+# Top-readout event displays for a muon between top SiPMs 9 and 10
+./ej200_bar_sim -m macros/event_display_top_midpoint.mac
+./ej200_bar_sim -m macros/event_display_top_lateral.mac
+./ej200_bar_sim -m macros/event_display_top_3d.mac
+
+# Batch HepRep export for later HepRApp inspection
+./ej200_bar_sim -m macros/event_display_top_batch.mac
 ```
 
 For longitudinal scans, prefer `/muon/gunX` over `/gun/position` in macros so
@@ -98,6 +117,19 @@ python analysis/analyze.py photon_hits.root
 
 # Temporal resolution vs longitudinal position (requires scan data)
 python analysis/resolution_vs_x.py photon_hits.root
+
+# Edge timing/light-yield study
+python analysis/edge_resolution.py photon_hits_run*.root --label mylar
+
+# Edge-wrap comparison from three directories containing edge_summary.csv
+python analysis/compare_edge_wraps.py mylar air black
+
+# Top-readout cross-talk for /muon/midpointSiPMs 9 10 data
+python analysis/topreadout_crosstalk.py photon_hits_run*.root
+
+# Sum-of-N electronics emulation (FastIC+ threshold in p.e.)
+python analysis/grouped_resolution.py photon_hits_merged.root --threshold 4
+root -l -q 'analysis/grouped_resolution.C("photon_hits_merged.root",4)'
 ```
 
 ### `analyze.py` outputs
@@ -132,4 +164,11 @@ Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
 - **Change SiPM count/positions**: edit `kNTopSiPMs` and `TopSiPMCenterX()` in
   `DetectorConstruction.hh/.cc`.
 - **Change particle/energy**: edit `macros/run.mac` or use interactive `/gun/` commands.
+- **Tune wrapping reflectivity**: edit `CreateBarSkinReflector()` in
+  `src/Materials.cc`. Change `refl[]` values:
+  - `0.98`: high-reflectivity fallback used by the current explicit-panel
+    geometry to keep end-SiPM yield above threshold
+  - `0.95`: high-quality foil / aluminized Mylar compromise
+  - `0.85–0.92`: Al foil range (Betancourt 2020 SHiP prototype baseline)
+  - `0.98` + `groundfrontpainted`: Tyvek diffuse reflector variant
 - **Add 2D SiPM array on top**: extend the top SiPM placement loop to use both X and Z.

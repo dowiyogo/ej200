@@ -15,3 +15,15 @@ class SteppingAction : public G4UserSteppingAction {
 
     void UserSteppingAction(const G4Step*) override;
 };
+
+// Acceso externo a los contadores de diagnóstico de frontera.
+// Definidos en SteppingAction.cc; thread-safe (std::atomic).
+// Historical accessor names are kept for compatibility with diag scripts.
+namespace BoundaryCensus {
+    long long GetBarToMylar();
+    long long GetMylarToWorld();
+    long long GetMylarReflected();
+    long long GetMylarToSiPM();
+    long long GetKilledWorld();
+    void      Reset();
+}

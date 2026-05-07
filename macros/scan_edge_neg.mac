@@ -1,0 +1,21 @@
+# ============================================================
+# scan_edge_neg.mac — symmetric negative-edge x-scan (10 mm step)
+# Usage: ./ej200_bar_sim -m macros/scan_edge_neg.mac
+#
+# Scans x from -700 mm to -600 mm in 10 mm steps (11 positions,
+# 500 events each) for a left/right symmetry sanity check.
+# ============================================================
+
+/control/verbose 0
+/run/verbose     0
+/event/verbose   0
+/tracking/verbose 0
+
+/run/initialize
+
+/gun/particle  mu-
+/gun/energy    1 GeV
+/muon/angle    0
+
+# 11 positions: -700, -690, -680, ..., -600 mm
+/control/loop macros/scan_edge_step.mac xpos -700 -600 10

@@ -1,0 +1,3 @@
+# Single step of edge scan — called by scan_edge.mac
+/muon/gunX {xpos} mm
+/run/beamOn 500
