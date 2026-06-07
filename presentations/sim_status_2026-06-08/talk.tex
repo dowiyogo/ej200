@@ -1,0 +1,181 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme{default}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{shipblue}{RGB}{20,74,130}
+\definecolor{warningorange}{RGB}{210,105,30}
+\setbeamercolor{structure}{fg=shipblue}
+\setbeamercolor{alerted text}{fg=warningorange}
+\setbeamertemplate{navigation symbols}{}
+
+\newcommand{\results}{../../results/scan_2026-06-08}
+
+\title{SHiP Timing Detector\\Estado de la simulación Geant4}
+\author{René Ríos (ULS)}
+\institute{Revisión de supervisor / SHiP Collaboration Meeting}
+\date{Junio 2026 \quad Geant4 11.4.0}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Detector y configuraciones de lectura}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{itemize}
+      \item Barra activa: EJ-204, $1400\times60\times10$ mm$^3$.
+      \item End-left: IDs 0--7, cara $-X$.
+      \item End-right: IDs 8--15, cara $+X$.
+      \item Top: IDs 16--35, cara superior.
+      \item Comparación: \textbf{Side/End readout} frente a \textbf{Top readout}.
+    \end{itemize}
+    \column{0.42\textwidth}
+    \begin{block}{Scan preliminar}
+      $\mu^-$ de 1 GeV, incidencia vertical, 7 posiciones entre
+      $x=-650$ y $+650$ mm, 200 eventos por posición.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Óptica y punto abierto del wrapping}
+  \begin{itemize}
+    \item Modelo actual: paneles reflectores explícitos alrededor de las caras no instrumentadas.
+    \item Reflectividad implementada: $R(\lambda)=0.98$, superficie pulida.
+    \item Este modelo mantiene separadas las superficies ópticas de los SiPM.
+    \item El wrapping físico debe cerrarse contra el montaje real:
+      \begin{itemize}
+        \item Tyvek: reflexión predominantemente difusa/Lambertiana.
+        \item Mylar aluminizado: reflexión más especular y menor reflectividad típica.
+      \end{itemize}
+  \end{itemize}
+  \begin{alertblock}{Impacto}
+    La elección difuso/especular afecta la dispersión de caminos y, por tanto,
+    tanto el yield como la resolución temporal.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Baseline física por material}
+  \centering
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Material & Yield & $\tau_r$ & $\tau_d$ & Aten. & $\lambda_{\max}$\\
+             & ph/MeV & ns & ns & cm & nm\\
+    \midrule
+    EJ-204 & 10400 & 0.7 & 1.8 & 160 & 408\\
+    EJ-200 & 10000 & 0.9 & 2.1 & 380 & 425\\
+    EJ-230 & 9700  & 0.5 & 1.5 & 120 & 391\\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.6cm}
+  \begin{itemize}
+    \item EJ-204 queda activo por defecto por corresponder al test beam de abril de 2026.
+    \item Corrección clave: longitud de atenuación de EJ-204 = \textbf{160 cm}.
+    \item El material es seleccionable con \texttt{/det/scintillatorMaterial}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Rise time finito: corrección del sesgo temporal}
+  \[
+    I(t) \propto e^{-t/\tau_d}-e^{-t/\tau_r}, \qquad t>0
+  \]
+  \begin{itemize}
+    \item Antes: sin \texttt{SCINTILLATIONRISETIME1} efectivo, el frente de emisión era instantáneo en $t_0$.
+    \item Ahora: Geant4 muestrea el perfil biexponencial con $(\tau_r,\tau_d)$ del datasheet.
+    \item El flanco temprano determina FPT y CFD@14\%; un frente artificialmente rápido sesga $\sigma_t$.
+    \item El inicio de cada run registra material, yield, rise, decay, atenuación, pico espectral y estado del flag.
+    \item El CTest \texttt{physics\_baseline\_check} protege la baseline.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Yield detectado vs posición}
+  \centering
+  \includegraphics[width=0.88\textwidth]{\results/yield_vs_position.pdf}
+
+  \scriptsize Los puntos cercanos a $\pm650$ mm muestran una fuerte mejora del extremo próximo;
+  es un efecto geométrico preliminar que requiere validación contra el montaje físico.
+\end{frame}
+
+\begin{frame}{Resolución temporal intrínseca}
+  \centering
+  \includegraphics[width=0.72\textwidth]{\results/sigma_intrinsic_vs_position.pdf}
+  \begin{alertblock}{Advertencia}
+    \small $\sigma_t$ es \textbf{intrínseco}: run con jitter configurado a 0.
+    No incluye SPTR ni electrónica; es una cota inferior y aún no es comparable
+    con 250 ps del test beam.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Eficiencia de detección}
+  \centering
+  \includegraphics[width=0.84\textwidth]{\results/efficiency_vs_position.pdf}
+
+  \scriptsize Definición usada por el proyecto:
+  $100\times N_{\mathrm{fotones\ detectados}}/N_{\mathrm{fotones\ de\ centelleo\ generados}}$.
+\end{frame}
+
+\begin{frame}{Tabla resumen preliminar}
+  \centering
+  \scriptsize
+  \begin{tabular}{rrrrrrr}
+    \toprule
+    $x$ [mm] & End-L & End-R & Top & Efic. [\%] & $\sigma_{\rm End}$ [ps] & $\sigma_{\rm Top}$ [ps]\\
+    \midrule
+    -650 & 918.4 & 4.5 & 283.0 & 6.05 & 250.5 & 44.2\\
+    -350 & 82.6 & 7.3 & 300.1 & 1.96 & 266.9 & 17.4\\
+    -100 & 28.7 & 15.1 & 343.8 & 1.93 & 160.2 & 40.9\\
+       0 & 20.6 & 20.0 & 303.1 & 1.72 & 190.4 & 15.3\\
+     100 & 14.3 & 27.9 & 338.5 & 1.93 & 177.9 & 11.0\\
+     350 & 7.1 & 81.1 & 291.7 & 1.96 & 169.8 & 18.0\\
+     650 & 4.2 & 930.0 & 289.6 & 6.06 & 234.6 & 13.2\\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.4cm}
+  \begin{alertblock}{Estimador}
+    End: $(\mathrm{FPT}_L+\mathrm{FPT}_R)/2$; Top: primer fotoelectrón superior.
+    No hay waveform para construir CFD@14\% en esta salida.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Lectura física preliminar}
+  \begin{itemize}
+    \item \textbf{Top readout}: SiPMs a milímetros de la traza capturan los primeros
+      fotones antes de acumular dispersión por propagación; $\sigma_t$ es menor y
+      relativamente estable.
+    \item \textbf{End readout}: la resolución se degrada por atenuación y dispersión
+      de caminos; el extremo próximo domina el yield.
+    \item \textbf{Trade-off EJ-204}: atenuación de 160 cm, frente a 380 cm de EJ-200,
+      implica mayor caída longitudinal del yield de end, a cambio de centelleo más
+      rápido ($0.7/1.8$ ns).
+    \item Los yields no deben igualarse a la referencia EJ-200 sin recalibrar material
+      y reflector.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Próximos pasos y puntos abiertos}
+  \begin{itemize}
+    \item EXEC\_02b: añadir SPTR $\oplus$ jitter de electrónica al ToA, tras confirmar
+      el modelo Hamamatsu real y la procedencia del SPTR.
+    \item Emular FastIC+: 1 LSB = 250 ps, Type 1/2 y cortes $\geq300/\geq500$ LSB.
+    \item Decidir y calibrar reflector difuso frente a especular.
+    \item Aclarar la inconsistencia del factor $1/\sqrt{8}$ en la combinación de canales.
+    \item Repetir el scan con mayor estadística y configuración validada contra test beam.
+  \end{itemize}
+  \begin{block}{Composición futura}
+    \[
+      \sigma_{\rm total} =
+      \sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+\sigma_{\rm elec}^2}
+    \]
+  \end{block}
+\end{frame}
+
+\end{document}

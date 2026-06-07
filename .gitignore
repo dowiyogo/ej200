@@ -42,6 +42,7 @@ ej200_bar_sim
 *.log
 *.tmp
 *.bak
+results/
 
 # Diagnostic script outputs
 diag/yield_audit_report.txt
@@ -64,6 +65,10 @@ analysis/*.svg
 *.jpg
 *.jpeg
 *.svg
+*.aux
+*.nav
+*.snm
+*.toc
 
 # =========================
 # Python cache
