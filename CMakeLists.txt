@@ -19,10 +19,16 @@ file(COPY macros DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 enable_testing()
 add_test(NAME smoke_test COMMAND ej200_bar_sim -m macros/test.mac)
 set_tests_properties(smoke_test PROPERTIES
-    PASS_REGULAR_EXPRESSION "=== EJ-200 Bar Run Summary ==="
+    PASS_REGULAR_EXPRESSION "=== EJ Scintillator Bar Run Summary ==="
     TIMEOUT 120)
 
 add_test(NAME edge_scan_smoke COMMAND ej200_bar_sim -m macros/scan_edge.mac)
 set_tests_properties(edge_scan_smoke PROPERTIES
-    PASS_REGULAR_EXPRESSION "=== EJ-200 Bar Run Summary ==="
+    PASS_REGULAR_EXPRESSION "=== EJ Scintillator Bar Run Summary ==="
     TIMEOUT 600)
+
+add_executable(physics_baseline_check tests/physics_baseline_check.cc ${sources} ${headers})
+target_include_directories(physics_baseline_check PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(physics_baseline_check ${Geant4_LIBRARIES})
+
+add_test(NAME physics_baseline_check COMMAND physics_baseline_check)
