@@ -9,17 +9,17 @@ namespace Materials {
 
 // EJ-204 fast-timing plastic scintillator (PVT base).
 // Emission peak 408 nm, n=1.58, yield=10 400 ph/MeV,
-// decay=1.8 ns, bulk attenuation length=160 cm.
+// rise=0.7 ns, decay=1.8 ns, bulk attenuation length=160 cm.
 G4Material* CreateEJ204();
 
 // EJ-200 plastic scintillator (PVT base).
 // Full emission spectrum (peak 425 nm), n=1.58,
-// yield=10 000 ph/MeV, tau1=2.1 ns, bulk att. length=3.8 m.
+// yield=10 000 ph/MeV, rise=0.9 ns, decay=2.1 ns, bulk att. length=3.8 m.
 G4Material* CreateEJ200();
 
 // EJ-230 fast-timing plastic scintillator (PVT base).
 // Emission peak 391 nm, n=1.58, yield=9700 ph/MeV,
-// decay=1.5 ns, bulk attenuation length=120 cm.
+// rise=0.5 ns, decay=1.5 ns, bulk attenuation length=120 cm.
 G4Material* CreateEJ230();
 
 // Mylar wrapping film (G4_MYLAR base).

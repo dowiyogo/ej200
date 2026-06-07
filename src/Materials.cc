@@ -31,6 +31,7 @@ void AddScintillatorProperties(G4Material* mat,
                                G4double attenuation,
                                G4double peakWavelength,
                                G4double yield,
+                               G4double rise,
                                G4double decay) {
     const G4int nOpt = 4;
     G4double eOpt[nOpt] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
@@ -52,6 +53,7 @@ void AddScintillatorProperties(G4Material* mat,
     mpt->AddProperty("SCINTILLATIONCOMPONENT1", photonE, spectrum, nEm);
     mpt->AddConstProperty("SCINTILLATIONYIELD", yield);
     mpt->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    mpt->AddConstProperty("SCINTILLATIONRISETIME1", rise);
     mpt->AddConstProperty("SCINTILLATIONTIMECONSTANT1", decay);
     mpt->AddConstProperty("SCINTILLATIONYIELD1", 1.0);
     mat->SetMaterialPropertiesTable(mpt);
@@ -87,7 +89,8 @@ G4Material* CreateEJ204() {
     G4double photonE[nEm], spectrum[nEm];
     BuildSpectrum(wl_nm, relOut, nEm, photonE, spectrum);
     AddScintillatorProperties(
-        mat, photonE, spectrum, nEm, 160.0 * cm, 408.0 * nm, 10400.0 / MeV, 1.8 * ns);
+        mat, photonE, spectrum, nEm, 160.0 * cm, 408.0 * nm,
+        10400.0 / MeV, 0.7 * ns, 1.8 * ns);
     return mat;
 }
 
@@ -144,7 +147,8 @@ G4Material* CreateEJ200() {
     G4double photonE[nEm], spectrum[nEm];
     BuildSpectrum(wl_nm, relOut, nEm, photonE, spectrum);
     AddScintillatorProperties(
-        mat, photonE, spectrum, nEm, 380.0 * cm, 425.0 * nm, 10000.0 / MeV, 2.1 * ns);
+        mat, photonE, spectrum, nEm, 380.0 * cm, 425.0 * nm,
+        10000.0 / MeV, 0.9 * ns, 2.1 * ns);
     return mat;
 }
 
@@ -167,7 +171,8 @@ G4Material* CreateEJ230() {
     G4double photonE[nEm], spectrum[nEm];
     BuildSpectrum(wl_nm, relOut, nEm, photonE, spectrum);
     AddScintillatorProperties(
-        mat, photonE, spectrum, nEm, 120.0 * cm, 391.0 * nm, 9700.0 / MeV, 1.5 * ns);
+        mat, photonE, spectrum, nEm, 120.0 * cm, 391.0 * nm,
+        9700.0 / MeV, 0.5 * ns, 1.5 * ns);
     return mat;
 }
 
