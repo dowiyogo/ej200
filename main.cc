@@ -1,8 +1,8 @@
 #include "ActionInitialization.hh"
 #include "DetectorConstruction.hh"
+#include "Materials.hh"
 
 #include "FTFP_BERT.hh"
-#include "G4OpticalParameters.hh"
 #include "G4OpticalPhysics.hh"
 #include "G4RunManagerFactory.hh"
 #include "G4UIExecutive.hh"
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     auto* physics = new FTFP_BERT(0);
     // Required for G4Scintillation to sample the configured biexponential
     // SCINTILLATIONRISETIME1/SCINTILLATIONTIMECONSTANT1 emission profile.
-    G4OpticalParameters::Instance()->SetScintFiniteRiseTime(true);
+    Materials::EnableFiniteScintillationRiseTime();
     physics->RegisterPhysics(new G4OpticalPhysics(0));
 
     runManager->SetUserInitialization(new DetectorConstruction());

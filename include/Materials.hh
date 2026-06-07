@@ -7,6 +7,10 @@
 // --------------------------------------------------------------------------
 namespace Materials {
 
+// Enable Geant4's biexponential scintillation timing sampler so each
+// material's SCINTILLATIONRISETIME1 property is honored.
+void EnableFiniteScintillationRiseTime();
+
 // EJ-204 fast-timing plastic scintillator (PVT base).
 // Emission peak 408 nm, n=1.58, yield=10 400 ph/MeV,
 // rise=0.7 ns, decay=1.8 ns, bulk attenuation length=160 cm.

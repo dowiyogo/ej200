@@ -4,6 +4,7 @@
 #include "G4Material.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4NistManager.hh"
+#include "G4OpticalParameters.hh"
 #include "G4SystemOfUnits.hh"
 
 #include <algorithm>
@@ -71,6 +72,10 @@ void BuildSpectrum(const G4double* wavelengths,
     }
 }
 } // namespace
+
+void EnableFiniteScintillationRiseTime() {
+    G4OpticalParameters::Instance()->SetScintFiniteRiseTime(true);
+}
 
 // ---------------------------------------------------------------------------
 G4Material* CreateEJ204() {
