@@ -1,14 +1,60 @@
 #include "RunAction.hh"
+#include "DetectorConstruction.hh"
 #include "SteppingAction.hh"
 
+#include <algorithm>
 #include <sstream>
 #include <iomanip>
 #include "G4AccumulableManager.hh"
 #include "G4AnalysisManager.hh"
+#include "G4Material.hh"
+#include "G4MaterialPropertiesTable.hh"
 #include "G4OpticalParameters.hh"
+#include "G4PhysicsVector.hh"
 #include "G4Run.hh"
+#include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4ios.hh"
+
+namespace {
+void LogActiveScintillator() {
+    auto* detector = dynamic_cast<const DetectorConstruction*>(
+        G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    if (detector == nullptr) return;
+
+    const auto* material = detector->GetActiveScintillatorMaterial();
+    const auto* mpt = material ? material->GetMaterialPropertiesTable() : nullptr;
+    if (mpt == nullptr) return;
+
+    const auto* attenuation = mpt->GetProperty("ABSLENGTH");
+    const auto* emission = mpt->GetProperty("SCINTILLATIONCOMPONENT1");
+    G4double peakWavelength = 0.0;
+    if (emission != nullptr && emission->GetVectorLength() > 0) {
+        std::size_t peakIndex = 0;
+        for (std::size_t i = 1; i < emission->GetVectorLength(); ++i) {
+            if ((*emission)[i] > (*emission)[peakIndex]) peakIndex = i;
+        }
+        peakWavelength = 1239.84193 * eV * nm / emission->Energy(peakIndex);
+    }
+
+    G4cout
+        << "\n=== Active Scintillator Baseline ==="
+        << "\n  Material              : " << detector->GetScintillatorMaterial()
+        << "\n  Yield                 : "
+        << mpt->GetConstProperty("SCINTILLATIONYIELD") * MeV << " ph/MeV"
+        << "\n  Rise time tau_r       : "
+        << mpt->GetConstProperty("SCINTILLATIONRISETIME1") / ns << " ns"
+        << "\n  Decay time tau_d      : "
+        << mpt->GetConstProperty("SCINTILLATIONTIMECONSTANT1") / ns << " ns"
+        << "\n  Attenuation length    : "
+        << (attenuation ? (*attenuation)[0] / cm : 0.0) << " cm"
+        << "\n  Emission peak lambda  : " << peakWavelength / nm << " nm"
+        << "\n  Finite rise time      : "
+        << (G4OpticalParameters::Instance()->GetScintFiniteRiseTime() ? "enabled" : "DISABLED")
+        << "\n====================================="
+        << G4endl;
+}
+} // namespace
 
 RunAction::RunAction() {
     if (IsMaster()) {
@@ -56,6 +102,7 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     am->OpenFile();
 
     G4OpticalParameters::Instance()->SetScintTrackSecondariesFirst(true);
+    if (IsMaster()) LogActiveScintillator();
 }
 
 void RunAction::EndOfRunAction(const G4Run* run) {
@@ -77,7 +124,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
     const G4double eff = (nSc > 0) ? 100.0 * nDet / nSc : 0.0;
 
     G4cout
-        << "\n=== EJ-200 Bar Run Summary ==="
+        << "\n=== EJ Scintillator Bar Run Summary ==="
         << "\n  Run ID                : " << run->GetRunID()
         << "\n  Events run            : " << nEvents
         << "\n  Events with ≥1 hit    : " << fNEventsWithHits.GetValue()

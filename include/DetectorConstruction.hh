@@ -6,6 +6,7 @@
 #include <map>
 
 class G4LogicalVolume;
+class G4Material;
 class G4VPhysicalVolume;
 class G4GenericMessenger;
 
@@ -14,7 +15,7 @@ class G4GenericMessenger;
 //
 // Volume hierarchy:
 //   WorldPV (air)
-//     ├─ BarPV (EJ-200)
+//     ├─ BarPV (selectable EJ-204/EJ-200/EJ-230; default EJ-204)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × N   (global IDs 16…15+N)
@@ -29,6 +30,7 @@ class G4GenericMessenger;
 //
 // UI command (available after /run/initialize):
 //   /det/topSiPMPitch <value> mm   — triggers ReinitializeGeometry()
+//   /det/scintillatorMaterial EJ204|EJ200|EJ230
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
 // Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
@@ -55,6 +57,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4double GetTopSiPMPitch() const { return fTopSiPMPitch; }
     G4int    GetNTopSiPMs()    const { return fNTopSiPMs; }
 
+    // Active scintillator selector — triggers geometry rebuild
+    void        SetScintillatorMaterial(G4String materialName);
+    G4String    GetScintillatorMaterial() const { return fScintillatorName; }
+    G4Material* GetActiveScintillatorMaterial() const { return fActiveScintillator; }
+
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
 
@@ -72,6 +79,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
     G4double           fTopSiPMPitch = 70.0;  // G4 internal units (1 = 1 mm)
     G4int              fNTopSiPMs    = 20;
+    G4String           fScintillatorName = "EJ204";
+    G4Material*         fActiveScintillator = nullptr;
 
     G4GenericMessenger* fMessenger = nullptr;
 

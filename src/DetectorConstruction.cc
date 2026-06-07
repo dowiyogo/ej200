@@ -14,8 +14,10 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
+#include "G4ios.hh"
 
 #include <algorithm>
+#include <cctype>
 #include <string>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
@@ -84,6 +86,12 @@ DetectorConstruction::DetectorConstruction() {
     cmd.SetParameterName("pitch", false);
     cmd.SetRange("pitch > 0");
 
+    auto& matCmd = fMessenger->DeclareMethod(
+        "scintillatorMaterial",
+        &DetectorConstruction::SetScintillatorMaterial,
+        "Set active scintillator: EJ204 (default), EJ200, or EJ230.");
+    matCmd.SetParameterName("material", false);
+
     fMessenger->DeclareMethod(
         "edgeWrap",
         &DetectorConstruction::SetEdgeWrapMode,
@@ -106,6 +114,27 @@ void DetectorConstruction::SetTopSiPMPitch(G4double pitchMm) {
     }
 }
 
+void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
+    std::transform(materialName.begin(), materialName.end(), materialName.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::toupper(ch)); });
+    materialName.erase(
+        std::remove_if(materialName.begin(), materialName.end(),
+                       [](unsigned char ch) { return ch == '-' || ch == '_' || ch == ' '; }),
+        materialName.end());
+
+    if (materialName != "EJ204" && materialName != "EJ200" && materialName != "EJ230") {
+        G4cerr << "[DetectorConstruction] Unknown /det/scintillatorMaterial \""
+               << materialName << "\". Use EJ204, EJ200, or EJ230.\n";
+        return;
+    }
+    if (materialName == fScintillatorName) return;
+
+    fScintillatorName = materialName;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
 void DetectorConstruction::SetEdgeWrapMode(G4String mode) {
     G4cout << "[DetectorConstruction] /det/edgeWrap " << mode
@@ -118,7 +147,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     // ── Materials ────────────────────────────────────────────────────────────
     G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
-    G4Material* barMat   = Materials::CreateEJ200();
+    if (fScintillatorName == "EJ200") {
+        fActiveScintillator = Materials::CreateEJ200();
+    } else if (fScintillatorName == "EJ230") {
+        fActiveScintillator = Materials::CreateEJ230();
+    } else {
+        fActiveScintillator = Materials::CreateEJ204();
+    }
+    G4Material* barMat   = fActiveScintillator;
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
 
     // Air RINDEX required for optical-photon tracking
