@@ -88,9 +88,55 @@
     \item El flanco temprano fija el cruce CFD@14\%; por ello el rise time
       efectivo es crítico para una $\sigma_t$ defendible.
     \item Sin waveform, CFD@14\% se aproxima por el fotoelectrón
-      $k=\mathrm{round}(0.14N_{\rm pe})$; FPT queda como cross-check.
+      $k=\mathrm{round}(0.14N_{\rm pe})$; no es un cruce sobre un pulso.
     \item End usa $(t_L+t_R)/2$ y exige al menos 10 PE en cada lado.
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Definición de la resolución temporal}
+  \small
+  \begin{block}{Observable por evento: proxy CFD@14\%}
+    Para cada grupo se ordenan los tiempos de todos los PE detectados y se toma
+    $t_{14}=t_{(k)}$, con
+    $k=\max[1,\mathrm{round}(0.14N_{\rm pe})]$.
+    El 14\% se refiere al \textbf{total de PE detectados en ese grupo y evento},
+    no al pico de un pulso reconstruido. Es un proxy de CFD; no modela todavía
+    el CFD de FastIC+ ni el análisis de datos.
+  \end{block}
+  \begin{itemize}
+    \item End: $t_{\rm End}=(t_{14,L}+t_{14,R})/2$, con
+      $L=$ IDs 0--7 y $R=$ IDs 8--15; se exige $N_{\rm pe,L},N_{\rm pe,R}\geq10$
+      en cada evento.
+    \item Top: $t_{\rm Top}=t_{14}$ del conjunto agregado de arribos en IDs 16--35;
+      se exige al menos un PE.
+    \item $N_{\rm eff}$ es el número de eventos que sobrevive estos cortes.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Definición operativa de $\sigma_t$ y alcance}
+  \small
+  \begin{itemize}
+    \item Para cada distribución de $t_{\rm End}$ o $t_{\rm Top}$ se ajusta el
+      \textbf{core gaussiano}: histograma de 100 bins centrado en la mediana,
+      rango $\pm8\sigma_{\rm robusta}$, con
+      $\sigma_{\rm robusta}=1.4826\,\mathrm{MAD}$, y hasta 4 ajustes iterativos
+      en $\pm2\sigma$.
+    \item Se cita $\sigma_t=\sigma_{\rm fit}\pm\delta\sigma_{\rm fit}$ y
+      $\chi^2/\mathrm{ndf}$. RMS y FPT (primer PE) son controles; si el fit falla,
+      el código cae a RMS y marca $\chi^2/\mathrm{ndf}=-1$.
+    \item Las curvas plegadas concatenan eventos de $+|x|$ y $-|x|$ y
+      \textbf{vuelven a ajustar}. End se considera fiable cuando el yield medio
+      de ambos lados es $\geq10$ PE: en este scan, $|x|\leq200$ mm.
+    \item Run: $\mu^-$ 1 GeV, EJ-204, rise time finito, 10\,000 eventos/posición,
+      jitter de sensor/electrónica = 0.
+  \end{itemize}
+  \begin{alertblock}{Caveat duro}
+    $\sigma_t$ mostrado es \textbf{intrínseco}: centelleo biexponencial,
+    dispersión óptica, estadística de fotones y estimador.
+    $\sigma_{\rm total}=\sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+
+    \sigma_{\rm elec}^2}$; aquí solo se muestra $\sigma_{\rm intr}$, aún no
+    comparable con los 250 ps del test beam.
+  \end{alertblock}
 \end{frame}
 
 \begin{frame}{Yield y validación geométrica}
@@ -105,7 +151,8 @@
   \centering
   \includegraphics[width=0.75\textwidth]{\results/sigma_cfd_folded_vs_abs_position.pdf}
   \begin{alertblock}{Caveat central}
-    \small $\sigma_t$ es \textbf{intrínseco}: SPTR y jitter electrónico son cero.
+    \small $\sigma_t=\sigma_{\rm fit}$ del core del proxy CFD@14\%, plegado en
+    $\pm|x|$, e \textbf{intrínseco}: SPTR y jitter electrónico son cero.
     Es una cota inferior, todavía no comparable con 250 ps del test beam.
     Los puntos End con un lado bajo 10 PE se marcan como no fiables.
   \end{alertblock}
@@ -133,14 +180,15 @@
         no a la física simétrica.
     \end{itemize}
     \begin{block}{Resultado}
-      \small End fiable: mediana $|A_\sigma|=2.35\%$, máximo $4.15\%$.
-      Top: mediana $|A_\sigma|=1.12\%$. La asimetría del scan preliminar
-      estaba dominada por estadística.
+      \small Para $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\%:
+      End fiable, mediana $|A_\sigma|=2.35\%$, máximo $4.15\%$;
+      Top, mediana $|A_\sigma|=1.12\%$. La asimetría preliminar estaba
+      dominada por estadística.
     \end{block}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Resumen CFD@14\% en la región End fiable}
+\begin{frame}{Resumen $\sigma_{\rm fit}$ CFD@14\% intrínseco}
   \centering
   \begin{tabular}{rrrrr}
     \toprule
@@ -156,9 +204,9 @@
   \end{tabular}
   \vspace{0.5cm}
   \begin{block}{Resultado}
-    En la región fiable, Top mejora $\sigma_t$ intrínseco por un factor
-    mediano de \textbf{2.54}; rango 2.44--2.64. Los errores son estadísticos
-    del ajuste gaussiano iterativo del core.
+    Para $|x|\leq200$ mm (región End fiable), Top mejora
+    $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\% por un factor mediano de
+    \textbf{2.54}; rango 2.44--2.64. Los errores son estadísticos del fit.
   \end{block}
 \end{frame}
 
@@ -166,9 +214,9 @@
   \centering
   \includegraphics[width=0.86\textwidth]{\results/sigma_fpt_vs_cfd_folded.pdf}
 
-  \scriptsize CFD@14\% es el estimador primario. FPT conserva continuidad con
-  el scan preliminar, pero es más sensible a los primeros arribos y presenta
-  colas no gaussianas.
+  \scriptsize El proxy CFD@14\% y su $\sigma_{\rm fit}$ son los estimadores
+  primarios. FPT y RMS son controles; FPT es más sensible a los primeros
+  arribos y presenta colas no gaussianas.
 \end{frame}
 
 \begin{frame}{Eficiencia de detección}
@@ -191,9 +239,9 @@
       más rápido ($0.7/1.8$ ns).
   \end{itemize}
   \begin{block}{Titular defendible}
-    Top mejora de forma robusta la resolución temporal intrínseca frente a End
-    por un factor mediano de 2.54 en la región fiable. Los valores absolutos
-    quedan pendientes del jitter real.
+    Top mejora $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\% frente a End
+    por un factor mediano de 2.54 para $|x|\leq200$ mm. Los valores absolutos
+    quedan pendientes del jitter real y de aplicar un CFD común a sim y datos.
   \end{block}
 \end{frame}
 
@@ -202,6 +250,8 @@
     \item EXEC\_02b: SPTR $\oplus$ jitter electrónico en el ToA, tras confirmar
       el modelo Hamamatsu y la procedencia del SPTR.
     \item Emular FastIC+: 1 LSB = 250 ps, Type 1/2, cortes $\geq300/\geq500$ LSB.
+    \item Comparar sim$\leftrightarrow$dato solo con la misma definición de CFD;
+      el proxy por PE no es todavía el CFD FastIC+/Constanza.
     \item Decidir y calibrar reflector difuso frente a especular.
     \item Aclarar la inconsistencia del factor $1/\sqrt{8}$.
   \end{itemize}
