@@ -1,6 +1,7 @@
 #include "SiPMSD.hh"
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
+#include "SteppingAction.hh"
 
 #include "G4AnalysisManager.hh"
 #include "G4Event.hh"
@@ -128,6 +129,11 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         const G4double gunX = ea ? ea->GetGunXmm() : 0.0;
         am->FillNtupleDColumn(0, 11, gunX);
         am->AddNtupleRow(0);
+        if (DetectorConstruction::FaceType(globalId) == 2) PhotonBudget::AddDetectedTop();
+        else PhotonBudget::AddDetectedEnd();
+    } else {
+        if (DetectorConstruction::FaceType(globalId) == 2) PhotonBudget::AddRejectedPDETop();
+        else PhotonBudget::AddRejectedPDEEnd();
     }
 
     track->SetTrackStatus(fStopAndKill);

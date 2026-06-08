@@ -89,7 +89,10 @@ RunAction::RunAction() {
 
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
-    BoundaryCensus::Reset();
+    if (IsMaster()) {
+        BoundaryCensus::Reset();
+        PhotonBudget::Reset();
+    }
 
     auto* am = G4AnalysisManager::Instance();
 
@@ -148,6 +151,40 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             << "\n  Bar -> SiPM (entering)   : " << BoundaryCensus::GetMylarToSiPM()
             << "\n  Killed in WorldLV        : " << BoundaryCensus::GetKilledWorld()
             << "\n====================================\n"
+            << G4endl;
+
+        const auto generated = PhotonBudget::GetGenerated();
+        const auto percent = [generated](long long value) {
+            return generated > 0 ? 100.0 * value / generated : 0.0;
+        };
+        G4cout
+            << "\n=== Photon Budget Diagnostic ==="
+            << "\n  Generated optical photons : " << generated
+            << "\n  Generated scintillation   : " << PhotonBudget::GetGeneratedScintillation()
+            << "\n  Generated Cherenkov       : " << PhotonBudget::GetGeneratedCherenkov()
+            << "\n  First reach of End face   : " << PhotonBudget::GetReachedEndFace()
+            << " (" << percent(PhotonBudget::GetReachedEndFace()) << " %)"
+            << "\n  Entered End SiPM volume   : " << PhotonBudget::GetEnteredEndSiPM()
+            << " (" << percent(PhotonBudget::GetEnteredEndSiPM()) << " %)"
+            << "\n  Entered Top SiPM volume   : " << PhotonBudget::GetEnteredTopSiPM()
+            << " (" << percent(PhotonBudget::GetEnteredTopSiPM()) << " %)"
+            << "\n  Detected End PE           : " << PhotonBudget::GetDetectedEnd()
+            << " (" << percent(PhotonBudget::GetDetectedEnd()) << " %)"
+            << "\n  Detected Top PE           : " << PhotonBudget::GetDetectedTop()
+            << " (" << percent(PhotonBudget::GetDetectedTop()) << " %)"
+            << "\n  PDE rejected End/Top      : " << PhotonBudget::GetRejectedPDEEnd()
+            << " / " << PhotonBudget::GetRejectedPDETop()
+            << "\n  Bulk OpAbsorption         : " << PhotonBudget::GetBulkAbsorption()
+            << " (" << percent(PhotonBudget::GetBulkAbsorption()) << " %)"
+            << "\n  Surface absorption        : " << PhotonBudget::GetSurfaceAbsorption()
+            << " (" << percent(PhotonBudget::GetSurfaceAbsorption()) << " %)"
+            << "\n  Escaped to World          : " << PhotonBudget::GetEscapedWorld()
+            << " (" << percent(PhotonBudget::GetEscapedWorld()) << " %)"
+            << "\n  Wavelength-filter killed  : " << PhotonBudget::GetWavelengthKilled()
+            << "\n  TIR / boundary reflection : " << PhotonBudget::GetTotalInternalReflection()
+            << " / " << PhotonBudget::GetBoundaryReflection()
+            << "\n  NOTE: crossings/reflections are informative and not terminal-fate sums."
+            << "\n=================================\n"
             << G4endl;
     }
 }
