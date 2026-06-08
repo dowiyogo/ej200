@@ -92,6 +92,12 @@ DetectorConstruction::DetectorConstruction() {
         "Set active scintillator: EJ204 (default), EJ200, or EJ230.");
     matCmd.SetParameterName("material", false);
 
+    auto& readoutCmd = fMessenger->DeclareMethod(
+        "readout",
+        &DetectorConstruction::SetReadoutConfiguration,
+        "Set readout/wrapping configuration: End (default), Top, or EndTop.");
+    readoutCmd.SetParameterName("configuration", false);
+
     fMessenger->DeclareMethod(
         "edgeWrap",
         &DetectorConstruction::SetEdgeWrapMode,
@@ -133,6 +139,39 @@ void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
+}
+
+void DetectorConstruction::SetReadoutConfiguration(G4String configuration) {
+    std::transform(configuration.begin(), configuration.end(), configuration.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::toupper(ch)); });
+    configuration.erase(
+        std::remove_if(configuration.begin(), configuration.end(),
+                       [](unsigned char ch) { return ch == '-' || ch == '_' || ch == ' '; }),
+        configuration.end());
+
+    G4String canonical;
+    if (configuration == "END") canonical = "End";
+    else if (configuration == "TOP") canonical = "Top";
+    else if (configuration == "ENDTOP") canonical = "EndTop";
+    else {
+        G4cerr << "[DetectorConstruction] Unknown /det/readout \"" << configuration
+               << "\". Use End, Top, or EndTop.\n";
+        return;
+    }
+    if (canonical == fReadoutConfiguration) return;
+
+    fReadoutConfiguration = canonical;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+G4bool DetectorConstruction::IsEndInstrumented() const {
+    return fReadoutConfiguration == "End" || fReadoutConfiguration == "EndTop";
+}
+
+G4bool DetectorConstruction::IsTopInstrumented() const {
+    return fReadoutConfiguration == "Top" || fReadoutConfiguration == "EndTop";
 }
 
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
@@ -185,9 +224,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fBarPhys = new G4PVPlacement(nullptr, {}, barLV, "BarPV",
                                  worldLV, false, 0, true);
 
-    // ── Reflective panels on non-SiPM faces — models Al-foil + black film ────
-    // Explicit sibling volumes avoid global skin surfaces shadowing SiPM faces.
-    // The +Y face is left open for Top SiPMs; end faces are left to End SiPMs.
+    fEndSiPMLV = nullptr;
+    fTopSiPMLV = nullptr;
+    fSiPMSurfaces.clear();
+    fReflectorSurfaces.clear();
+
+    // Reflective panels cover every non-instrumented face. Explicit sibling
+    // volumes avoid global skin surfaces shadowing active SiPM faces.
     auto* reflector = Materials::CreateBarSkinReflector();
     const G4double foilHalfT = 0.5 * um;
     auto* reflYMinusSolid = new G4Box("ReflectorYMinusSolid",
@@ -207,12 +250,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto* reflYMinusPhys = new G4PVPlacement(
         nullptr, {0.0, -(kBarHalfY + foilHalfT), 0.0},
         reflYMinusLV, "ReflectorYMinusPV", worldLV, false, 0, true);
-    auto* reflXMinusPhys = new G4PVPlacement(
-        nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
-        reflXLV, "ReflectorXMinusPV", worldLV, false, 1, true);
-    auto* reflXPlusPhys = new G4PVPlacement(
-        nullptr, {+(kBarHalfX + foilHalfT), 0.0, 0.0},
-        reflXLV, "ReflectorXPlusPV", worldLV, false, 2, true);
     auto* reflZMinusPhys = new G4PVPlacement(
         nullptr, {0.0, 0.0, -(kBarHalfZ + foilHalfT)},
         reflZLV, "ReflectorZMinusPV", worldLV, false, 3, true);
@@ -220,77 +257,76 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         nullptr, {0.0, 0.0, +(kBarHalfZ + foilHalfT)},
         reflZLV, "ReflectorZPlusPV", worldLV, false, 4, true);
 
-    new G4LogicalBorderSurface("BarReflector_YMinus",
-                               fBarPhys, reflYMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_XMinus",
-                               fBarPhys, reflXMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_XPlus",
-                               fBarPhys, reflXPlusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_ZMinus",
-                               fBarPhys, reflZMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_ZPlus",
-                               fBarPhys, reflZPlusPhys, reflector);
+    fReflectorSurfaces["-Y"] = new G4LogicalBorderSurface(
+        "BarReflector_YMinus", fBarPhys, reflYMinusPhys, reflector);
+    fReflectorSurfaces["-Z"] = new G4LogicalBorderSurface(
+        "BarReflector_ZMinus", fBarPhys, reflZMinusPhys, reflector);
+    fReflectorSurfaces["+Z"] = new G4LogicalBorderSurface(
+        "BarReflector_ZPlus", fBarPhys, reflZPlusPhys, reflector);
 
-    // ── End SiPMs — 8×1 array on each ±X face ────────────────────────────────
-    // Placed as BarLV daughters, flush with the ±X faces of the bar.
-    // x = ±(kBarHalfX - kEndHalfX)
-    auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
-    fEndSiPMLV     = new G4LogicalVolume(endSolid, sipmMat, "EndSiPMLV");
-    {
+    if (!IsTopInstrumented()) {
+        auto* reflYPlusPhys = new G4PVPlacement(
+            nullptr, {0.0, +(kBarHalfY + foilHalfT), 0.0},
+            reflYMinusLV, "ReflectorYPlusPV", worldLV, false, 5, true);
+        fReflectorSurfaces["+Y"] = new G4LogicalBorderSurface(
+            "BarReflector_YPlus", fBarPhys, reflYPlusPhys, reflector);
+    }
+    if (!IsEndInstrumented()) {
+        auto* reflXMinusPhys = new G4PVPlacement(
+            nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
+            reflXLV, "ReflectorXMinusPV", worldLV, false, 1, true);
+        auto* reflXPlusPhys = new G4PVPlacement(
+            nullptr, {+(kBarHalfX + foilHalfT), 0.0, 0.0},
+            reflXLV, "ReflectorXPlusPV", worldLV, false, 2, true);
+        fReflectorSurfaces["-X"] = new G4LogicalBorderSurface(
+            "BarReflector_XMinus", fBarPhys, reflXMinusPhys, reflector);
+        fReflectorSurfaces["+X"] = new G4LogicalBorderSurface(
+            "BarReflector_XPlus", fBarPhys, reflXPlusPhys, reflector);
+    }
+
+    if (IsEndInstrumented()) {
+        auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
+        fEndSiPMLV = new G4LogicalVolume(endSolid, sipmMat, "EndSiPMLV");
         auto* va = new G4VisAttributes(G4Colour(0.0, 0.85, 0.2, 0.6));
         va->SetForceSolid(true);
         fEndSiPMLV->SetVisAttributes(va);
+
+        for (G4int i = 0; i < kNEndSiPMs; ++i) {
+            const G4double cy = (i - 3.5) * kEndPitch;
+            const G4int leftId = i;
+            auto* leftPhys = new G4PVPlacement(
+                nullptr, G4ThreeVector(-(kBarHalfX - kEndHalfX), cy, 0.0),
+                fEndSiPMLV, "EndSiPMLeft_PV", barLV, false, leftId, true);
+            fSiPMSurfaces[leftId] = new G4LogicalBorderSurface(
+                "SiPMSurf_" + std::to_string(leftId), fBarPhys, leftPhys, sipmSurface);
+
+            const G4int rightId = i + kNEndSiPMs;
+            auto* rightPhys = new G4PVPlacement(
+                nullptr, G4ThreeVector(+(kBarHalfX - kEndHalfX), cy, 0.0),
+                fEndSiPMLV, "EndSiPMRight_PV", barLV, false, rightId, true);
+            fSiPMSurfaces[rightId] = new G4LogicalBorderSurface(
+                "SiPMSurf_" + std::to_string(rightId), fBarPhys, rightPhys, sipmSurface);
+        }
     }
 
-    fSiPMSurfaces.clear();
-
-    for (G4int i = 0; i < kNEndSiPMs; ++i) {
-        const G4double cy = (i - 3.5) * kEndPitch;
-
-        const G4int leftId = i;
-        auto* leftPhys = new G4PVPlacement(
-            nullptr,
-            G4ThreeVector(-(kBarHalfX - kEndHalfX), cy, 0.0),
-            fEndSiPMLV, "EndSiPMLeft_PV", barLV, false, leftId, true);
-        // Border surface: BarPV → SiPM
-        fSiPMSurfaces[leftId] = new G4LogicalBorderSurface(
-            "SiPMSurf_" + std::to_string(leftId),
-            fBarPhys, leftPhys, sipmSurface);
-
-        const G4int rightId = i + kNEndSiPMs;
-        auto* rightPhys = new G4PVPlacement(
-            nullptr,
-            G4ThreeVector(+(kBarHalfX - kEndHalfX), cy, 0.0),
-            fEndSiPMLV, "EndSiPMRight_PV", barLV, false, rightId, true);
-        fSiPMSurfaces[rightId] = new G4LogicalBorderSurface(
-            "SiPMSurf_" + std::to_string(rightId),
-            fBarPhys, rightPhys, sipmSurface);
-    }
-
-    // ── Top SiPMs — N SiPMs along the +Y face, configurable pitch ────────────
-    // N = fNTopSiPMs is computed from fTopSiPMPitch (default 70 mm → 20 SiPMs).
-    // Placed as BarLV daughters, flush with the +Y face of the bar.
-    // y = kBarHalfY - kTopHalfY
-    auto* topSolid = new G4Box("TopSiPMSolid", kTopHalfX, kTopHalfY, kTopHalfZ);
-    fTopSiPMLV     = new G4LogicalVolume(topSolid, sipmMat, "TopSiPMLV");
-    {
+    if (IsTopInstrumented()) {
+        auto* topSolid = new G4Box("TopSiPMSolid", kTopHalfX, kTopHalfY, kTopHalfZ);
+        fTopSiPMLV = new G4LogicalVolume(topSolid, sipmMat, "TopSiPMLV");
         auto* va = new G4VisAttributes(G4Colour(1.0, 0.2, 0.0, 0.6));
         va->SetForceSolid(true);
         fTopSiPMLV->SetVisAttributes(va);
-    }
 
-    for (G4int i = 0; i < fNTopSiPMs; ++i) {
-        const G4int    globalId = 2 * kNEndSiPMs + i;  // 16, 17, …
-        const G4double cx       = TopSiPMCenterX(i, fTopSiPMPitch, fNTopSiPMs);
+        for (G4int i = 0; i < fNTopSiPMs; ++i) {
+            const G4int globalId = 2 * kNEndSiPMs + i;
+            const G4double cx = TopSiPMCenterX(i, fTopSiPMPitch, fNTopSiPMs);
 
-        auto* topPhys = new G4PVPlacement(
-            nullptr,
-            G4ThreeVector(cx, kBarHalfY - kTopHalfY, 0.0),
-            fTopSiPMLV, "TopSiPMPV", barLV, false, globalId, true);
+            auto* topPhys = new G4PVPlacement(
+                nullptr, G4ThreeVector(cx, kBarHalfY - kTopHalfY, 0.0),
+                fTopSiPMLV, "TopSiPMPV", barLV, false, globalId, true);
 
-        fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
-            "SiPMSurf_" + std::to_string(globalId),
-            fBarPhys, topPhys, sipmSurface);
+            fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
+                "SiPMSurf_" + std::to_string(globalId), fBarPhys, topPhys, sipmSurface);
+        }
     }
 
     return worldPhys;
@@ -307,6 +343,6 @@ void DetectorConstruction::ConstructSDandField() {
         sdManager->AddNewDetector(sipmSD);
     }
 
-    SetSensitiveDetector(fEndSiPMLV, sipmSD);
-    SetSensitiveDetector(fTopSiPMLV, sipmSD);
+    if (fEndSiPMLV != nullptr) SetSensitiveDetector(fEndSiPMLV, sipmSD);
+    if (fTopSiPMLV != nullptr) SetSensitiveDetector(fTopSiPMLV, sipmSD);
 }

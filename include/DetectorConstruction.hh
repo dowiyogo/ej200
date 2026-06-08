@@ -31,6 +31,7 @@ class G4GenericMessenger;
 // UI command (available after /run/initialize):
 //   /det/topSiPMPitch <value> mm   — triggers ReinitializeGeometry()
 //   /det/scintillatorMaterial EJ204|EJ200|EJ230
+//   /det/readout End|Top|EndTop
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
 // Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
@@ -48,6 +49,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     // Border-surface map (globalId → surface) — kept for external consumers
     const std::map<G4int, G4LogicalBorderSurface*>& GetSiPMSurfaces() const
     { return fSiPMSurfaces; }
+    const std::map<G4String, G4LogicalBorderSurface*>& GetReflectorSurfaces() const
+    { return fReflectorSurfaces; }
 
     // X-centre of top SiPM with given index (0-based) for a given pitch [G4 units]
     static G4double TopSiPMCenterX(G4int idx, G4double pitch, G4int nTotal);
@@ -61,6 +64,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     void        SetScintillatorMaterial(G4String materialName);
     G4String    GetScintillatorMaterial() const { return fScintillatorName; }
     G4Material* GetActiveScintillatorMaterial() const { return fActiveScintillator; }
+
+    // Readout/wrapping selector — triggers geometry rebuild
+    void     SetReadoutConfiguration(G4String configuration);
+    G4String GetReadoutConfiguration() const { return fReadoutConfiguration; }
+    G4bool   IsEndInstrumented() const;
+    G4bool   IsTopInstrumented() const;
+    G4int    GetNActiveEndSiPMs() const
+    { return IsEndInstrumented() ? 2 * kNEndSiPMs : 0; }
+    G4int    GetNActiveTopSiPMs() const
+    { return IsTopInstrumented() ? fNTopSiPMs : 0; }
 
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
@@ -80,9 +93,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4double           fTopSiPMPitch = 70.0;  // G4 internal units (1 = 1 mm)
     G4int              fNTopSiPMs    = 20;
     G4String           fScintillatorName = "EJ204";
+    G4String           fReadoutConfiguration = "End";
     G4Material*         fActiveScintillator = nullptr;
 
     G4GenericMessenger* fMessenger = nullptr;
 
     std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
+    std::map<G4String, G4LogicalBorderSurface*> fReflectorSurfaces;
 };
