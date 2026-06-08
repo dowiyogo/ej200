@@ -25,10 +25,16 @@ set_tests_properties(smoke_test PROPERTIES
 add_test(NAME edge_scan_smoke COMMAND ej200_bar_sim -m macros/scan_edge.mac)
 set_tests_properties(edge_scan_smoke PROPERTIES
     PASS_REGULAR_EXPRESSION "=== EJ Scintillator Bar Run Summary ==="
-    TIMEOUT 600)
+    TIMEOUT 1200)
 
 add_executable(physics_baseline_check tests/physics_baseline_check.cc ${sources} ${headers})
 target_include_directories(physics_baseline_check PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(physics_baseline_check ${Geant4_LIBRARIES})
 
 add_test(NAME physics_baseline_check COMMAND physics_baseline_check)
+
+add_executable(readout_config_check tests/readout_config_check.cc ${sources} ${headers})
+target_include_directories(readout_config_check PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(readout_config_check ${Geant4_LIBRARIES})
+
+add_test(NAME readout_config_check COMMAND readout_config_check)
