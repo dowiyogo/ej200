@@ -30,7 +30,7 @@ BUDGET = re.compile(
     r".*?PDE rejected End/Top\s*: (?P<rejected_end>\d+) / (?P<rejected_top>\d+)"
     r".*?Bulk OpAbsorption\s*: (?P<bulk>\d+)"
     r".*?Surface absorption\s*: (?P<surface>\d+)"
-    r".*?Escaped to World\s*: (?P<escaped>\d+)"
+    r".*?Direct Bar -> World escape: (?P<escaped>\d+)"
     r".*?Wavelength-filter killed\s*: (?P<wavelength>\d+)",
     re.S,
 )

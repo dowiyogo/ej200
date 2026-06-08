@@ -239,7 +239,10 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     // land in EndSiPMLV or TopSiPMLV, so this correctly spares detected photons.
     if (postVol->GetLogicalVolume()->GetName() == "WorldLV") {
         ++gKilledWorld;
-        ++gEscapedWorld;
+        const auto* preVol = step->GetPreStepPoint()->GetPhysicalVolume();
+        if (preVol != nullptr && IsBarLV(preVol->GetLogicalVolume()->GetName())) {
+            ++gEscapedWorld;
+        }
         track->SetTrackStatus(fStopAndKill);
     }
 }
