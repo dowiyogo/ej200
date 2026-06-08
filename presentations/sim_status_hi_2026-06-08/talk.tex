@@ -14,7 +14,8 @@
 \setbeamercolor{alerted text}{fg=warningorange}
 \setbeamertemplate{navigation symbols}{}
 
-\newcommand{\results}{../../results/scan_hi_2026-06-08}
+\newcommand{\scanresults}{../../results/scan_hi_2026-06-08}
+\newcommand{\timingresults}{../../results/congruent_metric_2026-06-08}
 
 \title{SHiP Timing Detector\\Estado de la simulación Geant4}
 \author{René Ríos (ULS)}
@@ -27,35 +28,41 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Detector y scan de alta estadística}
+\begin{frame}{Alcance: dato End, predicción Top}
   \begin{columns}[T]
     \column{0.55\textwidth}
-    \begin{itemize}
-      \item Barra activa EJ-204: $1400\times60\times10$ mm$^3$.
-      \item End-left: IDs 0--7; End-right: IDs 8--15.
-      \item Top: IDs 16--35 sobre la cara superior.
-      \item Comparación: \textbf{Side/End readout} frente a \textbf{Top readout}.
-    \end{itemize}
-    \column{0.42\textwidth}
-    \begin{block}{Configuración reproducible}
-      $\mu^-$ de 1 GeV, incidencia vertical. 31 posiciones:
-      paso de 50 mm entre $-650$ y $+650$ mm, más $\pm670$ y $\pm690$ mm.
-      10\,000 eventos y semillas fijas por posición.
+    \begin{block}{Test beam de abril de 2026}
+      \begin{itemize}
+        \item Barra EJ-204, $1400\times60\times10$ mm$^3$.
+        \item Solo lectura End: 8 SiPM por extremo.
+        \item FastIC+, 8 canales/ASIC, self-trigger.
+        \item Gerardo: $\sigma(t_L-t_R)=125$ ps en SUM,
+          $\sigma_{\rm single}=125/\sqrt{2}\simeq88$ ps.
+      \end{itemize}
     \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{Separación necesaria}
+      El Top readout \textbf{no estuvo en el test beam}. Todo resultado Top de
+      esta simulación es una \textbf{predicción sin dato}, no una validación.
+    \end{alertblock}
   \end{columns}
 \end{frame}
 
-\begin{frame}{Óptica y punto abierto del wrapping}
+\begin{frame}{Detector simulado y scan reutilizado}
   \begin{itemize}
-    \item Modelo actual: panel reflector explícito, pulido, $R(\lambda)=0.98$.
-    \item Las superficies de los SiPM permanecen separadas del reflector.
-    \item Montaje físico por cerrar: Tyvek (principalmente difuso/Lambertiano)
-      frente a Mylar aluminizado (más especular).
+    \item End-left: IDs 0--7; End-right: IDs 8--15; Top: IDs 16--35.
+    \item 31 posiciones: paso de 50 mm entre $-650$ y $+650$ mm, más
+      $\pm670$ y $\pm690$ mm; 10\,000 eventos/posición.
+    \item Run intrínseco: $\mu^-$ de 1 GeV, EJ-204, rise time finito,
+      jitter de sensor/electrónica = 0.
+    \item Se reutilizan los ROOT del scan de alta estadística; no se cambia
+      física, geometría, PDE ni reflector.
   \end{itemize}
-  \begin{alertblock}{Impacto pendiente}
-    La elección difuso/especular altera la dispersión de caminos, el yield y
-    la resolución temporal; no se modificó en este scan.
-  \end{alertblock}
+  \begin{block}{Objetivo de esta etapa}
+    Aplicar al End la estructura del observable de test beam:
+    SUM4 + leading-edge, $\Delta T_{LR}=t_L-t_R$ y
+    $\sigma_{\rm single}=\sigma(\Delta T_{LR})/\sqrt{2}$.
+  \end{block}
 \end{frame}
 
 \begin{frame}{Baseline física aplicada}
@@ -72,195 +79,157 @@
   \end{tabular}
   \vspace{0.5cm}
   \begin{itemize}
-    \item Catálogo por datasheet; corrección EJ-204: atenuación = \textbf{160 cm}.
-    \item EJ-204 activo por defecto, seleccionable y registrado al inicio del run.
-    \item Guardrail CTest \texttt{physics\_baseline\_check}.
+    \item EJ-204 activo; perfil de centelleo biexponencial con rise time finito.
+    \item Modelo actual de reflector: panel explícito pulido, $R(\lambda)=0.98$.
+    \item La decisión Tyvek difuso frente a Mylar especular sigue abierta.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Rise time finito y CFD@14\%}
+\begin{frame}{Definición de timing congruente con el test beam}
+  \small
+  \begin{block}{End: SUM4 + self-trigger}
+    Se forman clusters provisionales $\{0..3\}$, $\{4..7\}$,
+    $\{8..11\}$ y $\{12..15\}$. Para cada cluster se suman respuestas 1-PE
+    desplazadas por los tiempos de arribo y se toma el primer cruce
+    \textbf{leading-edge}. En cada extremo, $t_L$ o $t_R$ es el primer cluster
+    que cruza el umbral.
+  \end{block}
   \[
-    I(t) \propto e^{-t/\tau_d}-e^{-t/\tau_r}, \qquad t>0
+    \Delta T_{LR}=t_L-t_R,\qquad
+    \sigma_{\rm single,End}=\frac{\sigma_{\rm core}(\Delta T_{LR})}{\sqrt{2}}.
   \]
   \begin{itemize}
-    \item Antes: emisión instantánea en $t_0$, con flanco temprano irreal.
-    \item Ahora: perfil biexponencial con $(\tau_r,\tau_d)$ del datasheet.
-    \item El flanco temprano fija el cruce CFD@14\%; por ello el rise time
-      efectivo es crítico para una $\sigma_t$ defendible.
-    \item Sin waveform, CFD@14\% se aproxima por el fotoelectrón
-      $k=\mathrm{round}(0.14N_{\rm pe})$; no es un cruce sobre un pulso.
-    \item End usa $(t_L+t_R)/2$ y exige al menos 10 PE en cada lado.
+    \item $\sigma_{\rm core}$: fit gaussiano iterativo en $\pm2\sigma$;
+      se reporta $\sigma\pm\delta\sigma$, $\chi^2/\mathrm{ndf}$ y $N_{\rm eff}$.
+    \item Constanza observa leading-edge + walk; en etapa 1 no hay corrección
+      de walk ni corte ToT.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Definición de la resolución temporal}
-  \small
-  \begin{block}{Observable por evento: proxy CFD@14\%}
-    Para cada grupo se ordenan los tiempos de todos los PE detectados y se toma
-    $t_{14}=t_{(k)}$, con
-    $k=\max[1,\mathrm{round}(0.14N_{\rm pe})]$.
-    El 14\% se refiere al \textbf{total de PE detectados en ese grupo y evento},
-    no al pico de un pulso reconstruido. Es un proxy de CFD; no modela todavía
-    el CFD de FastIC+ ni el análisis de datos.
-  \end{block}
-  \begin{itemize}
-    \item End: $t_{\rm End}=(t_{14,L}+t_{14,R})/2$, con
-      $L=$ IDs 0--7 y $R=$ IDs 8--15; se exige $N_{\rm pe,L},N_{\rm pe,R}\geq10$
-      en cada evento.
-    \item Top: $t_{\rm Top}=t_{14}$ del conjunto agregado de arribos en IDs 16--35;
-      se exige al menos un PE.
-    \item $N_{\rm eff}$ es el número de eventos que sobrevive estos cortes.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Definición operativa de $\sigma_t$ y alcance}
-  \small
-  \begin{itemize}
-    \item Para cada distribución de $t_{\rm End}$ o $t_{\rm Top}$ se ajusta el
-      \textbf{core gaussiano}: histograma de 100 bins centrado en la mediana,
-      rango $\pm8\sigma_{\rm robusta}$, con
-      $\sigma_{\rm robusta}=1.4826\,\mathrm{MAD}$, y hasta 4 ajustes iterativos
-      en $\pm2\sigma$.
-    \item Se cita $\sigma_t=\sigma_{\rm fit}\pm\delta\sigma_{\rm fit}$ y
-      $\chi^2/\mathrm{ndf}$. RMS y FPT (primer PE) son controles; si el fit falla,
-      el código cae a RMS y marca $\chi^2/\mathrm{ndf}=-1$.
-    \item Las curvas plegadas concatenan eventos de $+|x|$ y $-|x|$ y
-      \textbf{vuelven a ajustar}. End se considera fiable cuando el yield medio
-      de ambos lados es $\geq10$ PE: en este scan, $|x|\leq200$ mm.
-    \item Run: $\mu^-$ 1 GeV, EJ-204, rise time finito, 10\,000 eventos/posición,
-      jitter de sensor/electrónica = 0.
-  \end{itemize}
-  \begin{alertblock}{Caveat duro}
-    $\sigma_t$ mostrado es \textbf{intrínseco}: centelleo biexponencial,
-    dispersión óptica, estadística de fotones y estimador.
-    $\sigma_{\rm total}=\sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+
-    \sigma_{\rm elec}^2}$; aquí solo se muestra $\sigma_{\rm intr}$, aún no
-    comparable con los 250 ps del test beam.
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}{Yield y validación geométrica}
-  \centering
-  \includegraphics[width=0.88\textwidth]{\results/yield_vs_position.pdf}
-
-  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ valida la simetría
-  longitudinal; Top permanece aproximadamente independiente de la posición.
-\end{frame}
-
-\begin{frame}{Resolución intrínseca CFD@14\% plegada}
-  \centering
-  \includegraphics[width=0.75\textwidth]{\results/sigma_cfd_folded_vs_abs_position.pdf}
-  \begin{alertblock}{Caveat central}
-    \small $\sigma_t=\sigma_{\rm fit}$ del core del proxy CFD@14\%, plegado en
-    $\pm|x|$, e \textbf{intrínseco}: SPTR y jitter electrónico son cero.
-    Es una cota inferior, todavía no comparable con 250 ps del test beam.
-    Los puntos End con un lado bajo 10 PE se marcan como no fiables.
-  \end{alertblock}
-\end{frame}
-
-\begin{frame}{Validación de simetría tras alta estadística}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.47\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{\results/sigma_cfd_unfolded_vs_position.pdf}
-    \column{0.50\textwidth}
-    \scriptsize
-    \begin{block}{Métrica}
-      \[
-        A_\sigma(|x|)=
-        \frac{2[\sigma(+x)-\sigma(-x)]}
-             {\sigma(+x)+\sigma(-x)}
-      \]
-      Se evalúa sin plegar; las curvas finales de $\sigma$ combinan $\pm|x|$.
-    \end{block}
-    \begin{itemize}
-      \item Yield End-L/End-R simétrico: geometría consistente.
-      \item La asimetría residual de $\sigma$ cae frente al scan de 200 eventos.
-      \item Cualquier residuo significativo persistente apunta al análisis,
-        no a la física simétrica.
-    \end{itemize}
-    \begin{block}{Resultado}
-      \small Para $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\%:
-      End fiable, mediana $|A_\sigma|=2.35\%$, máximo $4.15\%$;
-      Top, mediana $|A_\sigma|=1.12\%$. La asimetría preliminar estaba
-      dominada por estadística.
-    \end{block}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Resumen $\sigma_{\rm fit}$ CFD@14\% intrínseco}
-  \centering
-  \begin{tabular}{rrrrr}
+\begin{frame}{Hooks provisionales de electrónica}
+  \scriptsize
+  \begin{tabular}{p{0.18\textwidth}p{0.75\textwidth}}
     \toprule
-    $|x|$ [mm] & $N_{\rm eff,End}$ & $\sigma_{\rm End}$ [ps] &
-    $\sigma_{\rm Top}$ [ps] & End/Top\\
+    Hook & Default usado en etapa 1\\
     \midrule
-      0 &  9662 & $186.4\pm2.2$ & $76.3\pm0.9$ & 2.44\\
-     50 & 18724 & $188.3\pm1.6$ & $73.3\pm0.6$ & 2.57\\
-    100 & 16950 & $187.4\pm1.7$ & $70.9\pm0.6$ & 2.64\\
-    150 & 14441 & $186.5\pm1.9$ & $76.2\pm0.6$ & 2.45\\
-    200 & 11224 & $192.0\pm2.2$ & $75.5\pm0.6$ & 2.54\\
+    HOOK\_MAP & End SUM4 $\{0..3\},\{4..7\},\{8..11\},\{12..15\}$; confirmar cableado físico.\\
+    HOOK\_SPR & Respuesta 1-PE biexponencial normalizada: $\tau_r=0.5$ ns,
+      $\tau_f=5$ ns, pico = 1 PE.\\
+    HOOK\_THR & Umbral leading-edge absoluto = 4 PE equivalentes.\\
+    HOOK\_ENDRED & Primer cluster SUM4 que cruza en cada extremo.\\
+    HOOK\_WALK & Sin corrección de time-walk.\\
+    HOOK\_TOTCUT & Sin corte ToT; LSB de ToT aún desconocido.\\
+    HOOK\_FIT & 100 bins, mediana $\pm8(1.4826\,\mathrm{MAD})$, 4 fits core en $\pm2\sigma$.\\
+    HOOK\_LSB & $\simeq24$ ps/LSB de tiempo, solo metadata; sin cuantización.\\
     \bottomrule
   \end{tabular}
-  \vspace{0.5cm}
-  \begin{block}{Resultado}
-    Para $|x|\leq200$ mm (región End fiable), Top mejora
-    $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\% por un factor mediano de
-    \textbf{2.54}; rango 2.44--2.64. Los errores son estadísticos del fit.
-  \end{block}
+  \begin{alertblock}{No son parámetros validados}
+    Deben reemplazarse desde el repo/análisis de Constanza antes de comparar
+    valores absolutos con el test beam.
+  \end{alertblock}
 \end{frame}
 
-\begin{frame}{Cross-check FPT frente a CFD@14\%}
+\begin{frame}{Yield: simetría geométrica}
   \centering
-  \includegraphics[width=0.86\textwidth]{\results/sigma_fpt_vs_cfd_folded.pdf}
+  \includegraphics[width=0.86\textwidth]{\scanresults/yield_vs_position.pdf}
 
-  \scriptsize El proxy CFD@14\% y su $\sigma_{\rm fit}$ son los estimadores
-  primarios. FPT y RMS son controles; FPT es más sensible a los primeros
-  arribos y presenta colas no gaussianas.
+  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ valida la simetría
+  longitudinal. El yield End lejano es bajo cerca de los extremos.
 \end{frame}
 
-\begin{frame}{Eficiencia de detección}
+\begin{frame}{Resultado End: $\sigma(t_L-t_R)/\sqrt{2}$}
   \centering
-  \includegraphics[width=0.84\textwidth]{\results/efficiency_vs_position.pdf}
-
-  \scriptsize Definición del proyecto:
-  $100\,N_{\mathrm{detectados}}/N_{\mathrm{centelleo\ generados}}$.
+  \includegraphics[width=0.76\textwidth]{\timingresults/sigma_single_vs_position.pdf}
+  \begin{alertblock}{Resultado de etapa 1}
+    \scriptsize En $x=0$: $\sigma_{LR}=661.1\pm8.2$ ps y
+    $\sigma_{\rm single,End}=467.5\pm5.8$ ps, $N_{\rm eff}=9732$.
+    Es intrínseco, pero \textbf{no} queda por debajo del dato single de 88 ps.
+  \end{alertblock}
 \end{frame}
 
-\begin{frame}{Lectura física}
-  \begin{itemize}
-    \item \textbf{Top readout}: SiPMs a milímetros de la traza capturan fotones
-      antes de acumular dispersión por propagación; yield relativamente estable
-      y $\sigma_{\rm Top}<\sigma_{\rm End}$ a nivel intrínseco.
-    \item \textbf{End readout}: atenuación y dispersión de caminos degradan el
-      lado lejano; cuando queda hambriento, $(t_L+t_R)/2$ deja de ser fiable.
-    \item \textbf{Trade-off EJ-204}: atenuación de 160 cm frente a 380 cm de
-      EJ-200 produce yields End más bajos y empinados, a cambio de centelleo
-      más rápido ($0.7/1.8$ ns).
-  \end{itemize}
-  \begin{block}{Titular defendible}
-    Top mejora $\sigma_{\rm fit}$ intrínseco del proxy CFD@14\% frente a End
-    por un factor mediano de 2.54 para $|x|\leq200$ mm. Los valores absolutos
-    quedan pendientes del jitter real y de aplicar un CFD común a sim y datos.
+\begin{frame}{Chequeo clave: la paradoja persiste}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+    \begin{tabular}{lrr}
+      \toprule
+      $x$ [mm] & $N_{\rm eff,End}$ & $\sigma_{\rm single}$ [ps]\\
+      \midrule
+      -200 & 6715 & $614.2\pm10.8$\\
+      -100 & 8861 & $502.5\pm6.8$\\
+         0 & 9732 & $467.5\pm5.8$\\
+       100 & 8882 & $496.7\pm6.6$\\
+       200 & 6733 & $599.8\pm10.3$\\
+      \bottomrule
+    \end{tabular}
+    \column{0.44\textwidth}
+    \begin{alertblock}{Interpretación}
+      SUM4 + leading-edge provisional \textbf{no elimina} ``intrínseco $>$ total''.
+      El umbral absoluto, el primer-cluster self-trigger y la ausencia de
+      corrección de walk dominan el resultado.
+    \end{alertblock}
+  \end{columns}
+  \vspace{0.4cm}
+  \begin{block}{Consecuencia}
+    No se puede afirmar acuerdo/desacuerdo físico con 88 ps hasta reproducir
+    mapa, SPR, umbral, walk, corte ToT y fit exactos del dato.
   \end{block}
 \end{frame}
 
-\begin{frame}{Próximos pasos y puntos abiertos}
+\begin{frame}{Eficiencia del observable $\Delta T$}
+  \centering
+  \includegraphics[width=0.84\textwidth]{\timingresults/trigger_efficiency_vs_position.pdf}
+
+  \scriptsize End requiere que ambos extremos disparen. Con umbral provisional
+  de 4 PE, $N_{\rm eff}$ cae fuertemente cuando el extremo lejano queda
+  hambriento; esta selección también condiciona el core ajustado.
+\end{frame}
+
+\begin{frame}{Top: predicción de simulación sin dato}
   \begin{itemize}
-    \item EXEC\_02b: SPTR $\oplus$ jitter electrónico en el ToA, tras confirmar
-      el modelo Hamamatsu y la procedencia del SPTR.
-    \item Emular FastIC+: 1 LSB = 250 ps, Type 1/2, cortes $\geq300/\geq500$ LSB.
-    \item Comparar sim$\leftrightarrow$dato solo con la misma definición de CFD;
-      el proxy por PE no es todavía el CFD FastIC+/Constanza.
-    \item Decidir y calibrar reflector difuso frente a especular.
-    \item Aclarar la inconsistencia del factor $1/\sqrt{8}$.
+    \item El array superior se divide provisionalmente en
+      A = IDs 16--25 y B = IDs 26--35.
+    \item Cada mitad agrega sus arribos, aplica la misma respuesta 1-PE y
+      leading-edge; se reporta
+      $\sigma_{\rm single,Top}=\sigma(t_A-t_B)/\sqrt{2}$.
+    \item En el centro: $\sigma_{\rm single,Top}=93.2\pm1.1$ ps,
+      $N_{\rm eff}=10000$.
+    \item La degradación lejos del centro refleja la división espacial A/B y
+      el umbral provisional.
   \end{itemize}
-  \begin{block}{Composición futura}
-    \[
-      \sigma_{\rm total} =
-      \sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+\sigma_{\rm elec}^2}
-    \]
-  \end{block}
+  \begin{alertblock}{Alcance}
+    Top \textbf{no estuvo en el test beam de abril}: estos números son una
+    predicción del modelo, sin validación experimental.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Caveat duro: etapa 1 intrínseca}
+  \[
+    \sigma_{\rm total} =
+    \sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+\sigma_{\rm elec}^2}
+  \]
+  \begin{itemize}
+    \item Aquí $\sigma_{\rm intr}$ incluye centelleo biexponencial, dispersión
+      óptica, estadística de fotones, SPR provisional, leading-edge y selección.
+    \item No incluye SPTR ni jitter electrónico; tampoco walk corregido ni
+      cortes ToT del dato.
+    \item El blanco de 88 ps se muestra solo como referencia cualitativa.
+      No se afirma igualdad ni comparabilidad absoluta en esta etapa.
+    \item El LSB temporal indicado por las slides de Constanza es
+      aproximadamente \textbf{24 ps}; debe confirmarse desde su repo.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Próximos pasos}
+  \begin{enumerate}
+    \item Importar desde Constanza HOOK\_MAP, HOOK\_SPR, HOOK\_THR,
+      HOOK\_WALK, HOOK\_TOTCUT, HOOK\_FIT y HOOK\_LSB.
+    \item Reproducir exactamente leading-edge, self-trigger, walk y selección
+      del test beam; validar primero $\Delta T_{LR}$ End.
+    \item Añadir SPTR $\oplus$ jitter electrónico al ToA en EXEC\_02b.
+    \item Solo después contrastar $\sigma(t_L-t_R)$ y
+      $\sigma_{\rm single}$ con 125 ps / 88 ps.
+    \item Mantener Top como predicción separada hasta disponer de dato.
+  \end{enumerate}
 \end{frame}
 
 \end{document}
