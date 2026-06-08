@@ -10,6 +10,7 @@
 #include "G4Material.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4OpticalParameters.hh"
+#include "G4OpticalSurface.hh"
 #include "G4PhysicsVector.hh"
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -52,6 +53,48 @@ void LogActiveScintillator() {
         << "\n  Finite rise time      : "
         << (G4OpticalParameters::Instance()->GetScintFiniteRiseTime() ? "enabled" : "DISABLED")
         << "\n====================================="
+        << G4endl;
+}
+
+void LogReadoutConfiguration() {
+    auto* detector = dynamic_cast<const DetectorConstruction*>(
+        G4RunManager::GetRunManager()->GetUserDetectorConstruction());
+    if (detector == nullptr) return;
+
+    const auto& reflectorSurfaces = detector->GetReflectorSurfaces();
+    G4double reflectivity = 0.0;
+    if (!reflectorSurfaces.empty()) {
+        auto* optical = dynamic_cast<G4OpticalSurface*>(
+            reflectorSurfaces.begin()->second->GetSurfaceProperty());
+        auto* mpt = optical ? optical->GetMaterialPropertiesTable() : nullptr;
+        auto* property = mpt ? mpt->GetProperty("REFLECTIVITY") : nullptr;
+        if (property != nullptr && property->GetVectorLength() > 0) {
+            reflectivity = (*property)[0];
+        }
+    }
+
+    const auto faceState = [&reflectorSurfaces](const G4String& face,
+                                                G4bool instrumented) {
+        if (instrumented) return G4String("instrumented");
+        if (reflectorSurfaces.count(face) != 0) return G4String("wrapped");
+        return G4String("OPEN/UNDEFINED");
+    };
+
+    G4cout
+        << "\n=== Active Readout / Wrapping Configuration ==="
+        << "\n  Readout configuration : " << detector->GetReadoutConfiguration()
+        << "\n  -X face               : " << faceState("-X", detector->IsEndInstrumented())
+        << "\n  +X face               : " << faceState("+X", detector->IsEndInstrumented())
+        << "\n  -Y face               : " << faceState("-Y", false)
+        << "\n  +Y face               : " << faceState("+Y", detector->IsTopInstrumented())
+        << "\n  -Z face               : " << faceState("-Z", false)
+        << "\n  +Z face               : " << faceState("+Z", false)
+        << "\n  Reflector R           : " << reflectivity
+        << "\n  Active End SiPMs      : " << detector->GetNActiveEndSiPMs()
+        << " (L=" << detector->GetNActiveEndSiPMs() / 2
+        << ", R=" << detector->GetNActiveEndSiPMs() / 2 << ")"
+        << "\n  Active Top SiPMs      : " << detector->GetNActiveTopSiPMs()
+        << "\n=============================================="
         << G4endl;
 }
 } // namespace
@@ -102,7 +145,10 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     am->OpenFile();
 
     G4OpticalParameters::Instance()->SetScintTrackSecondariesFirst(true);
-    if (IsMaster()) LogActiveScintillator();
+    if (IsMaster()) {
+        LogActiveScintillator();
+        LogReadoutConfiguration();
+    }
 }
 
 void RunAction::EndOfRunAction(const G4Run* run) {
