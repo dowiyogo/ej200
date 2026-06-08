@@ -1,0 +1,216 @@
+\documentclass[aspectratio=169]{beamer}
+
+\IfFileExists{beamerthememetropolis.sty}{\usetheme{metropolis}}{\usetheme{default}}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{shipblue}{RGB}{20,74,130}
+\definecolor{warningorange}{RGB}{210,105,30}
+\setbeamercolor{structure}{fg=shipblue}
+\setbeamercolor{alerted text}{fg=warningorange}
+\setbeamertemplate{navigation symbols}{}
+
+\newcommand{\results}{../../results/scan_hi_2026-06-08}
+
+\title{SHiP Timing Detector\\Estado de la simulación Geant4}
+\author{René Ríos (ULS)}
+\institute{Revisión de supervisor / SHiP Collaboration Meeting}
+\date{Junio 2026 \quad Geant4 11.4.0}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Detector y scan de alta estadística}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{itemize}
+      \item Barra activa EJ-204: $1400\times60\times10$ mm$^3$.
+      \item End-left: IDs 0--7; End-right: IDs 8--15.
+      \item Top: IDs 16--35 sobre la cara superior.
+      \item Comparación: \textbf{Side/End readout} frente a \textbf{Top readout}.
+    \end{itemize}
+    \column{0.42\textwidth}
+    \begin{block}{Configuración reproducible}
+      $\mu^-$ de 1 GeV, incidencia vertical. 31 posiciones:
+      paso de 50 mm entre $-650$ y $+650$ mm, más $\pm670$ y $\pm690$ mm.
+      10\,000 eventos y semillas fijas por posición.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Óptica y punto abierto del wrapping}
+  \begin{itemize}
+    \item Modelo actual: panel reflector explícito, pulido, $R(\lambda)=0.98$.
+    \item Las superficies de los SiPM permanecen separadas del reflector.
+    \item Montaje físico por cerrar: Tyvek (principalmente difuso/Lambertiano)
+      frente a Mylar aluminizado (más especular).
+  \end{itemize}
+  \begin{alertblock}{Impacto pendiente}
+    La elección difuso/especular altera la dispersión de caminos, el yield y
+    la resolución temporal; no se modificó en este scan.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Baseline física aplicada}
+  \centering
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Material & Yield & $\tau_r$ & $\tau_d$ & Aten. & $\lambda_{\max}$\\
+             & ph/MeV & ns & ns & cm & nm\\
+    \midrule
+    EJ-204 & 10400 & 0.7 & 1.8 & 160 & 408\\
+    EJ-200 & 10000 & 0.9 & 2.1 & 380 & 425\\
+    EJ-230 & 9700  & 0.5 & 1.5 & 120 & 391\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item Catálogo por datasheet; corrección EJ-204: atenuación = \textbf{160 cm}.
+    \item EJ-204 activo por defecto, seleccionable y registrado al inicio del run.
+    \item Guardrail CTest \texttt{physics\_baseline\_check}.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Rise time finito y CFD@14\%}
+  \[
+    I(t) \propto e^{-t/\tau_d}-e^{-t/\tau_r}, \qquad t>0
+  \]
+  \begin{itemize}
+    \item Antes: emisión instantánea en $t_0$, con flanco temprano irreal.
+    \item Ahora: perfil biexponencial con $(\tau_r,\tau_d)$ del datasheet.
+    \item El flanco temprano fija el cruce CFD@14\%; por ello el rise time
+      efectivo es crítico para una $\sigma_t$ defendible.
+    \item Sin waveform, CFD@14\% se aproxima por el fotoelectrón
+      $k=\mathrm{round}(0.14N_{\rm pe})$; FPT queda como cross-check.
+    \item End usa $(t_L+t_R)/2$ y exige al menos 10 PE en cada lado.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Yield y validación geométrica}
+  \centering
+  \includegraphics[width=0.88\textwidth]{\results/yield_vs_position.pdf}
+
+  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ valida la simetría
+  longitudinal; Top permanece aproximadamente independiente de la posición.
+\end{frame}
+
+\begin{frame}{Resolución intrínseca CFD@14\% plegada}
+  \centering
+  \includegraphics[width=0.75\textwidth]{\results/sigma_cfd_folded_vs_abs_position.pdf}
+  \begin{alertblock}{Caveat central}
+    \small $\sigma_t$ es \textbf{intrínseco}: SPTR y jitter electrónico son cero.
+    Es una cota inferior, todavía no comparable con 250 ps del test beam.
+    Los puntos End con un lado bajo 10 PE se marcan como no fiables.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Validación de simetría tras alta estadística}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.47\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{\results/sigma_cfd_unfolded_vs_position.pdf}
+    \column{0.50\textwidth}
+    \scriptsize
+    \begin{block}{Métrica}
+      \[
+        A_\sigma(|x|)=
+        \frac{2[\sigma(+x)-\sigma(-x)]}
+             {\sigma(+x)+\sigma(-x)}
+      \]
+      Se evalúa sin plegar; las curvas finales de $\sigma$ combinan $\pm|x|$.
+    \end{block}
+    \begin{itemize}
+      \item Yield End-L/End-R simétrico: geometría consistente.
+      \item La asimetría residual de $\sigma$ cae frente al scan de 200 eventos.
+      \item Cualquier residuo significativo persistente apunta al análisis,
+        no a la física simétrica.
+    \end{itemize}
+    \begin{block}{Resultado}
+      \small End fiable: mediana $|A_\sigma|=2.35\%$, máximo $4.15\%$.
+      Top: mediana $|A_\sigma|=1.12\%$. La asimetría del scan preliminar
+      estaba dominada por estadística.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Resumen CFD@14\% en la región End fiable}
+  \centering
+  \begin{tabular}{rrrrr}
+    \toprule
+    $|x|$ [mm] & $N_{\rm eff,End}$ & $\sigma_{\rm End}$ [ps] &
+    $\sigma_{\rm Top}$ [ps] & End/Top\\
+    \midrule
+      0 &  9662 & $186.4\pm2.2$ & $76.3\pm0.9$ & 2.44\\
+     50 & 18724 & $188.3\pm1.6$ & $73.3\pm0.6$ & 2.57\\
+    100 & 16950 & $187.4\pm1.7$ & $70.9\pm0.6$ & 2.64\\
+    150 & 14441 & $186.5\pm1.9$ & $76.2\pm0.6$ & 2.45\\
+    200 & 11224 & $192.0\pm2.2$ & $75.5\pm0.6$ & 2.54\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.5cm}
+  \begin{block}{Resultado}
+    En la región fiable, Top mejora $\sigma_t$ intrínseco por un factor
+    mediano de \textbf{2.54}; rango 2.44--2.64. Los errores son estadísticos
+    del ajuste gaussiano iterativo del core.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Cross-check FPT frente a CFD@14\%}
+  \centering
+  \includegraphics[width=0.86\textwidth]{\results/sigma_fpt_vs_cfd_folded.pdf}
+
+  \scriptsize CFD@14\% es el estimador primario. FPT conserva continuidad con
+  el scan preliminar, pero es más sensible a los primeros arribos y presenta
+  colas no gaussianas.
+\end{frame}
+
+\begin{frame}{Eficiencia de detección}
+  \centering
+  \includegraphics[width=0.84\textwidth]{\results/efficiency_vs_position.pdf}
+
+  \scriptsize Definición del proyecto:
+  $100\,N_{\mathrm{detectados}}/N_{\mathrm{centelleo\ generados}}$.
+\end{frame}
+
+\begin{frame}{Lectura física}
+  \begin{itemize}
+    \item \textbf{Top readout}: SiPMs a milímetros de la traza capturan fotones
+      antes de acumular dispersión por propagación; yield relativamente estable
+      y $\sigma_{\rm Top}<\sigma_{\rm End}$ a nivel intrínseco.
+    \item \textbf{End readout}: atenuación y dispersión de caminos degradan el
+      lado lejano; cuando queda hambriento, $(t_L+t_R)/2$ deja de ser fiable.
+    \item \textbf{Trade-off EJ-204}: atenuación de 160 cm frente a 380 cm de
+      EJ-200 produce yields End más bajos y empinados, a cambio de centelleo
+      más rápido ($0.7/1.8$ ns).
+  \end{itemize}
+  \begin{block}{Titular defendible}
+    Top mejora de forma robusta la resolución temporal intrínseca frente a End
+    por un factor mediano de 2.54 en la región fiable. Los valores absolutos
+    quedan pendientes del jitter real.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Próximos pasos y puntos abiertos}
+  \begin{itemize}
+    \item EXEC\_02b: SPTR $\oplus$ jitter electrónico en el ToA, tras confirmar
+      el modelo Hamamatsu y la procedencia del SPTR.
+    \item Emular FastIC+: 1 LSB = 250 ps, Type 1/2, cortes $\geq300/\geq500$ LSB.
+    \item Decidir y calibrar reflector difuso frente a especular.
+    \item Aclarar la inconsistencia del factor $1/\sqrt{8}$.
+  \end{itemize}
+  \begin{block}{Composición futura}
+    \[
+      \sigma_{\rm total} =
+      \sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+\sigma_{\rm elec}^2}
+    \]
+  \end{block}
+\end{frame}
+
+\end{document}
