@@ -87,20 +87,53 @@ Gerardo. Figuras y tabla:
 
 ## Parte D: Landau MPV
 
-No se encontraron las slides 12/22 de Constanza en el repositorio, bajo
-`/home/reriosto/SHiP`, ni mediante la búsqueda disponible en Dropbox. Por eso
-no es posible realizar una comparación numérica honesta contra el MPV.
+Fuente localizada:
+`/home/reriosto/SHiP/Presentacion TB April 2026 - Constanza.pdf`.
 
-El hook pendiente es:
+La presentación llama *Energy* al pulse width/ToT. Las slides 22/23 dan estos
+MPV válidos para SUM4:
 
-`MPV_LSB_predicho = N_PE_sim * ganancia_SiPM * e / Q_LSB_energía`
+| ASIC/canal SUM4 | MPV [LSB] | MPV [ns] | conversión |
+|---|---:|---:|---:|
+| ASIC0, canal 1 | 241.54 | 5.89 | 24.38 ps/LSB |
+| ASIC1, canal 1 | 207.39 | 5.04 | 24.30 ps/LSB |
+| ASIC1, canal 5 | 198.58 | 4.84 | 24.37 ps/LSB |
 
-Faltan la ganancia usada, el LSB de carga/energía y el MPV por ASIC/canal. El
-LSB temporal de aproximadamente 24 ps no sirve para esta conversión de carga.
+ASIC0/canal5 aparece como N/A. La consistencia confirma que el LSB es de
+aproximadamente 24.35 ps de pulse width; **no es un LSB lineal de carga**.
+
+En el ROOT simulado del centro, los cuatro SUM4 provisionales tienen:
+
+| SUM4 simulado | media [PE] | mediana [PE] | moda [PE] |
+|---|---:|---:|---:|
+| IDs 0--3 | 9.916 | 9 | 9 |
+| IDs 4--7 | 9.803 | 9 | 9 |
+| IDs 8--11 | 9.940 | 9 | 9 |
+| IDs 12--15 | 9.890 | 9 | 9 |
+
+Si se fuerza una conversión lineal provisional usando la media representativa
+de `9.887 PE/SUM4`, los MPV del dato requieren `20.08--24.43 LSB/PE`. Usando
+la moda de 9 PE requieren `22.06--26.84 LSB/PE`. Esta cantidad es solamente
+un **HOOK_TOT_VS_PE**: mezcla forma de pulso, umbral, ganancia y time-walk.
+
+La slide 12 de single-channel contiene Landau razonables cerca de
+`92.58`, `101.86` y `98.07 LSB`, pero también ajustes claramente espurios o
+saturados (`26`, `595`, `788`, `824`, `1164 LSB`). No se usan estos últimos
+para inferir carga.
+
+**Conclusión D:** los datos muestran señales SUM4 robustas de unos
+`199--242 LSB` (`4.84--5.89 ns` de ToT), mientras el sim central entrega solo
+unos `9.9 PE/SUM4`. Sin la curva calibrada `ToT(N_PE)`, el mapeo físico
+ASIC/canal y la posición del haz de ese run no se puede decidir todavía si
+`9.9 PE` es compatible con el dato. La comparación ya no está bloqueada por
+falta de MPV, sino por la calibración electrónica.
+
+Tabla reproducible:
+`results/diag_2026-06-09/constanza_mpv_hook.csv`.
 
 ## Veredicto integrado
 
-1. **Artefacto/sub-recolección del modelo actual: dominante.** La cara `+Y`
+1. **Artefacto/sub-recolección del modelo actual: dominante en el balance MC.** La cara `+Y`
    abierta produce una fuga directa de 68.8% en el centro. Es especialmente
    incongruente con el test beam End-only.
 2. **Hambruna física real: secundaria pero relevante.** El bulk de EJ-204
@@ -109,7 +142,8 @@ LSB temporal de aproximadamente 24 ps no sirve para esta conversión de carga.
 3. **Hook ENDRED: contribuye, pero no resuelve.** SUM8 baja 467 ps a 325 ps;
    queda muy por encima de 88 ps incluso antes de jitter.
 
-Orden recomendado: primero reproducir la envoltura y geometría End-only real
-(en particular decidir/cerrar `+Y`) y validar la carga con el MPV de Constanza;
-después fijar posición/ancho SUM y hooks de electrónica. Ajustar solo ENDRED no
-puede corregir una pérdida óptica dominante.
+Orden recomendado: primero obtener la posición/configuración exacta de los
+espectros SUM4 y calibrar `ToT(N_PE)`; en paralelo, reproducir la envoltura y
+geometría End-only real, en particular decidir/cerrar `+Y`. Después fijar
+posición/ancho SUM y hooks de electrónica. Ajustar solo ENDRED no puede
+corregir una pérdida óptica dominante.
