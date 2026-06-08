@@ -178,7 +178,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             << " (" << percent(PhotonBudget::GetBulkAbsorption()) << " %)"
             << "\n  Surface absorption        : " << PhotonBudget::GetSurfaceAbsorption()
             << " (" << percent(PhotonBudget::GetSurfaceAbsorption()) << " %)"
-            << "\n  Escaped to World          : " << PhotonBudget::GetEscapedWorld()
+            << "\n  Direct Bar -> World escape: " << PhotonBudget::GetEscapedWorld()
             << " (" << percent(PhotonBudget::GetEscapedWorld()) << " %)"
             << "\n  Wavelength-filter killed  : " << PhotonBudget::GetWavelengthKilled()
             << "\n  TIR / boundary reflection : " << PhotonBudget::GetTotalInternalReflection()
