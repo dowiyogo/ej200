@@ -326,3 +326,4 @@ G4String SiPMSD::GetSensorModelName() const {
         return "Hamamatsu S14160-6015PS/3015PS/1315PS";
     }
     return "Broadcom AFBR-S4N66P024M";
+}
