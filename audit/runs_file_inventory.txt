@@ -1,0 +1,137 @@
+2026-06-09 12:35:00Z
+Repository: /home/reriosto/SHiP/ej200
+
+WARNING: Snapshot informative; simulation may be active and sizes may change.
+
+-- Summary --
+
+File list (size_bytes \t timestamp \t path):
+
+23709	2026-05-07 04:27:33.6493277000	runs/20260506_223505_archived_build_outputs/edge_fpt_panels.pdf
+20920	2026-05-07 04:27:33.2101719000	runs/20260506_223505_archived_build_outputs/edge_lightyield.pdf
+20900	2026-05-07 04:27:33.0484612000	runs/20260506_223505_archived_build_outputs/edge_resolution.pdf
+909	2026-05-07 04:27:33.6594188000	runs/20260506_223505_archived_build_outputs/edge_summary.csv
+20695	2026-05-07 04:25:05.7825099000	runs/20260506_223505_archived_build_outputs/grouped_resolution_compare.pdf
+3244516	2026-05-07 04:22:40.4040796000	runs/20260506_223505_archived_build_outputs/photon_hits_run000.root
+3166930	2026-05-07 04:22:45.6658335000	runs/20260506_223505_archived_build_outputs/photon_hits_run001.root
+3260104	2026-05-07 04:22:51.1173964000	runs/20260506_223505_archived_build_outputs/photon_hits_run002.root
+3573557	2026-05-07 04:22:58.8146339000	runs/20260506_223505_archived_build_outputs/photon_hits_run003.root
+4394490	2026-05-07 04:23:04.7258005000	runs/20260506_223505_archived_build_outputs/photon_hits_run004.root
+301534	2026-05-07 04:23:05.4566140000	runs/20260506_223505_archived_build_outputs/photon_hits_run005.root
+7484682	2026-05-07 04:23:11.2839573000	runs/20260506_223505_archived_build_outputs/photon_hits_run006.root
+10408910	2026-05-07 04:23:16.6900474000	runs/20260506_223505_archived_build_outputs/photon_hits_run007.root
+15727633	2026-05-07 04:23:22.6584012000	runs/20260506_223505_archived_build_outputs/photon_hits_run008.root
+30721193	2026-05-07 04:23:28.9063550000	runs/20260506_223505_archived_build_outputs/photon_hits_run009.root
+962703	2026-05-07 04:23:29.2282459000	runs/20260506_223505_archived_build_outputs/photon_hits_run010.root
+24291	2026-05-07 04:42:03.6048774000	runs/20260506_223538_edge_wrap_scans/air/edge_fpt_panels.pdf
+20918	2026-05-07 04:42:03.1190620000	runs/20260506_223538_edge_wrap_scans/air/edge_lightyield.pdf
+20994	2026-05-07 04:42:02.9516600000	runs/20260506_223538_edge_wrap_scans/air/edge_resolution.pdf
+1261	2026-05-07 04:42:03.6144441000	runs/20260506_223538_edge_wrap_scans/air/edge_resolution_air.log
+833	2026-05-07 04:42:03.6126219000	runs/20260506_223538_edge_wrap_scans/air/edge_summary.csv
+5099335	2026-05-07 04:37:02.1738593000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run000.root
+5893725	2026-05-07 04:37:07.1639598000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run001.root
+6685752	2026-05-07 04:37:13.2659047000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run002.root
+8478914	2026-05-07 04:37:20.0138589000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run003.root
+12861274	2026-05-07 04:37:26.6618730000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run004.root
+759858	2026-05-07 04:37:27.9971197000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run005.root
+36526918	2026-05-07 04:38:37.6258548000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run006.root
+35623646	2026-05-07 04:39:43.3780959000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run007.root
+34057240	2026-05-07 04:40:52.0680883000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run008.root
+32341964	2026-05-07 04:41:58.8691018000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run009.root
+56294	2026-05-07 04:41:58.9927234000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run010.root
+64019	2026-05-07 04:41:58.9950302000	runs/20260506_223538_edge_wrap_scans/air/scan_edge_air.log
+20399	2026-05-07 04:43:09.6509846000	runs/20260506_223538_edge_wrap_scans/black/edge_lightyield.pdf
+16212	2026-05-07 04:43:09.4453155000	runs/20260506_223538_edge_wrap_scans/black/edge_resolution.pdf
+807	2026-05-07 04:43:09.6605163000	runs/20260506_223538_edge_wrap_scans/black/edge_resolution_black.log
+472	2026-05-07 04:43:09.6585375000	runs/20260506_223538_edge_wrap_scans/black/edge_summary.csv
+1583561	2026-05-07 04:42:15.3204988000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run000.root
+1235518	2026-05-07 04:42:20.0136959000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run001.root
+853950	2026-05-07 04:42:24.8586063000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run002.root
+589492	2026-05-07 04:42:29.5454300000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run003.root
+430404	2026-05-07 04:42:34.3386701000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run004.root
+69523	2026-05-07 04:42:34.8514320000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run005.root
+36224	2026-05-07 04:42:43.3525989000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run007.root
+63081	2026-05-07 04:42:52.0938314000	runs/20260506_223538_edge_wrap_scans/black/scan_edge_black.log
+26556	2026-05-07 04:43:27.8665039000	runs/20260506_223538_edge_wrap_scans/edge_wrap_comparison.pdf
+23709	2026-05-07 04:36:47.6306758000	runs/20260506_223538_edge_wrap_scans/mylar/edge_fpt_panels.pdf
+20920	2026-05-07 04:36:47.1333762000	runs/20260506_223538_edge_wrap_scans/mylar/edge_lightyield.pdf
+20909	2026-05-07 04:36:46.9641124000	runs/20260506_223538_edge_wrap_scans/mylar/edge_resolution.pdf
+1264	2026-05-07 04:36:47.6401400000	runs/20260506_223538_edge_wrap_scans/mylar/edge_resolution_mylar.log
+907	2026-05-07 04:36:47.6379222000	runs/20260506_223538_edge_wrap_scans/mylar/edge_summary.csv
+3244289	2026-05-07 04:35:59.9262839000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run000.root
+3168193	2026-05-07 04:36:04.8190743000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run001.root
+3259225	2026-05-07 04:36:09.7269872000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run002.root
+3572196	2026-05-07 04:36:14.6131842000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run003.root
+4392384	2026-05-07 04:36:19.9825428000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run004.root
+301539	2026-05-07 04:36:20.6901197000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run005.root
+7486173	2026-05-07 04:36:26.1814736000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run006.root
+10409441	2026-05-07 04:36:31.5623141000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run007.root
+15727217	2026-05-07 04:36:37.2414497000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run008.root
+30719241	2026-05-07 04:36:43.6572064000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run009.root
+963266	2026-05-07 04:36:44.0006306000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run010.root
+63971	2026-05-07 04:36:44.0026379000	runs/20260506_223538_edge_wrap_scans/mylar/scan_edge_mylar.log
+
+-- Stats --
+Total files: 63
+Total size (bytes): 350151664
+
+-- Top 50 largest files --
+36526918	2026-05-07 04:38:37.6258548000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run006.root
+35623646	2026-05-07 04:39:43.3780959000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run007.root
+34057240	2026-05-07 04:40:52.0680883000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run008.root
+32341964	2026-05-07 04:41:58.8691018000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run009.root
+30721193	2026-05-07 04:23:28.9063550000	runs/20260506_223505_archived_build_outputs/photon_hits_run009.root
+30719241	2026-05-07 04:36:43.6572064000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run009.root
+15727633	2026-05-07 04:23:22.6584012000	runs/20260506_223505_archived_build_outputs/photon_hits_run008.root
+15727217	2026-05-07 04:36:37.2414497000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run008.root
+12861274	2026-05-07 04:37:26.6618730000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run004.root
+10409441	2026-05-07 04:36:31.5623141000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run007.root
+10408910	2026-05-07 04:23:16.6900474000	runs/20260506_223505_archived_build_outputs/photon_hits_run007.root
+8478914	2026-05-07 04:37:20.0138589000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run003.root
+7486173	2026-05-07 04:36:26.1814736000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run006.root
+7484682	2026-05-07 04:23:11.2839573000	runs/20260506_223505_archived_build_outputs/photon_hits_run006.root
+6685752	2026-05-07 04:37:13.2659047000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run002.root
+5893725	2026-05-07 04:37:07.1639598000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run001.root
+5099335	2026-05-07 04:37:02.1738593000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run000.root
+4394490	2026-05-07 04:23:04.7258005000	runs/20260506_223505_archived_build_outputs/photon_hits_run004.root
+4392384	2026-05-07 04:36:19.9825428000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run004.root
+3573557	2026-05-07 04:22:58.8146339000	runs/20260506_223505_archived_build_outputs/photon_hits_run003.root
+3572196	2026-05-07 04:36:14.6131842000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run003.root
+3260104	2026-05-07 04:22:51.1173964000	runs/20260506_223505_archived_build_outputs/photon_hits_run002.root
+3259225	2026-05-07 04:36:09.7269872000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run002.root
+3244516	2026-05-07 04:22:40.4040796000	runs/20260506_223505_archived_build_outputs/photon_hits_run000.root
+3244289	2026-05-07 04:35:59.9262839000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run000.root
+3168193	2026-05-07 04:36:04.8190743000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run001.root
+3166930	2026-05-07 04:22:45.6658335000	runs/20260506_223505_archived_build_outputs/photon_hits_run001.root
+1583561	2026-05-07 04:42:15.3204988000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run000.root
+1235518	2026-05-07 04:42:20.0136959000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run001.root
+963266	2026-05-07 04:36:44.0006306000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run010.root
+962703	2026-05-07 04:23:29.2282459000	runs/20260506_223505_archived_build_outputs/photon_hits_run010.root
+853950	2026-05-07 04:42:24.8586063000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run002.root
+759858	2026-05-07 04:37:27.9971197000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run005.root
+589492	2026-05-07 04:42:29.5454300000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run003.root
+430404	2026-05-07 04:42:34.3386701000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run004.root
+301539	2026-05-07 04:36:20.6901197000	runs/20260506_223538_edge_wrap_scans/mylar/photon_hits_run005.root
+301534	2026-05-07 04:23:05.4566140000	runs/20260506_223505_archived_build_outputs/photon_hits_run005.root
+69523	2026-05-07 04:42:34.8514320000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run005.root
+64019	2026-05-07 04:41:58.9950302000	runs/20260506_223538_edge_wrap_scans/air/scan_edge_air.log
+63971	2026-05-07 04:36:44.0026379000	runs/20260506_223538_edge_wrap_scans/mylar/scan_edge_mylar.log
+63081	2026-05-07 04:42:52.0938314000	runs/20260506_223538_edge_wrap_scans/black/scan_edge_black.log
+56294	2026-05-07 04:41:58.9927234000	runs/20260506_223538_edge_wrap_scans/air/photon_hits_run010.root
+36224	2026-05-07 04:42:43.3525989000	runs/20260506_223538_edge_wrap_scans/black/photon_hits_run007.root
+26556	2026-05-07 04:43:27.8665039000	runs/20260506_223538_edge_wrap_scans/edge_wrap_comparison.pdf
+24291	2026-05-07 04:42:03.6048774000	runs/20260506_223538_edge_wrap_scans/air/edge_fpt_panels.pdf
+23709	2026-05-07 04:36:47.6306758000	runs/20260506_223538_edge_wrap_scans/mylar/edge_fpt_panels.pdf
+23709	2026-05-07 04:27:33.6493277000	runs/20260506_223505_archived_build_outputs/edge_fpt_panels.pdf
+20994	2026-05-07 04:42:02.9516600000	runs/20260506_223538_edge_wrap_scans/air/edge_resolution.pdf
+20920	2026-05-07 04:36:47.1333762000	runs/20260506_223538_edge_wrap_scans/mylar/edge_lightyield.pdf
+20920	2026-05-07 04:27:33.2101719000	runs/20260506_223505_archived_build_outputs/edge_lightyield.pdf
+
+-- File count by extension --
+     40 root
+     13 pdf
+      6 log
+      4 csv
+
+-- lsof (processes with files open under runs/) head 100 --
+(may be empty or slow)
