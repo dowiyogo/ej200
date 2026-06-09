@@ -85,6 +85,180 @@
   \end{itemize}
 \end{frame}
 
+\section{Geometría implementada}
+
+\begin{frame}{Coordenadas, barra y placement}
+  \small
+  \begin{columns}[T]
+    \column{0.53\textwidth}
+    \begin{block}{Sistema de coordenadas del código}
+      \begin{itemize}
+        \item Barra centrada en $(0,0,0)$, sin rotación, como hija directa de
+          \texttt{WorldLV}.
+        \item Eje largo: $X\in[-700,+700]$ mm; el scan usa posiciones sobre $X$.
+        \item $+Y$ es la cara superior (top); $Z$ es el espesor de 10 mm.
+        \item Barra: $1400\times60\times10$ mm$^3$.
+        \item Mundo de aire: $3200\times500\times500$ mm$^3$.
+      \end{itemize}
+    \end{block}
+    \column{0.44\textwidth}
+    \begin{block}{Material activo por default}
+      EJ-204: PVT, $n=1.58$, atenuación 160 cm, yield 10400 ph/MeV,
+      $\tau_r=0.7$ ns y $\tau_d=1.8$ ns.
+    \end{block}
+    \begin{alertblock}{Fuentes en código}
+      \scriptsize
+      \texttt{DetectorConstruction.cc:24--26, 184--225}\\
+      \texttt{DetectorConstruction.hh:93--96}\\
+      \texttt{Materials.cc:37--59, 81--99}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Geometría a escala: End frente a Top}
+  \centering
+  \includegraphics[height=0.76\textheight]{geometry_layout.pdf}
+
+  \scriptsize Figura generada directamente con las constantes y fórmulas de
+  \texttt{DetectorConstruction.cc:24--58, 267--329}. Cada vista conserva la
+  escala real dentro de sus ejes.
+\end{frame}
+
+\begin{frame}{Estado de las seis caras por configuración}
+  \scriptsize
+  \begin{tabular}{llll}
+    \toprule
+    Cara y dimensión & Config End & Config Top & Implementación\\
+    \midrule
+    $-X$, $60\times10$ mm$^2$ & instrumentada & wrapped & End SiPM / panel X\\
+    $+X$, $60\times10$ mm$^2$ & instrumentada & wrapped & End SiPM / panel X\\
+    $-Y$, $1400\times10$ mm$^2$ & wrapped & wrapped & panel Y\\
+    $+Y$, $1400\times10$ mm$^2$ & wrapped & instrumentada & panel Y / Top SiPM\\
+    $-Z$, $1400\times60$ mm$^2$ & wrapped & wrapped & panel Z\\
+    $+Z$, $1400\times60$ mm$^2$ & wrapped & wrapped & panel Z\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.35cm}
+  \begin{block}{Regla operativa real}
+    \texttt{/det/readout End|Top|EndTop}; default = \texttt{End}. Una cara
+    instrumentada recibe únicamente los volúmenes SiPM y sus border surfaces;
+    \textbf{el área restante de esa cara queda abierta}. Una cara wrapped
+    recibe un panel explícito completo.
+  \end{block}
+  \begin{alertblock}{Fuentes en código}
+    \texttt{DetectorConstruction.cc:95--99, 144--175, 232--285, 287--329};
+    dimensiones desde \texttt{DetectorConstruction.cc:24--37}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Wrapping y superficies ópticas}
+  \small
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Reflector real del modelo}
+      \begin{itemize}
+        \item Paneles físicos de aire de 1 $\mu$m de espesor, colocados fuera
+          de la barra.
+        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ ReflectorPV}.
+        \item \texttt{dielectric\_metal}, modelo \texttt{unified},
+          acabado \texttt{polished}, $\sigma_\alpha=0$.
+        \item $R(\lambda)=0.98$ constante entre 350 y 800 nm.
+      \end{itemize}
+    \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{Lectura física}
+      El código implementa un reflector \textbf{especular idealizado}, no
+      Tyvek Lambertiano. No existe \texttt{G4LogicalSkinSurface}; se usan
+      paneles y border surfaces explícitas.
+    \end{alertblock}
+    \begin{block}{Fuentes}
+      \scriptsize
+      \texttt{DetectorConstruction.cc:232--285}\\
+      \texttt{Materials.cc:306--345}\\
+      \texttt{DetectorConstruction.hh:24--37}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{SiPM End: 16 sensores sobre las caras $\pm X$}
+  \small
+  \begin{itemize}
+    \item Cada volumen activo mide $0.5\times6\times6$ mm$^3$:
+      espesor en $X$, área activa $36$ mm$^2$ en $Y$--$Z$.
+    \item Centros: $x=-699.75$ mm para IDs 0--7 y $x=+699.75$ mm para
+      IDs 8--15; $z=0$.
+    \item Para índice local $i=0,\ldots,7$:
+      $y=(i-3.5)\,7.5$ mm.
+    \item Coordenadas $y$: $-26.25,-18.75,-11.25,-3.75,
+      3.75,11.25,18.75,26.25$ mm.
+    \item Sensores embebidos en \texttt{BarLV} y flush con la cara externa:
+      no hay guía de luz ni volumen de grasa separado.
+  \end{itemize}
+  \begin{alertblock}{Fuentes en código}
+    \scriptsize
+    \texttt{DetectorConstruction.cc:28--32, 61--70, 287--309};
+    número por extremo en \texttt{DetectorConstruction.hh:41}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{SiPM Top: 20 sensores sobre la cara $+Y$}
+  \small
+  \begin{itemize}
+    \item Cada volumen mide $6\times0.5\times6$ mm$^3$:
+      área activa $36$ mm$^2$ en $X$--$Z$.
+    \item Default hardcoded: pitch $70$ mm, $N=20$; configurable mediante
+      \texttt{/det/topSiPMPitch}.
+    \item Centros: $y=29.75$ mm, $z=0$,
+      $x=(i-9.5)\,70$ mm para $i=0,\ldots,19$.
+    \item Coordenadas $x$ [mm]:
+      \[
+      \begin{aligned}
+      &-665,-595,-525,-455,-385,-315,-245,-175,-105,-35,\\
+      &\phantom{-}35,\phantom{-}105,\phantom{-}175,\phantom{-}245,
+       \phantom{-}315,\phantom{-}385,\phantom{-}455,\phantom{-}525,
+       \phantom{-}595,\phantom{-}665.
+      \end{aligned}
+      \]
+    \item IDs globales 16--35; solo existen en configuración \texttt{Top} o
+      \texttt{EndTop}.
+  \end{itemize}
+  \begin{alertblock}{Fuentes en código}
+    \scriptsize
+    \texttt{DetectorConstruction.cc:34--58, 312--329}.\\
+    Defaults: \texttt{DetectorConstruction.hh:28--29, 93--96}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Superficie y detección del fotodetector}
+  \small
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Interfaz óptica}
+      \begin{itemize}
+        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ SiPMPV}.
+        \item \texttt{dielectric\_dielectric}, \texttt{unified},
+          \texttt{polished}, $\sigma_\alpha=0$.
+        \item Volumen SiPM modelado como SiO$_2$ con $n=1.58$, igual a la
+          barra: acoplamiento óptico perfecto.
+        \item No hay gap de aire, guía de luz ni capa de grasa explícita.
+      \end{itemize}
+    \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{PDE y reflectividad}
+      La superficie no define \texttt{EFFICIENCY} ni \texttt{REFLECTIVITY}.
+      El fotón entra y \texttt{SiPMSD} aplica manualmente una Bernoulli PDE;
+      luego siempre mata el fotón. PDE máxima = 0.405 a 460 nm.
+    \end{alertblock}
+    \begin{block}{Sensor asumido}
+      \scriptsize Tabla rotulada Hamamatsu \textbf{S13360-6025}, 6 mm,
+      celda 25 $\mu$m. La posible identidad S14160 no está resuelta en código.
+    \end{block}
+  \end{columns}
+  \scriptsize Fuentes: \texttt{Materials.cc:185--199, 221--262};
+  \texttt{SiPMSD.cc:17--32, 66--101, 133--139};
+  \texttt{DetectorConstruction.cc:300--308, 327--328}.
+\end{frame}
+
 \begin{frame}{Definición de timing congruente con el test beam}
   \small
   \begin{block}{End: SUM4 + self-trigger}
