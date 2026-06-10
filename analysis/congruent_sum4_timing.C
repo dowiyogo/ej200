@@ -10,7 +10,7 @@
 //   deltaT = t_L - t_R; sigma_single = sigma(deltaT)/sqrt(2)
 //
 // Top (solo prediccion de simulacion; no estuvo en el test beam de abril):
-//   mitades agregadas A={16..25}, B={26..35}
+//   grupos espejados A={16..50}, B={51..85}
 //   deltaT = t_A - t_B; sigma_single = sigma(deltaT)/sqrt(2)
 //
 // Uso:
@@ -220,8 +220,8 @@ int GroupIndex(int globalId) {
     if (globalId >= 8 && globalId <= 11) return 2;
     if (globalId >= 12 && globalId <= 15) return 3;
     // Top is a simulation-only trigger-free split, not a test-beam mapping.
-    if (globalId >= 16 && globalId <= 25) return 4;
-    if (globalId >= 26 && globalId <= 35) return 5;
+    if (globalId >= 16 && globalId <= 50) return 4;
+    if (globalId >= 51 && globalId <= 85) return 5;
     return -1;
 }
 
@@ -305,7 +305,7 @@ void SaveTriggerPlot(const std::vector<Point>& points, const std::string& output
 void WriteHooks(const std::string& outputDir) {
     std::ofstream out(outputDir + "/hooks.txt");
     out << "HOOK_MAP=provisional: End SUM4 {0-3},{4-7},{8-11},{12-15}; "
-           "Top simulation-only split {16-25},{26-35}\n"
+           "Top simulation-only split {16-50},{51-85}\n"
         << "HOOK_SPR=provisional: normalized double exponential, tau_r="
         << kSprRiseNs << " ns, tau_f=" << kSprFallNs << " ns, peak amplitude=1 PE\n"
         << "HOOK_THR=provisional: absolute leading-edge threshold=" << kThresholdPe

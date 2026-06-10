@@ -36,18 +36,24 @@ struct FitResult {
 };
 
 std::map<std::string, Grouping> BuildGroupings() {
-    return {
+    std::map<std::string, Grouping> groupings = {
         {"single_end_left",  {{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}}},
         {"sum4_end",         {{0,1,2,3}, {4,5,6,7}, {8,9,10,11}, {12,13,14,15}}},
         {"sum8_end",         {{0,1,2,3,4,5,6,7}, {8,9,10,11,12,13,14,15}}},
         {"full_end",         {{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}}},
-        {"single_top",       {{16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25},
-                              {26}, {27}, {28}, {29}, {30}, {31}, {32}, {33}, {34}, {35}}},
-        {"sum4_top",         {{16,17,18,19}, {20,21,22,23}, {24,25,26,27},
-                              {28,29,30,31}, {32,33,34,35}}},
-        {"full_top",         {{16,17,18,19,20,21,22,23,24,25,
-                              26,27,28,29,30,31,32,33,34,35}}},
     };
+    Group fullTop;
+    for (int id = 16; id < 86; ++id) {
+        groupings["single_top"].push_back({id});
+        fullTop.push_back(id);
+    }
+    for (int first = 16; first < 86; first += 4) {
+        Group group;
+        for (int id = first; id < std::min(first + 4, 86); ++id) group.push_back(id);
+        groupings["sum4_top"].push_back(group);
+    }
+    groupings["full_top"].push_back(fullTop);
+    return groupings;
 }
 
 double KthPhotonTime(std::vector<double> times, int k) {

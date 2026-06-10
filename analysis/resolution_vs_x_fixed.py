@@ -31,7 +31,7 @@ import uproot
 
 # ── Constantes de geometria (deben coincidir con DetectorConstruction.hh) ────
 N_END_SIPMS = 8          # por lado
-N_TOP_SIPMS = 20
+N_TOP_SIPMS = 70
 BAR_HALF_X  = 700.0      # mm
 
 COLORS = {

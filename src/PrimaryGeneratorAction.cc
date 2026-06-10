@@ -102,17 +102,13 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
     G4double gunX = basePos.x();
 
     if (fMidSiPM1 >= 0 && fMidSiPM2 >= 0) {
-        // Look up the current pitch and count from DetectorConstruction
         const auto* dc = dynamic_cast<const DetectorConstruction*>(
             G4RunManager::GetRunManager()->GetUserDetectorConstruction());
 
-        if (dc != nullptr) {
-            const G4double pitch  = dc->GetTopSiPMPitch();
-            const G4int    nTotal = dc->GetNTopSiPMs();
-            const G4double x1 = DetectorConstruction::TopSiPMCenterX(
-                                     fMidSiPM1, pitch, nTotal);
-            const G4double x2 = DetectorConstruction::TopSiPMCenterX(
-                                     fMidSiPM2, pitch, nTotal);
+        if (dc != nullptr && fMidSiPM1 < dc->GetNTopSiPMs() &&
+            fMidSiPM2 < dc->GetNTopSiPMs()) {
+            const G4double x1 = DetectorConstruction::TopSiPMCenterX(fMidSiPM1);
+            const G4double x2 = DetectorConstruction::TopSiPMCenterX(fMidSiPM2);
             gunX = 0.5 * (x1 + x2);
         } else {
             G4cerr << "[PrimaryGeneratorAction] Cannot resolve DetectorConstruction "

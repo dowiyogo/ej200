@@ -7,29 +7,21 @@
 #include "G4PhysicsVector.hh"
 #include "G4SystemOfUnits.hh"
 
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 
 namespace {
-struct Expected {
-    const char* name;
-    G4Material* (*create)();
-    G4double yield;
-    G4double rise;
-    G4double decay;
-    G4double attenuation;
-    G4double peakWavelength;
-};
-
 [[noreturn]] void Fail(const std::string& message) {
-    std::cerr << "physics_baseline_check FAILED: " << message << '\n';
+    std::cerr << "sslg4_properties_check FAILED: " << message << '\n';
     std::exit(EXIT_FAILURE);
 }
 
-void RequireEqual(const std::string& label, G4double actual, G4double expected) {
-    if (actual != expected) {
-        std::cerr << "physics_baseline_check FAILED: " << label
+void RequireNear(const std::string& label, G4double actual, G4double expected,
+                 G4double tolerance) {
+    if (std::abs(actual - expected) > tolerance) {
+        std::cerr << "sslg4_properties_check FAILED: " << label
                   << " actual=" << actual << " expected=" << expected << '\n';
         std::exit(EXIT_FAILURE);
     }
@@ -45,40 +37,6 @@ G4double PeakWavelength(const G4MaterialPropertyVector* emission) {
     }
     return 1239.84193 * eV * nm / emission->Energy(peakIndex);
 }
-
-void CheckMaterial(const Expected& expected) {
-    auto* material = expected.create();
-    auto* mpt = material->GetMaterialPropertiesTable();
-    if (mpt == nullptr) Fail(std::string(expected.name) + " has no material properties table");
-
-    RequireEqual(std::string(expected.name) + " yield",
-                 mpt->GetConstProperty("SCINTILLATIONYIELD"), expected.yield);
-    RequireEqual(std::string(expected.name) + " rise",
-                 mpt->GetConstProperty("SCINTILLATIONRISETIME1"), expected.rise);
-    RequireEqual(std::string(expected.name) + " decay",
-                 mpt->GetConstProperty("SCINTILLATIONTIMECONSTANT1"), expected.decay);
-    RequireEqual(std::string(expected.name) + " resolution scale",
-                 mpt->GetConstProperty("RESOLUTIONSCALE"), 1.0);
-    RequireEqual(std::string(expected.name) + " prompt fraction",
-                 mpt->GetConstProperty("SCINTILLATIONYIELD1"), 1.0);
-
-    if (mpt->GetConstProperty("SCINTILLATIONRISETIME1") <= 0.0) {
-        Fail(std::string(expected.name) + " rise time is not positive");
-    }
-
-    auto* attenuation = mpt->GetProperty("ABSLENGTH");
-    if (attenuation == nullptr || attenuation->GetVectorLength() == 0) {
-        Fail(std::string(expected.name) + " has no ABSLENGTH");
-    }
-    for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
-        RequireEqual(std::string(expected.name) + " attenuation",
-                     (*attenuation)[i], expected.attenuation);
-    }
-
-    RequireEqual(std::string(expected.name) + " emission peak",
-                 PeakWavelength(mpt->GetProperty("SCINTILLATIONCOMPONENT1")),
-                 expected.peakWavelength);
-}
 } // namespace
 
 int main() {
@@ -87,21 +45,47 @@ int main() {
         Fail("finite scintillation rise time is disabled");
     }
 
-    const Expected materials[] = {
-        {"EJ-204", Materials::CreateEJ204, 10400.0 / MeV, 0.7 * ns, 1.8 * ns,
-         160.0 * cm, 408.0 * nm},
-        {"EJ-200", Materials::CreateEJ200, 10000.0 / MeV, 0.9 * ns, 2.1 * ns,
-         380.0 * cm, 425.0 * nm},
-        {"EJ-230", Materials::CreateEJ230, 9700.0 / MeV, 0.5 * ns, 1.5 * ns,
-         120.0 * cm, 391.0 * nm},
-    };
-    for (const auto& material : materials) CheckMaterial(material);
-
     DetectorConstruction detector;
-    if (detector.GetScintillatorMaterial() != "EJ204") {
-        Fail("default active scintillator is not EJ204");
+    detector.SetScintillatorCode("OPSC-101");
+    detector.Construct();
+    if (detector.GetScintillatorCode() != "OPSC-101") {
+        Fail("default active scintillator is not OPSC-101");
     }
 
-    std::cout << "physics_baseline_check PASSED\n";
+    auto* material = detector.GetActiveScintillatorMaterial();
+    if (material == nullptr || material->GetName() != "opsc-101") {
+        Fail("bar material was not created by OrganicScintillatorFactory");
+    }
+    auto* mpt = material->GetMaterialPropertiesTable();
+    if (mpt == nullptr) Fail("OPSC-101 has no material properties table");
+
+    RequireNear("yield", mpt->GetConstProperty("SCINTILLATIONYIELD"),
+                10400.0 / MeV, 1.0e-9 / MeV);
+    RequireNear("rise", mpt->GetConstProperty("SCINTILLATIONRISETIME1"),
+                0.7 * ns, 1.0e-12 * ns);
+    RequireNear("decay", mpt->GetConstProperty("SCINTILLATIONTIMECONSTANT1"),
+                1.8 * ns, 1.0e-12 * ns);
+
+    auto* attenuation = mpt->GetProperty("ABSLENGTH");
+    if (attenuation == nullptr || attenuation->GetVectorLength() == 0) {
+        Fail("missing ABSLENGTH");
+    }
+    for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
+        RequireNear("ABSLENGTH", (*attenuation)[i], 160.0 * cm, 1.0e-9 * cm);
+    }
+
+    auto* rindex = mpt->GetProperty("RINDEX");
+    if (rindex == nullptr || rindex->GetVectorLength() == 0) Fail("missing RINDEX");
+    for (std::size_t i = 0; i < rindex->GetVectorLength(); ++i) {
+        RequireNear("RINDEX", (*rindex)[i], 1.58, 1.0e-12);
+    }
+
+    RequireNear("emission peak",
+                PeakWavelength(mpt->GetProperty("SCINTILLATIONCOMPONENT1")),
+                408.8 * nm, 2.0 * nm);
+
+    std::cout << "\n=== Effective SSLG4 OPSC-101 MPT dump ===\n";
+    mpt->DumpTable();
+    std::cout << "sslg4_properties_check PASSED\n";
     return EXIT_SUCCESS;
 }

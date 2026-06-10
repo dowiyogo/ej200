@@ -1,15 +1,18 @@
 #pragma once
-#include "G4MaterialPropertyVector.hh"
 #include "G4VSensitiveDetector.hh"
 #include "globals.hh"
+
+#include "SiPMModel.hh"
+
+#include <vector>
 
 class G4GenericMessenger;
 
 // --------------------------------------------------------------------------
 // SiPMSD — sensitive detector for all SiPM volumes (end-left, end-right, top).
 //
-// PDE is applied via a Bernoulli trial with linear interpolation over the
-// Hamamatsu S13360-6025 table (300–940 nm, 33 points).
+// PDE is applied by G4OpBoundaryProcess from the selected surface EFFICIENCY
+// curve. This SD records only photons accepted by that boundary process.
 //
 // Electronic jitter:
 //   The registered hit time is  t_hit = t_global + Gauss(0, σ_jitter).
@@ -32,11 +35,14 @@ class SiPMSD : public G4VSensitiveDetector
     // Configurable jitter sigma (G4 internal time units)
     void     SetJitterSigma(G4double sigma) { fJitterSigma = sigma; }
     G4double GetJitterSigma() const         { return fJitterSigma; }
+    void     SetModel(const G4String& model);
+    G4String GetModel() const { return fModel; }
 
   private:
     G4double GetPDE(G4double energy) const;
 
-    G4MaterialPropertyVector fPDEVec;
+    G4String fModel = "AFBR-S4N66P024M";
+    std::vector<SiPMModel::PDEPoint> fPDECurve;
 
     // Jitter sigma in G4 internal units (nanoseconds scale).
     // Default: 20 ps = 0.020 ns.

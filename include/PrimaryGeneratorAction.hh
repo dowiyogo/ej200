@@ -23,9 +23,8 @@ class G4GenericMessenger;
 //
 //  /muon/midpointSiPMs <i> <j>
 //      Place the gun X at the geometric midpoint between top SiPMs i and j
-//      (0-based indices, e.g. "9 10" for the central gap).
-//      Reads the current pitch from DetectorConstruction at event time, so
-//      it remains valid after /det/topSiPMPitch changes.
+//      (0-based indices, e.g. "34 35" for the central 24 mm gap).
+//      Reads the fixed EXEC_07 top positions from DetectorConstruction.
 //
 //  /muon/gunX <x> mm
 //      Set gun X position directly in mm. This clears midpoint mode.

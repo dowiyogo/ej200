@@ -1,5 +1,7 @@
 #include "DetectorConstruction.hh"
 #include "Materials.hh"
+#include "OrganicScintillatorFactory.hh"
+#include "SiPMModel.hh"
 #include "SiPMSD.hh"
 
 #include "G4Box.hh"
@@ -11,13 +13,16 @@
 #include "G4RunManager.hh"
 #include "G4SDManager.hh"
 #include "G4StateManager.hh"
+#include "G4SubtractionSolid.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4VSolid.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4ios.hh"
 
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <string>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
@@ -37,25 +42,10 @@ static constexpr G4double kTopHalfY   = 0.25 * mm;  // thickness
 static constexpr G4double kTopHalfZ   = 3.0  * mm;  // 6 mm in Z
 
 // ── Static helpers ────────────────────────────────────────────────────────────
-
-// Maximum X available for SiPM centres (must stay inside bar footprint)
-static constexpr G4double kTopSiPMMaxX = kBarHalfX - kTopHalfX;  // 697 mm
-
-G4int DetectorConstruction::ComputeNTopSiPMs(G4double pitch) {
-    // Number of SiPMs that can be placed symmetrically within ±kTopSiPMMaxX
-    // at the requested pitch.  Always returns an even number ≥ 2.
-    if (pitch <= 0.0) return 2;
-    G4int n = static_cast<G4int>(std::floor(2.0 * kTopSiPMMaxX / pitch)) + 1;
-    if (n < 2)        n = 2;
-    if (n % 2 != 0)   n -= 1;   // enforce symmetry (even count)
-    return n;
-}
-
-// X-centre of top SiPM index idx (0-based) given nTotal SiPMs at pitch
-G4double DetectorConstruction::TopSiPMCenterX(G4int idx, G4double pitch,
-                                               G4int nTotal) {
-    // Symmetric distribution: centres at (idx - (nTotal-1)/2) * pitch
-    return (idx - 0.5 * (nTotal - 1)) * pitch;
+G4double DetectorConstruction::TopSiPMCenterX(G4int idx) {
+    if (idx < 0 || idx >= kNTopSiPMs) return 0.0;
+    if (idx < 35) return (-692.0 + 20.0 * idx) * mm;
+    return (12.0 + 20.0 * (idx - 35)) * mm;
 }
 
 G4int DetectorConstruction::FaceType(G4int globalId) {
@@ -72,25 +62,20 @@ G4int DetectorConstruction::LocalId(G4int globalId) {
 
 // ── Constructor / Destructor ──────────────────────────────────────────────────
 DetectorConstruction::DetectorConstruction() {
-    fNTopSiPMs = ComputeNTopSiPMs(fTopSiPMPitch);
-
     // UI messenger — available after construction, before /run/initialize
     fMessenger = new G4GenericMessenger(this, "/det/", "Detector geometry control");
 
-    auto& cmd = fMessenger->DeclareMethodWithUnit(
-        "topSiPMPitch", "mm",
-        &DetectorConstruction::SetTopSiPMPitch,
-        "Set distance between adjacent top SiPMs [mm]. Triggers geometry rebuild.\n"
-        "  Valid range: ~10 mm … 73 mm (limited by bar length and SiPM count).\n"
-        "  Common values: 40 (4 cm), 50 (5 cm), 70 (7 cm, default).");
-    cmd.SetParameterName("pitch", false);
-    cmd.SetRange("pitch > 0");
-
     auto& matCmd = fMessenger->DeclareMethod(
+        "scintillator",
+        &DetectorConstruction::SetScintillatorCode,
+        "Set SSLG4 organic scintillator: OPSC-101 (EJ-204, default) or OPSC-100 (EJ-200).");
+    matCmd.SetParameterName("code", false);
+
+    auto& legacyMatCmd = fMessenger->DeclareMethod(
         "scintillatorMaterial",
-        &DetectorConstruction::SetScintillatorMaterial,
-        "Set active scintillator: EJ204 (default), EJ200, or EJ230.");
-    matCmd.SetParameterName("material", false);
+        &DetectorConstruction::SetScintillatorCode,
+        "Legacy alias for /det/scintillator.");
+    legacyMatCmd.SetParameterName("code", false);
 
     auto& readoutCmd = fMessenger->DeclareMethod(
         "readout",
@@ -103,39 +88,50 @@ DetectorConstruction::DetectorConstruction() {
         &DetectorConstruction::SetEdgeWrapMode,
         "Legacy no-op. The Mylar wrap volume was removed; reflection is handled\n"
         "by explicit reflector panels around BarLV.");
+
+    fSiPMMessenger = new G4GenericMessenger(this, "/sipm/", "SiPM model control");
+    auto& sipmModelCmd = fSiPMMessenger->DeclareMethod(
+        "model", &DetectorConstruction::SetSiPMModel,
+        "Set SiPM model. Default and currently supported: AFBR-S4N66P024M.");
+    sipmModelCmd.SetParameterName("model", false);
 }
 
 DetectorConstruction::~DetectorConstruction() {
+    delete fSiPMMessenger;
     delete fMessenger;
 }
 
-// ── SetTopSiPMPitch ───────────────────────────────────────────────────────────
-void DetectorConstruction::SetTopSiPMPitch(G4double pitchMm) {
-    // pitchMm is already in G4 internal units (mm=1) because DeclareMethodWithUnit
-    // performs the conversion before calling this function.
-    fTopSiPMPitch = pitchMm;
-    fNTopSiPMs    = ComputeNTopSiPMs(fTopSiPMPitch);
+void DetectorConstruction::SetScintillatorCode(G4String code) {
+    std::transform(code.begin(), code.end(), code.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::toupper(ch)); });
+    code.erase(std::remove_if(code.begin(), code.end(),
+                              [](unsigned char ch) { return ch == '_' || ch == ' '; }),
+               code.end());
+    if (code == "EJ204") code = "OPSC-101";
+    if (code == "EJ200") code = "OPSC-100";
+
+    if (code != "OPSC-101" && code != "OPSC-100") {
+        G4cerr << "[DetectorConstruction] Unknown /det/scintillator \""
+               << code << "\". Use OPSC-101 or OPSC-100.\n";
+        return;
+    }
+    if (code == fScintCode) return;
+
+    fScintCode = code;
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
 }
 
-void DetectorConstruction::SetScintillatorMaterial(G4String materialName) {
-    std::transform(materialName.begin(), materialName.end(), materialName.begin(),
-                   [](unsigned char ch) { return static_cast<char>(std::toupper(ch)); });
-    materialName.erase(
-        std::remove_if(materialName.begin(), materialName.end(),
-                       [](unsigned char ch) { return ch == '-' || ch == '_' || ch == ' '; }),
-        materialName.end());
-
-    if (materialName != "EJ204" && materialName != "EJ200" && materialName != "EJ230") {
-        G4cerr << "[DetectorConstruction] Unknown /det/scintillatorMaterial \""
-               << materialName << "\". Use EJ204, EJ200, or EJ230.\n";
+void DetectorConstruction::SetSiPMModel(G4String model) {
+    const G4String canonical = SiPMModel::CanonicalName(model);
+    if (canonical.empty()) {
+        G4cerr << "[DetectorConstruction] Unknown /sipm/model \"" << model
+               << "\". Use AFBR-S4N66P024M.\n";
         return;
     }
-    if (materialName == fScintillatorName) return;
-
-    fScintillatorName = materialName;
+    if (canonical == fSiPMModel) return;
+    fSiPMModel = canonical;
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
@@ -186,12 +182,38 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     // ── Materials ────────────────────────────────────────────────────────────
     G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
-    if (fScintillatorName == "EJ200") {
-        fActiveScintillator = Materials::CreateEJ200();
-    } else if (fScintillatorName == "EJ230") {
-        fActiveScintillator = Materials::CreateEJ230();
-    } else {
-        fActiveScintillator = Materials::CreateEJ204();
+    fActiveScintillator =
+        OrganicScintillatorFactory::GetInstance()->Get(fScintCode, true);
+    if (fScintCode == "OPSC-101") {
+        auto* mpt = fActiveScintillator->GetMaterialPropertiesTable();
+        if (mpt != nullptr) {
+            auto* attenuation = mpt->GetProperty("ABSLENGTH");
+            G4bool overrideAttenuation =
+                attenuation == nullptr || attenuation->GetVectorLength() == 0;
+            if (!overrideAttenuation) {
+                for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
+                    if (std::abs((*attenuation)[i] - 160.0 * cm) > 1.0e-9 * cm) {
+                        overrideAttenuation = true;
+                    }
+                }
+            }
+            if (overrideAttenuation) {
+                mpt->RemoveProperty("ABSLENGTH");
+                mpt->AddProperty("ABSLENGTH",
+                                 {1.5 * eV, 6.5 * eV},
+                                 {160.0 * cm, 160.0 * cm});
+                G4cout << "[DetectorConstruction] OPSC-101 ABSLENGTH overridden to 160 cm."
+                       << G4endl;
+            }
+            if (!mpt->ConstPropertyExists("SCINTILLATIONRISETIME1") ||
+                std::abs(mpt->GetConstProperty("SCINTILLATIONRISETIME1") -
+                         0.7 * ns) > 1.0e-12 * ns) {
+                mpt->RemoveConstProperty("SCINTILLATIONRISETIME1");
+                mpt->AddConstProperty("SCINTILLATIONRISETIME1", 0.7 * ns);
+                G4cout << "[DetectorConstruction] OPSC-101 rise time overridden to 0.7 ns."
+                       << G4endl;
+            }
+        }
     }
     G4Material* barMat   = fActiveScintillator;
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
@@ -203,8 +225,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         worldMat->SetMaterialPropertiesTable(mpt);
     }
 
-    // SiPM coupling surface (bar–SiPM boundary, polished dielectric–dielectric)
-    auto* sipmSurface = Materials::CreateSiPMSurface();
+    // SiPM detection surface: selected PDE as EFFICIENCY and zero reflectivity.
+    auto* sipmSurface = Materials::CreateSiPMSurface(fSiPMModel);
 
     // ── World volume ─────────────────────────────────────────────────────────
     auto* worldSolid = new G4Box("WorldSolid", 1.6*m, 0.25*m, 0.25*m);
@@ -264,13 +286,26 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fReflectorSurfaces["+Z"] = new G4LogicalBorderSurface(
         "BarReflector_ZPlus", fBarPhys, reflZPlusPhys, reflector);
 
-    if (!IsTopInstrumented()) {
-        auto* reflYPlusPhys = new G4PVPlacement(
-            nullptr, {0.0, +(kBarHalfY + foilHalfT), 0.0},
-            reflYMinusLV, "ReflectorYPlusPV", worldLV, false, 5, true);
-        fReflectorSurfaces["+Y"] = new G4LogicalBorderSurface(
-            "BarReflector_YPlus", fBarPhys, reflYPlusPhys, reflector);
+    G4VSolid* reflYPlusSolid = new G4Box(
+        "ReflectorYPlusBaseSolid", kBarHalfX, foilHalfT, kBarHalfZ);
+    if (IsTopInstrumented()) {
+        auto* window = new G4Box(
+            "ReflectorYPlusWindowSolid", kTopHalfX, 2.0 * foilHalfT, kTopHalfZ);
+        for (G4int i = 0; i < kNTopSiPMs; ++i) {
+            reflYPlusSolid = new G4SubtractionSolid(
+                "ReflectorYPlusCut_" + std::to_string(i),
+                reflYPlusSolid, window, nullptr,
+                G4ThreeVector(TopSiPMCenterX(i), 0.0, 0.0));
+        }
     }
+    auto* reflYPlusLV = new G4LogicalVolume(
+        reflYPlusSolid, worldMat, "ReflectorYPlusLV");
+    reflYPlusLV->SetVisAttributes(G4VisAttributes::GetInvisible());
+    auto* reflYPlusPhys = new G4PVPlacement(
+        nullptr, {0.0, +(kBarHalfY + foilHalfT), 0.0},
+        reflYPlusLV, "ReflectorYPlusPV", worldLV, false, 5, true);
+    fReflectorSurfaces["+Y"] = new G4LogicalBorderSurface(
+        "BarReflector_YPlus", fBarPhys, reflYPlusPhys, reflector);
     if (!IsEndInstrumented()) {
         auto* reflXMinusPhys = new G4PVPlacement(
             nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
@@ -316,9 +351,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         va->SetForceSolid(true);
         fTopSiPMLV->SetVisAttributes(va);
 
-        for (G4int i = 0; i < fNTopSiPMs; ++i) {
+        for (G4int i = 0; i < kNTopSiPMs; ++i) {
             const G4int globalId = 2 * kNEndSiPMs + i;
-            const G4double cx = TopSiPMCenterX(i, fTopSiPMPitch, fNTopSiPMs);
+            const G4double cx = TopSiPMCenterX(i);
 
             auto* topPhys = new G4PVPlacement(
                 nullptr, G4ThreeVector(cx, kBarHalfY - kTopHalfY, 0.0),
@@ -342,6 +377,7 @@ void DetectorConstruction::ConstructSDandField() {
         sipmSD = new SiPMSD("SiPMSD");
         sdManager->AddNewDetector(sipmSD);
     }
+    sipmSD->SetModel(fSiPMModel);
 
     if (fEndSiPMLV != nullptr) SetSensitiveDetector(fEndSiPMLV, sipmSD);
     if (fTopSiPMLV != nullptr) SetSensitiveDetector(fTopSiPMLV, sipmSD);

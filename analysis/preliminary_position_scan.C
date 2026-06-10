@@ -3,7 +3,7 @@
 // Estimador temporal:
 //   - End: promedio de los primeros fotoelectrones de ambos extremos,
 //          t_end = (t_L + t_R) / 2.
-//   - Top: primer fotoelectron detectado en IDs 16-35.
+//   - Top: primer fotoelectron detectado en IDs 16-85.
 // El run debe usar /sipm/jitterSigma 0 ns; por tanto sigma_t es INTRINSECO.
 //
 // Eficiencia = fotones detectados / fotones de centelleo generados, usando
@@ -180,7 +180,7 @@ void SaveYieldPlot(const std::vector<Point>& points, const std::string& base) {
     TLegend legend(0.68, 0.72, 0.90, 0.89);
     legend.AddEntry(&left, "End-left (IDs 0-7)", "lp");
     legend.AddEntry(&right, "End-right (IDs 8-15)", "lp");
-    legend.AddEntry(&top, "Top (IDs 16-35)", "lp");
+    legend.AddEntry(&top, "Top (IDs 16-85)", "lp");
     legend.Draw();
     canvas.SaveAs((base + "/yield_vs_position.pdf").c_str());
     canvas.SaveAs((base + "/yield_vs_position.png").c_str());

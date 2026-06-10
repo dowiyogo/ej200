@@ -51,10 +51,8 @@ G4Material* CreateSiPMCoupling();
 // Apply as G4LogicalBorderSurface(bar → world) to model all non-SiPM faces.
 G4OpticalSurface* CreateBarSurface();
 
-// SiPM optical surface.
-// dielectric_dielectric | polished | DETECTIONEFFICIENCY = PDE(λ)
-// PDE table from Hamamatsu S13360 series (33 points, 300–940 nm).
-// Apply as G4LogicalBorderSurface(bar → sipmPhys) for every SiPM volume.
-G4OpticalSurface* CreateSiPMSurface();
+// SiPM optical surface. The selected model's PDE file is installed as
+// EFFICIENCY(lambda), with REFLECTIVITY(lambda)=0.
+G4OpticalSurface* CreateSiPMSurface(const G4String& model);
 
 } // namespace Materials

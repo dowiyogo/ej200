@@ -48,7 +48,7 @@ void analyze_hits(const char* filename = "photon_hits_run000.root") {
     TH1D *hTimeTop   = new TH1D("hTimeTop",   "Arrival Time;Time [ns];Cuentas", 100, 0, 40);
     
     TH1D *hWavelength = new TH1D("hWavelength", "Detected Spectrum;Wavelength [nm];Cuentas", 80, 350, 550);
-    TH1D *hOccupancy  = new TH1D("hOccupancy",  "SiPM Occupancy;Global ID;Hits", 60, 0, 60);
+    TH1D *hOccupancy  = new TH1D("hOccupancy",  "SiPM Occupancy;Global ID;Hits", 86, 0, 86);
 
     // Colores consistentes con tu análisis previo
     hTimeLeft->SetLineColor(kBlue+1);

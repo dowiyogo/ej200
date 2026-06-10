@@ -1,4 +1,5 @@
 #include "Materials.hh"
+#include "SiPMModel.hh"
 
 #include "G4Element.hh"
 #include "G4Material.hh"
@@ -218,46 +219,32 @@ G4OpticalSurface* CreateBarSurface() {
 }
 
 // ---------------------------------------------------------------------------
-G4OpticalSurface* CreateSiPMSurface() {
-    // SiPM detection surface.
-    // dielectric_dielectric | polished: photon enters the SiPM volume via
-    // Snell's law (no TIR since n_SiPM = n_bar = 1.58 via coupling material).
-    // DETECTIONEFFICIENCY is read by SiPMSD::ProcessHits and applied manually.
-    // PDE data from Hamamatsu S13360-6025 (or equivalent 6 mm SiPM, 25 μm cell).
-
+G4OpticalSurface* CreateSiPMSurface(const G4String& model) {
+    // A dielectric_metal surface with zero reflectivity lets Geant4 apply the
+    // PDE exactly once through EFFICIENCY and invoke the attached SiPM SD.
     auto* surf = new G4OpticalSurface("SiPMSurface");
-    surf->SetType(dielectric_dielectric);
+    surf->SetType(dielectric_metal);
     surf->SetModel(unified);
     surf->SetFinish(polished);
     surf->SetSigmaAlpha(0.0);
 
+    const auto curve = SiPMModel::LoadPDECurve(model);
     const G4double hc = 1239.84193 * eV * nm;
-
-    const G4int n = 33;
-    G4double wl_nm[n] = {
-        300, 320, 340, 360, 380, 400, 420, 440, 460, 480, 500,
-        520, 540, 560, 580, 600, 620, 640, 660, 680, 700,
-        720, 740, 760, 780, 800, 820, 840, 860, 880, 900,
-        920, 940
-    };
-    G4double pde[n] = {
-        0.000, 0.050, 0.120, 0.180, 0.260, 0.330, 0.380, 0.400,
-        0.405, 0.403, 0.390, 0.370, 0.340, 0.310, 0.280, 0.240,
-        0.210, 0.180, 0.150, 0.120, 0.100, 0.080, 0.060, 0.050,
-        0.040, 0.030, 0.025, 0.020, 0.015, 0.010, 0.008, 0.004, 0.001
-    };
-
-    // Convert wavelengths to photon energies; G4 requires ascending energy order.
-    G4double energy[n], detEff[n];
-    for (G4int i = 0; i < n; ++i) {
-        energy[n - 1 - i]  = hc / wl_nm[i];
-        detEff[n - 1 - i]  = pde[i];
+    std::vector<G4double> energy;
+    std::vector<G4double> efficiency;
+    std::vector<G4double> reflectivity;
+    energy.reserve(curve.size());
+    efficiency.reserve(curve.size());
+    reflectivity.reserve(curve.size());
+    for (auto it = curve.rbegin(); it != curve.rend(); ++it) {
+        energy.push_back(hc / (it->wavelengthNm * nm));
+        efficiency.push_back(it->efficiency);
+        reflectivity.push_back(0.0);
     }
 
     auto* mpt = new G4MaterialPropertiesTable();
-    // No DETECTIONEFFICIENCY here — PDE is applied manually in SiPMSD.
-    // The surface is purely optical-contact: polished dielectric_dielectric
-    // with n_SiPM = n_bar = 1.58 ensures full transmission (no TIR, no loss).
+    mpt->AddProperty("EFFICIENCY", energy, efficiency);
+    mpt->AddProperty("REFLECTIVITY", energy, reflectivity);
     surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }

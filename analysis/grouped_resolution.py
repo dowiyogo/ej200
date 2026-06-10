@@ -7,10 +7,10 @@ Modelos de agrupación implementados:
   - Single channel (referencia): tiempo = primer fotón del SiPM individual
   - Sum-of-4 end:    grupos {0..3, 4..7, 8..11, 12..15}      -> 4 grupos
   - Sum-of-8 end:    grupos {0..7, 8..15}                    -> 2 grupos
-  - Sum-of-4 top:    grupos {16..19, 20..23, ..., 32..35}    -> 5 grupos
-  - Sum-of-5 top:    grupos {16..20, 21..25, 26..30, 31..35} -> 4 grupos
+  - Sum-of-4 top:    grupos consecutivos en IDs 16..85       -> 18 grupos
+  - Sum-of-5 top:    grupos consecutivos en IDs 16..85       -> 14 grupos
   - Full-end (OR):   un solo grupo de los 16 end SiPMs       -> 1 grupo
-  - Full-top (OR):   un solo grupo de los 20 top SiPMs       -> 1 grupo
+  - Full-top (OR):   un solo grupo de los 70 top SiPMs       -> 1 grupo
 
 Trigger: el k-ésimo fotón temprano del grupo (k = threshold en p.e.).
 Default k=4. Usa k=1 para reproducir FPT.
@@ -58,20 +58,24 @@ import uproot
 
 from resolution_vs_x_fixed import fit_fpt_distribution
 
+TOP_IDS = tuple(range(16, 86))
+
+
+def chunks(ids, size):
+    return [tuple(ids[i:i + size]) for i in range(0, len(ids), size)]
+
+
 GROUPINGS = {
     "single_end_left":  [(i,) for i in range(0, 8)],
     "single_end_right": [(i,) for i in range(8, 16)],
-    "single_top":       [(i,) for i in range(16, 36)],
+    "single_top":       [(i,) for i in TOP_IDS],
     "sum4_end":         [tuple(range(0, 4)), tuple(range(4, 8)),
                          tuple(range(8, 12)), tuple(range(12, 16))],
     "sum8_end":         [tuple(range(0, 8)), tuple(range(8, 16))],
-    "sum4_top":         [tuple(range(16, 20)), tuple(range(20, 24)),
-                         tuple(range(24, 28)), tuple(range(28, 32)),
-                         tuple(range(32, 36))],
-    "sum5_top":         [tuple(range(16, 21)), tuple(range(21, 26)),
-                         tuple(range(26, 31)), tuple(range(31, 36))],
+    "sum4_top":         chunks(TOP_IDS, 4),
+    "sum5_top":         chunks(TOP_IDS, 5),
     "full_end":         [tuple(range(0, 16))],
-    "full_top":         [tuple(range(16, 36))],
+    "full_top":         [TOP_IDS],
 }
 
 COLORS = {

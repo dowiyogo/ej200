@@ -240,7 +240,7 @@ void SaveYieldPlot(const std::vector<Point>& points, const std::string& base) {
     TLegend legend(0.68, 0.72, 0.90, 0.89);
     legend.AddEntry(&left, "End-left (IDs 0-7)", "lp");
     legend.AddEntry(&right, "End-right (IDs 8-15)", "lp");
-    legend.AddEntry(&top, "Top (IDs 16-35)", "lp");
+    legend.AddEntry(&top, "Top (IDs 16-85)", "lp");
     legend.Draw();
     canvas.SaveAs((base + "/yield_vs_position.pdf").c_str());
     canvas.SaveAs((base + "/yield_vs_position.png").c_str());

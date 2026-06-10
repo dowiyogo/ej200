@@ -8,11 +8,10 @@
 /event/verbose   0
 /tracking/verbose 0
 
-# ── Detector geometry ────────────────────────────────────────
-# Top SiPM pitch (triggers ReinitializeGeometry).
-# Valid range: ~10–73 mm for 20 SiPMs within the 1.4 m bar.
-# Common values: 40, 50, 70 (default), 80 mm
-#/det/topSiPMPitch 70 mm
+# ── Detector geometry/material/sensor ────────────────────────
+# /det/readout EndTop
+# /det/scintillator OPSC-101
+# /sipm/model AFBR-S4N66P024M
 
 /run/initialize
 
@@ -29,7 +28,7 @@
 /muon/gunX     0 mm
 
 # Option B — midpoint between two top SiPMs (uncomment to use)
-# /muon/midpointSiPMs 9 10
+# /muon/midpointSiPMs 34 35
 
 # Option C — tilted muon (angle in degrees from -Z vertical)
 # /muon/angle 30

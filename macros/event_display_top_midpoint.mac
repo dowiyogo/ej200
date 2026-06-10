@@ -1,6 +1,6 @@
 # ============================================================
 # event_display_top_midpoint.mac - visualize photon propagation
-# when a muon crosses between top SiPMs 9 and 10 (central gap).
+# when a muon crosses between top SiPMs 34 and 35 (central gap).
 #
 # Usage: ./ej200_bar_sim -m macros/event_display_top_midpoint.mac
 # Interactive Qt session opens; use File > Save As... to export.
@@ -40,10 +40,10 @@
 /vis/viewer/set/viewpointVector 0 1 0
 /vis/viewer/set/projection orthogonal
 
-# Gun: 1 GeV muon at midpoint between SiPMs 9 and 10
+# Gun: 1 GeV muon at midpoint between SiPMs 34 and 35
 /gun/particle  mu-
 /gun/energy    1 GeV
-/muon/midpointSiPMs 9 10
+/muon/midpointSiPMs 34 35
 /muon/angle    0
 
 /run/beamOn 1

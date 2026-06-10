@@ -1,5 +1,6 @@
 #include "RunAction.hh"
 #include "DetectorConstruction.hh"
+#include "SiPMModel.hh"
 #include "SteppingAction.hh"
 
 #include <algorithm>
@@ -40,7 +41,7 @@ void LogActiveScintillator() {
 
     G4cout
         << "\n=== Active Scintillator Baseline ==="
-        << "\n  Material              : " << detector->GetScintillatorMaterial()
+        << "\n  SSLG4 code            : " << detector->GetScintillatorCode()
         << "\n  Yield                 : "
         << mpt->GetConstProperty("SCINTILLATIONYIELD") * MeV << " ph/MeV"
         << "\n  Rise time tau_r       : "
@@ -83,6 +84,8 @@ void LogReadoutConfiguration() {
     G4cout
         << "\n=== Active Readout / Wrapping Configuration ==="
         << "\n  Readout configuration : " << detector->GetReadoutConfiguration()
+        << "\n  SiPM model            : " << detector->GetSiPMModel()
+        << "\n  SiPM PDE file         : " << SiPMModel::DataFilePath(detector->GetSiPMModel())
         << "\n  -X face               : " << faceState("-X", detector->IsEndInstrumented())
         << "\n  +X face               : " << faceState("+X", detector->IsEndInstrumented())
         << "\n  -Y face               : " << faceState("-Y", false)
