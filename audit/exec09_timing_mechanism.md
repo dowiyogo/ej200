@@ -1,6 +1,6 @@
 # EXEC_09 timing mechanism audit
 
-Date: 2026-06-10  
+Date: 2026-06-10
 Branch: `feat/endtop-sslg4`
 
 ## Verdict
