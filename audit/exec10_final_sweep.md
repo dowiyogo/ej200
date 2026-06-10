@@ -6,9 +6,9 @@ Date: 2026-06-11
 |---|---|---|
 | Explicit units on figure axes | OK | EXEC_10 Landau, timing-density, and velocity figures label Npe/event, ns, cm, cm/ns, or dimensionless F explicitly. Existing channel-ID axes are dimensionless identifiers. |
 | Attenuation-fit legend precision | CORRECTED | `analysis/exec07_photon_budget.py` now prints lambda and its uncertainty with two decimal places. |
-| x=300 mm statistical tie wording | CORRECTED | Position table labels it `statistical tie between two nearest candidates`; backup gate slide retains the measured 0.08 sigma statement. |
+| x=300 mm statistical tie wording | CORRECTED | Position table labels it `statistical tie: two nearest`; backup gate slide retains the measured 0.08 sigma statement. |
 | FPT uncertainties rounded to 0.000 ns | CORRECTED | `analysis/exec07/make_beamer.py` uses adaptive 3--5 decimal precision. |
-| Configuration commits | CORRECTED | EXEC_10 deck cites real analysis commits `7b4bc80`, `ad26d78`, and `bcefa24`, plus the prior published checkpoint `0201413`. |
+| Configuration commits | CORRECTED | EXEC_10 deck cites real commits `7b4bc80`, `ad26d78`, `bcefa24`, and `bdfe955`, plus the prior published checkpoint `0201413`. |
 | English consistency | OK | New captions, glossary, and slides are in English. |
 
 ## Additional findings documented without correction
