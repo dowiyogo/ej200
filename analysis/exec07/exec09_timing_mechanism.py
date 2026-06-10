@@ -82,8 +82,9 @@ def load_end_hits(path: pathlib.Path, expected_x: int) -> tuple[np.ndarray, np.n
     )
 
 
-def analyze_file(path: pathlib.Path, campaign: str, x_mm: int) -> tuple[list[dict], np.ndarray]:
+def analyze_file(path: pathlib.Path, campaign: str, x_mm: int) -> tuple[list[dict], np.ndarray, int]:
     event_id, global_id, time_ns = load_end_hits(path, x_mm)
+    n_events = int(np.max(event_id)) + 1
     rows = []
     for group, ids in GROUPS.items():
         selected = np.isin(global_id, ids)
@@ -98,7 +99,7 @@ def analyze_file(path: pathlib.Path, campaign: str, x_mm: int) -> tuple[list[dic
             row[name] = central[name]
             row[f"{name}_error"] = errors[name]
         rows.append(row)
-    return rows, time_ns
+    return rows, time_ns, n_events
 
 
 def comparisons(raw: pd.DataFrame) -> pd.DataFrame:
@@ -120,26 +121,29 @@ def comparisons(raw: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_overlays(
-    all_end: dict[tuple[str, int], np.ndarray], raw: pd.DataFrame, output: pathlib.Path,
+    all_end: dict[tuple[str, int], tuple[np.ndarray, int]], raw: pd.DataFrame, output: pathlib.Path,
 ) -> None:
     bins = np.linspace(0.0, 50.0, 251)
-    fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.5), sharex=True, sharey=True)
-    for axis, x_mm in zip(axes, POSITIONS):
+    bin_width = bins[1] - bins[0]
+    fig, axes = plt.subplots(3, 2, figsize=(13.5, 12), sharex=True)
+    for row_index, x_mm in enumerate(POSITIONS):
         for campaign, color in (("End-only", "tab:blue"), ("EndTop", "tab:red")):
-            axis.hist(
-                all_end[(campaign, x_mm)],
-                bins=bins,
-                density=True,
-                histtype="step",
-                linewidth=1.5,
-                color=color,
-                label=campaign,
+            times, n_events = all_end[(campaign, x_mm)]
+            axes[row_index, 0].hist(
+                times, bins=bins,
+                weights=np.full(len(times), 1.0 / (n_events * bin_width)),
+                histtype="step", linewidth=1.5, color=color, label=campaign,
             )
-        axis.set_yscale("log")
-        axis.set_ylim(2e-6, 1.0)
-        axis.set_title(f"x beam = {x_mm:+d} mm")
-        axis.set_xlabel("End photon arrival time [ns]")
-        axis.grid(alpha=0.25)
+            axes[row_index, 1].hist(
+                times, bins=bins, density=True, histtype="step",
+                linewidth=1.5, color=color, label=campaign,
+            )
+        for axis in axes[row_index]:
+            axis.set_yscale("log")
+            axis.set_xlabel("End photon arrival time [ns]")
+            axis.grid(alpha=0.25)
+        axes[row_index, 0].set_title(f"x beam = {x_mm:+d} mm: absolute rate")
+        axes[row_index, 1].set_title(f"x beam = {x_mm:+d} mm: shape only")
         metrics_at_x = raw[(raw.x_beam_mm == x_mm) & (raw.group == "all_end")].set_index("campaign")
         annotation = []
         for campaign in ("End-only", "EndTop"):
@@ -149,14 +153,18 @@ def plot_overlays(
                 f"  f(t>10)={row.frac_gt10:.5f}+/-{row.frac_gt10_error:.5f}\n"
                 f"  f(t>20)={row.frac_gt20:.6f}+/-{row.frac_gt20_error:.6f}"
             )
-        axis.text(
-            0.98, 0.97, "\n".join(annotation), transform=axis.transAxes,
+        axes[row_index, 1].text(
+            0.98, 0.97, "\n".join(annotation), transform=axes[row_index, 1].transAxes,
             ha="right", va="top", fontsize=7,
             bbox={"facecolor": "white", "alpha": 0.82, "edgecolor": "0.75"},
         )
-    axes[0].set_ylabel("Normalized density [1/ns]")
-    axes[0].legend()
-    fig.suptitle("EXEC_09: End arrival-time tail, identical channels and t=0 convention")
+    for axis in axes[:, 0]:
+        axis.set_ylabel("Mean End photons / event / ns")
+    for axis in axes[:, 1]:
+        axis.set_ylabel("Area-normalized density [1/ns]")
+    axes[0, 0].legend()
+    axes[0, 1].legend()
+    fig.suptitle("EXEC_10: End arrival times - absolute photon rate and normalized shape")
     fig.tight_layout()
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output, dpi=180)
@@ -179,9 +187,9 @@ def main() -> int:
         ):
             path = directory / files[x_mm]
             print(f"{campaign} x={x_mm}: {path}", flush=True)
-            file_rows, all_times = analyze_file(path, campaign, x_mm)
+            file_rows, all_times, n_events = analyze_file(path, campaign, x_mm)
             rows.extend(file_rows)
-            all_end[(campaign, x_mm)] = all_times
+            all_end[(campaign, x_mm)] = (all_times, n_events)
 
     raw = pd.DataFrame(rows)
     compared = comparisons(raw)
