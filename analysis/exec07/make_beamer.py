@@ -35,26 +35,34 @@ def npe_text(row: pd.Series) -> str:
 
 
 def time_text(row: pd.Series, field: str, rms_field: str, samples: float) -> str:
-    return f"${row[field]:.3f}\\pm{row[rms_field] / math.sqrt(samples):.3f}$ ns"
+    error = row[rms_field] / math.sqrt(samples)
+    precision = 5 if error < 0.0005 else 4 if error < 0.005 else 3
+    return f"${row[field]:.{precision}f}\\pm{error:.{precision}f}$ ns"
 
 
-def position_frame(position: pd.Series, summary: pd.DataFrame) -> str:
+def position_frame(position: pd.Series, summary: pd.DataFrame, localization: pd.DataFrame) -> str:
     x_mm = int(position.x_beam_mm)
     left = stats(summary, x_mm, "end_left_all")
     right = stats(summary, x_mm, "end_right_all")
     top = stats(summary, x_mm, "nearest_top")
+    gate = localization.loc[x_mm]
+    status = {
+        "strict maximum at nearest": "exact geometry",
+        "known window-track dip <=15%": "window-track exception",
+        "strict statistical tie <=1 sigma": "statistical tie: two nearest",
+    }[gate.reason]
     body = rf"""
 \begin{{columns}}[T]
   \column{{0.52\textwidth}}
   \includegraphics[width=\textwidth]{{figs/muon_{x_mm}mm_geometry.png}}
   \column{{0.46\textwidth}}
   \includegraphics[width=\textwidth]{{figs/muon_{x_mm}mm_top_profile.png}}
-  \scriptsize
+  \tiny
   \begin{{tabular}}{{lr}}
     \toprule Quantity & Value \\ \midrule
     End L $N_{{pe}}$ & {npe_text(left)} \\
     End R $N_{{pe}}$ & {npe_text(right)} \\
-    Nearest Top ID & {int(position.nearest_top_id)} (exact geometry) \\
+    Nearest Top ID & {int(position.nearest_top_id)} ({status}) \\
     Nearest Top $N_{{pe}}$ & {npe_text(top)} \\
     Nearest Top $\langle t\rangle$ &
       {time_text(top, "t_mean_ns", "t_rms_ns", top.npe_mean * N_EVENTS)} \\
@@ -110,13 +118,45 @@ def top_estimate_table(summary: pd.DataFrame) -> str:
     return "\n".join(lines)
 
 
+def landau_table(positions: pd.DataFrame, landau: pd.DataFrame) -> str:
+    lines = []
+    for x_mm in KEY_POSITIONS:
+        channel = int(positions.loc[x_mm, "nearest_top_id"])
+        row = landau[(landau.x_beam_mm == x_mm) & (landau.channel == channel)].iloc[0]
+        lines.append(
+            rf"{x_mm:+d} & {channel} & ${row.mpv:.1f}\pm{row.mpv_error:.1f}$ & "
+            rf"${row.width:.1f}\pm{row.width_error:.1f}$ & {row.chi2_ndf:.2f} \\"
+        )
+    return "\n".join(lines)
+
+
+def velocity_table(velocity_fits: pd.DataFrame) -> str:
+    labels = {
+        "mean_ns": r"all-photon mean",
+        "t50_ns": r"all-photon $t_{50}$",
+        "fpt_mean_ns": "mean FPT",
+    }
+    lines = []
+    for estimator in ("mean_ns", "t50_ns", "fpt_mean_ns"):
+        row = velocity_fits[(velocity_fits.scope == "combined") & (velocity_fits.estimator == estimator)].iloc[0]
+        lines.append(
+            rf"{labels[estimator]} & ${row.velocity_cm_ns:.3f}\pm{row.velocity_error_cm_ns:.3f}$ & {row.chi2_ndf:.1f} \\"
+        )
+    return "\n".join(lines)
+
+
 def make_tex(output_dir: pathlib.Path, mode: str) -> pathlib.Path:
     positions = pd.read_csv(output_dir / "per_position_exec07.csv").sort_values("x_beam_mm")
+    positions_indexed = positions.set_index("x_beam_mm")
+    localization = pd.read_csv(output_dir / "top_localization_gate.csv").set_index("x_beam_mm")
     summary = pd.read_csv(output_dir / "summary_exec07.csv")
     fits = pd.read_csv(output_dir / "fit_results_exec07.csv").set_index("side")
     profiles = pd.read_csv(output_dir / "exec08b_window_dip_profiles.csv")
     timing_gate = pd.read_csv(output_dir / "exec08b_timing_gate.csv")
     tails = pd.read_csv(output_dir / "exec09_tail_comparison.csv")
+    fano_fit = pd.read_csv(output_dir / "exec10_fano_fit.csv").iloc[0]
+    landau = pd.read_csv(output_dir / "exec10_landau_mpv.csv")
+    velocity_fits = pd.read_csv(output_dir / "exec10_velocity_fits.csv")
     selected = positions if mode == "full" else positions[positions.x_beam_mm.isin(KEY_POSITIONS)]
     nearest = summary[summary.grupo == "nearest_top"]
     end_clusters = summary[summary.grupo.isin(["end_left_A_SUM4", "end_right_A_SUM4"])]
@@ -140,10 +180,10 @@ def make_tex(output_dir: pathlib.Path, mode: str) -> pathlib.Path:
 \setbeamercolor{structure}{fg=shipblue}
 \setbeamercolor{alerted text}{fg=warningorange}
 \setbeamertemplate{navigation symbols}{}
-\title{EXEC\_09: EndTop photon budget and intrinsic timing}
-\subtitle{Tail-drain mechanism, validated 86-channel coverage study}
+\title{EXEC\_10: EndTop photon budget and intrinsic timing}
+\subtitle{Landau-dominated Npe, clarified timing densities, and apparent-slope diagnosis}
 \author{Rene Rios (ULS)}
-\date{June 10, 2026}
+\date{June 11, 2026}
 \begin{document}
 """
     title = frame(
@@ -151,7 +191,8 @@ def make_tex(output_dir: pathlib.Path, mode: str) -> pathlib.Path:
         r"""
 \begin{columns}[T]\column{0.62\textwidth}
 \textbf{Branch:} \texttt{feat/endtop-sslg4}\\
-\textbf{Commits:} \texttt{1f6aca1}, \texttt{9613fc9}, final EXEC\_09 deliverable commit
+\textbf{Commits:} \texttt{0201413}, \texttt{7b4bc80}, \texttt{ad26d78}, \texttt{bcefa24},
+and the final EXEC\_10 documentation/deck commit
 \begin{itemize}\small
   \item 31 positions $\times$ 2000 events; 16 End + 70 Top channels; jitter fixed to zero.
   \item EJ-204 via SSLG4 \texttt{OPSC-101}: yield 10400/MeV, $\tau_r=0.7$ ns,
@@ -227,21 +268,46 @@ to meet one, so late End photons are preferentially removed.
 \end{alertblock}
 """,
     )
-    position_slides = "".join(position_frame(row, summary) for _, row in selected.iterrows())
+    position_slides = "".join(position_frame(row, summary, localization) for _, row in selected.iterrows())
     integrated = "".join([
         image_frame("Photon budget versus beam position", "figs/P1_npe_vs_x.png"),
         image_frame("Top localization: full coverage diagonal", "figs/P2_npe_heatmap_top.png"),
         image_frame(
-            "Effective attenuation and propagation fits", "figs/fits_attenuation_velocity.png",
+            "Attenuation and the historical mean-time slope", "figs/fits_attenuation_velocity.png",
             rf"$\lambda_{{eff,L}}={fits.loc['left','lambda_eff_cm']:.2f}\pm{fits.loc['left','lambda_eff_error_cm']:.2f}$ cm, "
             rf"$\lambda_{{eff,R}}={fits.loc['right','lambda_eff_cm']:.2f}\pm{fits.loc['right','lambda_eff_error_cm']:.2f}$ cm; "
-            rf"$v_{{eff}}\simeq27.67\pm0.27$ cm/ns. The 160 cm bulk value and $c/n\simeq19$ cm/ns are not fit targets.",
+            r"the mean-time slope is tail-biased and is not a propagation velocity.",
         ),
-        image_frame("Fano-like variance/mean versus x", "figs/P3_fano_vs_x.png"),
-        image_frame("Poisson and Gaussian tail example", "figs/P4_poisson_check_x0.png"),
-        image_frame("Arrival-time examples: all photons and FPT", "figs/P5_tdist_examples.png"),
+        image_frame(
+            "Landau dominance: Fano factor versus mean Npe", "figs/exec10_fano_vs_mean.png",
+            rf"$F=1+c\langle N_{{pe}}\rangle$, $c={fano_fit.c:.6f}\pm{fano_fit.c_error:.6f}$, "
+            rf"$\chi^2/ndf={fano_fit.chi2_ndf:.2f}$. Poisson $F=1$ is approached only at low light.",
+        ),
+        image_frame(
+            "High-light example: Moyal-Gaussian Landau proxy", "figs/exec10_landau_fit_example.png",
+            r"Moyal approximates Landau. Some channels have poor chi2 or an unidentifiable Gaussian width; all are recorded in \texttt{exec10\_landau\_mpv.csv}.",
+        ),
+        image_frame(
+            "Arrival-time examples: absolute rate and normalized shape", "figs/P5_tdist_examples.png",
+            "Left: entries per event per ns. Right: the same distributions normalized to area 1. FPT is the first detected photon time in each event.",
+        ),
         image_frame("Mean arrival time and FPT versus x", "figs/P6_tmean_vs_x.png"),
     ])
+    landau_slide = frame(
+        "Nearest-Top Landau/Moyal MPVs at key positions",
+        rf"""
+\centering\small
+\begin{{tabular}}{{rrrrr}}\toprule
+$x$ [mm] & channel & MPV [Npe] & Landau width [Npe] & $\chi^2/ndf$ \\ \midrule
+{landau_table(positions_indexed, landau)}
+\bottomrule\end{{tabular}}
+\begin{{block}}{{Interpretation}}
+The right tail originates primarily from Landau-like energy-loss fluctuations; Poisson
+counting dominates only in the few-PE limit. MPVs are future inputs for the pending
+test-beam ToT(NPE) calibration comparison.
+\end{{block}}
+""",
+    )
     dip = frame(
         "Window-track collection effect: five-run test",
         rf"""
@@ -273,13 +339,33 @@ $x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
 {timing_table(timing_gate)}
 \bottomrule\end{{tabular}}}}
 \column{{0.50\textwidth}}
-\includegraphics[width=\textwidth]{{figs/exec09_tail_comparison.png}}
+\includegraphics[width=0.88\textwidth]{{figs/exec09_tail_comparison.png}}
 \end{{columns}}
 \begin{{alertblock}}{{Confirmed mechanism}}
 Across $x=0,\pm400$ mm, EndTop lowers $t99$ by
 {abs(tail_all.t99_ns_difference.mean()):.2f} ns and suppresses late fractions
 at more than {abs(tail_all.frac_gt20_difference_sigma).min():.1f} sigma.
 \end{{alertblock}}
+\tiny Left panels show absolute End photons/event/ns. Right panels normalize
+each distribution to area 1 and isolate shape: the $t>10$ ns tail is suppressed in EndTop
+because multiply reflected photons have more opportunities to meet a Top window.
+""",
+    )
+    velocity_slide = frame(
+        "Apparent timing slopes: no propagation estimator passes",
+        rf"""
+\begin{{columns}}[T]\column{{0.62\textwidth}}
+\includegraphics[width=\textwidth]{{figs/exec10_velocity_estimators.png}}
+\column{{0.36\textwidth}}
+\scriptsize\resizebox{{\textwidth}}{{!}}{{\begin{{tabular}}{{lrr}}\toprule
+Estimator & slope-derived [cm/ns] & $\chi^2/ndf$ \\ \midrule
+{velocity_table(velocity_fits)}
+\bottomrule\end{{tabular}}}}
+\begin{{alertblock}}{{Refuted predictions}}
+Mean FPT is not close to $c/n\simeq19$ cm/ns. The fixed-threshold $f(t>10\,ns)$
+increases with distance. Every global line fit is rejected.
+\end{{alertblock}}
+\end{{columns}}
 """,
     )
     top_slide = frame(
@@ -306,10 +392,11 @@ not a simulated timing resolution; Top has no test-beam counterpart.
        at $x=-690$ mm: End sum {npe_text(edge_ends)}, nearest Top {npe_text(edge_top)}.
  \item $\lambda_{{eff}}$: L ${fits.loc['left','lambda_eff_cm']:.2f}\pm{fits.loc['left','lambda_eff_error_cm']:.2f}$ cm,
        R ${fits.loc['right','lambda_eff_cm']:.2f}\pm{fits.loc['right','lambda_eff_error_cm']:.2f}$ cm;
-       $v_{{eff}}$: about $27.67\pm0.27$ cm/ns.
+       no global time estimator yields an acceptable propagation-velocity fit.
  \item Nearest-Top var/mean: median {nearest.var_over_mean.median():.2f}, range
        {nearest.var_over_mean.min():.2f}--{nearest.var_over_mean.max():.2f};
-       data are strongly over-dispersed relative to Poisson.
+       $F=1+({fano_fit.c:.6f}\pm{fano_fit.c_error:.6f})\langle N_{{pe}}\rangle$ with
+       $\chi^2/ndf={fano_fit.chi2_ndf:.2f}$: Landau-like energy-loss fluctuations dominate.
  \item Intrinsic End $\sigma_{{group}}$: mean {end_clusters.sigma_grupo_ps.mean():.1f} ps,
        range {end_clusters.sigma_grupo_ps.min():.1f}--{end_clusters.sigma_grupo_ps.max():.1f} ps.
  \item EndTop/End-only timing ratio: ${timing_gate.observed_sigma_ratio.min():.3f}\pm{timing_gate.observed_sigma_ratio_error.max():.3f}$
@@ -347,16 +434,36 @@ not a simulated timing resolution; Top has no test-beam counterpart.
 \end{itemize}
 """,
         ),
+        frame(
+            "Backup: glossary",
+            r"""
+\scriptsize\begin{description}
+ \item[HOOK\_WALK] Reserved insertion point for future leading-edge time-walk correction.
+ Fixed 4-PE threshold means larger pulses cross earlier; no correction is applied
+ in any campaign (\texttt{congruent\_sum4\_timing.C:305--315}).
+ \item[FPT] First photon time: first detected photon in an event for the stated channel/group.
+ \item[SUM4] Analog sum of four SiPMs: \{0--3\}, \{4--7\}, \{8--11\}, \{12--15\}.
+ \item[(exact geometry)] Nearest geometric SiPM agrees with the maximum, or is covered by
+ the documented window-track exception; x=300 mm is explicitly a statistical tie.
+ \item[Temporal density] Absolute plots are entries/event/ns; normalized plots integrate to one
+ and compare shape only.
+ \item[Central 24 mm pair] The sole pitch exception is $-12/+12$ mm because 1384 mm is not
+ divisible by 20 mm.
+ \item[Intrinsic sigma] Excludes SPTR and electronics jitter; the hardware 88 ps value is not
+ directly comparable.
+\end{description}
+""",
+        ),
         image_frame("Backup: EndTop versus End-only tail audit", "figs/exec09_tail_comparison.png"),
     ])
     content = (
         preamble + title + geometry + faces + optical
         + "\\section{Position-by-position}\n" + position_slides
         + "\\section{Photon budget and statistics}\n" + integrated
-        + "\\section{Window effect and timing}\n" + dip + timing + timing_gate_slide + top_slide
+        + "\\section{Window effect and timing}\n" + landau_slide + dip + timing + timing_gate_slide + velocity_slide + top_slide
         + conclusions + "\\appendix\n" + backup + "\\end{document}\n"
     )
-    tex_path = output_dir / f"exec09_report_{mode}.tex"
+    tex_path = output_dir / f"exec10_report_{mode}.tex"
     tex_path.write_text(content, encoding="utf-8")
     return tex_path
 

@@ -1,4 +1,4 @@
-# EXEC_09 / completed EXEC_08 analysis
+# EXEC_10 / completed EXEC_08 analysis
 
 This directory contains the reproducible EXEC_08 products for the completed
 EXEC_07 EndTop scan:
@@ -39,6 +39,21 @@ It writes a block-jackknife metric table and the normalized log-y comparison
 used to establish preferential late-photon drainage through the Top windows.
 The full trace and anti-artifact check are in
 `audit/exec09_timing_mechanism.md`.
+
+EXEC_10 adds:
+
+```bash
+python analysis/exec07/exec10_landau_analysis.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000
+python analysis/exec07/exec10_time_figures.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000
+python analysis/exec07/exec10_veff_diagnosis.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000
+```
+
+The new main decks are `exec10_report_full.pdf` and
+`exec10_report_key.pdf`. The EXEC_09 PDFs remain as the published historical
+checkpoint.
 
 The first command begins with a blocking validation of all 31 ROOT files. It
 requires exactly 2,000 unique event IDs, matching `gun_x_mm`, and aggregate
@@ -82,8 +97,8 @@ not be interpreted as including sensor SPTR or electronics jitter.
 
 - `summary_exec07.csv`
 - `exec07_photon_budget_report.pdf`
-- `exec09_report_full.pdf` (51 slides, all 31 positions)
-- `exec09_report_key.pdf` (27 slides, 7 key positions)
+- `exec10_report_full.pdf` (all 31 positions)
+- `exec10_report_key.pdf` (7 key positions)
 - `figs/P1_...png` through `figs/P7_...png`
 - `figs/exec09_tail_comparison.png`
 - `exec09_tail_metrics.csv`, `exec09_tail_comparison.csv`

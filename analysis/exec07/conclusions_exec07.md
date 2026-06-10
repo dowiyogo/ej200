@@ -5,7 +5,7 @@ Input validation: 31/31 files passed; each has event_id 0..1999, matching gun_x_
 ## Numerical conclusions
 
 - Effective attenuation: left 33.14 +/- 0.03 cm; right 33.06 +/- 0.03 cm. These include light extraction through 70 Top windows and are not expected to equal the 160 cm bulk ABSLENGTH.
-- Effective propagation velocity from mean all-photon time: left 27.68 +/- 0.27 cm/ns; right 27.67 +/- 0.27 cm/ns.
+- Apparent slope-derived velocity from mean all-photon time: left 27.68 +/- 0.27 cm/ns; right 27.67 +/- 0.27 cm/ns. EXEC_10 shows this is not a direct propagation velocity.
 - Typical nearest-Top var/mean: median 24.81, range 19.14-29.27. N_pe is not forced to Poisson.
 - Intrinsic End SUM4 sigma_group= sigma(DeltaT)/sqrt(2): mean 148.28 ps, range 12.10-437.32 ps. No SPTR/electronics jitter.
 - sigma(t_avg) mean 142.49 ps, range 93.20-225.36 ps.

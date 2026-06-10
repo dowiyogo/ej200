@@ -744,10 +744,10 @@ def plot_integrated(
         fit = fits[fits["side"] == side].iloc[0]
         npe_mean = frame["npe_mean"].to_numpy()
         time_mean = frame["t_mean_ns"].to_numpy()
-        axes[0].scatter(distance, np.log(npe_mean), s=18, label=f"{side}: lambda={fit.lambda_eff_cm:.1f}+/-{fit.lambda_eff_error_cm:.1f} cm", color=color)
+        axes[0].scatter(distance, np.log(npe_mean), s=18, label=f"{side}: lambda={fit.lambda_eff_cm:.2f}+/-{fit.lambda_eff_error_cm:.2f} cm", color=color)
         coefficients = np.polyfit(distance, np.log(npe_mean), 1)
         axes[0].plot(distance, np.polyval(coefficients, distance), color=color)
-        axes[1].scatter(distance, time_mean, s=18, label=f"{side}: v_eff={fit.v_eff_cm_ns:.1f}+/-{fit.v_eff_error_cm_ns:.1f} cm/ns", color=color)
+        axes[1].scatter(distance, time_mean, s=18, label=f"{side}: apparent mean-time slope={fit.v_eff_cm_ns:.2f}+/-{fit.v_eff_error_cm_ns:.2f} cm/ns", color=color)
         coefficients = np.polyfit(distance, time_mean, 1)
         axes[1].plot(distance, np.polyval(coefficients, distance), color=color)
     axes[0].set(xlabel="Track-to-end distance [mm]", ylabel="ln(mean End N_pe)")
@@ -837,7 +837,7 @@ def write_reports(
         "## Numerical conclusions",
         "",
         f"- Effective attenuation: left {fits.iloc[0].lambda_eff_cm:.2f} +/- {fits.iloc[0].lambda_eff_error_cm:.2f} cm; right {fits.iloc[1].lambda_eff_cm:.2f} +/- {fits.iloc[1].lambda_eff_error_cm:.2f} cm. These include light extraction through 70 Top windows and are not expected to equal the 160 cm bulk ABSLENGTH.",
-        f"- Effective propagation velocity from mean all-photon time: left {fits.iloc[0].v_eff_cm_ns:.2f} +/- {fits.iloc[0].v_eff_error_cm_ns:.2f} cm/ns; right {fits.iloc[1].v_eff_cm_ns:.2f} +/- {fits.iloc[1].v_eff_error_cm_ns:.2f} cm/ns.",
+        f"- Apparent slope-derived velocity from mean all-photon time: left {fits.iloc[0].v_eff_cm_ns:.2f} +/- {fits.iloc[0].v_eff_error_cm_ns:.2f} cm/ns; right {fits.iloc[1].v_eff_cm_ns:.2f} +/- {fits.iloc[1].v_eff_error_cm_ns:.2f} cm/ns. EXEC_10 shows this is not a direct propagation velocity.",
         f"- Typical nearest-Top var/mean: median {nearest_top.var_over_mean.median():.2f}, range {nearest_top.var_over_mean.min():.2f}-{nearest_top.var_over_mean.max():.2f}. N_pe is not forced to Poisson.",
         f"- Intrinsic End SUM4 sigma_group= sigma(DeltaT)/sqrt(2): mean {np.mean(sigma_group):.2f} ps, range {np.min(sigma_group):.2f}-{np.max(sigma_group):.2f} ps. No SPTR/electronics jitter.",
         f"- sigma(t_avg) mean {np.mean(sigma_tavg):.2f} ps, range {np.min(sigma_tavg):.2f}-{np.max(sigma_tavg):.2f} ps.",
