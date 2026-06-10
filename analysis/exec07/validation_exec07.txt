@@ -1,0 +1,1 @@
+PASS: 31 files; each has event_id 0..1999, matching gun_x_mm, and aggregate global_id 0..85.
