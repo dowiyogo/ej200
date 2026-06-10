@@ -191,8 +191,8 @@ def make_tex(output_dir: pathlib.Path, mode: str) -> pathlib.Path:
         r"""
 \begin{columns}[T]\column{0.62\textwidth}
 \textbf{Branch:} \texttt{feat/endtop-sslg4}\\
-\textbf{Commits:} \texttt{0201413}, \texttt{7b4bc80}, \texttt{ad26d78}, \texttt{bcefa24},
-and the final EXEC\_10 documentation/deck commit
+\textbf{Commits:} \texttt{0201413}, \texttt{7b4bc80}, \texttt{ad26d78},
+\texttt{bcefa24}, \texttt{bdfe955}; this deck is generated from those published sources
 \begin{itemize}\small
   \item 31 positions $\times$ 2000 events; 16 End + 70 Top channels; jitter fixed to zero.
   \item EJ-204 via SSLG4 \texttt{OPSC-101}: yield 10400/MeV, $\tau_r=0.7$ ns,
