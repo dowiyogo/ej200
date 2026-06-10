@@ -17,6 +17,10 @@
 \newcommand{\scanresults}{../../results/scan_hi_2026-06-08}
 \newcommand{\timingresults}{../../results/congruent_metric_2026-06-08}
 \newcommand{\mirrorresults}{../../results/analysis_sigma_vs_x_2026-06-10}
+\newcommand{\deepresults}{\mirrorresults/deep_dive}
+\input{\deepresults/fit_summary.tex}
+\newcommand{\deepcaveat}{\tiny Simulación Geant4 --- End readout. Sin SPTR/jitter,
+sin calibración ToT(NPE); posición TB por confirmar.}
 
 \title{SHiP Timing Detector\\Estado de la simulación Geant4}
 \author{René Ríos (ULS)}
@@ -465,6 +469,127 @@
     NPE y ToT se mantienen en filas separadas: requieren calibración
     \texttt{ToT(NPE)} para ser comparables.
   \end{alertblock}
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: evidencia de fit $\Delta T_{LR}$}
+  \begin{columns}[T]
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x0_End.png}\\[-1mm]
+      \scriptsize $x=0$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x350_End.png}\\[-1mm]
+      \scriptsize $x=+350$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x690_End.png}\\[-1mm]
+      \scriptsize $x=+690$ mm
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: evidencia NPE/Landau}
+  \begin{columns}[T]
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x0_End.png}\\[-1mm]
+      \scriptsize $x=0$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x350_End.png}\\[-1mm]
+      \scriptsize $x=+350$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x690_End.png}\\[-1mm]
+      \scriptsize $x=+690$ mm
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: atenuación efectiva}
+  \begin{columns}[T]
+    \column{0.67\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/attenuation_effective.png}
+    \column{0.31\textwidth}
+      \small
+      \begin{block}{Fit simultáneo, $|x|\leq500$ mm}
+        $\lambda_{\rm eff}=\LambdaEffCm\pm\LambdaEffErrCm$ cm\\
+        $\lambda_{\rm bulk}=\LambdaBulkCm$ cm\\
+        $\chi^2/\mathrm{ndf}=\AttenChi$
+      \end{block}
+      \scriptsize $\lambda_{\rm eff}<\lambda_{\rm bulk}$ es consistente con
+      caminos no axiales y pérdidas por reflexión; el gran $\chi^2/\mathrm{ndf}$
+      muestra que una sola exponencial no captura toda la geometría.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: escalamiento fotoestadístico}
+  \begin{columns}[T]
+    \column{0.70\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/photo_scaling.png}
+    \column{0.28\textwidth}
+      \small
+      \[
+        \sigma=\sqrt{p_0^2+p_1^2/NPE_{\rm far}}
+      \]
+      \scriptsize
+      $p_0=\PhotoPzero\pm\PhotoPzeroErr$ ps; $p_1=\PhotoPone$ ps$\sqrt{\rm NPE}$;
+      $\chi^2/\mathrm{ndf}=\PhotoChi$. El piso $p_0$ queda
+      \textbf{no identificado}: compatible con cero y error no acotado.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: velocidad efectiva y posición}
+  \begin{columns}[T]
+    \column{0.68\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/velocity_effective.png}
+    \column{0.30\textwidth}
+      \small
+      \begin{block}{Fit $\mu(\Delta T)=2x/v_{\rm eff}+b$}
+        $v_{\rm eff}=\VelocityEff\pm\VelocityEffErr$ mm/ns\\
+        $c/n\simeq\LightSpeedOverN$ mm/ns\\
+        $\chi^2/\mathrm{ndf}=\VelocityChi$
+      \end{block}
+      \scriptsize La relación casi lineal habilita reconstrucción de posición,
+      pero $v_{\rm eff}>c/n$ y el gran $\chi^2$ prueban que esta pendiente del
+      leading-edge es un estimador efectivo, no una velocidad física.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: calidad de los fits}
+  \centering
+  \includegraphics[height=0.25\textheight]{\deepresults/gaussianity_qa.png}\\[-3mm]
+  \resizebox{0.84\textwidth}{!}{\input{\deepresults/qa_table.tex}}
+
+  \tiny La mayoría de los puntos queda fuera de la banda gaussiana
+  $\pm5\%$: el FWHM revela colas/núcleos no descritos por una gaussiana única.
+  CSV completo: \texttt{deep\_dive/qa\_metrics.csv}. \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: de Etapa 1 al espejo}
+  \scriptsize
+  \resizebox{\textwidth}{!}{\input{\deepresults/traceability_table.tex}}
+  \vspace{2mm}
+
+  Fuentes: \texttt{congruent\_sum4\_timing.C:1--10,45--51,110--153,170--232,305--319};
+  \texttt{tb\_mirror\_sigma\_vs\_x.C:105--137,257--310};
+  \texttt{process\_sum4.C:1294--1321,1931--1978}.\\[1mm]
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: ablación, origen de la mejora}
+  \begin{columns}[T]
+    \column{0.58\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/ablation_x0.png}
+    \column{0.40\textwidth}
+      \scriptsize
+      \resizebox{\textwidth}{!}{\input{\deepresults/ablation_table.tex}}
+      \vspace{2mm}
+
+      La caída $\AblationOldStage\to\AblationWrappedStage$ ps aparece al cambiar de la geometría Top abierta
+      a End wrapped manteniendo el fit Etapa 1. Cambiar solo el fit mueve
+      $\AblationWrappedStage\to\AblationWrappedMirror$ ps; los cortes NPE aportan
+      la reducción restante.
+  \end{columns}
+  \deepcaveat
 \end{frame}
 
 \end{document}

@@ -1,0 +1,7 @@
+variant,dataset,trigger_chain,fit_strategy,energy_cut,sigma_single_ps,sigma_single_err_ps,n_eff
+historical_stage1_reproduced,Top-open old scan,SUM4_first_cluster_LE_4PE,iterative_MAD_pm2sigma,none,467.46,5.80487,9732
+old_geometry_mirror_fit,Top-open old scan,SUM4_first_cluster_LE_4PE,peak_local_4ns,none,506.806,5.14237,9732
+wrapped_geometry_stage1_fit,End-wrapped scan,SUM4_first_cluster_LE_4PE,iterative_MAD_pm2sigma,none,97.4474,1.09964,10000
+wrapped_geometry_mirror_fit,End-wrapped scan,SUM4_first_cluster_LE_4PE,peak_local_4ns,none,97.9183,0.732076,10000
+wrapped_mirror_NPE_p25,End-wrapped scan,SUM4_first_cluster_LE_4PE,peak_local_4ns,NPE_ge_p25,94.6441,0.806763,7529
+wrapped_mirror_NPE_p50,End-wrapped scan,SUM4_first_cluster_LE_4PE,peak_local_4ns,NPE_ge_p50,93.0548,1.01376,5009
