@@ -16,6 +16,7 @@
 
 \newcommand{\scanresults}{../../results/scan_hi_2026-06-08}
 \newcommand{\timingresults}{../../results/congruent_metric_2026-06-08}
+\newcommand{\mirrorresults}{../../results/analysis_sigma_vs_x_2026-06-10}
 
 \title{SHiP Timing Detector\\Estado de la simulación Geant4}
 \author{René Ríos (ULS)}
@@ -404,6 +405,66 @@
       $\sigma_{\rm single}$ con 125 ps / 88 ps.
     \item Mantener Top como predicción separada hasta disponer de dato.
   \end{enumerate}
+\end{frame}
+
+\section{Resultados --- Longitudinal Scan (End readout)}
+
+\begin{frame}{Simulación Geant4 --- End readout: $\sigma_{\rm single}(x)$}
+  \centering
+  \includegraphics[height=0.70\textheight]{\mirrorresults/sigma_vs_x_End.png}
+
+  \scriptsize Ajuste gaussiano sembrado en el pico y restringido a una ventana
+  local, siguiendo la estrategia estadística de \texttt{process\_sum4.C}.
+  La línea de 88 ps es el valor SUM4 reportado del test beam.
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: NPE vs posición}
+  \centering
+  \includegraphics[height=0.70\textheight]{\mirrorresults/npe_vs_x_End.png}
+
+  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ confirma la simetría.
+  NPE es un proxy de energía; no equivale a pulse width sin calibración
+  \texttt{ToT(NPE)}.
+\end{frame}
+
+\begin{frame}{Metodología espejo del pipeline de test beam}
+  \small
+  \begin{itemize}
+    \item SUM4 provisionales por extremo + pulso agregado + leading-edge;
+      $\Delta T_{LR}=t_L-t_R$ y
+      $\sigma_{\rm single}=\sigma(\Delta T_{LR})/\sqrt{2}$.
+    \item Fit gaussiano sembrado en el pico del histograma y rango local,
+      siguiendo el análisis SUM4 de C. Valdivieso.
+    \item FWHM por cruces del half-maximum; fit Landau del NPE total.
+    \item Cortes proxy de energía: NPE $\geq$p25 y NPE $\geq$p50 por posición.
+  \end{itemize}
+  \begin{alertblock}{Discrepancia explícita}
+    La cadena disponible incluye el walk inherente al leading-edge, pero
+    \textbf{no implementa corrección de time-walk}. Tampoco existe calibración
+    \texttt{ToT(NPE)}; los cortes NPE no son equivalentes a 400/500/550 LSB.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Comparación End: simulación frente a valor reportado}
+  \small
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Observable & Simulación, $x=0$ & Test beam\\
+    \midrule
+    $\sigma_{LR}$ & $138.48\pm1.04$ ps & 125 ps\\
+    $\sigma_{\rm single}$ & $97.92\pm0.73$ ps & $\simeq88$ ps\\
+    $\sigma_{\rm single}$, NPE$\geq$p25 & 94.64 ps & no reportado\\
+    $\sigma_{\rm single}$, NPE$\geq$p50 & 93.05 ps & no reportado\\
+    MPV NPE / MPV ToT & 360.58 NPE & PENDIENTE\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.35cm}
+  \begin{alertblock}{Posición TB por confirmar}
+    El punto longitudinal de la medición de Gerardo no está confirmado.
+    NPE y ToT se mantienen en filas separadas: requieren calibración
+    \texttt{ToT(NPE)} para ser comparables.
+  \end{alertblock}
 \end{frame}
 
 \end{document}
