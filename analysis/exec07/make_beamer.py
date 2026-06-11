@@ -186,7 +186,7 @@ def window_track_intro_slide() -> str:
         r"""
 \begin{columns}[T]
 \column{0.52\textwidth}
-\begin{itemize}\small
+\begin{itemize}\footnotesize
   \item Top SiPMs couple through index-matched windows
         ($6\times6$ mm$^2$) in the +Y Mylar face.
   \item First-pass photon collection depends on the solid angle
@@ -202,7 +202,7 @@ def window_track_intro_slide() -> str:
         localization diagonal and channel map remain valid.
 \end{itemize}
 \column{0.46\textwidth}
-\begin{tikzpicture}[scale=0.67,>=stealth,font=\scriptsize]
+\begin{tikzpicture}[scale=0.60,>=stealth,font=\scriptsize]
   \fill[cyan!12] (-3,0) rectangle (3,3.2);
   \node at (0,2.9) {EJ-204 bar};
   \draw[line width=2.5pt,gray!60] (-3,0) -- (-1.2,0);
@@ -227,8 +227,9 @@ def window_track_intro_slide() -> str:
   \node[below,align=center] at (-3.5,-1.2) {};
 \end{tikzpicture}
 \end{columns}
-\begin{alertblock}{Consequence for the scan}
-Track B subtends a larger first-pass solid angle to W$_1$; fewer multiple
+\vspace*{-5pt}
+\begin{alertblock}{\footnotesize Consequence for the scan}
+\scriptsize Track B subtends a larger first-pass solid angle to W$_1$; fewer multiple
 reflections $\Rightarrow$ higher $N_{pe}$ at the nearest channel.
 At midpoint (C) both windows contribute equally and the effect is null.
 \end{alertblock}
@@ -280,7 +281,7 @@ def moyal_motivation_slide() -> str:
 \begin{columns}[T]
 \column{0.50\textwidth}
 \textbf{Why not Gaussian:}\par\smallskip
-\begin{itemize}\small
+\begin{itemize}\footnotesize
   \item In 10 mm of plastic the muon undergoes many collisions, but
         the energy-transfer cross-section ($\mathrm{d}\sigma/\mathrm{d}\varepsilon\propto1/\varepsilon^2$,
         Rutherford/M{\o}ller) has a hard tail.
@@ -293,16 +294,16 @@ def moyal_motivation_slide() -> str:
 \end{itemize}
 \column{0.48\textwidth}
 \textbf{Why Moyal:}\par\smallskip
-\begin{itemize}\small
+\begin{itemize}\footnotesize
   \item Landau density has no closed form (contour integral).
   \item The Moyal function is a closed-form analytic approximation
         to the Landau core and early tail, enabling stable MINUIT fits.
   \item \textit{Known limitation:} extreme Moyal tail undershoots
         true Landau tail; fit quality degrades at high $N_{pe}$.
 \end{itemize}
-\medskip
+\smallskip
 \textbf{Moyal $\otimes$ Gauss:}\par\smallskip
-\begin{itemize}\small
+\begin{itemize}\footnotesize
   \item Photo-electron counting (Poisson) and collection fluctuations
         broaden the peak symmetrically.
   \item Full model: Moyal $\otimes$ Gaussian.
@@ -317,28 +318,27 @@ def moyal_motivation_slide() -> str:
 def timing_gate_slide_exec12(timing_gate: pd.DataFrame, tail_all: pd.DataFrame) -> str:
     """T3 (Option B): rename slide, add no-time-window definition box."""
     body = rf"""
-\begin{{columns}}[T]\column{{0.48\textwidth}}
+\begin{{columns}}[T]
+\column{{0.48\textwidth}}
 \scriptsize\resizebox{{\textwidth}}{{!}}{{\begin{{tabular}}{{rrrrr}}\toprule
 $x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
 {timing_table(timing_gate)}
 \bottomrule\end{{tabular}}}}
-\column{{0.50\textwidth}}
-\includegraphics[width=0.88\textwidth]{{figs/exec09_tail_comparison.png}}
-\end{{columns}}
-\begin{{alertblock}}{{Confirmed mechanism}}
-Across $x=0,\pm400$ mm, EndTop lowers $t99$ by
+\vspace{{2pt}}
+\begin{{alertblock}}{{\footnotesize Confirmed mechanism}}
+\scriptsize Across $x=0,\pm400$ mm, EndTop lowers $t99$ by
 {abs(tail_all.t99_ns_difference.mean()):.2f} ns and suppresses late fractions
-at more than {abs(tail_all.frac_gt20_difference_sigma).min():.1f} sigma.
+at more than {abs(tail_all.frac_gt20_difference_sigma).min():.1f}$\sigma$.
 \end{{alertblock}}
+\column{{0.50\textwidth}}
+\includegraphics[width=0.88\textwidth,height=0.42\textheight,keepaspectratio]{{figs/exec09_tail_comparison.png}}
 \begin{{block}}{{\footnotesize No time acceptance window}}
 \scriptsize
-In all published analyses (EXEC\_08b--EXEC\_09), End-photon arrival times
-are reported without any $t<t_{{max}}$ acceptance cut: all detected End photons
-in the ROOT TTree are used
+All End-photon arrivals are used without a $t<t_{{max}}$ cut
 (\texttt{{exec08b\_timing\_gate.py}}, \texttt{{exec09\_timing\_mechanism.py}}).
-The EndTop tail narrowing persists over the full arrival-time range
-and is therefore physical, not an analysis artefact.
+EndTop tail narrowing persists over the full range: physical, not an artefact.
 \end{{block}}
+\end{{columns}}
 """
     return frame(
         "End arrival-time tails without any time acceptance window: narrower EndTop is physical",
@@ -374,47 +374,44 @@ def top_slide_exec12(summary: pd.DataFrame, tN_summary: pd.DataFrame | None) -> 
                 s4_err_ps = s4_err_ns * 1000.0 if math.isfinite(s4_err_ns) else math.nan
                 npe_sem = float(est_row.iloc[0].npe_rms) / math.sqrt(N_EVENTS)
                 sigma_est_err = 0.5 * sigma_est_ps * npe_sem / npe
-                s4_str = (
-                    rf"${s4_ps:.0f}\pm{s4_err_ps:.0f}$"
-                    if math.isfinite(s4_ps) and math.isfinite(s4_err_ps)
-                    else r"—"
-                )
+                if math.isfinite(s4_ps) and math.isfinite(s4_err_ps):
+                    s4_str = rf"${s4_ps:.0f}\pm{s4_err_ps:.0f}$"
+                elif math.isfinite(s4_ps):
+                    s4_str = rf"${s4_ps:.0f}$"
+                else:
+                    s4_str = r"—"
                 sim_rows.append(
                     rf"{x_mm:+d} & ${sigma_est_ps:.0f}\pm{sigma_est_err:.0f}$ & {s4_str} \\"
                 )
             if sim_rows:
                 comparison_block = rf"""
-\vspace{{0.25cm}}
-\begin{{block}}{{\footnotesize Analytic estimate vs.\ simulated $\sigma(t_4)$ (T4)}}
-\scriptsize\begin{{tabular}}{{rcc}}\toprule
-$x$ [mm] & $\sigma_{{t,est}}$ [ps] (analytic) & $\sigma(t_4)$ [ps] (simulated)\\ \midrule
+\begin{{block}}{{\footnotesize $\sigma_{{t,est}}$ vs.\ simulated $\sigma(t_4)$}}
+\tiny\setlength{{\tabcolsep}}{{3pt}}\begin{{tabular}}{{rcc}}\toprule
+$x$ & $\sigma_{{t,est}}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
 {chr(10).join(sim_rows)}
 \bottomrule\end{{tabular}}
-\par\scriptsize $\sigma(t_4)$ is the photon-counting lower bound; $\sigma_{{t,est}}$
-includes the SPE pulse-shape contribution ($\sqrt{{\tau_r\tau_d}}$) and is
-therefore larger --- consistent with the SPE-convolution jitter seen in $\sigma_{{group}}$.
+\par\tiny $\sigma(t_4)$: photon-counting lower bound.
 \end{{block}}"""
 
     return frame(
         "Top readout: analytic timing estimate only",
         rf"""
-\centering\small
+\begin{{columns}}[T]
+\column{{0.42\textwidth}}
+\scriptsize\setlength{{\tabcolsep}}{{4pt}}
 \begin{{tabular}}{{rrr}}\toprule
-$x$ [mm] & nearest Top $N_{{pe}}$ & $\sigma_{{t,est}}$ [ps] \\ \midrule
+$x$ [mm] & $N_{{pe}}$ & $\sigma_{{t,est}}$ [ps] \\ \midrule
 {table_rows}
 \bottomrule\end{{tabular}}
-\vspace{{0.35cm}}
-\begin{{block}}{{Definition, derivation, and scope}}
-$\sigma_{{t,est}}=\sqrt{{\tau_r\cdot\tau_d}}/\sqrt{{N_{{pe}}}}
+\column{{0.56\textwidth}}
+\begin{{block}}{{\footnotesize Definition, derivation, and scope}}
+\scriptsize $\sigma_{{t,est}}=\sqrt{{\tau_r\tau_d}}/\sqrt{{N_{{pe}}}}
 =1.122\,\mathrm{{ns}}/\sqrt{{N_{{pe}}}}$
-\par\scriptsize
-Standard single-photodetector timing scaling for a threshold at low $N_{{pe}}$ with
-double-exponential emission ($\tau_r\cdot\tau_d$ product, rise $\times$ decay;
-see e.g.\ Knoll, \emph{{Radiation Detection and Measurement}}, ch.\ 8).
-$\tau_r=0.7$ ns, $\tau_d=1.8$ ns from the verified SSLG4 MPT.
-This is an \textbf{{analytic orientation only}}, not a simulated timing resolution.
-Top has no test-beam counterpart.
+\par Threshold at low $N_{{pe}}$, double-exponential emission
+(Knoll, ch.\ 8; $\tau_r=0.7$ ns, $\tau_d=1.8$ ns).
+\textbf{{Analytic orientation only}}; Top has no test-beam counterpart.
 \end{{block}}{comparison_block}
+\end{{columns}}
 """,
     )
 
@@ -482,38 +479,43 @@ def glossary_exec12() -> str:
     return frame(
         "Backup: glossary",
         r"""
-\scriptsize\begin{description}
- \item[HOOK\_WALK] Reserved insertion point for future leading-edge time-walk correction.
- Fixed 4-PE threshold means larger pulses cross earlier; no correction applied in any campaign
- (\texttt{congruent\_sum4\_timing.C:305--315}).
- \item[FPT] First photon time: first detected photon per event for the stated channel/group.
- \item[Fano factor] $F\equiv\mathrm{Var}(N_{pe})/\langle N_{pe}\rangle$.
- Equals 1 for pure Poisson; grows linearly with $\langle N_{pe}\rangle$ when Landau
- $\Delta E$ fluctuations are present: $F=1+c\langle N_{pe}\rangle$.
+\sloppy
+\begin{columns}[T]
+\column{0.48\textwidth}
+\tiny\begin{description}
+ \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{0pt}
+ \item[FPT] First photon time: first detected photon per event.
+ \item[Fano factor] $F\equiv\mathrm{Var}(N_{pe})/\langle N_{pe}\rangle=1+c\langle N_{pe}\rangle$
+ when Landau $\Delta E$ fluctuations are present.
  \item[Group A / Group B] Same-End SUM4 groups: A=\{0--3\}, B=\{4--7\} on End~L;
  mirrors \{8--11\}, \{12--15\} on End~R.
  $\sigma_{\rm group}=\sigma(\Delta T_{AB})/\sqrt{2}$
- (\texttt{congruent\_sum4\_timing.C:218--221}).
- \item[Intrinsic sigma] Excludes SPTR and electronics jitter; 88 ps hardware value not directly comparable.
- \item[Moyal] Closed-form analytic approximation to the Landau density, used for
- stable MINUIT fits. Undershoots the extreme Landau right tail.
+ (\texttt{sum4\_timing.C:218--221}).
+ \item[HOOK\_WALK] Reserved time-walk correction point; no correction in any campaign
+ (\texttt{sum4\_timing.C:305--315}).
+ \item[Intrinsic sigma] Excludes SPTR and electronics jitter; 88 ps hardware value not
+ directly comparable.
+ \item[Moyal] Closed-form Landau approximation for stable MINUIT fits. Undershoots extreme tail.
+\end{description}
+\column{0.50\textwidth}
+\tiny\begin{description}
+ \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{0pt}
  \item[SPTR] Single Photon Time Resolution: SiPM intrinsic single-PE jitter.
  Excluded from all EXEC\_12 results (jitter$=0$); re-introduced via EXEC\_02b hooks,
  summed in quadrature with electronics jitter.
  \item[SUM4] Analog sum of four SiPMs: \{0--3\}, \{4--7\}, \{8--11\}, \{12--15\}
- (\texttt{congruent\_sum4\_timing.C:218--221}).
- \item[Timing gate] The comparison script \texttt{exec08b\_timing\_gate.py} tests whether
- EndTop $\sigma_{\rm group}$ is smaller than End-only $\sigma_{\rm group}$ at $x=0,\pm400$ mm.
- It applies no time acceptance window on individual photon arrivals; all ROOT TTree photons are used.
- \item[Window-track collection effect] Local ($\pm2$ mm) increase of first-pass solid angle when a
- track passes offset from a Top window centre. Empirically $\approx9.8$\% at $\approx12\,\sigma$
- (five-run test); null at centre and midpoint; symmetric. Geometric working hypothesis.
- \item[$t_N$ / time-to-threshold] Arrival time of the $N$-th detected photoelectron per event
- in a given group. $\sigma(t_N)$ is the single-side photon-counting timing resolution at
- an ideal $N$-PE digital threshold. Excludes SPE pulse convolution jitter present in $\sigma_{\rm group}$.
- \item[(exact geometry)] Nearest SiPM agrees with maximum, or covered by window-track exception.
- x=300 mm is a statistical tie.
+ (\texttt{congruent\_sum4\_timing.C:\allowbreak{}218--221}).
+ \item[Timing gate] \texttt{exec08b\_timing\_gate.py} tests EndTop vs.\ End-only
+ $\sigma_{\rm group}$ at $x=0,\pm400$ mm; no time acceptance cut on photons.
+ \item[Window-track effect] $\pm2$ mm track offset from window centre increases
+ first-pass solid angle; empirically $\approx9.8\%$ at $\approx12\,\sigma$;
+ null at centre and midpoint. Geometric working hypothesis.
+ \item[$t_N$ / time-to-threshold] $N$-th detected photoelectron arrival time per event.
+ $\sigma(t_N)$: photon-counting timing resolution at ideal $N$-PE digital threshold.
+ \item[(exact geometry)] Nearest SiPM = maximum, or window-track exception;
+ $x=300$ mm is a statistical tie.
 \end{description}
+\end{columns}
 """,
     )
 
@@ -925,7 +927,7 @@ not a simulated timing resolution; Top has no test-beam counterpart.
                     r" the material property. The mean-time slope is tail-biased; no propagation"
                     r" velocity is reliably extracted."
                 ),
-                height=0.55,
+                height=0.46,
             ),
             fano_motivation_slide(float(fano_fit.c), float(fano_fit.c_error)),
             image_frame_wb(
