@@ -20,12 +20,12 @@ Cumulative N(t) per event is computed as `np.cumsum` of a 2D histogram with non-
 
 ## Anti-artifact check 2: End windows capture the late tail
 
-Mean N_pe at t_max=50 ns across End groups and positions: 491.6 PE.
+Mean N_pe at t_max=50 ns across End groups and positions: 298.4 PE.
 The 50 ns End window was chosen to exceed the >30 ns late-tail cutoff established in EXEC_09 (`exec09_timing_mechanism.py`, `audit/exec09_timing_mechanism.md`). N_at_tmax is the cumulative N_pe at the window edge; values well above the FPT level confirm the window captures late-arriving photons.
 
 ## Anti-artifact check 3: Top-nearest selection vs. common.py
 
-Top-nearest channel IDs agree with `per_position_exec07.csv` for all 7 analyzed positions. Selection is consistent with the existing analysis.
+Top-nearest channel IDs agree with `per_position_exec07.csv` for all 31 analyzed positions. Selection is consistent with the existing analysis.
 
 ## Metrics summary (key positions)
 
