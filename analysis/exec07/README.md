@@ -115,6 +115,29 @@ Parameter hooks (all have defaults, see `--help`):
 `--le-threshold-pe` (4), `--band` (rms), `--end-grouping` (sum4_max),
 `--mode` (arrival_cumulative).
 
+EXEC_12 adds the pedagogical review deck with t_N analysis:
+
+```bash
+python analysis/exec07/exec12_tN_analysis.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000
+
+python analysis/exec07/make_beamer.py \
+  --output-dir analysis/exec07 \
+  --positions full \
+  --with-pedagogy
+```
+
+The first command computes t_N (time of N-th detected photon, N=4 and N=20)
+for nearest Top, End near, and End far groups at all 31 positions, performs
+a Gaussian core fit, runs the sigma(t_4)/sigma_group consistency check, and
+writes `exec12_tN_summary.csv`, 7 per-position PNG figures, and
+`audit/exec12_tN_check.md`.
+
+The second command assembles `exec12_report_full.pdf` (≥75 pages) with:
+Key-positions section (7 × 3 slides), t_N synthesis, photon-budget statistics
+with pedagogical motivation slides (Fano, Moyal), window-effect and timing
+section, numerical conclusions, full scan (31 × 2 slides), and glossary.
+
 ## Main products
 
 - `summary_exec07.csv`
@@ -124,6 +147,9 @@ Parameter hooks (all have defaults, see `--help`):
 - `exec11_report_key.pdf` (7 key positions, photon arrival)
 - `exec11_report_full.pdf` (all 31 positions, photon arrival)
 - `exec11_arrival_metrics.csv`
+- `exec12_report_full.pdf` (110 pages, pedagogical review — EXEC_12)
+- `exec12_tN_summary.csv` (42 rows: 7 positions × 3 groups × 2 thresholds)
+- `figs/exec12_tN_{position}mm.png` (7 figures) + `exec12_tN_summary.png`
 - `figs/exec11_arrival_{position}mm.png` (31 figures)
 - `figs/P1_...png` through `figs/P7_...png`
 - `figs/exec09_tail_comparison.png`
