@@ -474,6 +474,30 @@ def fourpe_rationale_slide() -> str:
     )
 
 
+def tn_dispersion_slide(run_idx: int, x_mm: int) -> str:
+    """T4 (EXEC_12b): per-channel <t_n> dispersion figure for one key position."""
+    return frame(
+        rf"Run {run_idx} $|$ x = {x_mm:+d} mm $|$ $\langle t_n\rangle$ per channel (dispersion)",
+        rf"""
+\begin{{columns}}[T]
+\column{{0.60\textwidth}}
+\centering
+\includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
+{{figs/tn_{x_mm}mm_top.png}}
+\column{{0.38\textwidth}}
+\centering
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
+{{figs/tn_{x_mm}mm_endL.png}}\\[2pt]
+\includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
+{{figs/tn_{x_mm}mm_endR.png}}
+\end{{columns}}
+\par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
+$\sigma_{{stat}}(t_n)\approx\sqrt{{n}}\,\tau_d/\langle N_{{pe}}\rangle$
+($\tau_d=1.8$ ns). See dispersion-decomposition frame for physical interpretation.
+""",
+    )
+
+
 def glossary_exec12() -> str:
     """T6: extended glossary including exec12 terms."""
     return frame(
@@ -1013,18 +1037,20 @@ not a simulated timing resolution; Top has no test-beam counterpart.
             ),
         ])
 
-        # T4: key position slides = table + arrival + t_N
+        # T4: key position slides = table + arrival + t_N + dispersion
         key_positions_df = positions[positions.x_beam_mm.isin(KEY_POSITIONS)]
-        key_pos_parts = []
-        for _i, (_, _row) in enumerate(key_positions_df.iterrows()):
-            _x = int(_row.x_beam_mm)
-            key_pos_parts.append(position_frame(_row, summary, localization))
-            key_pos_parts.append(image_frame(
-                rf"Run {_i + 1} $|$ x = {_x:+d} mm $|$ Photon arrival $\langle N(t)\rangle$",
-                f"figs/exec11_arrival_{_x}mm.png",
+        key_pos_parts_with_disp = []
+        for _k, (_, _rr) in enumerate(key_positions_df.iterrows()):
+            _x2 = int(_rr.x_beam_mm)
+            _ri = _k + 1
+            key_pos_parts_with_disp.append(position_frame(_rr, summary, localization))
+            key_pos_parts_with_disp.append(image_frame(
+                rf"Run {_ri} $|$ x = {_x2:+d} mm $|$ Photon arrival $\langle N(t)\rangle$",
+                f"figs/exec11_arrival_{_x2}mm.png",
             ))
-            key_pos_parts.append(tN_position_slide(_i + 1, _x))
-        key_position_slides = "".join(key_pos_parts)
+            key_pos_parts_with_disp.append(tN_position_slide(_ri, _x2))
+            key_pos_parts_with_disp.append(tn_dispersion_slide(_ri, _x2))
+        key_position_slides = "".join(key_pos_parts_with_disp)
 
         # T1: full scan section = table + arrival for all 31 positions
         full_pos_parts = []
