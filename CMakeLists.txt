@@ -63,3 +63,17 @@ add_test(NAME endtop_balance_smoke
                  ${CMAKE_CURRENT_BINARY_DIR}/ej200_bar_sim
                  ${CMAKE_CURRENT_BINARY_DIR}/macros/endtop_smoke_center.mac)
 set_tests_properties(endtop_balance_smoke PROPERTIES TIMEOUT 300)
+
+# EXEC_08 pair-scan guardrails
+add_test(NAME pairscan_geometry_check
+         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_pairscan_geometry.py)
+set_tests_properties(pairscan_geometry_check PROPERTIES
+    PASS_REGULAR_EXPRESSION "check_pairscan_geometry PASSED"
+    TIMEOUT 30)
+
+add_test(NAME pairscan_macros_check
+         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_pairscan_macros.py
+                 ${CMAKE_CURRENT_BINARY_DIR}/macros/pairscan)
+set_tests_properties(pairscan_macros_check PROPERTIES
+    PASS_REGULAR_EXPRESSION "check_pairscan_macros PASSED"
+    TIMEOUT 30)
