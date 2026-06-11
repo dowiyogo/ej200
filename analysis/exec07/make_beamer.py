@@ -145,7 +145,7 @@ def velocity_table(velocity_fits: pd.DataFrame) -> str:
     return "\n".join(lines)
 
 
-def make_tex(output_dir: pathlib.Path, mode: str) -> pathlib.Path:
+def make_tex(output_dir: pathlib.Path, mode: str, with_arrival: bool = False) -> pathlib.Path:
     positions = pd.read_csv(output_dir / "per_position_exec07.csv").sort_values("x_beam_mm")
     positions_indexed = positions.set_index("x_beam_mm")
     localization = pd.read_csv(output_dir / "top_localization_gate.csv").set_index("x_beam_mm")
@@ -268,7 +268,18 @@ to meet one, so late End photons are preferentially removed.
 \end{alertblock}
 """,
     )
-    position_slides = "".join(position_frame(row, summary, localization) for _, row in selected.iterrows())
+    if with_arrival:
+        _parts = []
+        for _i, (_, _row) in enumerate(selected.iterrows()):
+            _parts.append(position_frame(_row, summary, localization))
+            _x = int(_row.x_beam_mm)
+            _parts.append(image_frame(
+                rf"Run {_i + 1} $|$ x = {_x:+d} mm $|$ Photon arrival $\langle N(t)\rangle$",
+                f"figs/exec11_arrival_{_x}mm.png",
+            ))
+        position_slides = "".join(_parts)
+    else:
+        position_slides = "".join(position_frame(row, summary, localization) for _, row in selected.iterrows())
     integrated = "".join([
         image_frame("Photon budget versus beam position", "figs/P1_npe_vs_x.png"),
         image_frame("Top localization: full coverage diagonal", "figs/P2_npe_heatmap_top.png"),
@@ -463,7 +474,8 @@ not a simulated timing resolution; Top has no test-beam counterpart.
         + "\\section{Window effect and timing}\n" + landau_slide + dip + timing + timing_gate_slide + velocity_slide + top_slide
         + conclusions + "\\appendix\n" + backup + "\\end{document}\n"
     )
-    tex_path = output_dir / f"exec10_report_{mode}.tex"
+    _prefix = "exec11_report" if with_arrival else "exec10_report"
+    tex_path = output_dir / f"{_prefix}_{mode}.tex"
     tex_path.write_text(content, encoding="utf-8")
     return tex_path
 
@@ -487,10 +499,18 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=pathlib.Path, default=pathlib.Path("analysis/exec07"))
     parser.add_argument("--positions", choices=("full", "key", "both"), default="both")
+    parser.add_argument(
+        "--with-arrival", action="store_true", default=False,
+        help=(
+            "Interleave EXEC-11 photon-arrival companion slides after each "
+            "position slide. Produces exec11_report_*.pdf; exec10_report_*.pdf "
+            "is unchanged. Off by default."
+        ),
+    )
     args = parser.parse_args()
     modes = ("full", "key") if args.positions == "both" else (args.positions,)
     for mode in modes:
-        pdf = compile_tex(make_tex(args.output_dir, mode))
+        pdf = compile_tex(make_tex(args.output_dir, mode, with_arrival=args.with_arrival))
         print(f"wrote {pdf}")
     return 0
 

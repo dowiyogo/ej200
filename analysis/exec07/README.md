@@ -93,12 +93,38 @@ The Python analysis ports the existing implementation from
 The reported End `sigma_group = sigma(DeltaT)/sqrt(2)` is intrinsic and must
 not be interpreted as including sensor SPTR or electronics jitter.
 
+EXEC_11 adds the time-cut photon-arrival slides:
+
+```bash
+python analysis/exec07/exec11_time_arrival.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000 \
+  --positions key
+
+python analysis/exec07/exec11_time_arrival.py \
+  --data-dir /home/reriosto/SHiP/t0minidaq/sslg4/exec07_endtop_2000 \
+  --positions full
+```
+
+The new main decks are `exec11_report_key.pdf` (7 key positions) and
+`exec11_report_full.pdf` (all 31 positions). Each slide carries three panels:
+Top-nearest, End-left SUM4, End-right SUM4. The EXEC_09 and EXEC_10 PDFs
+remain as published historical checkpoints.
+
+Parameter hooks (all have defaults, see `--help`):
+`--t-max-top` (30 ns), `--t-max-end` (50 ns), `--dt` (0.25 ns),
+`--le-threshold-pe` (4), `--band` (rms), `--end-grouping` (sum4_max),
+`--mode` (arrival_cumulative).
+
 ## Main products
 
 - `summary_exec07.csv`
 - `exec07_photon_budget_report.pdf`
 - `exec10_report_full.pdf` (all 31 positions)
 - `exec10_report_key.pdf` (7 key positions)
+- `exec11_report_key.pdf` (7 key positions, photon arrival)
+- `exec11_report_full.pdf` (all 31 positions, photon arrival)
+- `exec11_arrival_metrics.csv`
+- `figs/exec11_arrival_{position}mm.png` (31 figures)
 - `figs/P1_...png` through `figs/P7_...png`
 - `figs/exec09_tail_comparison.png`
 - `exec09_tail_metrics.csv`, `exec09_tail_comparison.csv`
