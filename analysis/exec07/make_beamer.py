@@ -474,6 +474,49 @@ def fourpe_rationale_slide() -> str:
     )
 
 
+def tN_decomposition_slide() -> str:
+    """T5 (EXEC_12b): why t_n disperses — four mechanisms."""
+    return frame(
+        r"Why does $t_n$ disperse? Decomposition into four mechanisms",
+        r"""
+\begin{columns}[T]
+\column{0.60\textwidth}
+\begin{enumerate}\scriptsize
+ \item \textbf{Order statistics on the emission tail (irreducible):}
+       $t_n$ are order statistics of $N_{pe}$ draws from the emission pdf
+       ($\tau_r=0.7$ ns, $\tau_d=1.8$ ns); successive gaps
+       $\sim\mathrm{Exp}(\tau_d/(N_{pe}-n+1))$,
+       $\sigma_{\rm stat}(t_n)\approx\sqrt{n}\,\tau_d/N_{pe}$ for $n\!\ll\!N_{pe}$
+       --- grows monotonically with $n$ even with perfect optics.
+ \item \textbf{Landau $N_{pe}$ fluctuations:}
+       $\mathrm{Var}_{\rm L}(t_n)=(\partial\langle t_n\rangle/\partial N_{pe})^2\,\mathrm{Var}(N_{pe})$
+       with $\mathrm{Var}(N_{pe})$ from the documented $F=1+c\langle N_{pe}\rangle$.
+       Statistical but non-Poissonian.
+ \item \textbf{Optical path-length dispersion:}
+       TIR photons at $n=1.58$ ($\theta_c\approx39°$) span axial speeds
+       $c/(n\cos\theta)\to1.4$--$1.5$ ns/m per metre plus Mylar bounce tail ($R=0.98$).
+       Low-$n$ photons: quasi-direct; high-$n$: reflection-dominated $\Rightarrow$ RMS $\propto n$.
+ \item \textbf{Attenuation truncation:}
+       distant channels ($\lambda_{\rm eff}\approx33$ cm) populate only $n=1$--$3$
+       with large purely statistical bars.
+\end{enumerate}
+\column{0.38\textwidth}
+\begin{block}{\footnotesize Takeaway}
+\scriptsize
+$\mathrm{RMS}(t_n) - \sqrt{n}\,\tau_d/N_{pe}$ isolates the optical-propagation
+contribution --- the per-channel diagnostic in the $\langle t_n\rangle$ dispersion
+frames and the same dispersion that limits $\sigma_{\rm group}$.
+\end{block}
+\begin{alertblock}{\footnotesize Simulation only / intrinsic}
+\scriptsize
+Top: simulation prediction, no test-beam counterpart.
+End: test-beam comparable, intrinsic precision (no SPTR / no jitter).
+\end{alertblock}
+\end{columns}
+""",
+    )
+
+
 def tn_dispersion_slide(run_idx: int, x_mm: int) -> str:
     """T4 (EXEC_12b): per-channel <t_n> dispersion figure for one key position."""
     return frame(
@@ -1201,6 +1244,7 @@ increases with distance. Every global line fit is rejected.
             preamble + title + geometry + faces + optical
             + "\\section{Key positions}\n" + key_position_slides
             + tN_synthesis_slide()
+            + tN_decomposition_slide()
             + "\\section{Photon budget and statistics}\n" + integrated_exec12
             + "\\section{Window effect and timing}\n" + window_section_exec12
             + conclusions_exec12
