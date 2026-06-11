@@ -451,6 +451,32 @@ and both converge to $\sim120$ ps.
     )
 
 
+def fourpe_rationale_slide() -> str:
+    """T1 (EXEC_12b): why a 4-PE leading-edge threshold."""
+    return frame(
+        "Backup: why a 4-PE leading-edge threshold",
+        r"""
+\begin{enumerate}\small
+ \item \textbf{Noise rejection at hardware parity:} 1 PE is dark-count territory;
+       2--3 PE is reachable by correlated crosstalk in the real SiPM.
+       4 PE is the lowest fixed threshold outside the correlated-noise spectrum,
+       matching the operating point of a hardware leading-edge discriminator.
+ \item \textbf{Slope optimum:} $\sigma_t\approx\sigma_V/(dV/dt)$; with the
+       0.5/5 ns SPE the SUM4 pulse has maximal rising-edge slope in the first
+       few PE. Lower thresholds expose the high relative variance of first-photon
+       order statistics; higher thresholds reduce slope and increase walk.
+ \item \textbf{Far-end efficiency:} minimum signal in the scan is End~R
+       $\langle N_{pe}\rangle=41.1\pm0.3$ at $x=-690$ mm;
+       4 PE ($\approx10\%$ of the minimum pulse) keeps trigger efficiency
+       $\approx100\%$ at all 31 positions, avoiding position-dependent selection bias.
+ \item \textbf{Bounded, correctable walk:} fixed-threshold time-walk is small
+       compared to $\sigma_{group}$ at 4 PE and is parametrized for future
+       correction via \texttt{HOOK\_WALK} (no correction applied in any campaign).
+\end{enumerate}
+""",
+    )
+
+
 def glossary_exec12() -> str:
     """T6: extended glossary including exec12 terms."""
     return frame(
@@ -1116,13 +1142,16 @@ increases with distance. Every global line fit is rejected.
 """,
             ),
             image_frame("Backup: ID18 impact maps", "figs/exec08b_id18_impact_maps.png"),
+            fourpe_rationale_slide(),
             frame(
                 "Backup: timing methodology",
                 r"""
 \begin{itemize}
  \item SUM4 groups: \{0..3\}, \{4..7\}, \{8..11\}, \{12..15\}.
  \item Single-PE response: normalized 0.5/5 ns double exponential.
- \item Absolute leading-edge threshold: 4 PE equivalent.
+ \item Absolute leading-edge threshold: 4 PE equivalent
+       (noise rejection, slope optimum, $\approx100\%$ efficiency at all 31 positions;
+       see dedicated backup slide for full rationale).
  \item Estimator: $\sigma(\Delta T_{AB})/\sqrt{2}$.
  \item \texttt{HOOK\_WALK}: pending; no time-walk correction exists or was invented.
  \item EXEC\_09 anti-artifact audit verifies common threshold, pulse, t=0 and estimator.
