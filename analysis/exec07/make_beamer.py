@@ -487,25 +487,32 @@ def glossary_exec12() -> str:
  Fixed 4-PE threshold means larger pulses cross earlier; no correction applied in any campaign
  (\texttt{congruent\_sum4\_timing.C:305--315}).
  \item[FPT] First photon time: first detected photon per event for the stated channel/group.
- \item[SUM4] Analog sum of four SiPMs: \{0--3\}, \{4--7\}, \{8--11\}, \{12--15\}
- (\texttt{congruent\_sum4\_timing.C:218--221}).
- \item[Window-track collection effect] Local ($\pm2$ mm) increase of first-pass solid angle when a
- track passes offset from a Top window centre. Empirically $\approx9.8$\% at $\approx12\,\sigma$
- (five-run test); null at centre and midpoint; symmetric. Geometric working hypothesis.
- \item[Timing gate] The comparison script \texttt{exec08b\_timing\_gate.py} tests whether
- EndTop $\sigma_{\rm group}$ is smaller than End-only $\sigma_{\rm group}$ at $x=0,\pm400$ mm.
- It applies no time acceptance window on individual photon arrivals; all ROOT TTree photons are used.
- \item[$t_N$ / time-to-threshold] Arrival time of the $N$-th detected photoelectron per event
- in a given group. $\sigma(t_N)$ is the single-side photon-counting timing resolution at
- an ideal $N$-PE digital threshold. Excludes SPE pulse convolution jitter present in $\sigma_{\rm group}$.
  \item[Fano factor] $F\equiv\mathrm{Var}(N_{pe})/\langle N_{pe}\rangle$.
  Equals 1 for pure Poisson; grows linearly with $\langle N_{pe}\rangle$ when Landau
  $\Delta E$ fluctuations are present: $F=1+c\langle N_{pe}\rangle$.
+ \item[Group A / Group B] Same-End SUM4 groups: A=\{0--3\}, B=\{4--7\} on End~L;
+ mirrors \{8--11\}, \{12--15\} on End~R.
+ $\sigma_{\rm group}=\sigma(\Delta T_{AB})/\sqrt{2}$
+ (\texttt{congruent\_sum4\_timing.C:218--221}).
+ \item[Intrinsic sigma] Excludes SPTR and electronics jitter; 88 ps hardware value not directly comparable.
  \item[Moyal] Closed-form analytic approximation to the Landau density, used for
  stable MINUIT fits. Undershoots the extreme Landau right tail.
+ \item[SPTR] Single Photon Time Resolution: SiPM intrinsic single-PE jitter.
+ Excluded from all EXEC\_12 results (jitter$=0$); re-introduced via EXEC\_02b hooks,
+ summed in quadrature with electronics jitter.
+ \item[SUM4] Analog sum of four SiPMs: \{0--3\}, \{4--7\}, \{8--11\}, \{12--15\}
+ (\texttt{congruent\_sum4\_timing.C:218--221}).
+ \item[Timing gate] The comparison script \texttt{exec08b\_timing\_gate.py} tests whether
+ EndTop $\sigma_{\rm group}$ is smaller than End-only $\sigma_{\rm group}$ at $x=0,\pm400$ mm.
+ It applies no time acceptance window on individual photon arrivals; all ROOT TTree photons are used.
+ \item[Window-track collection effect] Local ($\pm2$ mm) increase of first-pass solid angle when a
+ track passes offset from a Top window centre. Empirically $\approx9.8$\% at $\approx12\,\sigma$
+ (five-run test); null at centre and midpoint; symmetric. Geometric working hypothesis.
+ \item[$t_N$ / time-to-threshold] Arrival time of the $N$-th detected photoelectron per event
+ in a given group. $\sigma(t_N)$ is the single-side photon-counting timing resolution at
+ an ideal $N$-PE digital threshold. Excludes SPE pulse convolution jitter present in $\sigma_{\rm group}$.
  \item[(exact geometry)] Nearest SiPM agrees with maximum, or covered by window-track exception.
  x=300 mm is a statistical tie.
- \item[Intrinsic sigma] Excludes SPTR and electronics jitter; 88 ps hardware value not directly comparable.
 \end{description}
 """,
     )
