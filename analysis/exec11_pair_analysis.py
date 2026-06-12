@@ -377,6 +377,24 @@ def save_figure(fig: plt.Figure, output_dir: pathlib.Path, name: str) -> None:
     plt.close(fig)
 
 
+def write_latex_table(frame: pd.DataFrame, path: pathlib.Path, columns: list[str]) -> None:
+    def render(value: object) -> str:
+        if isinstance(value, (float, np.floating)):
+            return "--" if not np.isfinite(value) else f"{value:.4g}"
+        return str(value).replace("_", r"\_")
+
+    lines = [
+        r"\begin{tabular}{" + "l" * len(columns) + "}",
+        r"\hline",
+        " & ".join(column.replace("_", r"\_") for column in columns) + r" \\",
+        r"\hline",
+    ]
+    for _, row in frame.iterrows():
+        lines.append(" & ".join(render(row[column]) for column in columns) + r" \\")
+    lines.extend([r"\hline", r"\end{tabular}"])
+    path.write_text("\n".join(lines) + "\n")
+
+
 def read_pair_hit_times(data_dir: pathlib.Path, x_true: float) -> dict[int, np.ndarray]:
     path = data_dir / f"pairscan_x{x_true:+.1f}mm.root"
     collected: dict[int, list[np.ndarray]] = {channel: [] for channel in HOOK_PAIR_IDS}
@@ -442,12 +460,12 @@ def detailed_analysis(data_dir: pathlib.Path, output_dir: pathlib.Path) -> None:
             "mean_asymmetry": frame["npe_asymmetry"].mean(),
             "mu_dt_ps": dt_fit["mean"], "sigma_dt_ps": dt_fit["sigma"],
             "dt_chi2_ndf": dt_fit["chi2_ndf"], "dt_fit_status": dt_fit["fit_status"],
-            "pearson_dt_asym": pearson_asym.statistic,
+            "pearson_dt_asym": pearson_asym[0],
             "pearson_dt_asym_boot_error": pearson_asym_boot,
-            "spearman_dt_asym": spearmanr(dt, asym).statistic,
-            "pearson_dt_R": pearson_ratio.statistic,
+            "spearman_dt_asym": spearmanr(dt, asym)[0],
+            "pearson_dt_R": pearson_ratio[0],
             "pearson_dt_R_boot_error": pearson_ratio_boot,
-            "spearman_dt_R": spearmanr(dt, ratio).statistic,
+            "spearman_dt_R": spearmanr(dt, ratio)[0],
         }
         for channel, tag in zip(HOOK_PAIR_IDS, ("A", "B")):
             row.update({f"{key}_{tag}": value for key, value in moyal_shape_fit(frame[f"npe_{tag}"], 3100 + ref_index * 10 + channel).items()})
@@ -494,16 +512,18 @@ def detailed_analysis(data_dir: pathlib.Path, output_dir: pathlib.Path) -> None:
 
         fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
         axes[0].hexbin(asym, dt, gridsize=45, mincnt=1)
-        axes[0].set(xlabel="NPE asymmetry", ylabel="delta_t (ps)", title=f"Pearson={pearson_asym.statistic:.3f}±{pearson_asym_boot:.3f}; Spearman={spearmanr(dt, asym).statistic:.3f}")
+        axes[0].set(xlabel="NPE asymmetry", ylabel="delta_t (ps)", title=f"Pearson={pearson_asym[0]:.3f}±{pearson_asym_boot:.3f}; Spearman={spearmanr(dt, asym)[0]:.3f}")
         axes[1].hexbin(ratio, dt, gridsize=45, mincnt=1)
-        axes[1].set(xlabel="R = ln(npe_A/npe_B)", ylabel="delta_t (ps)", title=f"Pearson={pearson_ratio.statistic:.3f}±{pearson_ratio_boot:.3f}; Spearman={spearmanr(dt, ratio).statistic:.3f}")
+        axes[1].set(xlabel="R = ln(npe_A/npe_B)", ylabel="delta_t (ps)", title=f"Pearson={pearson_ratio[0]:.3f}±{pearson_ratio_boot:.3f}; Spearman={spearmanr(dt, ratio)[0]:.3f}")
         fig.suptitle(f"{FIGURE_CONTEXT}\n{label}: x={x_true:.1f} mm")
         save_figure(fig, output_dir, f"{label.lower()}_correlations")
 
     comparison = pd.DataFrame(rows)
     comparison.to_csv(output_dir / "analysis" / "reference_comparison.csv", index=False)
-    comparison.to_latex(
-        output_dir / "tables" / "reference_comparison.tex", index=False, float_format="%.4g"
+    write_latex_table(
+        comparison,
+        output_dir / "tables" / "reference_comparison.tex",
+        ["reference", "x_true_mm", "mean_npe_A", "mean_npe_B", "mu_dt_ps", "sigma_dt_ps", "mean_asymmetry"],
     )
 
 
@@ -688,8 +708,10 @@ def reconstruction(output_dir: pathlib.Path) -> None:
 
     result = pd.DataFrame(rows)
     result.to_csv(output_dir / "analysis" / "reconstruction_summary.csv", index=False)
-    result.to_latex(
-        output_dir / "tables" / "reconstruction_summary.tex", index=False, float_format="%.4g"
+    write_latex_table(
+        result,
+        output_dir / "tables" / "reconstruction_summary.tex",
+        ["reference", "x_true_mm", "method", "mean_x_rec_mm", "bias_mm", "sigma_x_mm", "sigma_x_error_mm"],
     )
     fig, axes = plt.subplots(len(references), 1, figsize=(9, 8), squeeze=False)
     for ax, (_, ref) in zip(axes[:, 0], references.iterrows()):
