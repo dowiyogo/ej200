@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\title{EXEC 12T: detected-hit timing and local position reconstruction}
+\author{René Ríos Torres}
+\date{2026-06-12}
+\begin{document}\maketitle
+\begin{abstract}
+The 4th-hit gate reproduces EXEC 11 exactly. The 20th detected hit yields a
+larger differential-time width but a steeper position slope, improving the
+leave-one-position-out X RMS68 from 13.34 to
+10.32 mm. These are intrinsic simulation predictions.
+\end{abstract}
+\section{Definitions and scope}
+The 4th and 20th detected hits are order statistics of accepted optical hits.
+They are not the 20\% constant-fraction discriminator used by Lv et al. A
+detected-hit order statistic selects a row in the hit-time sequence; CFD acts
+on a reconstructed waveform crossing and Lv et al. combine 64 channels.
+\section{Provenance and reproduction gate}
+The fine scan contains 41 positions and 3000 events per position. Logs confirm
+EJ-204/OPSC-101, Top readout, zero added jitter, and data commit
+\texttt{f431c01}. The EXEC 11 4PE slope gate passes exactly:
+6.8525923075 ps/mm in both products.
+\section{Fourth versus twentieth detected hit}
+\begin{center}
+\begin{tabular}{lll}
+metric & 4th & 20th \\
+\hline
+efficiency mean & 1.000 & 1.000 \\
+slope ps/mm & 5.880 & 9.673 \\
+mean delta-t RMS68 ps & 78.470 & 99.837 \\
+mean CV X RMS68 mm & 13.344 & 10.321 \\
+max abs bias mm & 0.898 & 2.243 \\
+mean t+ RMS68 ps & 47.992 & 65.677 \\
+\end{tabular}
+
+\end{center}
+At both thresholds every event passes, so native and matched comparisons are
+identical. The 20th hit broadens differential and common timing, but its
+position response is steeper. The resulting position resolution improves even
+though its raw time spread worsens.
+\section{Threshold sweep}
+Thresholds 1--30 all retain full efficiency in this high-light local scan.
+Increasing threshold generally steepens the calibration and improves X RMS68,
+while calibration nonlinearity rises strongly. No optimum is declared because
+electronics, SPTR, waveform formation, and experimental validation are absent.
+\section{Window-dip supplement}
+The EXEC 08b points are explanatory only and are not used for calibration.
+The nearest-channel mean count spans 349.4--413.2;
+the window-centred point retains the known local light deficit.
+\section{Comparison with Lv et al.}
+Lv et al. study an EJ-200 plate with 64 SiPMs, waveform-level 20\% CFD, NPE
+weighting, 2016 geometric pairs, and a CNN. This work studies an EJ-204 bar,
+one adjacent Top pair, empirical one-dimensional calibration, and detected-hit
+order statistics. Numerical resolutions are not directly comparable.
+\section{Limitations and conclusion}
+This is a simulation prediction with no SPTR, electronics waveform, real CFD,
+noise, dark counts, cross-talk, afterpulsing, synchronization uncertainty, or
+experimental validation. The twentieth detected hit improves local X
+reconstruction in this dataset, but it does not improve the underlying raw
+timing width and it must not be described as 20\% CFD.
+\end{document}
