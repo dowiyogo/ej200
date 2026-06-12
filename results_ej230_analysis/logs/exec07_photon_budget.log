@@ -1,0 +1,34 @@
+blocking validation passed: 31 files x 2000 events, gun_x and IDs 0..85
+analyzing x=-690 mm: photon_hits_x-690mm.root
+analyzing x=-670 mm: photon_hits_x-670mm.root
+analyzing x=-650 mm: photon_hits_x-650mm.root
+analyzing x=-600 mm: photon_hits_x-600mm.root
+analyzing x=-550 mm: photon_hits_x-550mm.root
+analyzing x=-500 mm: photon_hits_x-500mm.root
+analyzing x=-450 mm: photon_hits_x-450mm.root
+analyzing x=-400 mm: photon_hits_x-400mm.root
+analyzing x=-350 mm: photon_hits_x-350mm.root
+analyzing x=-300 mm: photon_hits_x-300mm.root
+analyzing x=-250 mm: photon_hits_x-250mm.root
+analyzing x=-200 mm: photon_hits_x-200mm.root
+analyzing x=-150 mm: photon_hits_x-150mm.root
+analyzing x=-100 mm: photon_hits_x-100mm.root
+analyzing x=-50 mm: photon_hits_x-50mm.root
+analyzing x=0 mm: photon_hits_x0mm.root
+analyzing x=50 mm: photon_hits_x50mm.root
+analyzing x=100 mm: photon_hits_x100mm.root
+analyzing x=150 mm: photon_hits_x150mm.root
+analyzing x=200 mm: photon_hits_x200mm.root
+analyzing x=250 mm: photon_hits_x250mm.root
+analyzing x=300 mm: photon_hits_x300mm.root
+analyzing x=350 mm: photon_hits_x350mm.root
+analyzing x=400 mm: photon_hits_x400mm.root
+analyzing x=450 mm: photon_hits_x450mm.root
+analyzing x=500 mm: photon_hits_x500mm.root
+analyzing x=550 mm: photon_hits_x550mm.root
+analyzing x=600 mm: photon_hits_x600mm.root
+analyzing x=650 mm: photon_hits_x650mm.root
+analyzing x=670 mm: photon_hits_x670mm.root
+analyzing x=690 mm: photon_hits_x690mm.root
+WARNING: fitted mean-arrival v_eff is outside 19 cm/ns +/-15%; reported without forcing the expected value.
+wrote EXEC_08 products to results_ej230_analysis

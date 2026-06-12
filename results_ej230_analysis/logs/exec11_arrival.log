@@ -1,0 +1,94 @@
+Running blocking ROOT validation...
+Validation passed: 31 files x 2000 events, gun_x_mm, IDs 0..85
+  x = -690 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-690mm.png
+  x = -670 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-670mm.png
+  x = -650 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-650mm.png
+  x = -600 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-600mm.png
+  x = -550 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-550mm.png
+  x = -500 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-500mm.png
+  x = -450 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-450mm.png
+  x = -400 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-400mm.png
+  x = -350 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-350mm.png
+  x = -300 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-300mm.png
+  x = -250 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-250mm.png
+  x = -200 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-200mm.png
+  x = -150 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-150mm.png
+  x = -100 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-100mm.png
+  x = -50 mm
+    saved results_ej230_analysis/figs/exec11_arrival_-50mm.png
+  x = +0 mm
+    saved results_ej230_analysis/figs/exec11_arrival_0mm.png
+  x = +50 mm
+    saved results_ej230_analysis/figs/exec11_arrival_50mm.png
+  x = +100 mm
+    saved results_ej230_analysis/figs/exec11_arrival_100mm.png
+  x = +150 mm
+    saved results_ej230_analysis/figs/exec11_arrival_150mm.png
+  x = +200 mm
+    saved results_ej230_analysis/figs/exec11_arrival_200mm.png
+  x = +250 mm
+    saved results_ej230_analysis/figs/exec11_arrival_250mm.png
+  x = +300 mm
+    saved results_ej230_analysis/figs/exec11_arrival_300mm.png
+  x = +350 mm
+    saved results_ej230_analysis/figs/exec11_arrival_350mm.png
+  x = +400 mm
+    saved results_ej230_analysis/figs/exec11_arrival_400mm.png
+  x = +450 mm
+    saved results_ej230_analysis/figs/exec11_arrival_450mm.png
+  x = +500 mm
+    saved results_ej230_analysis/figs/exec11_arrival_500mm.png
+  x = +550 mm
+    saved results_ej230_analysis/figs/exec11_arrival_550mm.png
+  x = +600 mm
+    saved results_ej230_analysis/figs/exec11_arrival_600mm.png
+  x = +650 mm
+    saved results_ej230_analysis/figs/exec11_arrival_650mm.png
+  x = +670 mm
+    saved results_ej230_analysis/figs/exec11_arrival_670mm.png
+  x = +690 mm
+    saved results_ej230_analysis/figs/exec11_arrival_690mm.png
+wrote results_ej230_analysis/exec11_arrival_metrics.csv
+wrote audit/exec11_arrival.md
+Generating Beamer deck via make_beamer --with-arrival ...
+  cmd: /usr/bin/python3 /mnt/d/SHiP/ej230/analysis/exec07/make_beamer.py --output-dir results_ej230_analysis --positions full --with-arrival
+Traceback (most recent call last):
+  File "/mnt/d/SHiP/ej230/analysis/exec07/make_beamer.py", line 1318, in <module>
+    raise SystemExit(main())
+  File "/mnt/d/SHiP/ej230/analysis/exec07/make_beamer.py", line 1308, in main
+    pdf = compile_tex(make_tex(
+  File "/mnt/d/SHiP/ej230/analysis/exec07/make_beamer.py", line 603, in make_tex
+    profiles = pd.read_csv(output_dir / "exec08b_window_dip_profiles.csv")
+  File "/home/reriosto/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/home/reriosto/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/home/reriosto/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+  File "/home/reriosto/.local/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+  File "/home/reriosto/.local/lib/python3.9/site-packages/pandas/io/common.py", line 873, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: 'results_ej230_analysis/exec08b_window_dip_profiles.csv'
+Traceback (most recent call last):
+  File "/mnt/d/SHiP/ej230/analysis/exec07/exec11_time_arrival.py", line 835, in <module>
+    raise SystemExit(main())
+  File "/mnt/d/SHiP/ej230/analysis/exec07/exec11_time_arrival.py", line 829, in main
+    subprocess.run(cmd, check=True)
+  File "/usr/lib64/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/mnt/d/SHiP/ej230/analysis/exec07/make_beamer.py', '--output-dir', 'results_ej230_analysis', '--positions', 'full', '--with-arrival']' returned non-zero exit status 1.
