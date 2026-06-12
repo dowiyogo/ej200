@@ -1,0 +1,275 @@
+This is LuaHBTeX, Version 1.12.0 (TeX Live 2020) 
+ restricted system commands enabled.
+(./exec12tb_beamer.tex
+LaTeX2e <2020-10-01> patch level 4
+ L3 programming layer <2021-02-18>
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamer.cls
+Document Class: beamer 2021/03/19 v3.62 A class for typesetting presentations
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasemodes.sty
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasedecode.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifpdf.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseoptions.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo)
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/luatex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/pgf.revision.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.code.t
+ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-luatex.def
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-pdf.de
+f)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
+tex)) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigonomet
+ric.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.random.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.comparison
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
+thmetics.code.tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfint.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
+code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
+s.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathprocessing
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.code.
+tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.code.te
+x)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransparency.c
+ode.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.code.
+tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorerdf.code.tex))
+) (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/xxcolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+
+Package hyperref Message: Stopped early.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hluatex.def
+(/usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaserequires.sty
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasecompatibility.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasefont.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/sansmathaccent.sty
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile.sty
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty
+(/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrlogo.sty)))))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetranslator.sty
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasemisc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetwoscreens.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseoverlay.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetitle.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasesection.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseframe.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseverbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseframesize.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseframecomponents.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasecolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasenotes.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetoc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetemplates.sty
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseauxtemplates.sty
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaseboxes.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbaselocalstructure.sty
+(/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasenavigation.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasetheorems.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerbasethemes.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerthemedefault.sty
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerfontthemedefault.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamercolorthemedefault.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerinnerthemedefault.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerouterthemedefault.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerthemeMadrid.sty
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamercolorthemewhale.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamercolorthemeorchid.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerinnerthemerounded.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/beamer/beamerouterthemeinfolines.sty))
+ (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/siunitx/siunitx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-luatex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse-2020-10-01.st
+y (/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse-generic.tex
+))) (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.sty
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype-luatex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/microtype.cfg))
+(./generated_numbers.tex)
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 65.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 1.66702pt
+(hyperref)                removed on input line 65.
+
+(./exec12tb_beamer.aux) (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(./exec12tb_beamer.out) (./exec12tb_beamer.out)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-basic-dictionary
+-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-bibliography-dic
+tionary-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-environment-dict
+ionary-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-months-dictionar
+y-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-numbers-dictiona
+ry-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/translator/translator-theorem-dictiona
+ry-English.dict)
+(/usr/share/texlive/texmf-dist/tex/latex/siunitx/siunitx-abbreviations.cfg)
+No file exec12tb_beamer.nav.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg) [1{/usr/share/te
+xlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}]
+(/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-LatinModernRoman.cfg)
+[2] [3<../figures//fine_scan_geometry.pdf>] (../tables/dataset_inventory.tex)
+[4] [5<../figures//order_statistic_schematic.pdf>] [6] [7<../figures//cfd_vs_or
+derstat_schematic.pdf>]
+Overfull \hbox (12.1056pt too wide) in paragraph at lines 248--248
+[][] 
+[8<../figures//mean_dt_vs_x_with_residuals.pdf>] [9<../figures//rms68_dt_vs_x_4
+_20.pdf>] [10<../figures//rho_ab_vs_x_4_20.pdf>] [11<../figures//tplus_rms68_vs
+_x_4_20.pdf>] [12<../figures//ref1_dt_overlay.pdf>] [13<../figures//ref2_dt_ove
+rlay.pdf>] [14<../figures//ref1_xrec_overlay.pdf>]
+Overfull \hbox (8.86246pt too wide) in paragraph at lines 408--408
+[] 
+[15<../figures//ref2_xrec_overlay.pdf>] [16<../figures//sweep_rms68x_vs_k.pdf>]
+[17<../figures//sweep_slope_vs_k.pdf><../figures//sweep_chi2_vs_k.pdf>]
+[18<../figures//sweep_bias_vs_k.pdf>] [19<../figures//tradeoff_resolution_vs_bi
+as.pdf>] (../tables/threshold_sweep.tex) [20]
+(../tables/threshold_4_20_comparison.tex)
+Overfull \vbox (10.17714pt too high) detected at line 524
+[21] [22] [23<../figures//window_dip_counts.pdf>] [24<../figures//window_dip_t4
+_t20.pdf>] [25<../figures//global_context_sigma_bias.pdf>]
+(../tables/lv_comparison.tex) [26] [27] [28] [29]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\translate ' on input line 752.
+
+[30] (../tables/dataset_inventory.tex
+warning  (pdf backend): ignoring duplicate destination with the name 'tab:datas
+ets'
+) [31] [32] [33] [34] (../tables/threshold_sweep.tex
+warning  (pdf backend): ignoring duplicate destination with the name 'tab:thres
+hold_sweep'
+) [35] [36] (../tables/window_dip_summary.tex) [37] [38]
+! Use of \beamer@parseitem doesn't match its definition.
+\beamer@defaultospec ->$
+                        \checkmark $
+l.925 \end{frame}
+               
+ 7312 words of node memory still in use:
+   54 hlist, 9 vlist, 10 rule, 30 disc, 8 local_par, 5 dir, 12 math, 181 glue, 
+46 kern, 36 penalty, 4 margin_kern, 476 glyph, 129 attribute, 93 glue_spec, 129
+ attribute_list, 4 temp, 1 shape, 1 write, 4 pdf_literal, 35 pdf_colorstack nod
+es
+   avail lists: 2:1253,3:666,4:325,5:109,6:69,7:2763,8:25,9:621,10:22,11:204
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on exec12tb_beamer.log.

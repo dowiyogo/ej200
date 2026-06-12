@@ -1,0 +1,971 @@
+% exec12tb_beamer.tex — EXEC_12T-B: rebuilt Beamer
+% Compile: latexmk -lualatex -interaction=nonstopmode exec12tb_beamer.tex
+% Author: René Ríos Torres, Universidad de La Serena
+% Data commit: f431c01   Analysis: EXEC_12T-B
+
+\documentclass[aspectratio=169,10pt]{beamer}
+
+% --------------------------------------------------------------------------
+% Theme
+% --------------------------------------------------------------------------
+\usetheme{Madrid}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+% --------------------------------------------------------------------------
+% Packages
+% --------------------------------------------------------------------------
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+
+% --------------------------------------------------------------------------
+% Generated numbers (auto-produced by exec12tb_tables.py — do NOT edit)
+% --------------------------------------------------------------------------
+\input{generated_numbers}
+
+% --------------------------------------------------------------------------
+% Colours
+% --------------------------------------------------------------------------
+\definecolor{FourPE}{HTML}{1f77b4}
+\definecolor{TwentyPE}{HTML}{d62728}
+\definecolor{WarnRed}{HTML}{c0392b}
+
+% --------------------------------------------------------------------------
+% Custom commands
+% --------------------------------------------------------------------------
+\newcommand{\highlight}[1]{\textcolor{WarnRed}{\textbf{#1}}}
+\newcommand{\kfour}{{\color{FourPE}k=4}}
+\newcommand{\ktwenty}{{\color{TwentyPE}k=20}}
+\newcommand{\FourPElabel}{{\color{FourPE}4th-hit (4PE)}}
+\newcommand{\TwentyPElabel}{{\color{TwentyPE}20th-hit (20PE)}}
+
+% figure path relative to this .tex file
+\graphicspath{{../figures/}}
+
+% --------------------------------------------------------------------------
+% Title
+% --------------------------------------------------------------------------
+\title[Intrinsic Timing \& Position — EJ-204]{%
+  Intrinsic Timing and Position Reconstruction\\
+  with Adjacent SiPMs in a 1.4\,m EJ-204 Scintillator Bar}
+\subtitle{Fourth- and Twentieth-Detected-Hit Timing,\\
+  Local Position Reconstruction and EndTop Context}
+\author{René Ríos Torres}
+\institute{Universidad de La Serena}
+\date{EXEC\_12T-B \quad 12 June 2026 \quad data: \texttt{f431c01}}
+
+% ==========================================================================
+\begin{document}
+% ==========================================================================
+
+% ------------------------------------------------------------------
+\begin{frame}
+\titlepage
+\begin{center}
+  \small\textcolor{gray}{Simulation prediction — EJ-204 — Top readout
+  — intrinsic (jitter = 0)}
+\end{center}
+\end{frame}
+
+% ==========================================================================
+% SECTION 1 — SETUP
+% ==========================================================================
+\section{Motivation and Setup}
+
+% ---- Frame 2 -------------------------------------------------------
+\begin{frame}{Scientific questions}
+\begin{enumerate}
+  \item What is the intrinsic timing precision with the \FourPElabel{}
+        vs.\ the \TwentyPElabel{}?
+  \item How do efficiency, timing width, and position resolution compare
+        for \kfour{} and \ktwenty{}?
+  \item Does \ktwenty{} genuinely improve the timing or does it merely
+        select brighter events?
+  \item What is the position sensitivity (slope, $v_\mathrm{eff}$) of
+        each estimator?
+  \item How do these results connect to the global EndTop reconstruction
+        from EXEC\_12?
+  \item How do our order-statistic estimators compare to the
+        waveform-based 20\% CFD method of Lv et al.\ (2026)?
+  \item What instrumental effects are still absent from this simulation?
+\end{enumerate}
+\end{frame}
+
+% ---- Frame 3 -------------------------------------------------------
+\begin{frame}{Detector geometry and fine scan}
+\begin{columns}
+  \column{0.60\textwidth}
+    \includegraphics[width=\linewidth]{fine_scan_geometry}
+  \column{0.38\textwidth}
+    \small
+    \textbf{Bar:} EJ-204, $1400\times60\times10$\,mm\\[4pt]
+    \textbf{Top SiPM array:} 70 channels\\[4pt]
+    \textbf{Pair (28, 29):}\\
+    \hspace{6pt}SiPM A at $x=-452$\,mm\\
+    \hspace{6pt}SiPM B at $x=-432$\,mm\\[4pt]
+    \textbf{Fine scan:}\\
+    \hspace{6pt}41 positions, $-462$ to $-422$\,mm\\
+    \hspace{6pt}1\,mm steps, \NEventsPerPos{} events each\\[4pt]
+    \textbf{EJ-204:} $\tau_\mathrm{d} = 2.1$\,ns,
+    $\lambda_\mathrm{peak} = 408$\,nm
+\end{columns}
+\end{frame}
+
+% ---- Frame 4 -------------------------------------------------------
+\begin{frame}{Available data sets}
+\small
+\input{../tables/dataset_inventory}
+\vspace{6pt}
+\begin{block}{Efficiency note}
+  All 41 positions have 100\% efficiency for both $k=4$ and $k=20$:
+  NPE$\gg$20 everywhere in the fine scan.
+  No efficiency plot is shown because it contains no information.
+\end{block}
+\end{frame}
+
+% ---- Frame 5 -------------------------------------------------------
+\begin{frame}{From photon hits to event observables}
+\begin{columns}
+  \column{0.58\textwidth}
+    \includegraphics[width=\linewidth]{order_statistic_schematic}
+  \column{0.40\textwidth}
+    \small
+    For each event and each SiPM channel, sort detected hits by
+    arrival time.  Define:
+    \[
+      t_A^{(k)} = \text{$k$-th smallest arrival time in channel A}
+    \]
+    Key observables:
+    \[
+      \Delta t^{(k)} = t_A^{(k)} - t_B^{(k)}
+    \]
+    \[
+      t_+^{(k)} = \frac{t_A^{(k)} + t_B^{(k)}}{2}
+    \]
+    \begin{itemize}
+      \item $\Delta t^{(k)}$ encodes position
+      \item $t_+^{(k)}$ encodes event time
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ==========================================================================
+% SECTION 2 — DEFINITIONS
+% ==========================================================================
+\section{Timing Definitions}
+
+% ---- Frame 6 -------------------------------------------------------
+\begin{frame}{Timing estimators — order statistics}
+\begin{block}{Order-statistic definition}
+For a single channel and single event, sort the detected hits:
+\[
+  t^{(1)} \le t^{(2)} \le \cdots \le t^{(k)} \le \cdots
+\]
+\kfour{}: $t^{(4)}$ is the 4th smallest arrival time.\\
+\ktwenty{}: $t^{(20)}$ is the 20th smallest arrival time.
+\end{block}
+\vspace{8pt}
+\begin{columns}
+  \column{0.48\textwidth}
+  \begin{alertblock}{Differential observable (position)}
+    \[
+      \Delta t^{(k)} = t_A^{(k)} - t_B^{(k)}
+    \]
+    Calibrated as: $\mu_{\Delta t}(x) = m_k x + b_k$
+  \end{alertblock}
+  \column{0.48\textwidth}
+  \begin{exampleblock}{Common observable (event time)}
+    \[
+      t_+^{(k)} = \frac{t_A^{(k)} + t_B^{(k)}}{2}
+    \]
+    Sensitive to absolute arrival time of the particle.
+  \end{exampleblock}
+\end{columns}
+\end{frame}
+
+% ---- Frame 7 -------------------------------------------------------
+\begin{frame}{\highlight{The 20th hit is NOT the 20\% CFD}}
+\begin{columns}
+  \column{0.65\textwidth}
+    \includegraphics[width=\linewidth]{cfd_vs_orderstat_schematic}
+  \column{0.33\textwidth}
+    \small
+    \textbf{Lv et al.\ (2026):}
+    \begin{itemize}
+      \item Reconstruct full SiPM waveform
+      \item Define $t_\mathrm{CFD}$ at 20\% of peak amplitude
+      \item Average 64 channels, weighted by NPE
+    \end{itemize}
+    \vspace{6pt}
+    \textbf{This analysis:}
+    \begin{itemize}
+      \item No waveform reconstruction
+      \item $t^{(20)}$ = 20th detected hit (order statistic)
+      \item Single pair, empirical calibration
+    \end{itemize}
+    \vspace{6pt}
+    \highlight{Direct comparison is invalid.}
+\end{columns}
+\end{frame}
+
+% ==========================================================================
+% SECTION 3 — TEMPORAL RESPONSE
+% ==========================================================================
+\section{Temporal Response}
+
+% ---- Frame 8 -------------------------------------------------------
+\begin{frame}{Mean $\Delta t$ vs. position — calibration}
+\begin{columns}
+  \column{0.60\textwidth}
+    \includegraphics[width=\linewidth]{mean_dt_vs_x_with_residuals}
+  \column{0.38\textwidth}
+    \small
+    \begin{tabular}{lrr}
+      \toprule
+             & \FourPElabel & \TwentyPElabel \\
+      \midrule
+      Slope & \SlopeFourPE & \SlopeTwentyPE\,ps/mm \\
+      $v_\mathrm{eff}$ & \VeffFourPE & \VeffTwentyPE\,cm/ns \\
+      $\chi^2/\mathrm{ndf}$ & \ChiFourPE & \ChiTwentyPE \\
+      \bottomrule
+    \end{tabular}
+    \vspace{8pt}
+    \begin{itemize}
+      \item 20PE slope $\approx 64\%$ steeper
+      \item 20PE $\chi^2$ much larger:
+            calibration less linear
+      \item Residuals reveal non-linearity
+            near SiPM positions
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 9 -------------------------------------------------------
+\begin{frame}{Timing width $\Delta t$ along the scan}
+\begin{columns}
+  \column{0.58\textwidth}
+    \includegraphics[width=\linewidth]{rms68_dt_vs_x_4_20}
+  \column{0.40\textwidth}
+    \small
+    \begin{itemize}
+      \item \FourPElabel{} core:
+            $\sigma_{\Delta t} \approx \SigmaDtFourPE$\,ps (mean)
+      \item \TwentyPElabel{} core:
+            $\sigma_{\Delta t} \approx \SigmaDtTwentyPE$\,ps (mean)
+      \item 20PE is \textbf{27\% wider} in timing spread
+      \item The U-shape reflects photon path-length
+            variation across the scan
+      \item Despite wider $\sigma_{\Delta t}$,
+            the steeper slope of 20PE can still
+            yield better position resolution
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 10 -------------------------------------------------------
+\begin{frame}{A–B correlation vs. position}
+\begin{columns}
+  \column{0.58\textwidth}
+    \includegraphics[width=\linewidth]{rho_ab_vs_x_4_20}
+  \column{0.40\textwidth}
+    \small
+    \begin{itemize}
+      \item \FourPElabel: $\rho \approx \RhoABFourPE$ (near zero)
+      \item \TwentyPElabel: $\rho \approx \RhoABTwentyPE$
+      \item Higher $\rho$ for \ktwenty{} indicates a
+            \textbf{common-mode component}:
+            later hits in both channels share
+            the same photon-emission fluctuations
+      \item Under independence, $\sigma(t_+) = \sigma_{\Delta t}/2$;
+            with correlation, this underestimates $\sigma(t_+)$
+      \item The covariance is measured directly —
+            not assumed
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 11 -------------------------------------------------------
+\begin{frame}{Common-time estimator width}
+\begin{columns}
+  \column{0.58\textwidth}
+    \includegraphics[width=\linewidth]{tplus_rms68_vs_x_4_20}
+  \column{0.40\textwidth}
+    \small
+    \begin{itemize}
+      \item \FourPElabel:
+            $\sigma(t_+) \approx \SigmaTplusFourPE$\,ps
+      \item \TwentyPElabel:
+            $\sigma(t_+) \approx \SigmaTplusTwentyPE$\,ps
+      \item Ratio $\approx 1.37\times$; both overestimate
+            naive $\sigma_{\Delta t}/2$ due to non-zero $\rho$
+      \item \textbf{Simulation prediction only:}
+            jitter = 0; no SPTR; no electronics
+      \item These numbers will increase substantially
+            with realistic instrumental effects
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ==========================================================================
+% SECTION 4 — REFERENCE POSITIONS
+% ==========================================================================
+\section{Reference Positions}
+
+% ---- Frame 12 -------------------------------------------------------
+\begin{frame}{$\Delta t$ distributions at REF1 ($x=\RefOneX$\,mm)}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{ref1_dt_overlay}
+  \column{0.42\textwidth}
+    \small
+    REF1 is the position closest to the midpoint
+    (minimum $|\mu_{\Delta t}|$).
+    \vspace{6pt}
+    \begin{itemize}
+      \item Both thresholds produce approximately
+            Gaussian cores
+      \item Wider tails visible for \ktwenty{}
+      \item Width difference ($\approx$27\%) is
+            consistent with scan-mean values
+      \item Matched-20PE sample gives same numbers
+            (efficiency = 100\% for both)
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 13 -------------------------------------------------------
+\begin{frame}{$\Delta t$ distributions at REF2 ($x=\RefTwoX$\,mm)}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{ref2_dt_overlay}
+  \column{0.42\textwidth}
+    \small
+    REF2 is the position with maximum mean NPE
+    in channel A.
+    \vspace{6pt}
+    \begin{itemize}
+      \item Qualitatively similar to REF1
+      \item Slight shift in $\mu_{\Delta t}$ confirms
+            linear calibration model
+      \item Both reference positions are within
+            2\,mm of the pair midpoint (−442\,mm)
+      \item Detailed numbers in Table~3
+            (backup slide B4)
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 14 -------------------------------------------------------
+\begin{frame}{Reconstructed position at REF1 (LOO-CV)}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{ref1_xrec_overlay}
+  \column{0.42\textwidth}
+    \small
+    Leave-one-out cross-validation: calibration
+    fitted on the other 40 positions; applied
+    event-by-event at REF1.
+    \vspace{6pt}
+    \begin{itemize}
+      \item \kfour{}: larger spread, smaller bias
+      \item \ktwenty{}: narrower distribution
+            (steeper slope divides by a larger number)
+      \item Both are simulation predictions
+            under ideal conditions
+      \item See backup for full LOO table
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 15 -------------------------------------------------------
+\begin{frame}{Reconstructed position at REF2 (LOO-CV)}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{ref2_xrec_overlay}
+  \column{0.42\textwidth}
+    \small
+    Results at REF2 are consistent with REF1.
+    \vspace{6pt}
+    \begin{tabular}{lrr}
+      \toprule
+      Metric & \FourPElabel & \TwentyPElabel \\
+      \midrule
+      $\mu_{\Delta t}$ (ps) & \multicolumn{2}{c}{see fig.} \\
+      Bias (mm)  & $\approx\BiasMaxFourPE$  & $\approx\BiasMaxTwentyPE$ \\
+      $\sigma_x$ (mm) & \RmsxFourPE & \RmsxTwentyPE \\
+      \bottomrule
+    \end{tabular}
+    \vspace{4pt}
+    \small Full table: backup slide B4.
+\end{columns}
+\end{frame}
+
+% ==========================================================================
+% SECTION 5 — THRESHOLD SWEEP
+% ==========================================================================
+\section{Threshold Sweep}
+
+% ---- Frame 16 -------------------------------------------------------
+\begin{frame}{Position resolution vs. threshold}
+\begin{columns}
+  \column{0.58\textwidth}
+    \includegraphics[width=\linewidth]{sweep_rms68x_vs_k}
+  \column{0.40\textwidth}
+    \small
+    \begin{itemize}
+      \item Best resolution near $k = 4$–$8$
+      \item Improves again at $k = 20$ due to
+            steeper slope overcoming wider $\sigma_{\Delta t}$
+      \item $k > 20$: calibration degrades ($\chi^2$ blows up);
+            resolution worsens
+      \item \textbf{No single ``optimal'' threshold:}
+            depends on the figure of merit chosen
+    \end{itemize}
+    \vspace{4pt}
+    \begin{block}{Selected values}
+      \kfour: \RmsxFourPE\,mm mean LOO RMS$_{68}$\\
+      \ktwenty: \RmsxTwentyPE\,mm mean LOO RMS$_{68}$
+    \end{block}
+\end{columns}
+\end{frame}
+
+% ---- Frame 17 -------------------------------------------------------
+\begin{frame}{Calibration slope and $\chi^2$ vs. threshold}
+\begin{columns}
+  \column{0.48\textwidth}
+    \includegraphics[width=\linewidth]{sweep_slope_vs_k}
+  \column{0.48\textwidth}
+    \includegraphics[width=\linewidth]{sweep_chi2_vs_k}
+\end{columns}
+\small
+\begin{itemize}
+  \item Slope rises monotonically with $k$: later hits see larger
+        positional spread in photon arrival
+  \item $\chi^2/\mathrm{ndf}$ grows rapidly beyond $k \approx 15$:
+        the linear model fails as non-linearity increases
+  \item The \ktwenty{} calibration $\chi^2 = \ChiTwentyPE$ signals
+        systematic residuals — position reconstruction has a component
+        of non-linearity beyond this point
+\end{itemize}
+\end{frame}
+
+% ---- Frame 18 -------------------------------------------------------
+\begin{frame}{Reconstruction bias vs. threshold}
+\begin{columns}
+  \column{0.55\textwidth}
+    \includegraphics[width=\linewidth]{sweep_bias_vs_k}
+  \column{0.43\textwidth}
+    \small
+    \begin{itemize}
+      \item Max absolute bias grows with $k$
+      \item \kfour: $|\mathrm{bias}|_\mathrm{max} = \BiasMaxFourPE$\,mm
+      \item \ktwenty: $|\mathrm{bias}|_\mathrm{max} = \BiasMaxTwentyPE$\,mm
+      \item Bias is driven by non-linearity
+            at the scan edges (near the SiPMs)
+      \item A linear calibration fitted on a
+            curved $\mu_{\Delta t}(x)$ necessarily
+            produces systematic edge biases
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 19 -------------------------------------------------------
+\begin{frame}{Resolution–bias trade-off}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{tradeoff_resolution_vs_bias}
+  \column{0.42\textwidth}
+    \small
+    \textbf{Efficiency = 100\% for all $k$}\\
+    (confirmed; no efficiency axis needed)
+    \vspace{8pt}
+    \begin{itemize}
+      \item Lower $k$: lower bias, larger spread
+      \item Higher $k$: steeper slope helps resolution
+            but increases non-linearity and bias
+      \item \kfour{} and \ktwenty{} are highlighted:
+            both lie on the approximate Pareto front
+      \item No single threshold dominates on
+            all metrics simultaneously
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 20 -------------------------------------------------------
+\begin{frame}{Threshold sweep summary}
+\small
+\input{../tables/threshold_sweep}
+\end{frame}
+
+% ==========================================================================
+% SECTION 6 — SYNTHESIS
+% ==========================================================================
+\section{4PE vs.\ 20PE Synthesis}
+
+% ---- Frame 21 -------------------------------------------------------
+\begin{frame}{4PE vs.\ 20PE — main comparison}
+\small
+\input{../tables/threshold_4_20_comparison}
+\vspace{4pt}
+\begin{itemize}
+  \item Efficiency is 100\% for both in the fine scan
+  \item 20PE has a steeper slope but worse $\chi^2$
+  \item 20PE has a wider $\sigma_{\Delta t}$ but narrower $\sigma_x$
+        (slope wins)
+  \item 20PE has significantly higher A–B correlation
+\end{itemize}
+\end{frame}
+
+% ---- Frame 22 -------------------------------------------------------
+\begin{frame}{Does 20PE really improve performance?}
+\begin{columns}
+  \column{0.50\textwidth}
+    \begin{exampleblock}{Where 20PE helps}
+      \begin{itemize}
+        \item Steeper calibration slope
+              ($\SlopeTwentyPE$ vs.\ $\SlopeFourPE$\,ps/mm)
+        \item Better mean position resolution
+              (\RmsxTwentyPE{} vs.\ \RmsxFourPE\,mm)
+        \item More photons averaged $\Rightarrow$
+              more stable estimator in some regimes
+      \end{itemize}
+    \end{exampleblock}
+  \column{0.48\textwidth}
+    \begin{alertblock}{Where 20PE does not help}
+      \begin{itemize}
+        \item Wider timing spread
+              ($\SigmaDtTwentyPE$ vs.\ \SigmaDtFourPE\,ps)
+        \item Worse calibration linearity
+              ($\chi^2/\mathrm{ndf} = \ChiTwentyPE$)
+        \item Larger A–B correlation
+              ($\rho = \RhoABTwentyPE$ vs.\ \RhoABFourPE)
+        \item Larger maximum bias
+              (\BiasMaxTwentyPE{} vs.\ \BiasMaxFourPE\,mm)
+      \end{itemize}
+    \end{alertblock}
+\end{columns}
+\vspace{4pt}
+\centering\small
+\textbf{Verdict:} 20PE improves position resolution via slope,
+not via timing precision. The improvement comes with a cost in
+linearity and common-mode contamination.
+\end{frame}
+
+% ==========================================================================
+% SECTION 7 — CONTEXT
+% ==========================================================================
+\section{Context and Comparisons}
+
+% ---- Frame 23 -------------------------------------------------------
+\begin{frame}{Window-dip: photon yield and local collection}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{window_dip_counts}
+  \column{0.42\textwidth}
+    \small
+    Four targeted runs in the EXEC\_08b window-dip
+    dataset probe local NPE variation near SiPM~18:
+    \vspace{6pt}
+    \begin{itemize}
+      \item NPE drops at the SiPM centre
+            (geometric gap)
+      \item Run B ($x=-642$, 10\,mm off-centre)
+            has the highest NPE
+      \item This local effect explains the
+            non-linearities seen in $\mu_{\Delta t}(x)$
+            near the SiPM positions
+      \item \textbf{Not used for calibration}
+            of the fine scan
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 24 -------------------------------------------------------
+\begin{frame}{Window-dip: timing response}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{window_dip_t4_t20}
+  \column{0.42\textwidth}
+    \small
+    \begin{itemize}
+      \item $\langle t_4 \rangle$ varies by $\sim$14\,ps
+            across the four runs
+      \item $\langle t_{20} \rangle$ varies by $\sim$23\,ps
+            (larger because later hits are more
+            sensitive to photon transport time)
+      \item Timing shift correlates with NPE:
+            more photons $\Rightarrow$ earlier mean arrival
+      \item Confirms that the window geometry
+            affects both timing and yield together
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 25 -------------------------------------------------------
+\begin{frame}{Global EXEC\_12 context}
+\begin{columns}
+  \column{0.56\textwidth}
+    \includegraphics[width=\linewidth]{global_context_sigma_bias}
+  \column{0.42\textwidth}
+    \small
+    Global X reconstruction over the full
+    EndTop scan (201\,positions, EXEC\_12):
+    \vspace{4pt}
+    \begin{itemize}
+      \item \textbf{Local ratio (pair 28/29):}
+            best precision ($\approx3$\,mm)
+            but only valid in 40\,mm window
+      \item \textbf{Top centroid:} $\approx4.4$\,mm,
+            large edge bias ($\approx58$\,mm)
+      \item \textbf{End timing:} $\approx21$\,mm
+      \item \textbf{BLUE EndTop:} $\approx9$\,mm,
+            but combines poorly
+      \item No method covers the central gap
+      \item Fine-scan pair provides the best
+            local resolution, but no Y information
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- Frame 26 -------------------------------------------------------
+\begin{frame}{Comparison with Lv et al.\ (2026)}
+\small
+\input{../tables/lv_comparison}
+\end{frame}
+
+% ==========================================================================
+% SECTION 8 — TIMING BUDGET
+% ==========================================================================
+\section{Timing Budget}
+
+% ---- Frame 27 -------------------------------------------------------
+\begin{frame}{What is missing from the timing budget}
+\begin{columns}
+  \column{0.48\textwidth}
+    \begin{alertblock}{Absent from this simulation}
+      \begin{itemize}
+        \item Single-photon time resolution (SPTR)
+        \item Electronics shaping and noise
+        \item Waveform digitisation
+        \item Constant-fraction discrimination
+        \item Dark counts (DCR)
+        \item Cross-talk and afterpulsing
+        \item Synchronisation jitter
+        \item Temperature and bias variations
+      \end{itemize}
+    \end{alertblock}
+  \column{0.48\textwidth}
+    \begin{exampleblock}{What this simulation gives}
+      \begin{itemize}
+        \item Optical photon transport
+        \item Geant4 scintillation physics
+        \item Intrinsic photon statistics
+        \item SiPM PDE applied at detection
+        \item Hit-order statistics correctly
+              computed from detected photons
+      \end{itemize}
+    \end{exampleblock}
+    \vspace{6pt}
+    \small
+    \textbf{All numbers in this presentation are
+    simulation predictions for the intrinsic case.
+    Real detector resolutions will be substantially
+    larger.}
+\end{columns}
+\end{frame}
+
+% ==========================================================================
+% SECTION 9 — CONCLUSIONS
+% ==========================================================================
+\section{Conclusions and Next Steps}
+
+% ---- Frame 28 -------------------------------------------------------
+\begin{frame}{Conclusions}
+\begin{enumerate}
+  \item \textbf{Timing:}
+        \FourPElabel{} gives $\sigma_{\Delta t}\approx\SigmaDtFourPE$\,ps;
+        \TwentyPElabel{} gives $\approx\SigmaDtTwentyPE$\,ps (27\% wider).
+  \item \textbf{Position:}
+        20PE yields better mean LOO-CV resolution
+        (\RmsxTwentyPE{} vs.\ \RmsxFourPE\,mm)
+        due to steeper calibration slope
+        ($\SlopeTwentyPE$ vs.\ $\SlopeFourPE$\,ps/mm).
+  \item \textbf{A–B correlation:}
+        rises from $\rho=\RhoABFourPE$ (4PE) to $\rho=\RhoABTwentyPE$ (20PE),
+        indicating increased common-mode contamination.
+  \item \textbf{Calibration:}
+        20PE $\chi^2/\mathrm{ndf}=\ChiTwentyPE$ signals non-linearity;
+        4PE fits are more linear ($\chi^2=\ChiFourPE$).
+  \item \textbf{Efficiency:}
+        100\% for both thresholds in the fine scan — no efficiency penalty.
+  \item \textbf{Conceptual:}
+        $t_{20}$ (20th detected hit) $\ne$ 20\% CFD of Lv et al.
+  \item \textbf{Scope:}
+        All numbers are \highlight{intrinsic simulation predictions}
+        (jitter = 0; no SPTR; no electronics).
+\end{enumerate}
+\end{frame}
+
+% ---- Frame 29 -------------------------------------------------------
+\begin{frame}{Next steps}
+\begin{columns}
+  \column{0.50\textwidth}
+    \begin{block}{Simulation additions}
+      \begin{itemize}
+        \item Add SPTR ($\sigma_\mathrm{SPE} \approx 100$\,ps)
+        \item Electronic noise and shaping
+        \item Waveform digitisation
+        \item Real CFD algorithm
+        \item Dark count rate
+      \end{itemize}
+    \end{block}
+  \column{0.48\textwidth}
+    \begin{block}{Reconstruction}
+      \begin{itemize}
+        \item Y scan (vertical position)
+        \item Multi-pair combination
+        \item Neural-network estimator
+        \item Experimental validation
+        \item Cross-check with Lv et al.\
+              method on same geometry
+      \end{itemize}
+    \end{block}
+\end{columns}
+\vspace{6pt}
+\centering
+\small Data: \texttt{\DataCommit}\quad
+Analysis: \texttt{EXEC\_12T-B}\quad
+Branch: \texttt{exp/pair-scan-2026-06-11}
+\end{frame}
+
+% ==========================================================================
+% BACKUP SLIDES
+% ==========================================================================
+\appendix
+\section*{Backup}
+
+\begin{frame}[label=backup]{Backup slides}
+  \centering \large Backup slides follow.
+\end{frame}
+
+% ---- B1 -------------------------------------------------------
+\begin{frame}{B1 — Full data inventory}
+\small
+\textbf{Fine scan (pair 28/29):}
+41 positions × 3000 events, $x \in [-462, -422]$\,mm, EJ-204, Top readout, jitter=0.\\[4pt]
+\textbf{Global EndTop (EXEC\_12):}
+201 positions × 2000 events, full bar, End+Top readout.\\[4pt]
+\textbf{Window-dip (EXEC\_08b):}
+4 targeted runs near SiPM~18, Top readout.\\[6pt]
+\textbf{Fine scan validation checks (all passed):}
+\begin{itemize}
+  \item 41 ROOT files; sizes stable over 30\,s
+  \item Event IDs 0–2999 present and contiguous
+  \item \texttt{global\_id} $\in \{28, 29\}$ for pair
+  \item \texttt{gun\_x\_mm} matches filename $x$
+  \item Material: EJ-204; readout: Top; jitter: 0
+  \item Schema matches EXEC\_11 exactly
+\end{itemize}
+\end{frame}
+
+% ---- B2 -------------------------------------------------------
+\begin{frame}{B2 — Order-statistic event builder validation}
+\small
+\textbf{Key tests (all green):}
+\begin{enumerate}
+  \item $k$-th order statistic is correctly the $k$-th smallest value
+  \item Events with fewer than $k$ hits produce \texttt{NaN}
+        (not dropped from universe)
+  \item Absent events preserved as full-NaN rows
+  \item Channel A and B are correctly separated by \texttt{global\_id}
+  \item NaN propagation: $t_A^{(4)} = $NaN when $n_A < 4$
+  \item Ordering is stable across shuffled input rows
+  \item LOO CV has zero data leakage (test position excluded from fit)
+\end{enumerate}
+\vspace{6pt}
+\textbf{NPZ schema per position file:}\\
+\texttt{event\_id (3000,)}, \texttt{npe\_A (3000,)}, \texttt{npe\_B (3000,)},
+\texttt{t\_A (3000,30)}, \texttt{t\_B (3000,30)},
+\texttt{x\_true\_mm} (scalar)
+\end{frame}
+
+% ---- B3 -------------------------------------------------------
+\begin{frame}{B3 — Fit QA criteria}
+\small
+Gaussian fit procedure applied to $\Delta t$ distributions at each position:
+\begin{enumerate}
+  \item Histogram with documented binning
+  \item Seed: mean at bin-maximum
+  \item Robust seed for $\sigma$: 1.48$\times$MAD
+  \item Fit window: $\mu \pm 2.5\,\sigma_\mathrm{seed}$
+  \item Iterate: refit in $\mu_\mathrm{fit} \pm 2.5\,\sigma_\mathrm{fit}$
+  \item Record: status, covariance, $\chi^2$/ndf, fraction in $\pm3\sigma$,
+        range used
+\end{enumerate}
+\vspace{4pt}
+If $n < 50$ or distribution is multi-modal: report median, RMS$_{68}$,
+MAD~$\sigma$ instead. No fit forced on degenerate distributions.
+\end{frame}
+
+% ---- B4 -------------------------------------------------------
+\begin{frame}{B4 — Reference positions in detail}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{\FourPElabel} & \multicolumn{2}{c}{\TwentyPElabel} \\
+\cmidrule(r){2-3}\cmidrule(l){4-5}
+Position & Bias (mm) & $\sigma_x$ (mm) & Bias (mm) & $\sigma_x$ (mm) \\
+\midrule
+REF1 ($x=\RefOneX$\,mm) & see CSV & see CSV & see CSV & see CSV \\
+REF2 ($x=\RefTwoX$\,mm) & see CSV & see CSV & see CSV & see CSV \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+\textbf{Selection criteria:}
+\begin{itemize}
+  \item REF1: position minimising $|\mu_{\Delta t}|$ (midpoint proxy)
+  \item REF2: position maximising mean NPE in channel A
+\end{itemize}
+Full data in \texttt{analysis/position\_reconstruction\_\{4,20\}pe.csv} and LOO NPZ files.\\
+Programmatically read from \texttt{reference\_positions.csv} (EXEC\_11).
+\end{frame}
+
+% ---- B5 -------------------------------------------------------
+\begin{frame}{B5 — Full threshold sweep table (selected k)}
+\small
+Selected results from \texttt{threshold\_sweep\_summary.csv}
+(30 rows, $k=1\ldots30$, efficiency = 1.000 for all $k$):
+\vspace{4pt}
+\begin{tabular}{rrrrrrr}
+\toprule
+$k$ & Slope (ps/mm) & $\chi^2$/ndf & RMS$_{68}(\Delta t)$ (ps)
+    & RMS$_{68}(x)$ (mm) & |bias| (mm) \\
+\midrule
+ 1 & 2.47  & 0.23  &   3.5 &  1.4 & 0.66 \\
+ 4 & \SlopeFourPE   & \ChiFourPE   & \SigmaDtFourPE  & \RmsxFourPE  & \BiasMaxFourPE \\
+ 8 & 8.01  & 55.0  & 124.3 & 15.5 & 2.25 \\
+12 & 8.01  & 23.7  &  98.7 & 12.3 & 1.69 \\
+20 & \SlopeTwentyPE & \ChiTwentyPE & \SigmaDtTwentyPE & \RmsxTwentyPE & \BiasMaxTwentyPE \\
+30 & 11.21 & 60.0  &  99.0 &  8.8 & 2.29 \\
+\bottomrule
+\end{tabular}
+\vspace{4pt}
+Full table: \texttt{analysis/threshold\_sweep\_summary.csv}.
+\end{frame}
+
+% ---- B6 -------------------------------------------------------
+\begin{frame}{B6 — LOO cross-validation methodology}
+\small
+\textbf{Procedure:}
+\begin{enumerate}
+  \item For each of the 41 positions, exclude it from the calibration set
+  \item Fit $\mu_{\Delta t}(x) = m x + b$ on remaining 40 positions
+  \item Reconstruct $x_\mathrm{rec} = (\Delta t - b) / m$ event-by-event
+        at the excluded position
+  \item Collect all 3000 events; compute bias, RMS$_{68}$, $\sigma_\mathrm{core}$
+  \item Repeat for all 41 positions
+\end{enumerate}
+\vspace{4pt}
+\textbf{Stored outputs:}
+\begin{itemize}
+  \item \texttt{loo\_predictions\_4pe.npz}: 123\,000 events with
+        \texttt{x\_true} and \texttt{x\_rec}
+  \item \texttt{loo\_predictions\_20pe.npz}: same structure
+  \item \texttt{position\_reconstruction\_\{4,20\}pe.csv}:
+        per-position summary (bias, RMS$_{68}$, valid fraction)
+\end{itemize}
+\end{frame}
+
+% ---- B7 -------------------------------------------------------
+\begin{frame}{B7 — Window-dip metadata}
+\small
+\input{../tables/window_dip_summary}
+\vspace{4pt}
+All four runs use Top readout with EJ-204.
+The nearest Top SiPM is channel~18 (centre at $x=-652$\,mm).
+Runs are complementary diagnostic data; they are \textbf{not used
+for fine-scan calibration}.
+\end{frame}
+
+% ---- B8 -------------------------------------------------------
+\begin{frame}{B8 — Detector channel map (schematic)}
+\small
+\begin{itemize}
+  \item \textbf{Top array:} 70 SiPM channels, IDs 0–69, spaced 20\,mm,
+        covering $x \in [-692, +692]$\,mm
+  \item \textbf{End arrays (EndTop):} 8 SiPM each side (IDs 70–85),
+        stacked in 2D at bar ends ($x \approx \pm700$\,mm)
+  \item \textbf{Pair (28, 29):} adjacent Top SiPMs centred at
+        $x = -432$\,mm (ID~28, channel~A) and $x = -452$\,mm (ID~29, channel~B)
+  \item \textbf{Fine scan:} 41 positions from $x = -462$ to $-422$\,mm
+        span across and beyond the pair
+\end{itemize}
+\vspace{6pt}
+\textit{A full geometry figure would require TikZ redraw from the
+Geant4 GDML; see \texttt{geometry/} in the repository for dimensions.}
+\end{frame}
+
+% ---- B9 -------------------------------------------------------
+\begin{frame}{B9 — Simulation limitations checklist}
+\small
+\begin{columns}
+  \column{0.48\textwidth}
+    \textbf{Present in simulation:}
+    \begin{itemize}
+      \item[$\checkmark$] Optical photon transport
+      \item[$\checkmark$] Scintillation (EJ-204 spectrum/timing)
+      \item[$\checkmark$] SiPM photon detection efficiency
+      \item[$\checkmark$] Photon statistics fluctuations
+      \item[$\checkmark$] Pair (28,29) geometry
+    \end{itemize}
+  \column{0.48\textwidth}
+    \textbf{Absent from simulation:}
+    \begin{itemize}
+      \item[\textcolor{WarnRed}{$\times$}] Single-photon time resolution
+      \item[\textcolor{WarnRed}{$\times$}] Electronics/ADC shaping
+      \item[\textcolor{WarnRed}{$\times$}] Waveform digitisation
+      \item[\textcolor{WarnRed}{$\times$}] CFD algorithm
+      \item[\textcolor{WarnRed}{$\times$}] Dark counts (DCR)
+      \item[\textcolor{WarnRed}{$\times$}] Cross-talk, afterpulsing
+      \item[\textcolor{WarnRed}{$\times$}] Synchronisation jitter
+      \item[\textcolor{WarnRed}{$\times$}] Temperature effects
+      \item[\textcolor{WarnRed}{$\times$}] Y-position variation
+      \item[\textcolor{WarnRed}{$\times$}] Experimental validation
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+% ---- B10 -------------------------------------------------------
+\begin{frame}{B10 — Reproducibility}
+\small
+\textbf{Branch:} \texttt{exp/pair-scan-2026-06-11}\\
+\textbf{Data commit:} \texttt{\DataCommit} \\
+\textbf{EXEC\_12T commits:} \texttt{f38c9e1..66ac24c}\\
+\textbf{Analysis session:} \texttt{exec12tb\_20260612\_204216}
+\vspace{6pt}
+
+\textbf{Key commands:}
+\begin{semiverbatim}
+  python analysis/exec12tb\_figures.py <outdir>
+  python analysis/exec12tb\_tables.py  <outdir>
+  cd <outdir>/beamer
+  latexmk -lualatex exec12tb\_beamer.tex
+\end{semiverbatim}
+\vspace{4pt}
+
+\textbf{Software:}
+Python~3.9, numpy, pandas, scipy, matplotlib,
+uproot; LaTeX: TeX~Live with LuaLaTeX.\\[4pt]
+
+\textbf{Runtime:} figures $\sim$30\,s; tables $<$5\,s; LaTeX $<$60\,s.
+\end{frame}
+
+% ==========================================================================
+\end{document}
