@@ -35,6 +35,8 @@ def robust(v):
  med=np.median(v);q16,q84=np.quantile(v,[.16,.84]);core=(q84-q16)/2
  return dict(n=len(v),mean=np.mean(v),median=med,sigma_core=core,rms=np.std(v,ddof=1),rms68=core,mad_sigma=1.4826*np.median(np.abs(v-med)),skewness=skew(v),excess_kurtosis=kurtosis(v),tail2=np.mean(np.abs(v-med)>2*core),tail3=np.mean(np.abs(v-med)>3*core))
 def fit_line(x,y,e=None):
+ x=np.asarray(x,dtype=float);y=np.asarray(y,dtype=float)
+ if e is not None:e=np.asarray(e,dtype=float)
  X=np.c_[x,np.ones(len(x))];w=np.ones(len(x)) if e is None else 1/np.square(e);cov=np.linalg.inv(X.T@(w[:,None]*X));p=cov@X.T@(w*y);res=y-X@p;return p,cov,float(np.sum(w*res*res)/(len(x)-2))
 def cache_file(path,out,n_events=HOOK_N_EVENTS):
  es=[];gs=[];ts=[];guns=[];entries=bad=0;present=np.zeros(n_events,bool)
@@ -68,7 +70,7 @@ def reproduce(out):
   rows.append(dict(x_true_mm=d["x_true_mm"],npe_A_exact=d["npe_A"].mean()==o.mean_npe_A,npe_B_exact=d["npe_B"].mean()==o.mean_npe_B,eff_exact=v.mean()==o.efficiency,mu_new=f["mean"],mu_old=o.mu_dt_ps,sigma_new=f["sigma"],sigma_old=o.sigma_dt_ps))
  r=pd.DataFrame(rows);r.to_csv(out/"analysis/exec11_reproduction_check.csv",index=False)
  p,c,ch=fit_line(r.x_true_mm.to_numpy(),r.mu_new.to_numpy());po,co,cho=fit_line(old.x_true_mm.to_numpy(),old.mu_dt_ps.to_numpy())
- ok=np.allclose(r.mu_new,r.mu_old)&np.allclose(r.sigma_new,r.sigma_old)&abs(p[0]-po[0])<2*math.sqrt(c[0,0]+co[0,0])
+ ok=bool(np.allclose(r.mu_new,r.mu_old) and np.allclose(r.sigma_new,r.sigma_old) and abs(p[0]-po[0])<2*math.sqrt(c[0,0]+co[0,0]))
  (out/"logs/exec11_reproduction.log").write_text(f"pass={ok}\nslope_new={p[0]}\nslope_old={po[0]}\n")
  if not ok:raise RuntimeError("EXEC_11 4PE reproduction gate failed")
 def analyze(out):
@@ -104,10 +106,10 @@ def analyze(out):
 def make_figures(out,data):
  sw=pd.read_csv(out/"analysis/threshold_sweep_summary.csv");sm=pd.read_csv(out/"analysis/temporal_position_summary.csv")
  for col,name,y in [("efficiency_mean","threshold_efficiency","Efficiency"),("mean_sigma_delta_t_core","threshold_sigma_dt","Mean delta-t RMS68 (ps)"),("mean_sigma_x_core_cv","threshold_sigma_x","Mean X RMS68 (mm)"),("max_abs_bias","threshold_bias","Max absolute bias (mm)"),("slope_ps_per_mm","threshold_slope","Slope (ps/mm)"),("calibration_chi2_ndf","threshold_chi2","Calibration chi2/ndf")]:
-  fig,ax=plt.subplots();ax.plot(sw.threshold,sw[col],"o-");ax.scatter([4,20],sw.set_index("threshold").loc[[4,20],col],c=["blue","red"]);ax.set(xlabel="Detected-hit order k",ylabel=y,title="Pair (28,29), EJ-204, intrinsic");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
- fig,ax=plt.subplots();ax.plot(sw.efficiency_mean,sw.mean_sigma_x_core_cv,"o-");ax.scatter(sw.loc[sw.threshold.isin([4,20]),"efficiency_mean"],sw.loc[sw.threshold.isin([4,20]),"mean_sigma_x_core_cv"],c=["blue","red"]);ax.set(xlabel="Mean efficiency",ylabel="Mean X RMS68 (mm)",title="Efficiency-resolution trade-off");fig.tight_layout();fig.savefig(out/"figures/threshold_pareto.pdf");plt.close(fig)
+  fig,ax=plt.subplots();ax.plot(sw.threshold.to_numpy(),sw[col].to_numpy(),"o-");ax.scatter([4,20],sw.set_index("threshold").loc[[4,20],col].to_numpy(),c=["blue","red"]);ax.set(xlabel="Detected-hit order k",ylabel=y,title="Pair (28,29), EJ-204, intrinsic");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+ fig,ax=plt.subplots();ax.plot(sw.efficiency_mean.to_numpy(),sw.mean_sigma_x_core_cv.to_numpy(),"o-");ax.scatter(sw.loc[sw.threshold.isin([4,20]),"efficiency_mean"].to_numpy(),sw.loc[sw.threshold.isin([4,20]),"mean_sigma_x_core_cv"].to_numpy(),c=["blue","red"]);ax.set(xlabel="Mean efficiency",ylabel="Mean X RMS68 (mm)",title="Efficiency-resolution trade-off");fig.tight_layout();fig.savefig(out/"figures/threshold_pareto.pdf");plt.close(fig)
  for col,name,y in [("efficiency","efficiency_4_20_vs_x","Efficiency"),("sigma_dt_core","timing_width_4_20_vs_x","delta-t RMS68 (ps)"),("mean_dt","mean_delta_4_20_vs_x","Mean delta-t (ps)"),("rho_ab","correlation_ab_vs_x","rho(A,B)")]:
-  fig,ax=plt.subplots();[ax.plot(g.x_true_mm,g[col],"o-",label=f"{k}th hit") for k,g in sm.groupby("threshold")];ax.set(xlabel="X (mm)",ylabel=y);ax.legend();ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+  fig,ax=plt.subplots();[ax.plot(g.x_true_mm.to_numpy(),g[col].to_numpy(),"o-",label=f"{k}th hit") for k,g in sm.groupby("threshold")];ax.set(xlabel="X (mm)",ylabel=y);ax.legend();ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
  refs=pd.read_csv(latest("exec11_*")/"analysis/reference_positions.csv")
  for _,r in refs.iterrows():
   d=min(data,key=lambda q:abs(q["x_true_mm"]-r.x_true_mm));fig,ax=plt.subplots()
