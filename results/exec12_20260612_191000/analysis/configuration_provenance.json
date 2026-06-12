@@ -1,0 +1,29 @@
+{
+  "material": {
+    "value": "OPSC-101 / EJ-204",
+    "status": "confirmed from log",
+    "source": "run_x0mm.log Active Scintillator Baseline"
+  },
+  "readout": {
+    "value": "EndTop",
+    "status": "confirmed from log",
+    "source": "run_x0mm.log Active Readout"
+  },
+  "jitter": {
+    "value": "0 ns",
+    "status": "inferred from generating script at HEAD 4dba735",
+    "source": "scripts/run_exec07_scan.sh:62"
+  },
+  "incidence_y_mm": {
+    "value": 0,
+    "status": "inferred from generator code",
+    "source": "src/PrimaryGeneratorAction.cc:22,129-131"
+  },
+  "angle_degrees": {
+    "value": 0,
+    "status": "inferred from generator defaults",
+    "source": "src/PrimaryGeneratorAction.cc:23,131"
+  },
+  "storage": "NPZ per position because no pyarrow/fastparquet backend is installed",
+  "analysis_head": "17d9e7d"
+}

@@ -130,16 +130,19 @@ def ystudy(out,data):
 def plots(out):
     s=pd.read_csv(out/"analysis/x_reconstruction_summary.csv"); b=pd.read_csv(out/"analysis/blue_summary.csv"); s=pd.concat([s,b])
     for col,name,ylabel in [("bias","bias_vs_x","Bias (mm)"),("sigma_core","sigma_core_vs_x","Gaussian-core proxy RMS68 (mm)"),("rms68","rms68_vs_x","RMS68 (mm)"),("valid_fraction","valid_fraction_vs_x","Valid fraction")]:
-      fig,ax=plt.subplots(figsize=(9,5)); [ax.plot(g.x_true_mm,g[col],"o-",ms=3,label=m) for m,g in s.groupby("method")]; ax.set(xlabel="True X (mm)",ylabel=ylabel,title=CONTEXT); ax.grid(alpha=.2); ax.legend(fontsize=7,ncol=2); fig.tight_layout(); fig.savefig(out/f"figures/{name}.pdf"); plt.close(fig)
+      fig,ax=plt.subplots(figsize=(9,5)); [ax.plot(g.x_true_mm.to_numpy(),g[col].to_numpy(),"o-",ms=3,label=m) for m,g in s.groupby("method")]; ax.set(xlabel="True X (mm)",ylabel=ylabel,title=CONTEXT); ax.grid(alpha=.2); ax.legend(fontsize=7,ncol=2); fig.tight_layout(); fig.savefig(out/f"figures/{name}.pdf"); plt.close(fig)
     y=pd.read_csv(out/"analysis/y0_feasibility_summary.csv")
     for col,name in [("mean","y_centroid_mean_vs_x"),("width","y_centroid_width_vs_x")]:
-      fig,ax=plt.subplots(figsize=(9,5)); [ax.plot(g.x_true_mm,g[col],"o-",label=m) for m,g in y.groupby("estimator")]; ax.set(xlabel="X (mm)",ylabel=f"Y centroid {col} (mm)",title="y_true=0 feasibility proxy"); ax.legend();ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+      fig,ax=plt.subplots(figsize=(9,5)); [ax.plot(g.x_true_mm.to_numpy(),g[col].to_numpy(),"o-",label=m) for m,g in y.groupby("estimator")]; ax.set(xlabel="X (mm)",ylabel=f"Y centroid {col} (mm)",title="y_true=0 feasibility proxy"); ax.legend();ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
     pred=pd.read_csv(out/"analysis/cv_predictions.csv.gz")
     for method,name in [("dt_end_pool","calibration_end_timing"),("R_end","calibration_end_ratio"),("x_top_centroid_raw","calibration_top_centroid")]:
-      g=s[s.method==method];fig,ax=plt.subplots(figsize=(9,5));ax.errorbar(g.x_true_mm,g.mean_x_rec,yerr=g.sigma_core,fmt="o");ax.plot(EXPECTED,EXPECTED,"--");ax.set(xlabel="True X (mm)",ylabel="Reconstructed X (mm)",title=f"{method} LOO prediction — {CONTEXT}");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+      g=s[s.method==method];fig,ax=plt.subplots(figsize=(9,5));ax.errorbar(g.x_true_mm.to_numpy(),g.mean_x_rec.to_numpy(),yerr=g.sigma_core.to_numpy(),fmt="o");ax.plot(EXPECTED,EXPECTED,"--");ax.set(xlabel="True X (mm)",ylabel="Reconstructed X (mm)",title=f"{method} LOO prediction — {CONTEXT}");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
     chosen=[-690,-450,0,450,690];fig,axs=plt.subplots(1,5,figsize=(16,3.5),sharey=True)
     for ax,x in zip(axs,chosen):
-      q=pred[(pred.x_true_mm==x)&(pred.method=="local_R")];ax.hist(q.x_rec-x,bins=40);ax.set_title(f"x={x}");ax.set_xlabel("residual (mm)")
+      q=pred[(pred.x_true_mm==x)&(pred.method=="local_R")];v=(q.x_rec-x).dropna().to_numpy()
+      if len(v):ax.hist(v,bins=40)
+      else:ax.text(.5,.5,"no valid local pair",ha="center",transform=ax.transAxes)
+      ax.set_title(f"x={x}");ax.set_xlabel("residual (mm)")
     axs[0].set_ylabel("events");fig.suptitle("Local Top pair residuals; gap position has no valid events");fig.tight_layout();fig.savefig(out/"figures/residual_distributions_selected_positions.pdf");plt.close(fig)
     data=[load(p) for p in sorted((out/"derived/events").glob("*.npz"),key=lambda p:load(p)["x_true_mm"][0])]
     prof=[]
