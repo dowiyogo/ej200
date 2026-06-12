@@ -4,7 +4,7 @@
 /tracking/verbose 0
 /run/numberOfThreads 16
 /det/readout EndTop
-/det/scintillator OPSC-101
+/det/scintillator OPSC-106
 /sipm/model AFBR-S4N66P024M
 /run/initialize
 /sipm/jitterSigma 0 ns

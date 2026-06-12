@@ -45,47 +45,55 @@ int main() {
         Fail("finite scintillation rise time is disabled");
     }
 
+    // EXEC_13 / EJ-230: verify OPSC-106 properties against datasheet
+    // Eljen EJ-228/EJ-230, Rev. Aug 2023
     DetectorConstruction detector;
-    detector.SetScintillatorCode("OPSC-101");
+    detector.SetScintillatorCode("OPSC-106");
     detector.Construct();
-    if (detector.GetScintillatorCode() != "OPSC-101") {
-        Fail("default active scintillator is not OPSC-101");
+    if (detector.GetScintillatorCode() != "OPSC-106") {
+        Fail("active scintillator code is not OPSC-106");
     }
 
     auto* material = detector.GetActiveScintillatorMaterial();
-    if (material == nullptr || material->GetName() != "opsc-101") {
-        Fail("bar material was not created by OrganicScintillatorFactory");
+    if (material == nullptr || material->GetName() != "opsc-106") {
+        Fail("bar material was not created by OrganicScintillatorFactory for opsc-106");
     }
     auto* mpt = material->GetMaterialPropertiesTable();
-    if (mpt == nullptr) Fail("OPSC-101 has no material properties table");
+    if (mpt == nullptr) Fail("OPSC-106 has no material properties table");
 
+    // yield = 9700 ph/MeV (datasheet)
     RequireNear("yield", mpt->GetConstProperty("SCINTILLATIONYIELD"),
-                10400.0 / MeV, 1.0e-9 / MeV);
+                9700.0 / MeV, 1.0e-9 / MeV);
+    // rise time = 0.5 ns (datasheet)
     RequireNear("rise", mpt->GetConstProperty("SCINTILLATIONRISETIME1"),
-                0.7 * ns, 1.0e-12 * ns);
+                0.5 * ns, 1.0e-12 * ns);
+    // decay time = 1.5 ns (datasheet)
     RequireNear("decay", mpt->GetConstProperty("SCINTILLATIONTIMECONSTANT1"),
-                1.8 * ns, 1.0e-12 * ns);
+                1.5 * ns, 1.0e-12 * ns);
 
+    // attenuation length = 120 cm (datasheet)
     auto* attenuation = mpt->GetProperty("ABSLENGTH");
     if (attenuation == nullptr || attenuation->GetVectorLength() == 0) {
         Fail("missing ABSLENGTH");
     }
     for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
-        RequireNear("ABSLENGTH", (*attenuation)[i], 160.0 * cm, 1.0e-9 * cm);
+        RequireNear("ABSLENGTH", (*attenuation)[i], 120.0 * cm, 1.0e-9 * cm);
     }
 
+    // refractive index = 1.58 (datasheet)
     auto* rindex = mpt->GetProperty("RINDEX");
     if (rindex == nullptr || rindex->GetVectorLength() == 0) Fail("missing RINDEX");
     for (std::size_t i = 0; i < rindex->GetVectorLength(); ++i) {
         RequireNear("RINDEX", (*rindex)[i], 1.58, 1.0e-12);
     }
 
+    // emission peak ≈ 391 nm (datasheet); SSLG4 data peaks at ~390.5 nm
     RequireNear("emission peak",
                 PeakWavelength(mpt->GetProperty("SCINTILLATIONCOMPONENT1")),
-                408.8 * nm, 2.0 * nm);
+                391.0 * nm, 2.0 * nm);
 
-    std::cout << "\n=== Effective SSLG4 OPSC-101 MPT dump ===\n";
+    std::cout << "\n=== Effective SSLG4 OPSC-106 (EJ-230) MPT dump ===\n";
     mpt->DumpTable();
-    std::cout << "sslg4_properties_check PASSED\n";
+    std::cout << "sslg4_properties_check PASSED (OPSC-106/EJ-230)\n";
     return EXIT_SUCCESS;
 }

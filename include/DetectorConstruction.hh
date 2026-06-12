@@ -15,7 +15,7 @@ class G4GenericMessenger;
 //
 // Volume hierarchy:
 //   WorldPV (air)
-//     ├─ BarPV (SSLG4 OPSC-101/EJ-204 by default)
+//     ├─ BarPV (SSLG4 OPSC-106/EJ-230 by default — EXEC_13 campaign)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
@@ -25,7 +25,7 @@ class G4GenericMessenger;
 // SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
 //
 // UI commands:
-//   /det/scintillator OPSC-101|OPSC-100
+//   /det/scintillator OPSC-106|OPSC-101|OPSC-100
 //   /det/readout End|Top|EndTop
 //   /sipm/model AFBR-S4N66P024M
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
@@ -84,7 +84,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4LogicalVolume*   fTopSiPMLV  = nullptr;
     G4VPhysicalVolume* fBarPhys          = nullptr;
 
-    G4String           fScintCode = "OPSC-101";
+    G4String           fScintCode = "OPSC-106";
     G4String           fSiPMModel = "AFBR-S4N66P024M";
     G4String           fReadoutConfiguration = "End";
     G4Material*         fActiveScintillator = nullptr;
