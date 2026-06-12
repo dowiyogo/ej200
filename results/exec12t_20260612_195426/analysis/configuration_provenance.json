@@ -1,0 +1,10 @@
+{
+  "fine_scan": {
+    "material": "OPSC-101/EJ-204 confirmed from pairscan.log",
+    "readout": "Top confirmed from pairscan.log",
+    "jitter": "0 ns confirmed from macros",
+    "data_commit": "f431c01"
+  },
+  "conceptual_distinction": "20th detected-hit timing != 20% constant-fraction timing from Lv et al.",
+  "analysis_commit": "20820c4"
+}
