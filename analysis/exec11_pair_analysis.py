@@ -11,9 +11,14 @@ import re
 import subprocess
 from collections import Counter
 
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import uproot
+from scipy.optimize import curve_fit
+from scipy.stats import moyal, pearsonr, spearmanr
 
 HOOK_DATA_DIR = pathlib.Path("/home/reriosto/SHiP/t0minidaq/pairscan_2026-06-11")
 HOOK_PAIR_IDS = (28, 29)
@@ -34,6 +39,8 @@ COUNT_DEFINITION = (
     "PE-equivalent convention"
 )
 FILE_RE = re.compile(r"pairscan_x([+-]?\d+(?:\.\d+)?)mm\.root$")
+DATA_COMMIT = "f431c01"
+FIGURE_CONTEXT = "Pair (28,29) — EJ-204 — Top readout — intrinsic"
 
 
 def analysis_commit() -> str:
@@ -224,14 +231,497 @@ def derive_all(data_dir: pathlib.Path, output_dir: pathlib.Path) -> None:
     write_metadata(output_dir)
 
 
+def load_derived(path: pathlib.Path) -> pd.DataFrame:
+    with np.load(path) as arrays:
+        return pd.DataFrame({name: arrays[name] for name in arrays.files})
+
+
+def gaussian(x: np.ndarray, amplitude: float, mean: float, sigma: float) -> np.ndarray:
+    return amplitude * np.exp(-0.5 * np.square((x - mean) / sigma))
+
+
+def iterative_gaussian_fit(
+    values: np.ndarray,
+    bins: np.ndarray,
+    n_sigma: float = HOOK_FIT_RANGE_NSIGMA,
+    guard_subpeak: bool = False,
+) -> dict[str, float | str]:
+    values = np.asarray(values, dtype=float)
+    values = values[np.isfinite(values)]
+    observed, edges = np.histogram(values, bins=bins)
+    centers = 0.5 * (edges[:-1] + edges[1:])
+    peak = float(centers[np.argmax(observed)])
+    q01, q99 = np.quantile(values, [0.01, 0.99])
+    sigma = float(np.std(values[(values >= q01) & (values <= q99)], ddof=1))
+    if not np.isfinite(sigma) or sigma <= 0:
+        sigma = float(np.std(values, ddof=1))
+    params = np.array([float(np.max(observed)), peak, sigma])
+    covariance = np.full((3, 3), np.nan)
+    status = "ok"
+    try:
+        for _ in range(2):
+            selected = np.abs(centers - params[1]) <= n_sigma * abs(params[2])
+            errors = np.sqrt(np.maximum(observed[selected], 1.0))
+            lower_sigma = 0.8 * sigma if guard_subpeak else 1e-9
+            params, covariance = curve_fit(
+                gaussian,
+                centers[selected],
+                observed[selected],
+                p0=params,
+                sigma=errors,
+                absolute_sigma=True,
+                bounds=([0, peak - 5 * sigma, lower_sigma], [np.inf, peak + 5 * sigma, 2 * sigma if guard_subpeak else np.inf]),
+                maxfev=10000,
+            )
+    except Exception as error:  # noqa: BLE001
+        status = f"failed:{type(error).__name__}"
+    selected = np.abs(centers - params[1]) <= n_sigma * abs(params[2])
+    expected = gaussian(centers[selected], *params)
+    valid = expected >= 1.0
+    ndf = int(np.count_nonzero(valid) - 3)
+    chi2_ndf = (
+        float(np.sum(np.square(observed[selected][valid] - expected[valid]) / expected[valid]) / ndf)
+        if ndf > 0 else math.nan
+    )
+    errors = np.sqrt(np.diag(covariance))
+    return {
+        "mean": float(params[1]),
+        "mean_error": float(errors[1]),
+        "sigma": float(abs(params[2])),
+        "sigma_error": float(errors[2]),
+        "fit_status": status,
+        "chi2_ndf": chi2_ndf,
+        "fraction_within_3sigma": float(np.mean(np.abs(values - params[1]) <= 3 * abs(params[2]))),
+        "cov_00": float(covariance[1, 1]),
+        "cov_01": float(covariance[1, 2]),
+        "cov_11": float(covariance[2, 2]),
+        "subpeak_sigma_guard_active": bool(
+            guard_subpeak and abs(params[2] - 0.8 * sigma) / sigma < 1e-3
+        ),
+    }
+
+
+def qa_summary(output_dir: pathlib.Path, v1_path: pathlib.Path) -> None:
+    rows = []
+    dt_bins = np.linspace(-3000.0, 3000.0, 301)
+    r_bins = np.linspace(-4.0, 4.0, 81)
+    for path in sorted((output_dir / "derived").glob("pair_events_x*.npz")):
+        frame = load_derived(path)
+        x_true = float(frame["x_true_mm"].iloc[0])
+        dt = iterative_gaussian_fit(frame["delta_t_ps"].to_numpy(), dt_bins, guard_subpeak=True)
+        ratio = iterative_gaussian_fit(frame["R_log_ratio"].to_numpy(), r_bins)
+        rows.append({
+            "x_true_mm": x_true,
+            "n_events_expected": HOOK_N_EVENTS,
+            "n_event_ids_present": len(frame),
+            "n_passed": int(frame["passed_pair_4pe"].sum()),
+            "efficiency": float(frame["passed_pair_4pe"].mean()),
+            "mean_npe_A": float(frame["npe_A"].mean()),
+            "mean_npe_B": float(frame["npe_B"].mean()),
+            "mu_dt_ps": dt["mean"],
+            "mu_dt_err_ps": dt["mean_error"],
+            "sigma_dt_ps": dt["sigma"],
+            "sigma_dt_err_ps": dt["sigma_error"],
+            "fit_status": dt["fit_status"],
+            "chi2_ndf": dt["chi2_ndf"],
+            "fraction_within_3sigma": dt["fraction_within_3sigma"],
+            "subpeak_sigma_guard_active": dt["subpeak_sigma_guard_active"],
+            "mu_R": ratio["mean"],
+            "mu_R_err": ratio["mean_error"],
+            "sigma_R": ratio["sigma"],
+            "sigma_R_err": ratio["sigma_error"],
+        })
+    summary = pd.DataFrame(rows).sort_values("x_true_mm")
+    summary.to_csv(output_dir / "analysis" / "pairscan_summary_v2.csv", index=False)
+
+    v1 = pd.read_csv(v1_path).rename(columns={
+        "mu_dt_ps": "v1_mu_dt_ps", "sigma_dt_ps": "v1_sigma_dt_ps",
+        "mu_r": "v1_mu_R",
+    })
+    qa = summary.merge(
+        v1[["x_true_mm", "v1_mu_dt_ps", "v1_sigma_dt_ps", "v1_mu_R"]],
+        on="x_true_mm",
+        how="left",
+    )
+    qa["qa_refit_required"] = (
+        (qa["fit_status"] != "ok")
+        | (qa["chi2_ndf"] > 5)
+        | (qa["fraction_within_3sigma"] < 0.9)
+    )
+    qa.to_csv(output_dir / "analysis" / "fit_qa.csv", index=False)
+
+    ref1_candidates = summary.loc[summary["mu_dt_ps"].abs() == summary["mu_dt_ps"].abs().min()]
+    ref1 = ref1_candidates.iloc[ref1_candidates["x_true_mm"].abs().argmin()]
+    ref2_candidates = summary.loc[summary["mean_npe_A"] == summary["mean_npe_A"].max()]
+    ref2 = ref2_candidates.iloc[ref2_candidates["x_true_mm"].abs().argmin()]
+    pd.DataFrame([
+        {"reference": "POS_REF_1", "x_true_mm": ref1["x_true_mm"], "criterion": "minimum abs(mu_dt_ps), tie -> minimum abs(x_true_mm)"},
+        {"reference": "POS_REF_2", "x_true_mm": ref2["x_true_mm"], "criterion": "maximum mean_npe_A, tie -> minimum abs(x_true_mm)"},
+    ]).to_csv(output_dir / "analysis" / "reference_positions.csv", index=False)
+
+
+def figure_footer(fig: plt.Figure) -> None:
+    fig.text(
+        0.5, 0.005,
+        f"data commit {DATA_COMMIT} | analysis commit {analysis_commit()} | "
+        "simulation prediction — Top readout — intrinsic",
+        ha="center", fontsize=7,
+    )
+
+
+def save_figure(fig: plt.Figure, output_dir: pathlib.Path, name: str) -> None:
+    figure_footer(fig)
+    fig.tight_layout(rect=(0, 0.035, 1, 0.96))
+    for suffix in ("pdf", "png"):
+        fig.savefig(output_dir / "figures" / f"{name}.{suffix}", dpi=220)
+    plt.close(fig)
+
+
+def read_pair_hit_times(data_dir: pathlib.Path, x_true: float) -> dict[int, np.ndarray]:
+    path = data_dir / f"pairscan_x{x_true:+.1f}mm.root"
+    collected: dict[int, list[np.ndarray]] = {channel: [] for channel in HOOK_PAIR_IDS}
+    with uproot.open(path) as root_file:
+        for arrays in root_file["sipm_hits"].iterate(
+            ["global_id", "time_ns"], step_size="100 MB", library="np"
+        ):
+            for channel in HOOK_PAIR_IDS:
+                selected = arrays["global_id"] == channel
+                if np.any(selected):
+                    collected[channel].append(arrays["time_ns"][selected])
+    return {channel: np.concatenate(parts) for channel, parts in collected.items()}
+
+
+def bootstrap_pearson(x: np.ndarray, y: np.ndarray, seed: int, replicas: int = 2000) -> tuple[float, float]:
+    rng = np.random.default_rng(seed)
+    values = np.empty(replicas)
+    for index in range(replicas):
+        selected = rng.integers(0, len(x), len(x))
+        values[index] = pearsonr(x[selected], y[selected])[0]
+    return float(np.std(values, ddof=1)), float(np.mean(values))
+
+
+def moyal_shape_fit(values: np.ndarray, seed: int) -> dict[str, float]:
+    positive = np.asarray(values, dtype=float)
+    positive = positive[positive > 0]
+    loc, scale = moyal.fit(positive)
+    rng = np.random.default_rng(seed)
+    replicas = np.empty((300, 2))
+    for index in range(len(replicas)):
+        sample = positive[rng.integers(0, len(positive), len(positive))]
+        replicas[index] = moyal.fit(sample)
+    return {
+        "mpv_moyal": float(loc),
+        "mpv_moyal_error": float(np.std(replicas[:, 0], ddof=1)),
+        "width_moyal": float(scale),
+        "width_moyal_error": float(np.std(replicas[:, 1], ddof=1)),
+    }
+
+
+def detailed_analysis(data_dir: pathlib.Path, output_dir: pathlib.Path) -> None:
+    references = pd.read_csv(output_dir / "analysis" / "reference_positions.csv")
+    summary = pd.read_csv(output_dir / "analysis" / "pairscan_summary_v2.csv")
+    rows = []
+    for ref_index, ref in references.iterrows():
+        label = ref["reference"]
+        x_true = float(ref["x_true_mm"])
+        frame = load_derived(output_dir / "derived" / f"pair_events_x{x_true:+.1f}mm.npz")
+        hits = read_pair_hit_times(data_dir, x_true)
+        passed = frame["passed_pair_4pe"].to_numpy()
+        dt = frame.loc[passed, "delta_t_ps"].to_numpy()
+        asym = frame.loc[passed, "npe_asymmetry"].to_numpy()
+        ratio = frame.loc[passed, "R_log_ratio"].to_numpy()
+        pearson_asym = pearsonr(dt, asym)
+        pearson_ratio = pearsonr(dt, ratio)
+        pearson_asym_boot, _ = bootstrap_pearson(dt, asym, 1100 + ref_index)
+        pearson_ratio_boot, _ = bootstrap_pearson(dt, ratio, 2100 + ref_index)
+        dt_fit = iterative_gaussian_fit(dt, np.linspace(-3000, 3000, 301), guard_subpeak=True)
+
+        row = {
+            "reference": label, "x_true_mm": x_true,
+            "mean_npe_A": frame["npe_A"].mean(), "mean_npe_B": frame["npe_B"].mean(),
+            "mean_asymmetry": frame["npe_asymmetry"].mean(),
+            "mu_dt_ps": dt_fit["mean"], "sigma_dt_ps": dt_fit["sigma"],
+            "dt_chi2_ndf": dt_fit["chi2_ndf"], "dt_fit_status": dt_fit["fit_status"],
+            "pearson_dt_asym": pearson_asym.statistic,
+            "pearson_dt_asym_boot_error": pearson_asym_boot,
+            "spearman_dt_asym": spearmanr(dt, asym).statistic,
+            "pearson_dt_R": pearson_ratio.statistic,
+            "pearson_dt_R_boot_error": pearson_ratio_boot,
+            "spearman_dt_R": spearmanr(dt, ratio).statistic,
+        }
+        for channel, tag in zip(HOOK_PAIR_IDS, ("A", "B")):
+            row.update({f"{key}_{tag}": value for key, value in moyal_shape_fit(frame[f"npe_{tag}"], 3100 + ref_index * 10 + channel).items()})
+        rows.append(row)
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+        for channel, color in zip(HOOK_PAIR_IDS, ("tab:blue", "tab:orange")):
+            axes[0].hist(hits[channel], bins=160, histtype="step", color=color, label=f"ID {channel}")
+            axes[1].hist(hits[channel], bins=160, density=True, histtype="step", color=color, label=f"ID {channel}")
+        axes[0].set(xlabel="Photon-hit time (ns)", ylabel="SiPM hit count", title="Individual hits, unnormalized")
+        axes[1].set(xlabel="Photon-hit time (ns)", ylabel="Area-normalized density", title="Individual hits, normalized for shape comparison")
+        for ax in axes: ax.legend(); ax.grid(alpha=0.2)
+        fig.suptitle(f"{FIGURE_CONTEXT}\n{label}: x={x_true:.1f} mm; individual photon hits, not event estimators")
+        save_figure(fig, output_dir, f"{label.lower()}_all_hit_times")
+
+        fig, ax = plt.subplots(figsize=(8.5, 5.2))
+        ax.hist(frame.loc[frame["passed_A_4pe"], "t_A_ns"], bins=120, histtype="step", label="t_A: fourth hit, ID 28")
+        ax.hist(frame.loc[frame["passed_B_4pe"], "t_B_ns"], bins=120, histtype="step", label="t_B: fourth hit, ID 29")
+        ax.set(xlabel="Fourth-hit event estimator (ns)", ylabel="Events", title=f"{FIGURE_CONTEXT}\n{label}: x={x_true:.1f} mm")
+        ax.legend(); ax.grid(alpha=0.2)
+        save_figure(fig, output_dir, f"{label.lower()}_event_times")
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+        for ax, tag, channel in zip(axes, ("A", "B"), HOOK_PAIR_IDS):
+            values = frame[f"npe_{tag}"].to_numpy()
+            fit = {key.removesuffix(f"_{tag}"): value for key, value in row.items() if key.endswith(f"_{tag}") and "moyal" in key}
+            edges = np.arange(values.min(), np.quantile(values, 0.999) + 3, 3)
+            ax.hist(values, bins=edges, histtype="step", label=f"ID {channel}, zeros included")
+            centers = np.linspace(max(0.1, edges[0]), edges[-1], 500)
+            width = edges[1] - edges[0]
+            ax.plot(centers, len(values) * width * moyal.pdf(centers, loc=fit["mpv_moyal"], scale=fit["width_moyal"]), label="Moyal approximation fit (>0)")
+            ax.set(xlabel="SiPM hit count / PE-equivalent count", ylabel="Events", title=f"ID {channel}: MPV={fit['mpv_moyal']:.2f}±{fit['mpv_moyal_error']:.2f}")
+            ax.legend(fontsize=8); ax.grid(alpha=0.2)
+        fig.suptitle(f"{FIGURE_CONTEXT}\n{label}: x={x_true:.1f} mm; Moyal approximation, not exact Landau")
+        save_figure(fig, output_dir, f"{label.lower()}_npe_moyal")
+
+        fig, ax = plt.subplots(figsize=(8.5, 5.2))
+        observed, edges, _ = ax.hist(dt, bins=np.linspace(-3000, 3000, 301), histtype="step", label="events")
+        centers = np.linspace(dt_fit["mean"] - 4 * dt_fit["sigma"], dt_fit["mean"] + 4 * dt_fit["sigma"], 400)
+        ax.plot(centers, gaussian(centers, observed.max(), dt_fit["mean"], dt_fit["sigma"]), label="2-iteration Gaussian")
+        ax.set(xlabel="delta_t = t_A - t_B (ps)", ylabel="Events", title=f"{FIGURE_CONTEXT}\n{label}: mu={dt_fit['mean']:.2f} ps, sigma={dt_fit['sigma']:.2f} ps, chi2/ndf={dt_fit['chi2_ndf']:.2f}")
+        ax.legend(); ax.grid(alpha=0.2)
+        save_figure(fig, output_dir, f"{label.lower()}_delta_t")
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+        axes[0].hexbin(asym, dt, gridsize=45, mincnt=1)
+        axes[0].set(xlabel="NPE asymmetry", ylabel="delta_t (ps)", title=f"Pearson={pearson_asym.statistic:.3f}±{pearson_asym_boot:.3f}; Spearman={spearmanr(dt, asym).statistic:.3f}")
+        axes[1].hexbin(ratio, dt, gridsize=45, mincnt=1)
+        axes[1].set(xlabel="R = ln(npe_A/npe_B)", ylabel="delta_t (ps)", title=f"Pearson={pearson_ratio.statistic:.3f}±{pearson_ratio_boot:.3f}; Spearman={spearmanr(dt, ratio).statistic:.3f}")
+        fig.suptitle(f"{FIGURE_CONTEXT}\n{label}: x={x_true:.1f} mm")
+        save_figure(fig, output_dir, f"{label.lower()}_correlations")
+
+    comparison = pd.DataFrame(rows)
+    comparison.to_csv(output_dir / "analysis" / "reference_comparison.csv", index=False)
+    comparison.to_latex(
+        output_dir / "tables" / "reference_comparison.tex", index=False, float_format="%.4g"
+    )
+
+
+def weighted_polynomial_fit(x: np.ndarray, y: np.ndarray, error: np.ndarray, degree: int) -> dict[str, object]:
+    design = np.vander(x, degree + 1)
+    weight = 1.0 / np.square(error)
+    normal = design.T @ (weight[:, None] * design)
+    covariance = np.linalg.inv(normal)
+    coefficients = covariance @ design.T @ (weight * y)
+    prediction = design @ coefficients
+    residuals = y - prediction
+    chi2 = float(np.sum(np.square(residuals / error)))
+    ndf = len(x) - degree - 1
+    return {
+        "coefficients": coefficients,
+        "covariance": covariance,
+        "prediction": prediction,
+        "residuals": residuals,
+        "chi2": chi2,
+        "chi2_ndf": chi2 / ndf,
+        "aic": chi2 + 2 * (degree + 1),
+    }
+
+
+def loocv_rmse(x: np.ndarray, y: np.ndarray, error: np.ndarray, degree: int) -> float:
+    predictions = []
+    for omitted in range(len(x)):
+        keep = np.arange(len(x)) != omitted
+        fit = weighted_polynomial_fit(x[keep], y[keep], error[keep], degree)
+        predictions.append(np.polyval(fit["coefficients"], x[omitted]))
+    return float(np.sqrt(np.mean(np.square(y - predictions))))
+
+
+def invert_cubic(values: np.ndarray, coefficients: np.ndarray, linear_guess: np.ndarray) -> tuple[np.ndarray, int, int]:
+    reconstructed = np.full(len(values), np.nan)
+    ambiguous = 0
+    no_root = 0
+    for index, (value, guess) in enumerate(zip(values, linear_guess)):
+        shifted = coefficients.copy()
+        shifted[-1] -= value
+        roots = np.roots(shifted)
+        physical = roots[(np.abs(roots.imag) < 1e-8) & (roots.real >= -462) & (roots.real <= -422)].real
+        if len(physical) == 0:
+            no_root += 1
+        else:
+            if len(physical) > 1:
+                ambiguous += 1
+            reconstructed[index] = physical[np.argmin(np.abs(physical - guess))]
+    return reconstructed, ambiguous, no_root
+
+
+def sample_summary(values: np.ndarray, x_true: float) -> dict[str, float]:
+    values = np.asarray(values, dtype=float)
+    values = values[np.isfinite(values)]
+    mean = float(np.mean(values))
+    sigma = float(np.std(values, ddof=1))
+    return {
+        "mean_x_rec_mm": mean,
+        "mean_x_rec_error_mm": sigma / math.sqrt(len(values)),
+        "bias_mm": mean - x_true,
+        "bias_error_mm": sigma / math.sqrt(len(values)),
+        "sigma_x_mm": sigma,
+        "sigma_x_error_mm": sigma / math.sqrt(2 * (len(values) - 1)),
+        "n_valid": len(values),
+    }
+
+
+def reconstruction(output_dir: pathlib.Path) -> None:
+    summary = pd.read_csv(output_dir / "analysis" / "pairscan_summary_v2.csv")
+    references = pd.read_csv(output_dir / "analysis" / "reference_positions.csv")
+    ref_positions = set(references["x_true_mm"].astype(float))
+    calibration = summary.loc[~summary["x_true_mm"].isin(ref_positions)].copy()
+    x = calibration["x_true_mm"].to_numpy()
+
+    temporal = weighted_polynomial_fit(
+        x, calibration["mu_dt_ps"].to_numpy(), calibration["mu_dt_err_ps"].to_numpy(), 1
+    )
+    ratio_linear = weighted_polynomial_fit(
+        x, calibration["mu_R"].to_numpy(), calibration["mu_R_err"].to_numpy(), 1
+    )
+    ratio_cubic = weighted_polynomial_fit(
+        x, calibration["mu_R"].to_numpy(), calibration["mu_R_err"].to_numpy(), 3
+    )
+    temporal_coeff = temporal["coefficients"]
+    ratio_coeff = ratio_linear["coefficients"]
+
+    pd.DataFrame([{
+        "model": "mu_delta_t_ps = m_t*x + b_t",
+        "m_t_ps_per_mm": temporal_coeff[0],
+        "m_t_error_ps_per_mm": math.sqrt(temporal["covariance"][0, 0]),
+        "b_t_ps": temporal_coeff[1],
+        "b_t_error_ps": math.sqrt(temporal["covariance"][1, 1]),
+        "cov_m_b": temporal["covariance"][0, 1],
+        "chi2_ndf": temporal["chi2_ndf"],
+        "n_calibration_positions": len(calibration),
+        "excluded_positions": ",".join(str(x) for x in sorted(ref_positions)),
+    }]).to_csv(output_dir / "analysis" / "calibration_temporal.csv", index=False)
+    pd.DataFrame([
+        {
+            "model": "linear", "coefficients_high_to_low": json.dumps(ratio_coeff.tolist()),
+            "covariance": json.dumps(ratio_linear["covariance"].tolist()),
+            "chi2_ndf": ratio_linear["chi2_ndf"], "aic": ratio_linear["aic"],
+            "loocv_rmse": loocv_rmse(x, calibration["mu_R"].to_numpy(), calibration["mu_R_err"].to_numpy(), 1),
+        },
+        {
+            "model": "cubic_comparison", "coefficients_high_to_low": json.dumps(ratio_cubic["coefficients"].tolist()),
+            "covariance": json.dumps(ratio_cubic["covariance"].tolist()),
+            "chi2_ndf": ratio_cubic["chi2_ndf"], "aic": ratio_cubic["aic"],
+            "loocv_rmse": loocv_rmse(x, calibration["mu_R"].to_numpy(), calibration["mu_R_err"].to_numpy(), 3),
+        },
+    ]).to_csv(output_dir / "analysis" / "calibration_ratio.csv", index=False)
+
+    fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+    xx = np.linspace(-462, -422, 400)
+    axes[0, 0].errorbar(summary["x_true_mm"], summary["mu_dt_ps"], yerr=summary["mu_dt_err_ps"], fmt="o", ms=3)
+    axes[0, 0].plot(xx, np.polyval(temporal_coeff, xx))
+    axes[0, 0].set(xlabel="True x (mm)", ylabel="mu delta_t (ps)", title=f"Temporal linear calibration; chi2/ndf={temporal['chi2_ndf']:.2f}")
+    axes[1, 0].axhline(0, color="black", lw=0.8); axes[1, 0].plot(x, temporal["residuals"], "o")
+    axes[1, 0].set(xlabel="True x (mm)", ylabel="Temporal residual (ps)")
+    axes[0, 1].errorbar(summary["x_true_mm"], summary["mu_R"], yerr=summary["mu_R_err"], fmt="o", ms=3)
+    axes[0, 1].plot(xx, np.polyval(ratio_coeff, xx), label="linear")
+    axes[0, 1].plot(xx, np.polyval(ratio_cubic["coefficients"], xx), label="cubic comparison")
+    axes[0, 1].set(xlabel="True x (mm)", ylabel="mean R", title=f"Ratio calibration; linear chi2/ndf={ratio_linear['chi2_ndf']:.2f}"); axes[0, 1].legend()
+    axes[1, 1].axhline(0, color="black", lw=0.8)
+    axes[1, 1].plot(x, ratio_linear["residuals"], "o", label="linear")
+    axes[1, 1].plot(x, ratio_cubic["residuals"], "o", label="cubic")
+    axes[1, 1].set(xlabel="True x (mm)", ylabel="Ratio residual"); axes[1, 1].legend()
+    for ax in axes.flat: ax.grid(alpha=0.2)
+    fig.suptitle(FIGURE_CONTEXT)
+    save_figure(fig, output_dir, "calibrations_and_residuals")
+
+    rows = []
+    reco_values: dict[tuple[str, str], np.ndarray] = {}
+    for _, ref in references.iterrows():
+        label = ref["reference"]
+        x_true = float(ref["x_true_mm"])
+        frame = load_derived(output_dir / "derived" / f"pair_events_x{x_true:+.1f}mm.npz")
+        valid = frame["passed_pair_4pe"].to_numpy()
+        dt = frame.loc[valid, "delta_t_ps"].to_numpy()
+        ratio = frame.loc[valid, "R_log_ratio"].to_numpy()
+        x_t = (dt - temporal_coeff[1]) / temporal_coeff[0]
+        x_r = (ratio - ratio_coeff[1]) / ratio_coeff[0]
+        x_cubic, ambiguous, no_root = invert_cubic(ratio, ratio_cubic["coefficients"], x_r)
+        covariance = np.cov(np.vstack((x_t, x_r)), ddof=1)
+        condition = float(np.linalg.cond(covariance))
+        inverse = np.linalg.inv(covariance)
+        one = np.ones(2)
+        weights = inverse @ one / (one @ inverse @ one)
+        x_blue = weights[0] * x_t + weights[1] * x_r
+        diagonal_weights = (1 / np.diag(covariance)) / np.sum(1 / np.diag(covariance))
+        x_diagonal = diagonal_weights[0] * x_t + diagonal_weights[1] * x_r
+        corr = float(np.corrcoef(x_t, x_r)[0, 1])
+        for method, values in (
+            ("temporal", x_t), ("ratio_linear", x_r), ("ratio_cubic_comparison", x_cubic),
+            ("BLUE", x_blue), ("covariance_ignored_cross_check", x_diagonal),
+        ):
+            row = {"reference": label, "x_true_mm": x_true, "method": method}
+            row.update(sample_summary(values, x_true))
+            row.update({
+                "corr_x_t_x_R": corr if method in ("BLUE", "covariance_ignored_cross_check") else math.nan,
+                "weight_t": weights[0] if method == "BLUE" else diagonal_weights[0] if method == "covariance_ignored_cross_check" else math.nan,
+                "weight_R": weights[1] if method == "BLUE" else diagonal_weights[1] if method == "covariance_ignored_cross_check" else math.nan,
+                "covariance_condition_number": condition if method == "BLUE" else math.nan,
+                "cubic_ambiguous_fraction": ambiguous / len(ratio) if method == "ratio_cubic_comparison" else math.nan,
+                "cubic_no_root_fraction": no_root / len(ratio) if method == "ratio_cubic_comparison" else math.nan,
+            })
+            rows.append(row)
+            reco_values[(label, method)] = values
+        temporal_row = rows[-5]
+        position_summary = summary.loc[summary["x_true_mm"] == x_true].iloc[0]
+        expected = position_summary["sigma_dt_ps"] / abs(temporal_coeff[0])
+        expected_error = expected * math.sqrt(
+            (position_summary["sigma_dt_err_ps"] / position_summary["sigma_dt_ps"]) ** 2
+            + (math.sqrt(temporal["covariance"][0, 0]) / temporal_coeff[0]) ** 2
+        )
+        temporal_row["guardrail_sigma_dt_over_slope_mm"] = expected
+        temporal_row["guardrail_error_mm"] = expected_error
+        temporal_row["guardrail_pull"] = (
+            (temporal_row["sigma_x_mm"] - expected)
+            / math.sqrt(temporal_row["sigma_x_error_mm"] ** 2 + expected_error ** 2)
+        )
+
+    result = pd.DataFrame(rows)
+    result.to_csv(output_dir / "analysis" / "reconstruction_summary.csv", index=False)
+    result.to_latex(
+        output_dir / "tables" / "reconstruction_summary.tex", index=False, float_format="%.4g"
+    )
+    fig, axes = plt.subplots(len(references), 1, figsize=(9, 8), squeeze=False)
+    for ax, (_, ref) in zip(axes[:, 0], references.iterrows()):
+        label = ref["reference"]
+        for method in ("temporal", "ratio_linear", "BLUE"):
+            ax.hist(reco_values[(label, method)], bins=70, histtype="step", density=True, label=method)
+        ax.axvline(ref["x_true_mm"], color="black", ls="--", label="true x")
+        ax.set(xlabel="Reconstructed x (mm)", ylabel="Density", title=f"{label}: x={ref['x_true_mm']:.1f} mm")
+        ax.legend(); ax.grid(alpha=0.2)
+    fig.suptitle(f"{FIGURE_CONTEXT}\nsimulation prediction — Top readout — intrinsic")
+    save_figure(fig, output_dir, "position_reconstruction")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("stage", choices=("derive",))
+    parser.add_argument("stage", choices=("derive", "qa", "detail", "reconstruct"))
     parser.add_argument("--data-dir", type=pathlib.Path, default=HOOK_DATA_DIR)
     parser.add_argument("--output-dir", type=pathlib.Path, required=True)
+    parser.add_argument(
+        "--v1-path",
+        type=pathlib.Path,
+        default=HOOK_DATA_DIR / "analysis" / "pairscan_summary.csv",
+    )
     args = parser.parse_args()
     if args.stage == "derive":
         derive_all(args.data_dir, args.output_dir)
+    elif args.stage == "qa":
+        qa_summary(args.output_dir, args.v1_path)
+    elif args.stage == "detail":
+        detailed_analysis(args.data_dir, args.output_dir)
+    elif args.stage == "reconstruct":
+        reconstruction(args.output_dir)
     return 0
 
 

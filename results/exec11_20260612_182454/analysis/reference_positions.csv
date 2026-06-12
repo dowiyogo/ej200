@@ -1,0 +1,3 @@
+reference,x_true_mm,criterion
+POS_REF_1,-441.0,"minimum abs(mu_dt_ps), tie -> minimum abs(x_true_mm)"
+POS_REF_2,-443.0,"maximum mean_npe_A, tie -> minimum abs(x_true_mm)"

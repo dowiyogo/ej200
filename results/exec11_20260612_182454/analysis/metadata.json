@@ -1,0 +1,13 @@
+{
+  "data_dir": "/home/reriosto/SHiP/t0minidaq/pairscan_2026-06-11",
+  "pair_ids": [
+    28,
+    29
+  ],
+  "n_events_expected": 3000,
+  "n_pe_threshold": 4,
+  "count_definition": "number of sipm_hits rows per event and SiPM, using the existing EXEC_08 PE-equivalent convention",
+  "data_commit": "f431c01",
+  "analysis_commit_at_generation": "bf0d2d5",
+  "root_phase_0b": "DEFERRED \u2014 ROOT runtime unavailable on MSI"
+}
