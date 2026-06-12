@@ -32,7 +32,9 @@ def blue(cov):
 def fit_poly(raw,x,deg=1):
     return np.polyfit(raw,x,deg)
 def metrics(values,true):
-    v=values[np.isfinite(values)]; r=v-true; med=np.median(v); mad=1.4826*np.median(np.abs(v-med))
+    v=values[np.isfinite(values)]
+    if len(v)==0:return dict(mean_x_rec=np.nan,bias=np.nan,sigma_core=np.nan,rms=np.nan,rms68=np.nan,median=np.nan,mad_sigma=np.nan,fraction_outside_2sigma=np.nan,fraction_outside_3sigma=np.nan,valid_fraction=0.)
+    r=v-true; med=np.median(v); mad=1.4826*np.median(np.abs(v-med))
     q16,q84=np.quantile(r,[.16,.84]); core=(q84-q16)/2
     return dict(mean_x_rec=np.mean(v),bias=np.mean(r),sigma_core=core,rms=np.sqrt(np.mean(r*r)),
       rms68=core,median=med,mad_sigma=mad,fraction_outside_2sigma=np.mean(np.abs(r-np.median(r))>2*core),
@@ -80,7 +82,7 @@ def load(path):
 def derive(out):
     files=sorted(DATA.glob("photon_hits_x*mm.root"),key=xpos)
     if not np.array_equal([xpos(p) for p in files],EXPECTED): raise RuntimeError("position inventory mismatch")
-    (out/"derived/events").mkdir(parents=True); rows=[]
+    (out/"derived/events").mkdir(parents=True,exist_ok=True); rows=[]
     for i,p in enumerate(files): print(f"{i+1}/31 {p.name}",flush=True); rows.append(derive_file(p,out/"derived/events"))
     pd.DataFrame(rows).to_csv(out/"analysis/data_inventory.csv",index=False)
 
@@ -91,12 +93,12 @@ def cv(out):
     for test,d in enumerate(data):
       train=[q for i,q in enumerate(data) if i!=test]; xt=np.array([q["x_true_mm"][0] for q in train])
       for method in methods:
-        means=np.array([np.nanmean(q[method]) for q in train])
         if method=="local_R":
           # transferable local coordinate: train true offset relative to selected pair center
           rr=np.concatenate([q[method] for q in train]); yy=np.concatenate([q["x_true_mm"]-q["local_pair_center"] for q in train]); ok=np.isfinite(rr)&np.isfinite(yy)
           coef=np.polyfit(rr[ok],yy[ok],1); pred=d["local_pair_center"]+np.polyval(coef,d[method])
         else:
+          means=np.array([np.nanmean(q[method]) for q in train])
           coef=fit_poly(means,xt,1); pred=np.polyval(coef,d[method])
         m=metrics(pred,d["x_true_mm"][0]); rows.append(dict(x_true_mm=d["x_true_mm"][0],method=method,**m))
         cal.append(dict(test_x=d["x_true_mm"][0],method=method,coefficients=json.dumps(coef.tolist()),train_positions=30))
@@ -106,10 +108,11 @@ def cv(out):
     pd.DataFrame([{"models":"all predefined linear primary models","selection":"none on outer test fold","folds":31}]).to_csv(out/"analysis/cv_model_selection.csv",index=False)
     return data,summary
 def combine(out,data):
-    preds=pd.read_csv(out/"analysis/cv_predictions.csv.gz"); base=["dt_end_weighted","R_end","x_top_centroid_raw","local_R"]; rows=[]; weights=[]
+    preds=pd.read_csv(out/"analysis/cv_predictions.csv.gz"); base=["dt_end_weighted","R_end","x_top_centroid_raw"]; rows=[]; weights=[]
     for d in data:
       x=d["x_true_mm"][0]; test=preds[preds.x_true_mm==x].pivot(index="event_id",columns="method",values="x_rec")
       train=preds[preds.x_true_mm!=x].pivot_table(index=["x_true_mm","event_id"],columns="method",values="x_rec")
+      complete=np.all(np.isfinite(train[base]),axis=1); train=train.loc[complete]
       truth=train.index.get_level_values(0).to_numpy(); resid=train[base].to_numpy()-truth[:,None]; cov=np.cov(resid,rowvar=False); cond=np.linalg.cond(cov)
       try:w=blue(cov); used=base
       except np.linalg.LinAlgError:
@@ -131,6 +134,21 @@ def plots(out):
     y=pd.read_csv(out/"analysis/y0_feasibility_summary.csv")
     for col,name in [("mean","y_centroid_mean_vs_x"),("width","y_centroid_width_vs_x")]:
       fig,ax=plt.subplots(figsize=(9,5)); [ax.plot(g.x_true_mm,g[col],"o-",label=m) for m,g in y.groupby("estimator")]; ax.set(xlabel="X (mm)",ylabel=f"Y centroid {col} (mm)",title="y_true=0 feasibility proxy"); ax.legend();ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+    pred=pd.read_csv(out/"analysis/cv_predictions.csv.gz")
+    for method,name in [("dt_end_pool","calibration_end_timing"),("R_end","calibration_end_ratio"),("x_top_centroid_raw","calibration_top_centroid")]:
+      g=s[s.method==method];fig,ax=plt.subplots(figsize=(9,5));ax.errorbar(g.x_true_mm,g.mean_x_rec,yerr=g.sigma_core,fmt="o");ax.plot(EXPECTED,EXPECTED,"--");ax.set(xlabel="True X (mm)",ylabel="Reconstructed X (mm)",title=f"{method} LOO prediction — {CONTEXT}");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/f"figures/{name}.pdf");plt.close(fig)
+    chosen=[-690,-450,0,450,690];fig,axs=plt.subplots(1,5,figsize=(16,3.5),sharey=True)
+    for ax,x in zip(axs,chosen):
+      q=pred[(pred.x_true_mm==x)&(pred.method=="local_R")];ax.hist(q.x_rec-x,bins=40);ax.set_title(f"x={x}");ax.set_xlabel("residual (mm)")
+    axs[0].set_ylabel("events");fig.suptitle("Local Top pair residuals; gap position has no valid events");fig.tight_layout();fig.savefig(out/"figures/residual_distributions_selected_positions.pdf");plt.close(fig)
+    data=[load(p) for p in sorted((out/"derived/events").glob("*.npz"),key=lambda p:load(p)["x_true_mm"][0])]
+    prof=[]
+    for d in data:
+      c=d["counts"];prof.append([d["x_true_mm"][0],*c[:,:16].mean(0)])
+    prof=np.array(prof);fig,ax=plt.subplots(figsize=(9,5))
+    for j in range(8):ax.plot(prof[:,0],prof[:,1+j]-prof[:,1+7-j],label=f"L {j}-(7-{j})")
+    ax.set(xlabel="X (mm)",ylabel="mean hit-count mirror difference",title="End-channel symmetry at y_true=0");ax.grid(alpha=.2);fig.tight_layout();fig.savefig(out/"figures/end_channel_symmetry.pdf");plt.close(fig)
+    yl=np.concatenate([d["y_L_centroid"] for d in data]);yr=np.concatenate([d["y_R_centroid"] for d in data]);fig,ax=plt.subplots(figsize=(6,6));ax.hexbin(yl,yr,gridsize=50,mincnt=1);ax.set(xlabel="y_L centroid (mm)",ylabel="y_R centroid (mm)",title="y_true=0 feasibility proxy");fig.tight_layout();fig.savefig(out/"figures/y_left_vs_y_right.pdf");plt.close(fig)
 def main():
  p=argparse.ArgumentParser();p.add_argument("stage",choices=["derive","analyze"]);p.add_argument("--output-dir",type=pathlib.Path,required=True);a=p.parse_args()
  for d in ["analysis","figures","tables","derived/events","logs","report"]:(a.output_dir/d).mkdir(parents=True,exist_ok=True)
