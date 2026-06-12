@@ -1,0 +1,28 @@
+ERROR: residual regex backreferences in TeX: \1, \2
+ERROR: graphicspath points at figs/ while includegraphics paths already contain figs/
+ERROR: frame 8: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 8: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 8: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 12: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 12: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 12: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 16: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 16: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 16: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 20: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 20: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 20: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 24: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 24: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 24: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 28: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 28: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 28: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 32: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 32: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 32: missing figs/exec13_tn_\1mm_\2.png
+ERROR: frame 44: forbidden EJ-204 copy figs/exec08b_window_dip_profiles.png
+ERROR: frame 46: forbidden EJ-204 copy figs/exec09_tail_comparison.png
+ERROR: frame 113: forbidden EJ-204 copy figs/exec08b_id18_impact_maps.png
+ERROR: frame 117: forbidden EJ-204 copy figs/exec09_tail_comparison.png
+references=156 found=135 missing=21 errors=27
