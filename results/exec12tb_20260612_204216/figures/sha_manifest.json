@@ -1,0 +1,22 @@
+{
+  "fine_scan_geometry.pdf": "f4496833932a",
+  "order_statistic_schematic.pdf": "aaa6eec373b9",
+  "cfd_vs_orderstat_schematic.pdf": "fe3df3278af3",
+  "mean_dt_vs_x_with_residuals.pdf": "85b97239017b",
+  "rms68_dt_vs_x_4_20.pdf": "aafa4b12a5b9",
+  "rho_ab_vs_x_4_20.pdf": "cb35527e968d",
+  "ref1_dt_overlay.pdf": "556e7743e6a6",
+  "ref2_dt_overlay.pdf": "2479420aa502",
+  "ref1_xrec_overlay.pdf": "6ce385a7f43b",
+  "ref2_xrec_overlay.pdf": "9f26bbd1b138",
+  "tplus_rms68_vs_x_4_20.pdf": "23a366c3fd6b",
+  "sweep_rms68x_vs_k.pdf": "154c66e951ab",
+  "sweep_slope_vs_k.pdf": "6d90d097302a",
+  "sweep_chi2_vs_k.pdf": "38173eb03087",
+  "sweep_bias_vs_k.pdf": "3c97360f7cc8",
+  "tradeoff_resolution_vs_bias.pdf": "6ebd86cde5ad",
+  "window_dip_counts.pdf": "e9aad6c1ab73",
+  "window_dip_t4_t20.pdf": "2bd7029de8d5",
+  "global_context_sigma_bias.pdf": "a2281f85f0f3",
+  "position_resolution_4_20_vs_x.pdf": "db2ff08893bd"
+}
