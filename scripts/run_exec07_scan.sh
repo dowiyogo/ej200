@@ -56,7 +56,7 @@ for index in "${!positions[@]}"; do
 /tracking/verbose 0
 /run/numberOfThreads $workers
 /det/readout EndTop
-/det/scintillator OPSC-101
+/det/scintillator OPSC-106
 /sipm/model AFBR-S4N66P024M
 /run/initialize
 /sipm/jitterSigma 0 ns
@@ -71,7 +71,7 @@ EOF
     echo "START: x=${x} mm events=${events} workers=${workers}"
     (
         cd "$work"
-        "$sim" -m run.mac > "$log.tmp" 2>&1
+        "$sim" -m run.mac 2>&1 | tee "$log.tmp"
     )
     mv "$log.tmp" "$log"
 
