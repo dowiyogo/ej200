@@ -109,3 +109,41 @@ This guardrail is analogous to the one that existed for OPSC-101/EJ-204.
 | `macros/edge_scan_smoke.mac` | 8 | `OPSC-101 → OPSC-106` |
 | `macros/exec08b_run_*.mac` | 7 | `OPSC-101 → OPSC-106` (4 macros) |
 | `scripts/run_exec07_scan.sh` | 59 | `OPSC-101 → OPSC-106` in generated macro heredoc |
+
+---
+
+## 5. Hallazgos de ejecución (EXEC_14)
+
+### HOOK_OPSC106_MASSFRACTION
+
+**Warning observed** during EXEC_13 scan (all 31 positions, session `20260612_171407`):
+
+```
+*** G4Exception : mat031
+For material opsc-106 sum of fractional masses 0.998616 is not 1 — results may be wrong
+  SSLG4 code: OPSC-106
+```
+
+**Origin**: The `opsc-106` material definition in SSLG4 has elemental fractional masses that sum to 0.998616 instead of 1.000000. The deficit is 0.1384 % (≈ 1.4 per mille).
+
+**Impact assessment**:
+- Geant4 applies this composition to ionization energy-loss (Bethe-Bloch) and to optical photon emission density.
+- At 0.14 % level, the effect on mean dE/dx and hence on scintillation yield is sub-per-mille and well within the systematic uncertainty from the nominal OPSC-106 composition itself.
+- Optical photon properties (RINDEX, ABSLENGTH, emission spectrum) are stored in the material properties table independently of the mass fraction — they are unaffected.
+- The warning does not indicate any crash or invalid material object; Geant4 normalizes internally.
+
+**Hook reserved**: `HOOK_OPSC106_MASSFRACTION` — report to SSLG4 maintainers for correction in the next library version; verify that normalization is applied (check `G4Material::SetMassOfMolecule` path in Geant4 source). **NO change to simulation code in EXEC_14.**
+
+### Nearest-Top channel at x=0
+
+At x=0 mm, the nearest-Top channel is a geometric tie between IDs 50 (at −12 mm) and 51 (at +12 mm). The tie is broken by N_pe: for EJ-230, ID 50 wins (vs ID 51 for EJ-204). This is consistent with stochastic fluctuations at symmetric positions and is not a material-dependent effect. The Landau MPV table updated accordingly (line 617 of `exec13_ej230_report_full.tex`).
+
+### σ_group (End) — EJ-230 vs EJ-204
+
+| Metric | EJ-204 | EJ-230 | Explanation |
+|---|---|---|---|
+| Mean σ_group | 148 ps | 226 ps | Lower yield + shorter λ_eff → fewer photons at far End |
+| Range (min–max) | 12–437 ps | 12–595 ps | Far-End statistics more limited for EJ-230 |
+| λ_eff | 33.1 cm | 30.8 cm | Shorter for EJ-230 despite bulk att=120 cm vs 160 cm |
+
+The σ_group increase at the far End is physical: EJ-230 yield (9700/MeV) is 6.7 % below EJ-204 (10400/MeV), and the shorter λ_eff amplifies this effect for far-End channels.
