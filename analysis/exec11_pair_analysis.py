@@ -731,9 +731,184 @@ def reconstruction(output_dir: pathlib.Path) -> None:
     save_figure(fig, output_dir, "position_reconstruction")
 
 
+def report(output_dir: pathlib.Path, v1_path: pathlib.Path) -> None:
+    v1 = pd.read_csv(v1_path)
+    v2 = pd.read_csv(output_dir / "analysis" / "pairscan_summary_v2.csv")
+    inventory = pd.read_csv(output_dir / "analysis" / "data_inventory.csv")
+    refs = pd.read_csv(output_dir / "analysis" / "reference_positions.csv")
+    comparison = pd.read_csv(output_dir / "analysis" / "reference_comparison.csv")
+    reco = pd.read_csv(output_dir / "analysis" / "reconstruction_summary.csv")
+    temporal = pd.read_csv(output_dir / "analysis" / "calibration_temporal.csv").iloc[0]
+    ratio = pd.read_csv(output_dir / "analysis" / "calibration_ratio.csv")
+
+    focus = v2[v2["x_true_mm"].isin([-439.0, -442.0, -444.0])].merge(
+        v1[["x_true_mm", "mu_dt_ps", "sigma_dt_ps"]],
+        on="x_true_mm", suffixes=("_v2", "_v1"),
+    )
+    v1_fit = weighted_polynomial_fit(
+        v1["x_true_mm"].to_numpy(), v1["mu_dt_ps"].to_numpy(),
+        v1["mu_dt_err_ps"].to_numpy(), 1,
+    )
+    v2_fit = weighted_polynomial_fit(
+        v2["x_true_mm"].to_numpy(), v2["mu_dt_ps"].to_numpy(),
+        v2["mu_dt_err_ps"].to_numpy(), 1,
+    )
+    calibration_compare = pd.DataFrame([
+        {"version": "v1", "m_t_ps_per_mm": v1_fit["coefficients"][0], "m_t_error_ps_per_mm": math.sqrt(v1_fit["covariance"][0, 0]), "chi2_ndf": v1_fit["chi2_ndf"]},
+        {"version": "v2", "m_t_ps_per_mm": v2_fit["coefficients"][0], "m_t_error_ps_per_mm": math.sqrt(v2_fit["covariance"][0, 0]), "chi2_ndf": v2_fit["chi2_ndf"]},
+    ])
+    focus.to_csv(output_dir / "analysis" / "fit_qa_v1_v2_focus.csv", index=False)
+    calibration_compare.to_csv(output_dir / "analysis" / "calibration_v1_v2.csv", index=False)
+    write_latex_table(
+        focus, output_dir / "tables" / "fit_qa_v1_v2.tex",
+        ["x_true_mm", "mu_dt_ps_v1", "mu_dt_ps_v2", "sigma_dt_ps_v1", "sigma_dt_ps_v2", "chi2_ndf", "fraction_within_3sigma"],
+    )
+
+    ref_lines = "\n".join(
+        f"- `{row.reference}`: `{row.x_true_mm:.1f} mm`, {row.criterion}."
+        for row in refs.itertuples()
+    )
+    reco_key = reco[reco["method"].isin(["temporal", "ratio_linear", "BLUE"])]
+    reco_lines = "\n".join(
+        f"- `{row.reference}` / `{row.method}`: mean `{row.mean_x_rec_mm:.3f} mm`, "
+        f"bias `{row.bias_mm:+.3f} mm`, sigma `{row.sigma_x_mm:.3f} +/- {row.sigma_x_error_mm:.3f} mm`."
+        for row in reco_key.itertuples()
+    )
+    correlation_lines = "\n".join(
+        f"- `{row.reference}`: Pearson(delta_t,R) = `{row.pearson_dt_R:.4f} +/- {row.pearson_dt_R_boot_error:.4f}`, "
+        f"Spearman = `{row.spearman_dt_R:.4f}`."
+        for row in comparison.itertuples()
+    )
+    blue_lines = "\n".join(
+        f"- `{row.reference}`: corr(x_t,x_R)=`{row.corr_x_t_x_R:.4f}`, "
+        f"weights=(`{row.weight_t:.4f}`, `{row.weight_R:.4f}`), "
+        f"condition number=`{row.covariance_condition_number:.3f}`."
+        for row in reco[reco["method"] == "BLUE"].itertuples()
+    )
+    readme = f"""# EXEC_11 pair (28,29) timing and 1-D position reconstruction
+
+## Provenance and status
+
+- Branch: `exp/pair-scan-2026-06-11`
+- Input data: `{HOOK_DATA_DIR}`
+- Data-producing commit: `{DATA_COMMIT}`
+- Analysis commit embedded in the final figures: `{analysis_commit()}`
+- Material/readout: the recorded `pairscan.log` states `OPSC-101`, yield 10400 ph/MeV,
+  rise 0.7 ns, decay 1.8 ns, attenuation 160 cm, emission peak 408.8 nm, and `Top`
+  readout. Repository documentation maps OPSC-101 to EJ-204.
+- Pair identity: `DetectorConstruction::TopSiPMCenterX` and global/local ID mapping put
+  IDs 28 and 29 on Top at -452 and -432 mm, respectively.
+- ROOT phase 0b: **DEFERRED — ROOT runtime unavailable on MSI**. Static inspection finds
+  a plausible crash site: `analysis/analyze_pair_scan.C:281-283` fits with option `N`
+  (do not store the TF1), while `analysis/analyze_pair_scan.C:357-360` dereferences
+  `g_dt_cal.GetFunction("f_lin_dt")` after the CSV is written. The macro was not changed
+  because the crash could not be reproduced without ROOT.
+
+## Input gate
+
+- 41 stable ROOT files, integer positions -462.0 through -422.0 mm, no missing or
+  duplicate positions, and no files changed during a 31-second size/mtime check.
+- All files opened with uproot. Entries range from `{inventory.n_entries.min()}` to
+  `{inventory.n_entries.max()}`; every file contains exactly 3000 unique event IDs,
+  IDs 0..2999, no entirely missing events, and zero non-finite `time_ns` values.
+- Every position has 3000 events passing 4 PE in both channels, so efficiency is 1.0.
+- `SiPMSD.cc:40-113` records a row only when the Geant4 optical boundary invokes the
+  sensitive detector after the selected surface `EFFICIENCY`; PDE is not applied again.
+- `count_definition = "{COUNT_DEFINITION}"`. Axes use SiPM hit count / PE-equivalent
+  count where physical photoelectron acceptance cannot be independently re-established.
+
+## QA v1 to v2
+
+The v2 delta-t histogram uses 20 ps bins over [-3000,3000] ps. Its Gaussian is seeded
+at the maximum bin, starts from the RMS after clipping the outer 1%, and is fitted twice
+inside +/-{HOOK_FIT_RANGE_NSIGMA} sigma. The broad-fit guard prevents convergence to the
+known narrow subpeak. All 41 fits terminate successfully, but all have chi2/ndf > 5:
+the distributions are visibly non-Gaussian mixtures, and that limitation is retained.
+
+The three collapsed v1 fits become:
+
+| x (mm) | sigma v1 (ps) | sigma v2 (ps) |
+|---:|---:|---:|
+""" + "\n".join(
+        f"| {row.x_true_mm:.1f} | {row.sigma_dt_ps_v1:.3f} | {row.sigma_dt_ps_v2:.3f} |"
+        for row in focus.itertuples()
+    ) + f"""
+
+The all-position temporal slope changes from
+`{calibration_compare.iloc[0].m_t_ps_per_mm:.4f} +/- {calibration_compare.iloc[0].m_t_error_ps_per_mm:.4f} ps/mm`
+to `{calibration_compare.iloc[1].m_t_ps_per_mm:.4f} +/- {calibration_compare.iloc[1].m_t_error_ps_per_mm:.4f} ps/mm`.
+
+## Automatic references
+
+{ref_lines}
+
+Both selected files contain 3000 valid pair-threshold events. Individual-hit time
+figures use every photon-hit row; event-time figures use the fourth-hit estimators.
+NPE-shape plots use a **Moyal approximation**, not an exact Landau density.
+
+Event-level timing/count correlations:
+
+{correlation_lines}
+
+## Reconstruction
+
+The leave-two-out temporal calibration over the other 39 positions is
+`mu_delta_t = ({temporal.m_t_ps_per_mm:.5f} +/- {temporal.m_t_error_ps_per_mm:.5f}) x
++ ({temporal.b_t_ps:.3f} +/- {temporal.b_t_error_ps:.3f}) ps`, with
+chi2/ndf `{temporal.chi2_ndf:.3f}`.
+
+The linear ratio calibration has chi2/ndf `{ratio.iloc[0].chi2_ndf:.1f}` and LOOCV
+RMSE `{ratio.iloc[0].loocv_rmse:.4f}`. A cubic comparison improves training chi2 and
+LOOCV RMSE to `{ratio.iloc[1].loocv_rmse:.4f}`, but gives worse event-level resolution
+and has ambiguous physical roots for about 3.3% of events. Multiple cubic roots are
+resolved by choosing the physical root nearest the predefined linear estimate.
+
+{reco_lines}
+
+BLUE diagnostics:
+
+{blue_lines}
+
+The temporal event standard deviations are smaller than `sigma_fit/abs(m_t)` by more
+than 10 sigma at both references. This guardrail failure is not tuned away: the broad
+single-Gaussian v2 fit describes long tails, whereas event RMS used by reconstruction
+is narrower. Both quantities and their disagreement remain in `reconstruction_summary.csv`.
+
+## Interpretation
+
+Lv et al. use 64 timing measurements and all 2016 SiPM pairs to intersect geometric
+circles and locate an empty region. EXEC_11 uses one adjacent pair and empirical 1-D
+calibrations of delta-t and count ratio. It is an inspired one-pair/one-dimensional
+adaptation, not a literal reproduction of their circle algorithm. It must not be
+compared directly with their 2-3 mm geometric result or approximately 1.5 mm CNN result.
+
+Every position resolution here is a **simulation prediction — Top readout — intrinsic**.
+There is no Top-readout test-beam counterpart, SPTR, electronics jitter, or walk
+correction. The strong ratio non-linearity and non-Gaussian delta-t tails are open
+limitations, not resolved detector performance.
+
+## Reproduction
+
+```bash
+OUT={output_dir}
+pytest -q tests/test_exec11_pair_analysis.py
+python3 analysis/exec11_pair_analysis.py derive --output-dir "$OUT"
+python3 analysis/exec11_pair_analysis.py qa --output-dir "$OUT"
+python3 analysis/exec11_pair_analysis.py detail --output-dir "$OUT"
+python3 analysis/exec11_pair_analysis.py reconstruct --output-dir "$OUT"
+python3 analysis/exec11_pair_analysis.py report --output-dir "$OUT"
+```
+
+Figures obtain the analysis SHA at runtime through `git rev-parse --short HEAD`.
+They were regenerated after the analysis/reconstruction commit and before the final
+report-only commit, so the embedded SHA identifies the exact analysis implementation.
+"""
+    (output_dir / "README.md").write_text(readme)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("stage", choices=("derive", "qa", "detail", "reconstruct"))
+    parser.add_argument("stage", choices=("derive", "qa", "detail", "reconstruct", "report"))
     parser.add_argument("--data-dir", type=pathlib.Path, default=HOOK_DATA_DIR)
     parser.add_argument("--output-dir", type=pathlib.Path, required=True)
     parser.add_argument(
@@ -750,6 +925,8 @@ def main() -> int:
         detailed_analysis(args.data_dir, args.output_dir)
     elif args.stage == "reconstruct":
         reconstruction(args.output_dir)
+    elif args.stage == "report":
+        report(args.output_dir, args.v1_path)
     return 0
 
 
