@@ -46,17 +46,27 @@ configure_ej200_target(readout_config_check)
 
 add_test(NAME readout_config_check COMMAND readout_config_check)
 
-add_executable(export_endtop_gdml tests/export_endtop_gdml.cc ${sources} ${headers})
-configure_ej200_target(export_endtop_gdml)
-
-add_test(NAME export_endtop_gdml
-         COMMAND export_endtop_gdml ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
-
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
-add_test(NAME endtop_gdml_check
-         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_gdml.py
-                 ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
-set_tests_properties(endtop_gdml_check PROPERTIES DEPENDS export_endtop_gdml)
+
+# Defer GDML executable to the ENABLE_GDML_TEST block below.
+
+# GDML export test — requires Geant4 GDML support (Xerces-C).
+# Disable with -DENABLE_GDML_TEST=OFF (mandatory on t0minidaq where GDML is not built).
+# Default ON so MSI and CI builds keep the full test suite.
+option(ENABLE_GDML_TEST "Enable GDML CTest (requires Geant4 GDML support)" ON)
+
+if(ENABLE_GDML_TEST AND Geant4_gdml_FOUND)
+    add_executable(export_endtop_gdml tests/export_endtop_gdml.cc ${sources} ${headers})
+    configure_ej200_target(export_endtop_gdml)
+    add_test(NAME export_endtop_gdml
+             COMMAND export_endtop_gdml ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
+    add_test(NAME endtop_gdml_check
+             COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_gdml.py
+                     ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
+    set_tests_properties(endtop_gdml_check PROPERTIES DEPENDS export_endtop_gdml)
+elseif(ENABLE_GDML_TEST AND NOT Geant4_gdml_FOUND)
+    message(WARNING "ENABLE_GDML_TEST=ON but Geant4_gdml_FOUND is false — GDML tests skipped.")
+endif()
 
 add_test(NAME endtop_balance_smoke
          COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_balance.py
