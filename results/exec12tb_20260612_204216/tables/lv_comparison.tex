@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Qualitative comparison with Lv et al.\ (2026). \textbf{Direct numerical comparison is not valid} — see text.}
+\label{tab:lv_comparison}
+\begin{tabular}{lp{4.5cm}p{4.5cm}}
+\toprule
+\textbf{Property} & \textbf{Lv et al.\ (2026)} & \textbf{This analysis} \\
+\midrule
+Scintillator & EJ-200 & EJ-204 \\
+Dimensions (mm) & 200×200×6 & 1400×60×10 \\
+SiPM channels & 64 (16 per side) & Top: 70; End: 16 \\
+Timing method & 20\% CFD on waveform & k-th detected hit (order statistic) \\
+Position method & 2016 pair geometry + CNN & Linear $\Delta t$ calibration, pair (28,29) \\
+Timing result & \textasciitilde{}90~ps FWHM & 4PE: 78 ps core; 20PE: 100 ps core \\
+Position result & \textasciitilde{}3~mm (CNN) & 4PE: 13 mm LOO; 20PE: 11 mm LOO \\
+Simulation/measurement & Measurement & Simulation (intrinsic) \\
+Jitter included & SPTR + electronics & None (jitter = 0) \\
+\midrule
+\multicolumn{3}{c}{\textbf{Direct numerical comparison: NOT valid (geometry, channels, method, jitter all differ)}} \\
+\bottomrule
+\end{tabular}
+\end{table}
