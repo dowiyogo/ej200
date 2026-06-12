@@ -263,6 +263,9 @@ def _make_top_figure(
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main(argv: list[str] | None = None) -> int:
+    # Allow override of tau_d for non-EJ-204 materials (e.g. EJ-230: 1.5 ns).
+    global TAU_D_NS
+    _tau_d_default = TAU_D_NS
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--data-dir",
@@ -274,7 +277,12 @@ def main(argv: list[str] | None = None) -> int:
         default="analysis/exec07",
         type=pathlib.Path,
     )
+    parser.add_argument(
+        "--tau-d", type=float, default=_tau_d_default,
+        help="Decay time constant [ns] for the statistical floor band (default: from common.py).",
+    )
     args = parser.parse_args(argv)
+    TAU_D_NS = args.tau_d
     fig_dir = args.output_dir / "figs"
     fig_dir.mkdir(parents=True, exist_ok=True)
 
