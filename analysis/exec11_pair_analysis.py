@@ -638,12 +638,18 @@ def reconstruction(output_dir: pathlib.Path) -> None:
 
     fig, axes = plt.subplots(2, 2, figsize=(12, 8))
     xx = np.linspace(-462, -422, 400)
-    axes[0, 0].errorbar(summary["x_true_mm"], summary["mu_dt_ps"], yerr=summary["mu_dt_err_ps"], fmt="o", ms=3)
+    axes[0, 0].errorbar(
+        summary["x_true_mm"].to_numpy(), summary["mu_dt_ps"].to_numpy(),
+        yerr=summary["mu_dt_err_ps"].to_numpy(), fmt="o", ms=3,
+    )
     axes[0, 0].plot(xx, np.polyval(temporal_coeff, xx))
     axes[0, 0].set(xlabel="True x (mm)", ylabel="mu delta_t (ps)", title=f"Temporal linear calibration; chi2/ndf={temporal['chi2_ndf']:.2f}")
     axes[1, 0].axhline(0, color="black", lw=0.8); axes[1, 0].plot(x, temporal["residuals"], "o")
     axes[1, 0].set(xlabel="True x (mm)", ylabel="Temporal residual (ps)")
-    axes[0, 1].errorbar(summary["x_true_mm"], summary["mu_R"], yerr=summary["mu_R_err"], fmt="o", ms=3)
+    axes[0, 1].errorbar(
+        summary["x_true_mm"].to_numpy(), summary["mu_R"].to_numpy(),
+        yerr=summary["mu_R_err"].to_numpy(), fmt="o", ms=3,
+    )
     axes[0, 1].plot(xx, np.polyval(ratio_coeff, xx), label="linear")
     axes[0, 1].plot(xx, np.polyval(ratio_cubic["coefficients"], xx), label="cubic comparison")
     axes[0, 1].set(xlabel="True x (mm)", ylabel="mean R", title=f"Ratio calibration; linear chi2/ndf={ratio_linear['chi2_ndf']:.2f}"); axes[0, 1].legend()
