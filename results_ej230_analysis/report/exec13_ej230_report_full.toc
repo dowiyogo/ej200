@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Key positions}{5}{0}{1}
+\beamer@sectionintoc {2}{Photon budget and statistics}{35}{0}{2}
+\beamer@sectionintoc {3}{Window effect and timing}{44}{0}{3}
+\beamer@sectionintoc {4}{Full scan, position by position}{52}{0}{4}
