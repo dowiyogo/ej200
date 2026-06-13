@@ -34,8 +34,8 @@ void RequireReflector(const DetectorConstruction& detector, const G4String& face
 
     auto* optical = dynamic_cast<G4OpticalSurface*>(found->second->GetSurfaceProperty());
     Require(optical != nullptr, std::string(face) + " reflector is not an optical surface");
-    Require(optical->GetName() == "BarSkinReflector",
-            std::string(face) + " does not use BarSkinReflector");
+    Require(optical->GetName() == "MylarReflector",
+            std::string(face) + " does not use MylarReflector");
 }
 
 void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
@@ -96,6 +96,17 @@ void CheckEndOnly() {
     RequireReflector(detector, "+X", false);
     RequireEndPlacements(detector);
     RequireSiPMSurfaceProperties(detector);
+
+    auto* mylar = dynamic_cast<G4OpticalSurface*>(
+        detector.GetReflectorSurfaces().at("+Y")->GetSurfaceProperty());
+    auto* mpt = mylar ? mylar->GetMaterialPropertiesTable() : nullptr;
+    Require(mpt != nullptr, "Mylar reflector has no MPT");
+    const G4double energy420 = 1239.84193 * eV * nm / (420.0 * nm);
+    Require(std::abs(mpt->GetProperty("REFLECTIVITY")->Value(energy420) - 0.90) < 1.0e-12,
+            "Mylar reflectivity is not 0.90");
+    Require(std::abs(mpt->GetProperty("SPECULARLOBECONSTANT")->Value(energy420) - 1.0) <
+                1.0e-12,
+            "Mylar specular lobe is not 1.0");
 }
 } // namespace
 

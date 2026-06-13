@@ -233,7 +233,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     // Reflective panels cover every non-instrumented face. Explicit sibling
     // volumes avoid global skin surfaces shadowing active SiPM faces.
-    auto* reflector = Materials::CreateBarSkinReflector();
+    auto* reflector = Materials::CreateMylarReflector();
     const G4double foilHalfT = 0.5 * um;
     auto* reflYMinusSolid = new G4Box("ReflectorYMinusSolid",
                                       kBarHalfX, foilHalfT, kBarHalfZ);

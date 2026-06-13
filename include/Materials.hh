@@ -36,6 +36,9 @@ G4Material* CreateMylar();
 // Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
 G4OpticalSurface* CreateBarSkinReflector();
 
+// Fixed end-only Mylar surface, identical to feat/endonly-mylar defaults.
+G4OpticalSurface* CreateMylarReflector();
+
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"
 // edge wrapping that absorbs all incident photons.
