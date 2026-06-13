@@ -223,6 +223,8 @@ G4OpticalSurface* CreateBarSurface() {
 G4OpticalSurface* CreateSiPMSurface(const G4String& model) {
     // A dielectric_metal surface with zero reflectivity lets Geant4 apply the
     // PDE exactly once through EFFICIENCY and invoke the attached SiPM SD.
+    // PDE: AFBR-S4N66P024M-DS105 datasheet. Real hardware is
+    // AFBR-S4N66P014M; it is optically identical, while P024M packages 2 SiPMs.
     auto* surf = new G4OpticalSurface("SiPMSurface");
     surf->SetType(dielectric_metal);
     surf->SetModel(unified);
