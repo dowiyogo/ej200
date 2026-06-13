@@ -1,4 +1,4 @@
-# EXEC_14/14B fit failures and quality flags
+# EXEC_14/14D fit failures and quality flags
 
 Updated: 2026-06-13
 
@@ -17,26 +17,25 @@ Source: `results_ej230_analysis/exec10_landau_mpv.csv`.
 
 These quality flags remain in the CSV and are not converted into fit failures.
 
-## Time-to-threshold Gaussian fits
+## Time-to-threshold Gaussian fits (EXEC_14D final)
 
 Source: `results_ej230_analysis/csv/exec13_tN_summary.csv`.
 
-Eight requested Gaussian widths are undefined because the selected threshold/group
-has insufficient support at the edge positions:
+The eight edge-position degeneracies recorded by EXEC_14B are resolved:
 
-| x [mm] | Group | N | Status |
-|---:|---|---:|---|
-| -690 | `end_near` | 4 | degenerate / no finite sigma fit |
-| -690 | `end_far` | 20 | degenerate / no finite sigma fit |
-| -650 | `end_near` | 4 | degenerate / no finite sigma fit |
-| -650 | `end_far` | 20 | degenerate / no finite sigma fit |
-| +650 | `end_near` | 4 | degenerate / no finite sigma fit |
-| +650 | `end_far` | 20 | degenerate / no finite sigma fit |
-| +690 | `end_near` | 4 | degenerate / no finite sigma fit |
-| +690 | `end_far` | 20 | degenerate / no finite sigma fit |
+- Four near-End t4 cores (`x = -690, -650, +650, +690 mm`) now converge with
+  the documented adaptive-bin fit. They are explicitly flagged
+  `resolution_limited`; the fitted values are not replaced by RMS.
+- Four far-End t20 requests at the same positions now use
+  `HOOK_ADAPTIVE_TN`. Their data-selected thresholds are respectively
+  `N_eff = 7, 8, 8, 7`, all with event reach above the configured 95% minimum.
+- Across all 31 positions, 17 far-End thresholds are reduced, 14 retain the
+  nominal `N=20`, and none meet the genuine-starvation condition.
+- Final missing fitted widths: **0**. Final genuine-starvation points: **0**.
 
-The report does not replace these missing fits with zero or with a value from another
-material. Finite RMS values remain available in the source CSV.
+The nearest-Top fitted t4 range is `6.648--9.594 ps`; the near-End fitted t4
+range is `0.562--127.719 ps`. Values narrower than the reporting bin-width hook
+remain annotated as resolution-limited together with their mean Npe.
 
 ## Special-control analyses
 
