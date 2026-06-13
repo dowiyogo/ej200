@@ -158,11 +158,11 @@
 | 113 | Run 31 $\|$ x = +690 mm $\|$ Photon arrival $\langle N(t)\rangle$ | `figs/exec11_arrival_690mm.png` | True | True | EJ230_ANALYSIS | `analysis/exec07/exec11_time_arrival.py` |
 | 115 | Backup: ID18 impact maps | `figs/exec08b_id18_impact_maps.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec08b_window_dip.py` |
 | 119 | Backup: EndTop versus End-only tail audit | `figs/exec09_tail_comparison.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec09_timing_mechanism.py` |
-| 120 | Backup: far-End adaptive $t_N$ ($N_{eff}$ where 20 PE is unreachable) | `figs/exec14d_adaptive_tN_summary.png` | True | True | EJ230_ANALYSIS | `` |
-| 121 | Backup: far-End adaptive $t_N$ at negative and central positions | `figs/exec14d_adaptive_tN_-690mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 121 | Backup: far-End adaptive $t_N$ at negative and central positions | `figs/exec14d_adaptive_tN_-650mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 121 | Backup: far-End adaptive $t_N$ at negative and central positions | `figs/exec14d_adaptive_tN_-400mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 121 | Backup: far-End adaptive $t_N$ at negative and central positions | `figs/exec14d_adaptive_tN_0mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 122 | Backup: far-End adaptive $t_N$ at positive positions | `figs/exec14d_adaptive_tN_400mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 122 | Backup: far-End adaptive $t_N$ at positive positions | `figs/exec14d_adaptive_tN_650mm.png` | True | True | EJ230_ANALYSIS | `` |
-| 122 | Backup: far-End adaptive $t_N$ at positive positions | `figs/exec14d_adaptive_tN_690mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 121 | Backup: far-End adaptive $t_N$ synthesis | `figs/exec14d_adaptive_tN_summary.png` | True | True | EJ230_ANALYSIS | `` |
+| 122 | Backup: far-End adaptive $t_N$ at $x=-690$ mm | `figs/exec14d_adaptive_tN_-690mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 123 | Backup: far-End adaptive $t_N$ at $x=-650$ mm | `figs/exec14d_adaptive_tN_-650mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 124 | Backup: far-End adaptive $t_N$ at $x=-400$ mm | `figs/exec14d_adaptive_tN_-400mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 125 | Backup: far-End adaptive $t_N$ at $x=+0$ mm | `figs/exec14d_adaptive_tN_0mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 126 | Backup: far-End adaptive $t_N$ at $x=+400$ mm | `figs/exec14d_adaptive_tN_400mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 127 | Backup: far-End adaptive $t_N$ at $x=+650$ mm | `figs/exec14d_adaptive_tN_650mm.png` | True | True | EJ230_ANALYSIS | `` |
+| 128 | Backup: far-End adaptive $t_N$ at $x=+690$ mm | `figs/exec14d_adaptive_tN_690mm.png` | True | True | EJ230_ANALYSIS | `` |

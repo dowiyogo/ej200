@@ -211,3 +211,25 @@ The σ_group increase at the far End is physical: EJ-230 yield (9700/MeV) is 6.7
   hay clipping, tablas truncadas ni intercambio de Top/endL/endR.
 - PDF SHA256:
   `c38e516e874031454212ebc2b6c358524e93b883d7c22d708a88a5cf7b37342a`.
+
+---
+
+## 8. Restauración visual t_N (EXEC_14E)
+
+- Los siete frames principales `t_N` recuperan el layout de seis paneles:
+  `t4/N=4` arriba y `t20/N=20` abajo, con columnas Top nearest, End-L y End-R.
+- Todos los histogramas principales usan binning fijo de `25 ps`; el análisis
+  adaptativo de EXEC_14D no se elimina y queda referenciado únicamente en nueve
+  frames Backup añadidos después de los 119 frames de paridad.
+- La métrica fitted `sigma(t4)` aprobada para las diapositivas 33/50/51 no se
+  revierte. La síntesis principal separa esa métrica del far-End fixed `t20`.
+- Los 30 far-End no centrales tienen fit fixed-25ps válido. En los extremos se
+  conserva explícitamente el bajo alcance (`R(20)=10.85--16.90%`) y la fracción
+  excluida; no se ocultan histogramas ni se fabrican ajustes.
+- No se modificaron ROOT crudos, simulación, geometría, `src/`, `include/` ni
+  `main.cc`.
+- Cierre final: 119 frames primarios + 9 Backup adaptativos appended; PDF de
+  128 páginas, `164/164` assets resueltos, OCR limpio sobre 142 PNG únicos,
+  `latexmk -halt-on-error` y preflight PDF en PASS.
+- PDF SHA256:
+  `129567f8a0a753147d6c04f3b9d5d0ff922d4ff06d72b3c12add41aeb080d9cb`.

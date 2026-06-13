@@ -1,4 +1,4 @@
-# EXEC_14/14D fit failures and quality flags
+# EXEC_14/14D/14E fit failures and quality flags
 
 Updated: 2026-06-13
 
@@ -17,25 +17,39 @@ Source: `results_ej230_analysis/exec10_landau_mpv.csv`.
 
 These quality flags remain in the CSV and are not converted into fit failures.
 
-## Time-to-threshold Gaussian fits (EXEC_14D final)
+## Time-to-threshold Gaussian fits (EXEC_14E final)
 
-Source: `results_ej230_analysis/csv/exec13_tN_summary.csv`.
+Sources:
 
-The eight edge-position degeneracies recorded by EXEC_14B are resolved:
+- `results_ej230_analysis/csv/exec13_tN_summary.csv`
+- `results_ej230_analysis/csv/exec14e_fixed_tN_summary.csv`
+
+The adaptive-bin fitted `t4` metric approved in EXEC_14D remains unchanged in
+the summary slides:
 
 - Four near-End t4 cores (`x = -690, -650, +650, +690 mm`) now converge with
   the documented adaptive-bin fit. They are explicitly flagged
   `resolution_limited`; the fitted values are not replaced by RMS.
-- Four far-End t20 requests at the same positions now use
-  `HOOK_ADAPTIVE_TN`. Their data-selected thresholds are respectively
-  `N_eff = 7, 8, 8, 7`, all with event reach above the configured 95% minimum.
-- Across all 31 positions, 17 far-End thresholds are reduced, 14 retain the
-  nominal `N=20`, and none meet the genuine-starvation condition.
 - Final missing fitted widths: **0**. Final genuine-starvation points: **0**.
 
 The nearest-Top fitted t4 range is `6.648--9.594 ps`; the near-End fitted t4
 range is `0.562--127.719 ps`. Values narrower than the reporting bin-width hook
 remain annotated as resolution-limited together with their mean Npe.
+
+For the restored main per-position display, every panel uses a fixed 25 ps bin
+width and explicit `N=4`/`N=20` thresholds. The far-End `t20` histogram is
+never hidden because of low reach. All 30 non-central far-End fixed `t20` core
+fits converge with finite covariance, including the four edge positions:
+
+- `x=-690`: `R(20)=10.85%`, `sigma_fit=1350.6 +/- 132.2 ps`
+- `x=-650`: `R(20)=16.35%`, `sigma_fit=1409.8 +/- 121.6 ps`
+- `x=+650`: `R(20)=16.90%`, `sigma_fit=1363.4 +/- 118.9 ps`
+- `x=+690`: `R(20)=11.90%`, `sigma_fit=1429.2 +/- 146.2 ps`
+
+Therefore no current far-End panel needs the documented “not fitable; see
+Backup” fallback. The low-reach panels still show their real histogram and
+excluded fraction. The adaptive `N_eff` analysis is preserved in appended
+Backup frames rather than used in the main per-position figures.
 
 ## Special-control analyses
 

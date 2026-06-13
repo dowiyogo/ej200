@@ -41,33 +41,25 @@ def append_exec14e_backups(text: str) -> str:
     text = pattern.sub("", text)
     backup = rf"""{EXEC14E_BACKUP_START}
 \begin{{frame}}{{Backup: far-End adaptive $t_N$ ($N_{{eff}}$ where 20 PE is unreachable)}}
-\centering
-\includegraphics[width=0.72\textwidth,height=0.38\textheight,keepaspectratio]%
-{{figs/exec14d_adaptive_tN_summary.png}}
 \input{{../tables/adaptive_tN.tex}}
 \end{{frame}}
 
-\begin{{frame}}{{Backup: far-End adaptive $t_N$ at negative and central positions}}
-\begin{{columns}}[T]
-\column{{0.50\textwidth}}
-\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-690mm.png}}\\
-\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-650mm.png}}
-\column{{0.50\textwidth}}
-\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-400mm.png}}\\
-\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_0mm.png}}
-\end{{columns}}
+\begin{{frame}}{{Backup: far-End adaptive $t_N$ synthesis}}
+\centering
+\includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
+{{figs/exec14d_adaptive_tN_summary.png}}
 \end{{frame}}
 
-\begin{{frame}}{{Backup: far-End adaptive $t_N$ at positive positions}}
-\begin{{columns}}[T]
-\column{{0.333\textwidth}}
-\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_400mm.png}}
-\column{{0.333\textwidth}}
-\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_650mm.png}}
-\column{{0.333\textwidth}}
-\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_690mm.png}}
-\end{{columns}}
+"""
+    for x_mm in (-690, -650, -400, 0, 400, 650, 690):
+        backup += rf"""
+\begin{{frame}}{{Backup: far-End adaptive $t_N$ at $x={x_mm:+d}$ mm}}
+\centering
+\includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
+{{figs/exec14d_adaptive_tN_{x_mm}mm.png}}
 \end{{frame}}
+"""
+    backup += rf"""
 {EXEC14E_BACKUP_END}
 """
     if r"\end{document}" not in text:
@@ -369,8 +361,8 @@ are apparent velocities dominated by estimator-dependent late-tail bias.
     text = append_exec14e_backups(text)
     if re.search(r"\\[1-9]", text):
         raise RuntimeError("residual regex backreference remains after rebuild")
-    if len(frames(text)) != 122:
-        raise RuntimeError(f"expected 119 primary + 3 appended backup frames, found {len(frames(text))}")
+    if len(frames(text)) != 128:
+        raise RuntimeError(f"expected 119 primary + 9 appended backup frames, found {len(frames(text))}")
     args.report.write_text(text, encoding="utf-8")
     print(f"rebuilt {args.report} with {len(frames(text))} frames")
     return 0

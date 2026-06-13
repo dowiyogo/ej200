@@ -46,4 +46,4 @@
 
 ## Forward note
 
-A future cross-material comparison must rerun this same reusable hook on every compared data set. Comparing a fixed-t20 series with an adaptive-threshold series would not be apples-to-apples.
+A future cross-sample study must rerun this same reusable hook on every compared data set. Comparing a fixed-t20 series with an adaptive-threshold series would not be apples-to-apples.
