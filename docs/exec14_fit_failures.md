@@ -40,9 +40,10 @@ remain annotated as resolution-limited together with their mean Npe.
 ## Special-control analyses
 
 EXEC_14B ran authentic EJ-230 window-track and End-only controls. Their CSV and PNG
-products replace the three previously copied EJ-204 figures. The EndTop/End-only
-timing gate is allowed to return its documented scientific non-zero status when
-EndTop is narrower; this is a physical result, not a fit or execution failure.
+products replace the three previously copied EJ-204 figures. EXEC_14D verifies
+that EndTop is wider for all six side/position comparisons after matching the
+estimator and bootstrapping End-only to 2000 events. This is a physical result,
+not a fit or execution failure.
 
 The final EndTop/End-only fitted-width ratio spans `1.223218--1.963382`; no
 ratio was replaced, clipped, or interpreted as an execution failure.

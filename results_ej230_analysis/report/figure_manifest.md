@@ -61,7 +61,7 @@
 | 43 | Mean arrival time and FPT versus x | `figs/P6_tmean_vs_x.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
 | 46 | Window-track collection effect: five-run test | `figs/exec08b_window_dip_profiles.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec08b_window_dip.py` |
 | 47 | Intrinsic End SUM4 timing | `figs/P7_deltaT_end.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
-| 48 | End arrival-time tails without any time acceptance window: narrower EndTop is physical | `figs/exec09_tail_comparison.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec09_timing_mechanism.py` |
+| 48 | End arrival-time tails: drainage persists, but EndTop widens End timing | `figs/exec09_tail_comparison.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec09_timing_mechanism.py` |
 | 49 | Apparent timing slopes: no propagation estimator passes | `figs/exec10_velocity_estimators.png` | True | True | EJ230_ANALYSIS | `analysis/exec07/exec10_veff_diagnosis.py` |
 | 52 | Position x=-690 mm | `figs/muon_-690mm_geometry.png` | True | True | STATIC_GEOMETRY | `analysis/exec07_photon_budget.py` |
 | 52 | Position x=-690 mm | `figs/muon_-690mm_top_profile.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |

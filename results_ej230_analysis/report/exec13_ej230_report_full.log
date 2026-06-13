@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2026.5.9)  13 JUN 2026 11:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2026.5.9)  13 JUN 2026 12:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1094,12 +1094,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_-690mm.png  used on input line
  [6
 
  <..//figs/exec11_arrival_-690mm.png>]
-<..//figs/exec13_tN_-690mm.png, id=90, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_-690mm.png, id=90, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_-690mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_-690mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_-690mm.png  used on input line 103.
 
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
  [7
 
  <..//figs/exec13_tN_-690mm.png>]
@@ -1150,12 +1150,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_-650mm.png  used on input line
  [10
 
  <..//figs/exec11_arrival_-650mm.png>]
-<..//figs/exec13_tN_-650mm.png, id=128, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_-650mm.png, id=128, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_-650mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_-650mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_-650mm.png  used on input line 140.
 
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
 
 [11
 
@@ -1207,12 +1207,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_-400mm.png  used on input line
  [14
 
  <..//figs/exec11_arrival_-400mm.png>]
-<..//figs/exec13_tN_-400mm.png, id=163, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_-400mm.png, id=163, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_-400mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_-400mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_-400mm.png  used on input line 177.
 
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
 
 [15
 
@@ -1264,11 +1264,11 @@ Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 21
  [18
 
  <..//figs/exec11_arrival_0mm.png>]
-<..//figs/exec13_tN_0mm.png, id=197, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_0mm.png, id=197, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_0mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_0mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_0mm.png  used on input line 214.
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
  [19
 
  <..//figs/exec13_tN_0mm.png>]
@@ -1319,11 +1319,11 @@ Package pdftex.def Info: ..//figs/exec11_arrival_400mm.png  used on input line
 [22
 
  <..//figs/exec11_arrival_400mm.png>]
-<..//figs/exec13_tN_400mm.png, id=233, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_400mm.png, id=233, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_400mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_400mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_400mm.png  used on input line 251.
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
  [23
 
  <..//figs/exec13_tN_400mm.png>]
@@ -1374,11 +1374,11 @@ Package pdftex.def Info: ..//figs/exec11_arrival_650mm.png  used on input line
  [26
 
  <..//figs/exec11_arrival_650mm.png>]
-<..//figs/exec13_tN_650mm.png, id=268, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_650mm.png, id=268, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_650mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_650mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_650mm.png  used on input line 288.
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
  [27
 
  <..//figs/exec13_tN_650mm.png>]
@@ -1428,11 +1428,11 @@ Package pdftex.def Info: ..//figs/exec11_arrival_690mm.png  used on input line
  [30
 
  <..//figs/exec11_arrival_690mm.png>]
-<..//figs/exec13_tN_690mm.png, id=302, 1011.78pt x 614.295pt>
+<..//figs/exec13_tN_690mm.png, id=302, 1084.05pt x 375.804pt>
 File: ..//figs/exec13_tN_690mm.png Graphic file (type png)
 <use ..//figs/exec13_tN_690mm.png>
 Package pdftex.def Info: ..//figs/exec13_tN_690mm.png  used on input line 325.
-(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+(pdftex.def)             Requested size: 398.32983pt x 138.08768pt.
  [31
 
  <..//figs/exec13_tN_690mm.png>]
@@ -1463,7 +1463,7 @@ File: ..//figs/exec13_tN_summary.png Graphic file (type png)
 <use ..//figs/exec13_tN_summary.png>
 Package pdftex.def Info: ..//figs/exec13_tN_summary.png  used on input line 351
 .
-(pdftex.def)             Requested size: 398.33315pt x 153.20505pt.
+(pdftex.def)             Requested size: 373.5753pt x 143.6828pt.
 (../tables/tN_summary.tex) [33
 
  <..//figs/exec13_tN_summary.png>] [34
@@ -1553,33 +1553,35 @@ t line 581.
 <..//figs/P7_deltaT_end.png, id=429, 939.51pt x 361.35pt>
 File: ..//figs/P7_deltaT_end.png Graphic file (type png)
 <use ..//figs/P7_deltaT_end.png>
-Package pdftex.def Info: ..//figs/P7_deltaT_end.png  used on input line 591.
-(pdftex.def)             Requested size: 393.24394pt x 151.24767pt.
+Package pdftex.def Info: ..//figs/P7_deltaT_end.png  used on input line 595.
+(pdftex.def)             Requested size: 353.90665pt x 136.11794pt.
  (../tables/sum4_timing.tex)
 [47
 
  <..//figs/P7_deltaT_end.png>] (../tables/endtop_endonly_ratio.tex)
 (../tables/endtop_endonly_tails.tex)
-<..//figs/exec09_tail_comparison.png, id=437, 975.645pt x 867.24pt>
+<..//figs/exec09_tail_comparison.png, id=438, 975.645pt x 867.24pt>
 File: ..//figs/exec09_tail_comparison.png Graphic file (type png)
 <use ..//figs/exec09_tail_comparison.png>
 Package pdftex.def Info: ..//figs/exec09_tail_comparison.png  used on input lin
-e 609.
+e 612.
 (pdftex.def)             Requested size: 119.09698pt x 105.864pt.
- [48
+ (../tables/endtop_physical_diagnosis.tex)
+[48
 
  <..//figs/exec09_tail_comparison.png>]
-<..//figs/exec10_velocity_estimators.png, id=444, 939.51pt x 650.43pt>
+<..//figs/exec10_velocity_estimators.png, id=445, 939.51pt x 650.43pt>
 File: ..//figs/exec10_velocity_estimators.png Graphic file (type png)
 <use ..//figs/exec10_velocity_estimators.png>
 Package pdftex.def Info: ..//figs/exec10_velocity_estimators.png  used on input
- line 621.
-(pdftex.def)             Requested size: 246.96797pt x 170.97366pt.
-(../tables/velocity_estimators.tex) [49
+ line 628.
+(pdftex.def)             Requested size: 242.98677pt x 168.21458pt.
+ (../tables/velocity_estimators.tex)
+[49
 
- <..//figs/exec10_velocity_estimators.png>] (../tables/top_timing_estimates.tex
-) (../tables/top_timing_comparison.tex)
-[50
+ <..//figs/exec10_velocity_estimators.png>]
+(../tables/top_timing_estimates.tex) (../tables/top_timing_definition.tex)
+(../tables/top_timing_comparison.tex) [50
 
 ] (../tables/numerical_conclusions.tex (../tables/sum4_timing.tex)) [51
 
@@ -1587,68 +1589,67 @@ Package pdftex.def Info: ..//figs/exec10_velocity_estimators.png  used on input
 File: ..//figs/muon_-690mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-690mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-690mm_geometry.png  used on input line 
-655.
+663.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_-690mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-690mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-690mm_top_profile.png  used on input li
-ne 655.
+ne 663.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/key_position_-690.tex) [52
+ (../tables/key_position_-690.tex) [52
 
 ]
 File: ..//figs/exec11_arrival_-690mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-690mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-690mm.png  used on input line
- 658.
+ 666.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
- [53
+
+[53
 
 ]
 <..//figs/muon_-670mm_geometry.png, id=475, 867.24pt x 231.264pt>
 File: ..//figs/muon_-670mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-670mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-670mm_geometry.png  used on input line 
-670.
+678.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-670mm_top_profile.png, id=476, 578.16pt x 325.215pt>
 File: ..//figs/muon_-670mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-670mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-670mm_top_profile.png  used on input li
-ne 670.
+ne 678.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-670.tex)
-[54
+ (../tables/position_-670.tex) [54
 
  <..//figs/muon_-670mm_geometry.png> <..//figs/muon_-670mm_top_profile.png>]
 <..//figs/exec11_arrival_-670mm.png, id=484, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-670mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-670mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-670mm.png  used on input line
- 673.
+ 681.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[55
+ [55
 
  <..//figs/exec11_arrival_-670mm.png>]
 File: ..//figs/muon_-650mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-650mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-650mm_geometry.png  used on input line 
-685.
+693.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_-650mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-650mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-650mm_top_profile.png  used on input li
-ne 685.
+ne 693.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/key_position_-650.tex)
-[56
+
+(../tables/key_position_-650.tex) [56
 
 ]
 File: ..//figs/exec11_arrival_-650mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-650mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-650mm.png  used on input line
- 688.
+ 696.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [57
 
@@ -1657,118 +1658,120 @@ Package pdftex.def Info: ..//figs/exec11_arrival_-650mm.png  used on input line
 File: ..//figs/muon_-600mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-600mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-600mm_geometry.png  used on input line 
-700.
+708.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-600mm_top_profile.png, id=503, 578.16pt x 325.215pt>
 File: ..//figs/muon_-600mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-600mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-600mm_top_profile.png  used on input li
-ne 700.
+ne 708.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-600.tex) [58
+ (../tables/position_-600.tex)
+[58
 
  <..//figs/muon_-600mm_geometry.png> <..//figs/muon_-600mm_top_profile.png>]
 <..//figs/exec11_arrival_-600mm.png, id=511, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-600mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-600mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-600mm.png  used on input line
- 703.
+ 711.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
- [59
+[59
 
  <..//figs/exec11_arrival_-600mm.png>]
 <..//figs/muon_-550mm_geometry.png, id=518, 867.24pt x 231.264pt>
 File: ..//figs/muon_-550mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-550mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-550mm_geometry.png  used on input line 
-715.
+723.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-550mm_top_profile.png, id=519, 578.16pt x 325.215pt>
 File: ..//figs/muon_-550mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-550mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-550mm_top_profile.png  used on input li
-ne 715.
+ne 723.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-550.tex) [60
+ (../tables/position_-550.tex)
+[60
 
  <..//figs/muon_-550mm_geometry.png> <..//figs/muon_-550mm_top_profile.png>]
 <..//figs/exec11_arrival_-550mm.png, id=527, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-550mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-550mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-550mm.png  used on input line
- 718.
+ 726.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
- [61
+[61
 
  <..//figs/exec11_arrival_-550mm.png>]
 <..//figs/muon_-500mm_geometry.png, id=535, 867.24pt x 231.264pt>
 File: ..//figs/muon_-500mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-500mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-500mm_geometry.png  used on input line 
-730.
+738.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-500mm_top_profile.png, id=536, 578.16pt x 325.215pt>
 File: ..//figs/muon_-500mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-500mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-500mm_top_profile.png  used on input li
-ne 730.
+ne 738.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_-500.tex) [62
+ (../tables/position_-500.tex)
+[62
 
  <..//figs/muon_-500mm_geometry.png> <..//figs/muon_-500mm_top_profile.png>]
 <..//figs/exec11_arrival_-500mm.png, id=544, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-500mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-500mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-500mm.png  used on input line
- 733.
+ 741.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
- [63
+[63
 
  <..//figs/exec11_arrival_-500mm.png>]
 <..//figs/muon_-450mm_geometry.png, id=551, 867.24pt x 231.264pt>
 File: ..//figs/muon_-450mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-450mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-450mm_geometry.png  used on input line 
-745.
+753.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-450mm_top_profile.png, id=552, 578.16pt x 325.215pt>
 File: ..//figs/muon_-450mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-450mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-450mm_top_profile.png  used on input li
-ne 745.
+ne 753.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_-450.tex) [64
+ (../tables/position_-450.tex)
+[64
 
  <..//figs/muon_-450mm_geometry.png> <..//figs/muon_-450mm_top_profile.png>]
 <..//figs/exec11_arrival_-450mm.png, id=560, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-450mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-450mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-450mm.png  used on input line
- 748.
+ 756.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
- [65
+[65
 
  <..//figs/exec11_arrival_-450mm.png>]
 File: ..//figs/muon_-400mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-400mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-400mm_geometry.png  used on input line 
-760.
+768.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_-400mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-400mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-400mm_top_profile.png  used on input li
-ne 760.
+ne 768.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/key_position_-400.tex) [66
+ (../tables/key_position_-400.tex)
+[66
 
 ]
 File: ..//figs/exec11_arrival_-400mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-400mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-400mm.png  used on input line
- 763.
+ 771.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [67
 
@@ -1777,193 +1780,193 @@ Package pdftex.def Info: ..//figs/exec11_arrival_-400mm.png  used on input line
 File: ..//figs/muon_-350mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-350mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-350mm_geometry.png  used on input line 
-775.
+783.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-350mm_top_profile.png, id=579, 578.16pt x 325.215pt>
 File: ..//figs/muon_-350mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-350mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-350mm_top_profile.png  used on input li
-ne 775.
+ne 783.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-350.tex)
-[68
+ (../tables/position_-350.tex) [68
 
  <..//figs/muon_-350mm_geometry.png> <..//figs/muon_-350mm_top_profile.png>]
 <..//figs/exec11_arrival_-350mm.png, id=587, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-350mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-350mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-350mm.png  used on input line
- 778.
+ 786.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[69
+ [69
 
  <..//figs/exec11_arrival_-350mm.png>]
 <..//figs/muon_-300mm_geometry.png, id=594, 867.24pt x 231.264pt>
 File: ..//figs/muon_-300mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-300mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-300mm_geometry.png  used on input line 
-790.
+798.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-300mm_top_profile.png, id=595, 578.16pt x 325.215pt>
 File: ..//figs/muon_-300mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-300mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-300mm_top_profile.png  used on input li
-ne 790.
+ne 798.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-300.tex)
-[70
+ (../tables/position_-300.tex) [70
 
  <..//figs/muon_-300mm_geometry.png> <..//figs/muon_-300mm_top_profile.png>]
 <..//figs/exec11_arrival_-300mm.png, id=603, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-300mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-300mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-300mm.png  used on input line
- 793.
+ 801.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[71
+ [71
 
  <..//figs/exec11_arrival_-300mm.png>]
 <..//figs/muon_-250mm_geometry.png, id=611, 867.24pt x 231.264pt>
 File: ..//figs/muon_-250mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-250mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-250mm_geometry.png  used on input line 
-805.
+813.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-250mm_top_profile.png, id=612, 578.16pt x 325.215pt>
 File: ..//figs/muon_-250mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-250mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-250mm_top_profile.png  used on input li
-ne 805.
+ne 813.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-250.tex)
-[72
+
+(../tables/position_-250.tex) [72
 
  <..//figs/muon_-250mm_geometry.png> <..//figs/muon_-250mm_top_profile.png>]
 <..//figs/exec11_arrival_-250mm.png, id=620, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-250mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-250mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-250mm.png  used on input line
- 808.
+ 816.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[73
+ [73
 
  <..//figs/exec11_arrival_-250mm.png>]
 <..//figs/muon_-200mm_geometry.png, id=628, 867.24pt x 231.264pt>
 File: ..//figs/muon_-200mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-200mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-200mm_geometry.png  used on input line 
-820.
+828.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-200mm_top_profile.png, id=629, 578.16pt x 325.215pt>
 File: ..//figs/muon_-200mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-200mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-200mm_top_profile.png  used on input li
-ne 820.
+ne 828.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-200.tex)
-[74
+
+(../tables/position_-200.tex) [74
 
  <..//figs/muon_-200mm_geometry.png> <..//figs/muon_-200mm_top_profile.png>]
 <..//figs/exec11_arrival_-200mm.png, id=637, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-200mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-200mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-200mm.png  used on input line
- 823.
+ 831.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[75
+ [75
 
  <..//figs/exec11_arrival_-200mm.png>]
 <..//figs/muon_-150mm_geometry.png, id=644, 867.24pt x 231.264pt>
 File: ..//figs/muon_-150mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-150mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-150mm_geometry.png  used on input line 
-835.
+843.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-150mm_top_profile.png, id=645, 578.16pt x 325.215pt>
 File: ..//figs/muon_-150mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-150mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-150mm_top_profile.png  used on input li
-ne 835.
+ne 843.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-150.tex)
-[76
+
+(../tables/position_-150.tex) [76
 
  <..//figs/muon_-150mm_geometry.png> <..//figs/muon_-150mm_top_profile.png>]
 <..//figs/exec11_arrival_-150mm.png, id=653, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-150mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-150mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-150mm.png  used on input line
- 838.
+ 846.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[77
+ [77
 
  <..//figs/exec11_arrival_-150mm.png>]
 <..//figs/muon_-100mm_geometry.png, id=660, 867.24pt x 231.264pt>
 File: ..//figs/muon_-100mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-100mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-100mm_geometry.png  used on input line 
-850.
+858.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-100mm_top_profile.png, id=661, 578.16pt x 325.215pt>
 File: ..//figs/muon_-100mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-100mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-100mm_top_profile.png  used on input li
-ne 850.
+ne 858.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-100.tex)
-[78
+
+(../tables/position_-100.tex) [78
 
  <..//figs/muon_-100mm_geometry.png> <..//figs/muon_-100mm_top_profile.png>]
 <..//figs/exec11_arrival_-100mm.png, id=669, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-100mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-100mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-100mm.png  used on input line
- 853.
+ 861.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
-[79
+ [79
 
  <..//figs/exec11_arrival_-100mm.png>]
 <..//figs/muon_-50mm_geometry.png, id=677, 867.24pt x 231.264pt>
 File: ..//figs/muon_-50mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_-50mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_-50mm_geometry.png  used on input line 8
-65.
+73.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_-50mm_top_profile.png, id=678, 578.16pt x 325.215pt>
 File: ..//figs/muon_-50mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_-50mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_-50mm_top_profile.png  used on input lin
-e 865.
+e 873.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/position_-50.tex) [80
+
+(../tables/position_-50.tex) [80
 
  <..//figs/muon_-50mm_geometry.png> <..//figs/muon_-50mm_top_profile.png>]
 <..//figs/exec11_arrival_-50mm.png, id=686, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_-50mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_-50mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_-50mm.png  used on input line 
-868.
+876.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [81
 
  <..//figs/exec11_arrival_-50mm.png>]
 File: ..//figs/muon_0mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_0mm_geometry.png>
-Package pdftex.def Info: ..//figs/muon_0mm_geometry.png  used on input line 880
+Package pdftex.def Info: ..//figs/muon_0mm_geometry.png  used on input line 888
 .
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_0mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_0mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_0mm_top_profile.png  used on input line 
-880.
+888.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
- (../tables/key_position_0.tex) [82
+
+(../tables/key_position_0.tex) [82
 
 ]
 File: ..//figs/exec11_arrival_0mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_0mm.png>
-Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 88
-3.
+Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 89
+1.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [83
 
@@ -1971,24 +1974,23 @@ Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 88
 <..//figs/muon_50mm_geometry.png, id=703, 867.24pt x 231.264pt>
 File: ..//figs/muon_50mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_50mm_geometry.png>
-Package pdftex.def Info: ..//figs/muon_50mm_geometry.png  used on input line 89
-5.
+Package pdftex.def Info: ..//figs/muon_50mm_geometry.png  used on input line 90
+3.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_50mm_top_profile.png, id=704, 578.16pt x 325.215pt>
 File: ..//figs/muon_50mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_50mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_50mm_top_profile.png  used on input line
- 895.
+ 903.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_50.tex) [84
+ (../tables/position_50.tex) [84
 
  <..//figs/muon_50mm_geometry.png> <..//figs/muon_50mm_top_profile.png>]
 <..//figs/exec11_arrival_50mm.png, id=712, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_50mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_50mm.png>
-Package pdftex.def Info: ..//figs/exec11_arrival_50mm.png  used on input line 8
-98.
+Package pdftex.def Info: ..//figs/exec11_arrival_50mm.png  used on input line 9
+06.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [85
 
@@ -1997,23 +1999,22 @@ Package pdftex.def Info: ..//figs/exec11_arrival_50mm.png  used on input line 8
 File: ..//figs/muon_100mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_100mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_100mm_geometry.png  used on input line 9
-10.
+18.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_100mm_top_profile.png, id=721, 578.16pt x 325.215pt>
 File: ..//figs/muon_100mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_100mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_100mm_top_profile.png  used on input lin
-e 910.
+e 918.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_100.tex) [86
+ (../tables/position_100.tex) [86
 
  <..//figs/muon_100mm_geometry.png> <..//figs/muon_100mm_top_profile.png>]
 <..//figs/exec11_arrival_100mm.png, id=729, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_100mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_100mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_100mm.png  used on input line 
-913.
+921.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [87
 
@@ -2022,23 +2023,22 @@ Package pdftex.def Info: ..//figs/exec11_arrival_100mm.png  used on input line
 File: ..//figs/muon_150mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_150mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_150mm_geometry.png  used on input line 9
-25.
+33.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_150mm_top_profile.png, id=737, 578.16pt x 325.215pt>
 File: ..//figs/muon_150mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_150mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_150mm_top_profile.png  used on input lin
-e 925.
+e 933.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_150.tex) [88
+ (../tables/position_150.tex) [88
 
  <..//figs/muon_150mm_geometry.png> <..//figs/muon_150mm_top_profile.png>]
 <..//figs/exec11_arrival_150mm.png, id=745, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_150mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_150mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_150mm.png  used on input line 
-928.
+936.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [89
 
@@ -2047,23 +2047,22 @@ Package pdftex.def Info: ..//figs/exec11_arrival_150mm.png  used on input line
 File: ..//figs/muon_200mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_200mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_200mm_geometry.png  used on input line 9
-40.
+48.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_200mm_top_profile.png, id=753, 578.16pt x 325.215pt>
 File: ..//figs/muon_200mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_200mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_200mm_top_profile.png  used on input lin
-e 940.
+e 948.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
-
-(../tables/position_200.tex) [90
+ (../tables/position_200.tex) [90
 
  <..//figs/muon_200mm_geometry.png> <..//figs/muon_200mm_top_profile.png>]
 <..//figs/exec11_arrival_200mm.png, id=761, 975.645pt x 346.896pt>
 File: ..//figs/exec11_arrival_200mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_200mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_200mm.png  used on input line 
-943.
+951.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [91
 
@@ -2072,13 +2071,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_200mm.png  used on input line
 File: ..//figs/muon_250mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_250mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_250mm_geometry.png  used on input line 9
-55.
+63.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_250mm_top_profile.png, id=770, 578.16pt x 325.215pt>
 File: ..//figs/muon_250mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_250mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_250mm_top_profile.png  used on input lin
-e 955.
+e 963.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/position_250.tex) [92
@@ -2088,7 +2087,7 @@ e 955.
 File: ..//figs/exec11_arrival_250mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_250mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_250mm.png  used on input line 
-958.
+966.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [93
 
@@ -2097,13 +2096,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_250mm.png  used on input line
 File: ..//figs/muon_300mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_300mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_300mm_geometry.png  used on input line 9
-70.
+78.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_300mm_top_profile.png, id=786, 578.16pt x 325.215pt>
 File: ..//figs/muon_300mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_300mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_300mm_top_profile.png  used on input lin
-e 970.
+e 978.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/position_300.tex) [94
@@ -2113,7 +2112,7 @@ e 970.
 File: ..//figs/exec11_arrival_300mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_300mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_300mm.png  used on input line 
-973.
+981.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [95
 
@@ -2122,13 +2121,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_300mm.png  used on input line
 File: ..//figs/muon_350mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_350mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_350mm_geometry.png  used on input line 9
-85.
+93.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_350mm_top_profile.png, id=802, 578.16pt x 325.215pt>
 File: ..//figs/muon_350mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_350mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_350mm_top_profile.png  used on input lin
-e 985.
+e 993.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/position_350.tex) [96
@@ -2138,7 +2137,7 @@ e 985.
 File: ..//figs/exec11_arrival_350mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_350mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_350mm.png  used on input line 
-988.
+996.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [97
 
@@ -2146,12 +2145,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_350mm.png  used on input line
 File: ..//figs/muon_400mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_400mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_400mm_geometry.png  used on input line 1
-000.
+008.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_400mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_400mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_400mm_top_profile.png  used on input lin
-e 1000.
+e 1008.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/key_position_400.tex) [98
@@ -2160,7 +2159,7 @@ e 1000.
 File: ..//figs/exec11_arrival_400mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_400mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_400mm.png  used on input line 
-1003.
+1011.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [99
 
@@ -2169,13 +2168,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_400mm.png  used on input line
 File: ..//figs/muon_450mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_450mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_450mm_geometry.png  used on input line 1
-015.
+023.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_450mm_top_profile.png, id=830, 578.16pt x 325.215pt>
 File: ..//figs/muon_450mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_450mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_450mm_top_profile.png  used on input lin
-e 1015.
+e 1023.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
  (../tables/position_450.tex)
 [100
@@ -2185,7 +2184,7 @@ e 1015.
 File: ..//figs/exec11_arrival_450mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_450mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_450mm.png  used on input line 
-1018.
+1026.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 
 [101
@@ -2195,13 +2194,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_450mm.png  used on input line
 File: ..//figs/muon_500mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_500mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_500mm_geometry.png  used on input line 1
-030.
+038.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_500mm_top_profile.png, id=846, 578.16pt x 325.215pt>
 File: ..//figs/muon_500mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_500mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_500mm_top_profile.png  used on input lin
-e 1030.
+e 1038.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
  (../tables/position_500.tex) [102
 
@@ -2210,7 +2209,7 @@ e 1030.
 File: ..//figs/exec11_arrival_500mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_500mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_500mm.png  used on input line 
-1033.
+1041.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [103
 
@@ -2219,13 +2218,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_500mm.png  used on input line
 File: ..//figs/muon_550mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_550mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_550mm_geometry.png  used on input line 1
-045.
+053.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_550mm_top_profile.png, id=863, 578.16pt x 325.215pt>
 File: ..//figs/muon_550mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_550mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_550mm_top_profile.png  used on input lin
-e 1045.
+e 1053.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
  (../tables/position_550.tex) [104
 
@@ -2234,7 +2233,7 @@ e 1045.
 File: ..//figs/exec11_arrival_550mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_550mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_550mm.png  used on input line 
-1048.
+1056.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [105
 
@@ -2243,13 +2242,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_550mm.png  used on input line
 File: ..//figs/muon_600mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_600mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_600mm_geometry.png  used on input line 1
-060.
+068.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_600mm_top_profile.png, id=879, 578.16pt x 325.215pt>
 File: ..//figs/muon_600mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_600mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_600mm_top_profile.png  used on input lin
-e 1060.
+e 1068.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
  (../tables/position_600.tex) [106
 
@@ -2258,7 +2257,7 @@ e 1060.
 File: ..//figs/exec11_arrival_600mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_600mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_600mm.png  used on input line 
-1063.
+1071.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [107
 
@@ -2266,12 +2265,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_600mm.png  used on input line
 File: ..//figs/muon_650mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_650mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_650mm_geometry.png  used on input line 1
-075.
+083.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_650mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_650mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_650mm_top_profile.png  used on input lin
-e 1075.
+e 1083.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
  (../tables/key_position_650.tex) [108
 
@@ -2279,7 +2278,7 @@ e 1075.
 File: ..//figs/exec11_arrival_650mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_650mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_650mm.png  used on input line 
-1078.
+1086.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [109
 
@@ -2288,13 +2287,13 @@ Package pdftex.def Info: ..//figs/exec11_arrival_650mm.png  used on input line
 File: ..//figs/muon_670mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_670mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_670mm_geometry.png  used on input line 1
-090.
+098.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 <..//figs/muon_670mm_top_profile.png, id=906, 578.16pt x 325.215pt>
 File: ..//figs/muon_670mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_670mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_670mm_top_profile.png  used on input lin
-e 1090.
+e 1098.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/position_670.tex) [110
@@ -2304,7 +2303,7 @@ e 1090.
 File: ..//figs/exec11_arrival_670mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_670mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_670mm.png  used on input line 
-1093.
+1101.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [111
 
@@ -2312,12 +2311,12 @@ Package pdftex.def Info: ..//figs/exec11_arrival_670mm.png  used on input line
 File: ..//figs/muon_690mm_geometry.png Graphic file (type png)
 <use ..//figs/muon_690mm_geometry.png>
 Package pdftex.def Info: ..//figs/muon_690mm_geometry.png  used on input line 1
-105.
+113.
 (pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
 File: ..//figs/muon_690mm_top_profile.png Graphic file (type png)
 <use ..//figs/muon_690mm_top_profile.png>
 Package pdftex.def Info: ..//figs/muon_690mm_top_profile.png  used on input lin
-e 1105.
+e 1113.
 (pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
 (../tables/key_position_690.tex) [112
@@ -2326,14 +2325,14 @@ e 1105.
 File: ..//figs/exec11_arrival_690mm.png Graphic file (type png)
 <use ..//figs/exec11_arrival_690mm.png>
 Package pdftex.def Info: ..//figs/exec11_arrival_690mm.png  used on input line 
-1108.
+1116.
 (pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
  [113
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\translate ' on input line 1110.
+(hyperref)                removing `\translate ' on input line 1118.
 
 (../tables/validation_summary.tex) [114
 
@@ -2342,23 +2341,23 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 File: ..//figs/exec08b_id18_impact_maps.png Graphic file (type png)
 <use ..//figs/exec08b_id18_impact_maps.png>
 Package pdftex.def Info: ..//figs/exec08b_id18_impact_maps.png  used on input l
-ine 1117.
+ine 1125.
 (pdftex.def)             Requested size: 393.23843pt x 196.61922pt.
  [115
 
- <..//figs/exec08b_id18_impact_maps.png>] (../tables/threshold_rationale.tex) [
-116
+ <..//figs/exec08b_id18_impact_maps.png>] (../tables/adaptive_tN.tex) (../table
+s/threshold_rationale.tex)
+[116
 
 ] [117
 
-]
-(../tables/window_dip_summary.tex) [118
+] (../tables/window_dip_summary.tex) [118
 
 ]
 File: ..//figs/exec09_tail_comparison.png Graphic file (type png)
 <use ..//figs/exec09_tail_comparison.png>
 Package pdftex.def Info: ..//figs/exec09_tail_comparison.png  used on input lin
-e 1182.
+e 1186.
 (pdftex.def)             Requested size: 221.1929pt x 196.6159pt.
  [119
 
@@ -2372,16 +2371,17 @@ e 1182.
 \tf@snm=\write8
 \openout8 = `exec13_ej230_report_full.snm'.
 
- (./exec13_ej230_report_full.aux)
+
+(./exec13_ej230_report_full.aux)
 Package rerunfilecheck Info: File `exec13_ej230_report_full.out' has not change
 d.
 (rerunfilecheck)             Checksum: 12D2AF632013C3D5F05F3AA97EB3E234;766.
  ) 
 Here is how much of TeX's memory you used:
- 25468 strings out of 481008
- 495701 string characters out of 5909440
- 771885 words of memory out of 5000000
- 41571 multiletter control sequences out of 15000+600000
+ 25633 strings out of 481008
+ 502811 string characters out of 5909440
+ 782672 words of memory out of 5000000
+ 41727 multiletter control sequences out of 15000+600000
  436315 words of font info for 104 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  131i,14n,132p,511b,977s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -2427,7 +2427,7 @@ e/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/share/texlive/texmf
 onts/type1/public/cm-super/sftt0800.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/public/cm-super/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
 lic/cm-super/sftt1095.pfb>
-Output written on exec13_ej230_report_full.pdf (119 pages, 19467301 bytes).
+Output written on exec13_ej230_report_full.pdf (119 pages, 19110783 bytes).
 PDF statistics:
  1161 PDF objects out of 1200 (max. 8388607)
  714 compressed objects within 8 object streams

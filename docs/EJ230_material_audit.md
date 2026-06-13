@@ -165,3 +165,49 @@ The σ_group increase at the far End is physical: EJ-230 yield (9700/MeV) is 6.7
   `mirror of`.
 - `HOOK_OPSC106_MASSFRACTION` permanece documentado; EXEC_14C no modificó
   `src/`, `include/`, `main.cc`, física ni geometría.
+
+---
+
+## 7. Diagnóstico físico y cierre del reporte (EXEC_14D)
+
+### EndTop versus End-only
+
+- Veredicto apples-to-apples: **PHYSICAL**.
+- Ambas configuraciones usan los mismos End SUM4, el mismo leading edge y
+  `sigma_group = sigma(deltaT_AB)/sqrt(2)`.
+- Al submuestrear End-only a 2000 eventos con 200 réplicas, la razón
+  EndTop/End-only permanece entre `1.223 +/- 0.019` y `1.963 +/- 0.033`; el
+  menor cuantil inferior al 95 % es `1.186`.
+- End-only conserva `1.62--3.04` veces más fotoelectrones End. EndTop reduce
+  `t99` lateral en `0.518--1.182 ns`, pero para EJ-230 esa remoción de cola no
+  compensa la pérdida de fotones End.
+
+### Métricas de timing
+
+- La métrica t4 visible es únicamente el sigma gaussiano ajustado del núcleo.
+  Rango nearest-Top: `6.648--9.594 ps`; rango near-End:
+  `0.562--127.719 ps`, con núcleos ultrafinos marcados
+  `resolution_limited`.
+- `HOOK_ADAPTIVE_TN` usa alcance mínimo `0.95`: 17/31 far-End reducen
+  `N_eff`, 14/31 conservan N=20 y no queda starvation genuino.
+- En las siete posiciones clave, far-End usa
+  `N_eff = 7, 8, 17, 20, 17, 8, 7`.
+- Las ocho degeneraciones previamente registradas quedaron resueltas: cuatro
+  por binning adaptativo de t4 y cuatro por umbral far-End adaptativo.
+
+### Preflight del PDF
+
+- Los 31/31 ROOT principales permanecen válidos, con 2000 eventos, canales
+  0--85 y sesión `session_20260612_171407` en `t0minidaq`/24 threads.
+- `latexmk -pdf -halt-on-error` terminó en exit 0.
+- Paridad: 118 títulos idénticos y una única excepción documentada para la
+  diapositiva 48; orden y total: 119/119.
+- Assets: 156/156 referencias resueltas. OCR: cero rótulos heredados en 134
+  PNG únicos.
+- PDF: 119 páginas, 104 con raster, cero texto literal `figs/`, cero nombres
+  de archivo y cero cajas de imagen vacías sospechosas.
+- Inspección visual: diapositivas 7/11/15/19/23/27/31, 33, 47--51, 116, 119
+  y paneles de dispersión 8/20/32. Las anotaciones de N_eff son visibles; no
+  hay clipping, tablas truncadas ni intercambio de Top/endL/endR.
+- PDF SHA256:
+  `c38e516e874031454212ebc2b6c358524e93b883d7c22d708a88a5cf7b37342a`.
