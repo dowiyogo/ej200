@@ -46,4 +46,4 @@
 
 ## Forward note
 
-A future EJ-204/EJ-230 comparison must rerun this same reusable hook on EJ-204 data. Comparing a fixed t20 EJ-204 series with this adaptive EJ-230 series would not be apples-to-apples.
+A future cross-material comparison must rerun this same reusable hook on every compared data set. Comparing a fixed-t20 series with an adaptive-threshold series would not be apples-to-apples.

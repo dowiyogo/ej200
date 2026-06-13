@@ -12,6 +12,8 @@ REPO = Path(__file__).resolve().parents[1]
 DEFAULT_REPORT = REPO / "results_ej230_analysis/report/exec13_ej230_report_full.tex"
 KEY_POSITIONS = {-690, -650, -400, 0, 400, 650, 690}
 DISPERSION = {8: -690, 12: -650, 16: -400, 20: 0, 24: 400, 28: 650, 32: 690}
+EXEC14E_BACKUP_START = "% EXEC_14E APPENDED BACKUP START"
+EXEC14E_BACKUP_END = "% EXEC_14E APPENDED BACKUP END"
 
 
 def frames(text: str) -> list[tuple[int, int, int, int]]:
@@ -29,6 +31,48 @@ def replace_body(text: str, frame_number: int, body: str) -> str:
     items = frames(text)
     _, body_start, body_end, _ = items[frame_number - 1]
     return text[:body_start] + "\n" + body.rstrip() + "\n\n" + text[body_end:]
+
+
+def append_exec14e_backups(text: str) -> str:
+    pattern = re.compile(
+        re.escape(EXEC14E_BACKUP_START) + r".*?" + re.escape(EXEC14E_BACKUP_END),
+        re.DOTALL,
+    )
+    text = pattern.sub("", text)
+    backup = rf"""{EXEC14E_BACKUP_START}
+\begin{{frame}}{{Backup: far-End adaptive $t_N$ ($N_{{eff}}$ where 20 PE is unreachable)}}
+\centering
+\includegraphics[width=0.72\textwidth,height=0.38\textheight,keepaspectratio]%
+{{figs/exec14d_adaptive_tN_summary.png}}
+\input{{../tables/adaptive_tN.tex}}
+\end{{frame}}
+
+\begin{{frame}}{{Backup: far-End adaptive $t_N$ at negative and central positions}}
+\begin{{columns}}[T]
+\column{{0.50\textwidth}}
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-690mm.png}}\\
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-650mm.png}}
+\column{{0.50\textwidth}}
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_-400mm.png}}\\
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_0mm.png}}
+\end{{columns}}
+\end{{frame}}
+
+\begin{{frame}}{{Backup: far-End adaptive $t_N$ at positive positions}}
+\begin{{columns}}[T]
+\column{{0.333\textwidth}}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_400mm.png}}
+\column{{0.333\textwidth}}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_650mm.png}}
+\column{{0.333\textwidth}}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{{figs/exec14d_adaptive_tN_690mm.png}}
+\end{{columns}}
+\end{{frame}}
+{EXEC14E_BACKUP_END}
+"""
+    if r"\end{document}" not in text:
+        raise RuntimeError("report has no end document marker")
+    return text.replace(r"\end{document}", backup + "\n\\end{document}", 1)
 
 
 def dispersion_body(x_mm: int) -> str:
@@ -267,10 +311,14 @@ are apparent velocities dominated by estimator-dependent late-tail bias.
     text = replace_body(
         text,
         116,
-        r"""\input{../tables/adaptive_tN.tex}
-\begin{alertblock}{\footnotesize Nominal threshold context}
-\scriptsize\input{../tables/threshold_rationale.tex}
-\end{alertblock}""",
+        r"""\begin{enumerate}\small
+ \item \textbf{Noise rejection at hardware parity:} 4 PE is the nominal fixed threshold outside
+       the correlated-noise spectrum.
+ \item \textbf{Slope optimum:} lower thresholds expose first-photon order statistics; higher
+       thresholds reduce slope and increase walk.
+ \item \textbf{Far-end efficiency:} \input{../tables/threshold_rationale.tex}
+ \item \textbf{Walk:} no time-walk correction is applied in this campaign.
+\end{enumerate}""",
     )
     text = replace_body(
         text,
@@ -318,10 +366,11 @@ are apparent velocities dominated by estimator-dependent late-tail bias.
     )
     text = text[:start118] + body118 + text[end118:]
 
+    text = append_exec14e_backups(text)
     if re.search(r"\\[1-9]", text):
         raise RuntimeError("residual regex backreference remains after rebuild")
-    if len(frames(text)) != 119:
-        raise RuntimeError(f"frame count changed: {len(frames(text))}")
+    if len(frames(text)) != 122:
+        raise RuntimeError(f"expected 119 primary + 3 appended backup frames, found {len(frames(text))}")
     args.report.write_text(text, encoding="utf-8")
     print(f"rebuilt {args.report} with {len(frames(text))} frames")
     return 0

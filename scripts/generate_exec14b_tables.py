@@ -159,6 +159,7 @@ def main() -> int:
     velocity_path = RESULTS / "exec10_velocity_fits.csv"
     tn_path = RESULTS / "csv/exec13_tN_summary.csv"
     adaptive_tn_path = RESULTS / "csv/exec14d_adaptive_tN.csv"
+    fixed_tn_path = RESULTS / "csv/exec14e_fixed_tN_summary.csv"
     endtop_diag_path = RESULTS / "csv/exec14d_endtop_diag.csv"
     window_path = RESULTS / "csv/exec08b_window_dip_profiles.csv"
     timing_path = RESULTS / "csv/exec08b_timing_gate.csv"
@@ -168,7 +169,8 @@ def main() -> int:
 
     required = [
         summary_path, position_path, localization_path, fit_path, fano_path,
-        landau_path, velocity_path, tn_path, adaptive_tn_path, endtop_diag_path,
+        landau_path, velocity_path, tn_path, adaptive_tn_path, fixed_tn_path,
+        endtop_diag_path,
         window_path, timing_path, tails_path, nominal_path, root_validation_path,
     ]
     missing = [path for path in required if not path.is_file()]
@@ -184,6 +186,7 @@ def main() -> int:
     velocity = pd.read_csv(velocity_path)
     tn = pd.read_csv(tn_path)
     adaptive_tn = pd.read_csv(adaptive_tn_path)
+    fixed_tn = pd.read_csv(fixed_tn_path)
     endtop_diag = pd.read_csv(endtop_diag_path)
     profiles = pd.read_csv(window_path)
     timing = pd.read_csv(timing_path)
@@ -479,8 +482,18 @@ $x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
     tn_key = tn[tn.x_mm.isin(KEY_POSITIONS)]
     near = tn_key[tn_key.group == "end_near"].sigma_fit_ns * 1000
     top4 = tn_key[tn_key.group == "top_nearest"].sigma_fit_ns * 1000
-    far_key = tn_key[tn_key.group == "end_far"]
-    reduced_key = far_key[far_key.reduced_threshold]
+    fixed_far_key = fixed_tn[
+        fixed_tn.x_mm.isin(KEY_POSITIONS)
+        & (fixed_tn.N == 20)
+        & (fixed_tn.side_role == "far")
+    ]
+    fixed_far_fitted = fixed_far_key[fixed_far_key.fit_valid]
+    fixed_far_unfitted = fixed_far_key[~fixed_far_key.fit_valid]
+    fixed_far_axes = (
+        r"crosses show RMS only where the fixed $t_{20}$ core is not fitable."
+        if len(fixed_far_unfitted)
+        else r"all key-position fixed $t_{20}$ cores have valid Gaussian fits."
+    )
     center_near = near.loc[
         tn_key[(tn_key.group == "end_near") & (tn_key.x_mm == 0)].index[0]
     ]
@@ -488,16 +501,17 @@ $x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
         "tN_summary.tex",
         rf"""\begin{{block}}{{\footnotesize How to read this plot}}
 \scriptsize\textbf{{Why:}}~Separate the fitted photon-counting core
-$\sigma_{{fit}}(t_4)$ from the far-End adaptive $t_{{N_{{eff}}}}$ observable.
-\par\textbf{{Axes:}}~x is beam position; y is fitted Gaussian-core width.
-Orange markers identify a data-selected threshold below nominal $N=20$.
+$\sigma_{{fit}}(t_4)$ from the fixed-threshold far-End $t_{{20}}$ display.
+\par\textbf{{Axes:}}~x is beam position; y is the fitted Gaussian-core width;
+{fixed_far_axes}
 \par\textbf{{Takeaway:}}~Across key positions, nearest-Top fitted
 $\sigma(t_4)$ spans {top4.min():.1f}--{top4.max():.1f} ps and near-End fitted
 $\sigma(t_4)$ spans {near.min():.1f}--{near.max():.1f} ps
-({center_near:.1f} ps at center). {len(reduced_key)}/{len(far_key)} key far-End
-points use reduced $N_{{eff}}$; none are genuine starvation.
+({center_near:.1f} ps at center). Fixed $t_{{20}}$ is fitable at
+{len(fixed_far_fitted)}/{len(fixed_far_key)} key far-End positions; unfitable
+cores retain their measured histogram and RMS, with adaptive $N_{{eff}}$ in Backup.
 \end{{block}}""",
-        [tn_path],
+        [tn_path, fixed_tn_path],
     )
 
     adaptive_rows = []

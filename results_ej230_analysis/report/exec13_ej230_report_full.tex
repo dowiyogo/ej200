@@ -1125,10 +1125,14 @@ are apparent velocities dominated by estimator-dependent late-tail bias.
 \end{frame}
 \begin{frame}{Backup: why a 4-PE leading-edge threshold}
 
-\input{../tables/adaptive_tN.tex}
-\begin{alertblock}{\footnotesize Nominal threshold context}
-\scriptsize\input{../tables/threshold_rationale.tex}
-\end{alertblock}
+\begin{enumerate}\small
+ \item \textbf{Noise rejection at hardware parity:} 4 PE is the nominal fixed threshold outside
+       the correlated-noise spectrum.
+ \item \textbf{Slope optimum:} lower thresholds expose first-photon order statistics; higher
+       thresholds reduce slope and increase walk.
+ \item \textbf{Far-end efficiency:} \input{../tables/threshold_rationale.tex}
+ \item \textbf{Walk:} no time-walk correction is applied in this campaign.
+\end{enumerate}
 
 \end{frame}
 \begin{frame}{Backup: timing methodology}
@@ -1184,4 +1188,35 @@ are apparent velocities dominated by estimator-dependent late-tail bias.
 \begin{frame}{Backup: EndTop versus End-only tail audit}
 \centering\includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]{figs/exec09_tail_comparison.png}
 \end{frame}
+% EXEC_14E APPENDED BACKUP START
+\begin{frame}{Backup: far-End adaptive $t_N$ ($N_{eff}$ where 20 PE is unreachable)}
+\centering
+\includegraphics[width=0.72\textwidth,height=0.38\textheight,keepaspectratio]%
+{figs/exec14d_adaptive_tN_summary.png}
+\input{../tables/adaptive_tN.tex}
+\end{frame}
+
+\begin{frame}{Backup: far-End adaptive $t_N$ at negative and central positions}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_-690mm.png}\\
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_-650mm.png}
+\column{0.50\textwidth}
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_-400mm.png}\\
+\includegraphics[width=\textwidth,height=0.38\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_0mm.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Backup: far-End adaptive $t_N$ at positive positions}
+\begin{columns}[T]
+\column{0.333\textwidth}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_400mm.png}
+\column{0.333\textwidth}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_650mm.png}
+\column{0.333\textwidth}
+\includegraphics[width=\textwidth,height=0.74\textheight,keepaspectratio]{figs/exec14d_adaptive_tN_690mm.png}
+\end{columns}
+\end{frame}
+% EXEC_14E APPENDED BACKUP END
+
 \end{document}
