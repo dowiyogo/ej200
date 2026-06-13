@@ -1,15 +1,11 @@
 #include "PrimaryGeneratorAction.hh"
-#include "DetectorConstruction.hh"
 
 #include "G4Event.hh"
 #include "G4GenericMessenger.hh"
 #include "G4MuonMinus.hh"
-#include "G4RunManager.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4ThreeVector.hh"
 
-#include <sstream>
-#include <stdexcept>
 
 // ---------------------------------------------------------------------------
 PrimaryGeneratorAction::PrimaryGeneratorAction()
@@ -38,23 +34,12 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
         cmd.SetDefaultValue("0");
     }
 
-    // /muon/midpointSiPMs <i> <j>  — gun X at midpoint of two top SiPMs
-    {
-        fMessenger->DeclareMethod(
-            "midpointSiPMs",
-            &PrimaryGeneratorAction::SetMidpointSiPMs,
-            "Place gun X at midpoint of two top SiPMs (0-based indices).\n"
-            "  The pitch is read from DetectorConstruction at run time.\n"
-            "  Example: /muon/midpointSiPMs 9 10");
-    }
-
     // /muon/gunX <x> mm  — direct X override
     {
         auto& cmd = fMessenger->DeclareMethodWithUnit(
             "gunX", "mm",
             &PrimaryGeneratorAction::SetGunXmm,
             "Set gun X position directly [mm].\n"
-            "  Clears any midpointSiPMs setting.\n"
             "  Example: /muon/gunX 0 mm");
         (void)cmd;
         cmd.SetParameterName("x", false);
@@ -72,27 +57,9 @@ void PrimaryGeneratorAction::SetAngleDeg(G4double deg) {
 }
 
 // ---------------------------------------------------------------------------
-void PrimaryGeneratorAction::SetMidpointSiPMs(G4String indices) {
-    // Parse "i j" from the macro argument string
-    std::istringstream ss(indices);
-    G4int a = -1, b = -1;
-    if (!(ss >> a >> b) || a < 0 || b < 0) {
-        G4cerr << "[PrimaryGeneratorAction] /muon/midpointSiPMs: "
-               << "invalid argument \"" << indices
-               << "\". Expected two non-negative integers, e.g. \"9 10\".\n";
-        return;
-    }
-    fMidSiPM1 = a;
-    fMidSiPM2 = b;
-    fUseDirectGunX = false;
-}
-
-// ---------------------------------------------------------------------------
 void PrimaryGeneratorAction::SetGunXmm(G4double xMm) {
     fGunX          = xMm;   // xMm already in G4 internal units (mm=1)
     fUseDirectGunX = true;
-    fMidSiPM1      = -1;   // clear midpoint mode
-    fMidSiPM2      = -1;
 }
 
 // ---------------------------------------------------------------------------
@@ -101,20 +68,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
     const G4ThreeVector basePos = fGun.GetParticlePosition();
     G4double gunX = basePos.x();
 
-    if (fMidSiPM1 >= 0 && fMidSiPM2 >= 0) {
-        const auto* dc = dynamic_cast<const DetectorConstruction*>(
-            G4RunManager::GetRunManager()->GetUserDetectorConstruction());
-
-        if (dc != nullptr && fMidSiPM1 < dc->GetNTopSiPMs() &&
-            fMidSiPM2 < dc->GetNTopSiPMs()) {
-            const G4double x1 = DetectorConstruction::TopSiPMCenterX(fMidSiPM1);
-            const G4double x2 = DetectorConstruction::TopSiPMCenterX(fMidSiPM2);
-            gunX = 0.5 * (x1 + x2);
-        } else {
-            G4cerr << "[PrimaryGeneratorAction] Cannot resolve DetectorConstruction "
-                      "for midpoint calculation; using current /gun/position X.\n";
-        }
-    } else if (fUseDirectGunX) {
+    if (fUseDirectGunX) {
         gunX = fGunX;
     }
 
@@ -126,7 +80,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event) {
     const G4double cosT  = std::cos(theta);
 
     // Preserve the current /gun/position Y and Z coordinates.
-    // Only X is overridden by /muon/gunX or /muon/midpointSiPMs.
+    // Only X is overridden by /muon/gunX.
     fGun.SetParticlePosition({gunX, basePos.y(), basePos.z()});
     fGun.SetParticleMomentumDirection({sinT, 0.0, -cosT});
 

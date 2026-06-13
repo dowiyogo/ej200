@@ -26,7 +26,6 @@
 /muon/angle    0
 /muon/gunX     0 mm
 
-# /muon/midpointSiPMs 34 35
 
 # Option C — tilted muon (angle in degrees from -Z vertical)
 # /muon/angle 30

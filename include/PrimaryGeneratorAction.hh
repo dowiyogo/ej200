@@ -21,16 +21,11 @@ class G4GenericMessenger;
 //      Direction becomes (sinθ, 0, -cosθ).
 //      Positive θ tilts toward +X.  Example: /muon/angle 30 deg
 //
-//  /muon/midpointSiPMs <i> <j>
-//      Place the gun X at the geometric midpoint between top SiPMs i and j
-//      (0-based indices, e.g. "34 35" for the central 24 mm gap).
-//      Reads the fixed EXEC_07 top positions from DetectorConstruction.
-//
 //  /muon/gunX <x> mm
-//      Set gun X position directly in mm. This clears midpoint mode.
+//      Set gun X position directly in mm.
 //
 // The standard /gun/* commands still work for particle type, energy, and
-// position. If no /muon/gunX or /muon/midpointSiPMs override is active, the
+// position. If no /muon/gunX override is active, the
 // current /gun/position X coordinate is preserved.
 // --------------------------------------------------------------------------
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
@@ -42,7 +37,6 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 
     // Called by messenger commands
     void SetAngleDeg      (G4double deg);
-    void SetMidpointSiPMs (G4String indices);  // format: "i j"
     void SetGunXmm        (G4double xMm);
 
   private:
@@ -52,6 +46,4 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
     G4double fAngleDeg      = 0.0;    // incidence angle [degrees]
     G4double fGunX          = 0.0;    // direct X override [G4 internal = mm]
     G4bool   fUseDirectGunX = false;  // true after /muon/gunX
-    G4int    fMidSiPM1      = -1;     // >= 0 → use midpoint mode
-    G4int    fMidSiPM2   = -1;
 };
