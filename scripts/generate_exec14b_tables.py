@@ -163,12 +163,13 @@ def main() -> int:
     window_path = RESULTS / "csv/exec08b_window_dip_profiles.csv"
     timing_path = RESULTS / "csv/exec08b_timing_gate.csv"
     tails_path = RESULTS / "csv/exec09_tail_comparison.csv"
+    nominal_path = RESULTS / "csv/exec14d_nominal_parameters.csv"
     root_validation_path = RESULTS / "root_validation_exec14b.csv"
 
     required = [
         summary_path, position_path, localization_path, fit_path, fano_path,
         landau_path, velocity_path, tn_path, adaptive_tn_path, endtop_diag_path,
-        window_path, timing_path, tails_path, root_validation_path,
+        window_path, timing_path, tails_path, nominal_path, root_validation_path,
     ]
     missing = [path for path in required if not path.is_file()]
     if missing:
@@ -187,6 +188,7 @@ def main() -> int:
     profiles = pd.read_csv(window_path)
     timing = pd.read_csv(timing_path)
     tails = pd.read_csv(tails_path)
+    nominal = pd.read_csv(nominal_path).iloc[0]
     root_validation = pd.read_csv(root_validation_path)
     contrasts = window_contrasts(profiles)
     main_validation = root_validation[root_validation.configuration == "main_scan_EndTop"]
@@ -429,6 +431,17 @@ $x$ [mm] & $N_{pe}$ & $\sigma_{t,est}$ [ps] \\ \midrule
 \bottomrule\end{tabular}""",
         [summary_path],
     )
+    write(
+        "top_timing_definition.tex",
+        rf"""\scriptsize
+$\sigma_{{t,est}}=\sqrt{{\tau_r\tau_d}}/\sqrt{{N_{{pe}}}}
+={nominal.sigma_numerator_ns:.3f}\,\mathrm{{ns}}/\sqrt{{N_{{pe}}}}$.
+\par Double-exponential emission with $\tau_r={nominal.tau_r_ns:.1f}$ ns and
+$\tau_d={nominal.tau_d_ns:.1f}$ ns ({tex_text(nominal.reference)}).
+\textbf{{Analytic orientation only}}; the Top readout has no test-beam
+counterpart in this study.""",
+        [nominal_path],
+    )
     comparison_rows = []
     for x_mm in KEY_POSITIONS:
         top = row(summary, x_mm, "nearest_top")
@@ -524,14 +537,22 @@ No genuine-starvation point remains.""",
     center_right = row(summary, 0, "end_right_all")
     center_top = row(summary, 0, "nearest_top")
     edge_left = row(summary, -690, "end_left_all")
+    edge_right = row(summary, -690, "end_right_all")
     edge_top = row(summary, -690, "nearest_top")
+    center_end_mean = center_left.npe_mean + center_right.npe_mean
+    center_end_error = math.hypot(center_left.npe_rms, center_right.npe_rms) / math.sqrt(N_EVENTS)
+    center_top_error = center_top.npe_rms / math.sqrt(N_EVENTS)
+    edge_end_mean = edge_left.npe_mean + edge_right.npe_mean
+    edge_end_error = math.hypot(edge_left.npe_rms, edge_right.npe_rms) / math.sqrt(N_EVENTS)
+    edge_top_error = edge_top.npe_rms / math.sqrt(N_EVENTS)
     ratio_min, ratio_max = timing.observed_sigma_ratio.min(), timing.observed_sigma_ratio.max()
     write(
         "numerical_conclusions.tex",
         rf"""\small\begin{{itemize}}
- \item At center: End sum {center_left.npe_mean + center_right.npe_mean:.1f}, nearest Top
-       {center_top.npe_mean:.1f}; at $x=-690$ mm: End$_L$ {edge_left.npe_mean:.1f},
-       nearest Top {edge_top.npe_mean:.1f}.
+ \item At center: End sum {pm(center_end_mean, center_end_error, 1)}, nearest Top
+       {pm(center_top.npe_mean, center_top_error, 1)}; at $x=-690$ mm: End sum
+       {pm(edge_end_mean, edge_end_error, 1)}, nearest Top
+       {pm(edge_top.npe_mean, edge_top_error, 1)}.
  \item $\lambda_{{eff}}$: L {left.lambda_eff_cm:.2f}$\pm${left.lambda_eff_error_cm:.2f} cm,
        R {right.lambda_eff_cm:.2f}$\pm${right.lambda_eff_error_cm:.2f} cm.
  \item Nearest-Top $F=1+({fano.c:.6f}\pm{fano.c_error:.6f})\langle N_{{pe}}\rangle$
