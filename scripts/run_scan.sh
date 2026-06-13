@@ -1,86 +1,119 @@
 #!/usr/bin/env bash
-# EJ-230 (EXEC_13) position scan — parametrized by --threads N.
-# Wrappers with explicit machine names: run_scan_t0minidaq_24t.sh (24t)
-#                                       run_scan_msi_16t.sh        (16t)
 set -euo pipefail
 
-# ── Configurable parameters ──────────────────────────────────────────────────
-THREADS=16
-while [[ $# -gt 0 ]]; do
+usage() {
+    echo "Usage: $0 --threads N --host NAME [--events E] [--positions FILE]" >&2
+}
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo="$(cd "$script_dir/.." && pwd)"
+threads=""
+host_name=""
+events=2000
+positions_file="$script_dir/endonly_positions.txt"
+
+while (($#)); do
     case "$1" in
-        --threads) THREADS="$2"; shift 2 ;;
-        *) echo "Unknown argument: $1" >&2; exit 1 ;;
+        --threads)
+            threads="${2:-}"
+            shift 2
+            ;;
+        --host)
+            host_name="${2:-}"
+            shift 2
+            ;;
+        --events)
+            events="${2:-}"
+            shift 2
+            ;;
+        --positions)
+            positions_file="${2:-}"
+            shift 2
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            usage
+            exit 2
+            ;;
     esac
 done
 
-repo="$(cd "$(dirname "$0")/.." && pwd)"
+[[ "$threads" =~ ^[1-9][0-9]*$ ]] || { echo "--threads must be a positive integer" >&2; exit 2; }
+[[ "$events" =~ ^[1-9][0-9]*$ ]] || { echo "--events must be a positive integer" >&2; exit 2; }
+[[ -n "$host_name" ]] || { echo "--host is required" >&2; exit 2; }
+[[ -f "$positions_file" ]] || { echo "positions file not found: $positions_file" >&2; exit 2; }
+
+host_tag="$(printf '%s' "$host_name" | tr -c '[:alnum:]_.-' '_')"
 build_dir="${BUILD_DIR:-$repo/build}"
+output_root="${OUTPUT_ROOT:-$repo/output}"
 sim="$build_dir/ej200_bar_sim"
 
-RESULTS_DIR="${RESULTS_DIR:-$HOME/ej230/results_ej230}"
-output_dir="$RESULTS_DIR/data"
-log_dir="$RESULTS_DIR/logs"
+cmake -S "$repo" -B "$build_dir" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DUSE_GDML=OFF
+cmake --build "$build_dir" --parallel "$threads"
 
-events="${EVENTS_PER_POINT:-2000}"
-positions=(-690 -670 -650 -600 -550 -500 -450 -400 -350 -300 -250 -200 -150 -100 -50 0 50 100 150 200 250 300 350 400 450 500 550 600 650 670 690)
+timestamp="$(date +%Y%m%d_%H%M%S)"
+output_dir="$output_root/endonly_mylar_${host_tag}_${timestamp}"
+suffix=1
+while [[ -e "$output_dir" ]]; do
+    printf -v output_dir '%s/endonly_mylar_%s_%s_%02d' "$output_root" "$host_tag" "$timestamp" "$suffix"
+    ((suffix += 1))
+done
+mkdir -p "$output_dir"
 
-mkdir -p "$output_dir" "$log_dir"
+positions=()
+declare -A seen_positions=()
+while IFS= read -r raw || [[ -n "$raw" ]]; do
+    position="${raw%%#*}"
+    position="${position//[[:space:]]/}"
+    [[ -z "$position" ]] && continue
+    [[ "$position" =~ ^-?[0-9]+([.][0-9]+)?$ ]] || {
+        echo "invalid position '$position' in $positions_file" >&2
+        exit 2
+    }
+    [[ -z "${seen_positions[$position]:-}" ]] || {
+        echo "duplicate position '$position' in $positions_file" >&2
+        exit 2
+    }
+    seen_positions["$position"]=1
+    positions+=("$position")
+done < "$positions_file"
+(( ${#positions[@]} > 0 )) || { echo "positions file is empty: $positions_file" >&2; exit 2; }
 
-validate_root() {
-    python3 - "$1" "$2" "$events" <<'PY'
-import sys
-import numpy as np
-import uproot
+commit="$(git -C "$repo" rev-parse HEAD)"
+start_iso="$(date --iso-8601=seconds)"
+{
+    echo "commit=$commit"
+    echo "git_dirty=$(git -C "$repo" status --porcelain | wc -l)"
+    echo "host=$host_name"
+    echo "threads=$threads"
+    echo "events_per_position=$events"
+    echo "positions_file=$(realpath "$positions_file")"
+    echo "positions=${positions[*]}"
+    echo "geometry=end-only-fixed-mylar"
+    echo "scintillator=OPSC-106"
+    echo "start=$start_iso"
+} > "$output_dir/run_metadata.txt"
 
-path, expected_x, expected_events = sys.argv[1], float(sys.argv[2]), int(sys.argv[3])
-with uproot.open(path) as root_file:
-    tree = root_file["sipm_hits"]
-    event_ids = set()
-    positions_seen = set()
-    for chunk in tree.iterate(["event_id", "gun_x_mm"], step_size="200 MB", library="np"):
-        event_ids.update(np.unique(chunk["event_id"]).tolist())
-        positions_seen.update(np.unique(chunk["gun_x_mm"]).tolist())
-if len(event_ids) != expected_events or positions_seen != {expected_x}:
-    raise SystemExit(1)
-print(tree.num_entries)
-PY
-}
-
-# Each resume creates a timestamped subdirectory under data/ so ROOT files are
-# never overwritten (rule: corrupt ROOT preserved, never deleted).
-session_dir="$output_dir/session_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$session_dir"
-
-echo "=== EJ-230 scan (EXEC_13) | threads=$THREADS events=$events ==="
-echo "    sim:     $sim"
-echo "    results: $RESULTS_DIR"
-echo "    session: $session_dir"
-
+echo "Output: $output_dir"
 for index in "${!positions[@]}"; do
     x="${positions[$index]}"
-    # Final file lives in data/ (not session subdirectory) to allow resume detection
-    final="$output_dir/photon_hits_x${x}mm.root"
-    work="$session_dir/.work_x${x}mm"
-    log="$log_dir/run_x${x}mm.log"
-
-    if [[ -f "$final" ]] && entries="$(validate_root "$final" "$x" 2>/dev/null)"; then
-        echo "DONE (cached): x=${x} mm entries=${entries}"
-        continue
-    fi
-
-    rm -rf "$work"
+    x_tag="${x//./p}"
+    work="$output_dir/work_x${x_tag}mm"
+    log="$output_dir/run_x${x_tag}mm.log"
+    final="$output_dir/photon_hits_x${x_tag}mm.root"
     mkdir -p "$work"
-    ln -sf "$build_dir/sslg4" "$work/sslg4"
-    seed1=$((710000 + 1009 * index))
-    seed2=$((910000 + 2017 * index))
+    ln -s "$build_dir/sslg4" "$work/sslg4"
 
+    seed1=$((730000 + 1009 * index))
+    seed2=$((930000 + 2017 * index))
     cat > "$work/run.mac" <<EOF
 /control/verbose 0
 /run/verbose 0
 /event/verbose 0
 /tracking/verbose 0
-/run/numberOfThreads $THREADS
-/det/readout EndTop
 /det/scintillator OPSC-106
 /sipm/model AFBR-S4N66P024M
 /run/initialize
@@ -93,23 +126,26 @@ for index in "${!positions[@]}"; do
 /run/beamOn $events
 EOF
 
-    echo "START: x=${x} mm events=${events} threads=${THREADS}"
+    echo "START x=$x mm events=$events threads=$threads"
     (
         cd "$work"
-        "$sim" -m run.mac 2>&1 | tee "$log.tmp"
-    )
-    mv "$log.tmp" "$log"
+        "$sim" -t "$threads" -m run.mac
+    ) > "$log" 2>&1
 
     candidate="$work/photon_hits_run000.root"
-    if entries="$(validate_root "$candidate" "$x")"; then
-        mv "$candidate" "$final.tmp"
-        mv "$final.tmp" "$final"
-        rm -rf "$work"
-        echo "DONE: x=${x} mm entries=${entries}"
-    else
-        echo "ERROR: invalid ROOT at x=${x} mm; retained in $work" >&2
-        exit 1
-    fi
+    [[ -s "$candidate" ]] || { echo "missing ROOT output for x=$x; retained in $work" >&2; exit 1; }
+    root -l -b -q -e \
+        "TFile file(\"$candidate\", \"READ\"); gSystem->Exit(file.IsZombie() ? 1 : 0);" \
+        >/dev/null
+    [[ ! -e "$final" ]] || { echo "refusing to overwrite $final" >&2; exit 1; }
+    mv "$candidate" "$final"
+    echo "DONE x=$x mm root=$final"
 done
 
-echo "=== EJ-230 scan complete. Results: $output_dir ==="
+python3 "$repo/analysis/endonly_sum4.py" --input-dir "$output_dir" --events "$events"
+
+{
+    echo "end=$(date --iso-8601=seconds)"
+    echo "status=complete"
+} >> "$output_dir/run_metadata.txt"
+echo "End-only Mylar scan complete: $output_dir"
