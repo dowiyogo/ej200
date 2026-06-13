@@ -1,0 +1,17 @@
+gate,passed,detail
+G3_nevents_-690,True,"n_events=2000, expected=2000"
+G3_nevents_-400,True,"n_events=2000, expected=2000"
+G3_nevents_0,True,"n_events=2000, expected=2000"
+G1_nearest_ids,True,"x=-690: got 16, exp 16 | x=-400: got 31, exp 31 | x=+0: got 51, exp 51"
+G2_F1_t4pe_norm,True,"all panels: x(0.0, 1000.0) y(0.0, 89.69999999999999)"
+G2_F1_t20pe_norm,True,"all panels: x(0.0, 1000.0) y(0.0, 7.018509254627314)"
+G4_-690_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_-400_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_0_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_-690_20pe,True,in=1999+ovfl=1+below≈0=2000
+G4_-400_20pe,True,in=2000+ovfl=0+below≈0=2000
+G4_0_20pe,True,in=1999+ovfl=1+below≈0=2000
+G2_F2_cluster,True,"all panels: x(0.5, 20.5) y(308.5021793708988, 1296.4775789530984)"
+G2_F3_npe,True,"all panels: x(15.0, 86.0) y(0.0, 567.6101951908048)"
+G2_F4_t4pe,True,"all panels: x(15.0, 86.0) y(284.03411910240305, 5754.62383727242)"
+G2_F4_t20pe,True,"all panels: x(15.0, 86.0) y(574.918324425293, 5914.347361521591)"

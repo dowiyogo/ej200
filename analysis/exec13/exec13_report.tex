@@ -1,0 +1,137 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+\usepackage{booktabs,amsmath}
+\graphicspath{{figs/}}
+\title[EXEC\_13]{EXEC\_13: Fixed-Scale $t_N$ Analysis (EJ-204)}
+\subtitle{Gerardo's request --- meeting 12 Jun 2026}
+\author{SHiP T0 MiniDAQ}
+\date{2026-06-13}
+\begin{document}
+\begin{frame}\titlepage\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Overlay $t_{4}$, normalised (fixed scale)}
+\centering\includegraphics[width=0.85\textwidth]{exec13_f1_t4pe_overlay_norm}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{4}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Narrow, nearly Gaussian distribution; RMS dominated by order-stat fluctuations.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Overlay $t_{4}$, absolute counts (fixed scale)}
+\centering\includegraphics[width=0.85\textwidth]{exec13_f1_t4pe_overlay_abs}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{4}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Narrow, nearly Gaussian distribution; RMS dominated by order-stat fluctuations.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Individual panels $t_{4}$ (identical scale)}
+\centering\includegraphics[width=0.98\textwidth]{exec13_f1_t4pe_panels}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{4}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Narrow, nearly Gaussian distribution; RMS dominated by order-stat fluctuations.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Overlay $t_{20}$, normalised (fixed scale)}
+\centering\includegraphics[width=0.85\textwidth]{exec13_f1_t20pe_overlay_norm}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{20}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Broader, skewed distribution; shape dominated by Landau $N_{{pe}}$ spread.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Overlay $t_{20}$, absolute counts (fixed scale)}
+\centering\includegraphics[width=0.85\textwidth]{exec13_f1_t20pe_overlay_abs}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{20}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Broader, skewed distribution; shape dominated by Landau $N_{{pe}}$ spread.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F1 — Individual panels $t_{20}$ (identical scale)}
+\centering\includegraphics[width=0.98\textwidth]{exec13_f1_t20pe_panels}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} EXEC\_12 histograms used auto-scale; this re-bins at 10\,ps with fixed [0,1000]\,ps range so run shapes are visually comparable.\quad\textbf{Axes:} x: $t_{20}$ arrival time (ps); y: probability density (norm) or events/10\,ps (abs).\quad\textbf{Takeaway:} Broader, skewed distribution; shape dominated by Landau $N_{{pe}}$ spread.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F2 — Run 1: $x=-690$\,mm cluster dispersion}
+\centering\includegraphics[width=0.82\textwidth]{exec13_f2_cluster_-690mm}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Gerardo's clustering question: do neighbour SiPMs $\pm1,\pm2$ carry the same timing as the nearest?\quad\textbf{Axes:} x: photon order $n$; y: $\langle t_n\rangle$ (ps). Error bars = RMS. Dashed: stat floor $\sqrt{n}\tau_d/\langle N_{pe}\rangle$.\quad\textbf{Takeaway:} Neighbours approach stat floor faster when their $\langle N_{pe}\rangle$ is comparable to the nearest; far neighbours are dominated by stat noise → can be dropped.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F2 — Run 3: $x=-400$\,mm cluster dispersion}
+\centering\includegraphics[width=0.82\textwidth]{exec13_f2_cluster_-400mm}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Gerardo's clustering question: do neighbour SiPMs $\pm1,\pm2$ carry the same timing as the nearest?\quad\textbf{Axes:} x: photon order $n$; y: $\langle t_n\rangle$ (ps). Error bars = RMS. Dashed: stat floor $\sqrt{n}\tau_d/\langle N_{pe}\rangle$.\quad\textbf{Takeaway:} Neighbours approach stat floor faster when their $\langle N_{pe}\rangle$ is comparable to the nearest; far neighbours are dominated by stat noise → can be dropped.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F2 — Run 4: $x=+0$\,mm cluster dispersion}
+\centering\includegraphics[width=0.82\textwidth]{exec13_f2_cluster_+0mm}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Gerardo's clustering question: do neighbour SiPMs $\pm1,\pm2$ carry the same timing as the nearest?\quad\textbf{Axes:} x: photon order $n$; y: $\langle t_n\rangle$ (ps). Error bars = RMS. Dashed: stat floor $\sqrt{n}\tau_d/\langle N_{pe}\rangle$.\quad\textbf{Takeaway:} Neighbours approach stat floor faster when their $\langle N_{pe}\rangle$ is comparable to the nearest; far neighbours are dominated by stat noise → can be dropped.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F3 — Top $N_{pe}$ profile (all 70 channels, fixed scale)}
+\centering\includegraphics[width=0.98\textwidth]{exec13_f3_npe_profile}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Verify that the nearest channel is correctly identified as the Npe maximum; shows photon budget across the full top array.\quad\textbf{Axes:} x: global channel ID (16--85); y: $\langle N_{pe}\rangle$/event $\pm$ RMS. Highlighted: cluster $\pm$2.\quad\textbf{Takeaway:} Npe falls off rapidly away from the track; $\pm$2 neighbours still collect useful light.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F4 — Timing profile $\langle t_{4}\rangle$ (eff$\geq$0.99, fixed scale)}
+\centering\includegraphics[width=0.98\textwidth]{exec13_f4_timing_t4pe}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Only channels with efficiency $\geq0.99$ are shown; far-end channels that never reach threshold are excluded and listed in exec13\_f4\_timing\_profile.csv.\quad\textbf{Axes:} x: global channel ID; y: $\langle t_N\rangle$ (ps) $\pm$ RMS.\quad\textbf{Takeaway:} Timing rises steeply for channels far from the track (longer optical path + lower $N_{pe}$).
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{F4 — Timing profile $\langle t_{20}\rangle$ (eff$\geq$0.99, fixed scale)}
+\centering\includegraphics[width=0.98\textwidth]{exec13_f4_timing_t20pe}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:} Only channels with efficiency $\geq0.99$ are shown; far-end channels that never reach threshold are excluded and listed in exec13\_f4\_timing\_profile.csv.\quad\textbf{Axes:} x: global channel ID; y: $\langle t_N\rangle$ (ps) $\pm$ RMS.\quad\textbf{Takeaway:} Timing rises steeply for channels far from the track (longer optical path + lower $N_{pe}$).
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Backup: validation gates}
+\small
+\begin{itemize}
+  \item \textbf{G1}: nearest IDs = \{$-690\to16$, $-400\to31$, $0\to51$\} (EXEC\_12 diagonal) --- must pass before plotting
+  \item \textbf{G2}: all figure panels share identical axis limits --- verified programmatically post-plot
+  \item \textbf{G3}: $n_{\rm events}=2000$ per run --- verified from ROOT file
+  \item \textbf{G4}: $n_{\rm in}+n_{\rm excl}+n_{\rm ovfl}=2000$ per histogram --- bookkeeping check
+\end{itemize}
+\vspace{4pt}
+\scriptsize Gate results: \texttt{exec13\_gates.csv}.
+Commit: \texttt{5783a0d2914b}.
+Stats table: \texttt{exec13\_f1\_tn\_histograms.csv} (no manual transcription).
+
+\end{frame}
+
+\end{document}
