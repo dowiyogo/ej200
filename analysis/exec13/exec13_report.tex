@@ -5,7 +5,8 @@
 \graphicspath{{figs/}}
 \title[EXEC\_13]{EXEC\_13: Fixed-Scale $t_N$ Analysis (EJ-204)}
 \subtitle{Gerardo's request --- meeting 12 Jun 2026}
-\author{SHiP T0 MiniDAQ}
+\author{Ren\'e R\'ios}
+\institute{Universidad de La Serena (ULS)}
 \date{2026-06-13}
 \begin{document}
 \begin{frame}\titlepage\end{frame}
@@ -132,6 +133,49 @@
 Commit: \texttt{5783a0d2914b}.
 Stats table: \texttt{exec13\_f1\_tn\_histograms.csv} (no manual transcription).
 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Cierre: m\'etodo y procedencia}
+\small
+\begin{itemize}
+  \item \textbf{Generaci\'on:} figuras y CSVs producidos por an\'alisis autom\'atico (Claude Code)
+        sobre los ROOT de EXEC\_12 (campa\~na EJ-204, OPSC-101). Sin re-simulaci\'on.
+  \item \textbf{Validaci\'on manual pendiente:} R.\ R\'ios verificar\'a en ROOT los valores de
+        $\mu$ y RMS de $t_4$/$t_{20}$ del canal nearest (tolerancia $\sim\mathrm{RMS}/\sqrt{2000}$).
+        Hasta esa validaci\'on, los valores exhibidos son los del pipeline del agente.
+  \item \textbf{Infraestructura de c\'omputo:} simulaciones de EXEC\_12 corridas en el servidor
+        t0minidaq (solo detalle log\'istico, no afiliaci\'on).
+  \item \textbf{Procedencia de commits:} el slide de gates cita \texttt{5783a0d} (HEAD antes del
+        an\'alisis $=$ tag \texttt{pre-exec13-checkpoint}); el commit que genera las figuras y CSVs
+        es \texttt{c030e880}. El autoritativo de la fuente de c\'odigo es \texttt{c030e880}; los
+        ROOT de datos viven en \texttt{\$DATA\_ROOT} (fuera del repositorio).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cierre: observaciones y temas abiertos}
+\small
+\begin{itemize}
+  \item \textbf{F1 --- sub-resoluci\'on del n\'ucleo de $t_4$:} $\sigma_{\rm fit}(t_4)\approx 8$--9\,ps
+        (EXEC\_12); un bin de 10\,ps no resuelve el n\'ucleo. Pendiente: bin $\leq5$\,ps con zoom,
+        o ajuste gaussiano al core.
+  \item \textbf{F1 --- artefacto de binning:} diferencias de altura de pico en la versi\'on
+        normalizada de $t_4$ reflejan en qu\'e borde de bin cae el modo (no anchos f\'isicos
+        distintos). Interpretaci\'on cuidadosa requerida.
+  \item \textbf{F3 --- efecto window-track en $x=-690$\,mm:} nearest geom\'etrico ID\,16
+        ($\langle N_{pe}\rangle=350.9$) colecta menos que ID\,17 ($\langle N_{pe}\rangle=384.2$).
+        La diagonal de EXEC\_12 ancla el nearest en ID\,16 (criterio max-$N_{pe}$, que rompe
+        el empate geom\'etrico). Efecto window-track documentado; no es un error.
+  \item \textbf{F2 --- rango de $n$ verificado:} $n=1\ldots20$ seg\'un script
+        (\texttt{TN\_MAX\_ORDER=20}); confirmado leyendo \texttt{exec13\_f2\_cluster\_dispersion.csv}.
+        Consistente con lo especificado.
+  \item \textbf{Resultado positivo --- $t_{20}$ del nearest:}
+        $\mu\approx720/734/755$\,ps, RMS\,$\approx81$\,ps para $x=-690/-400/0$\,mm (valores
+        exactos del CSV: 719.8\,/\,733.6\,/\,754.6\,ps). Timing del Top aproximadamente
+        independiente de la posici\'on de impacto longitudinal.
+\end{itemize}
 \end{frame}
 
 \end{document}
