@@ -1,0 +1,13 @@
+EndTop x=-400
+End-only x=-400
+EndTop x=0
+End-only x=0
+EndTop x=400
+End-only x=400
+ x_beam_mm  side  npe_endtop  npe_endtop_sem  npe_end_only  npe_end_only_sem  sigma_endtop_ps  sigma_endtop_error_ps  sigma_end_only_ps  sigma_end_only_error_ps  observed_sigma_ratio  observed_sigma_ratio_error  predicted_sqrt_npe_ratio  predicted_sqrt_npe_ratio_error  ratio_difference_sigma  endtop_not_better
+      -400  left    581.1475        3.360791      939.4160          2.352925        45.542398               0.720269          37.231623                 0.263280              1.223218                    0.021191                  1.271410                        0.004006               -2.234568               True
+      -400 right     53.0070        0.342911      160.4166          0.422606       251.268636               3.974894         127.977452                 0.904982              1.963382                    0.034021                  1.739635                        0.006076                6.474269               True
+         0  left    150.9910        0.876411      349.9696          0.878041       106.476553               1.683963          76.374387                 0.540075              1.394140                    0.024152                  1.522438                        0.004814               -5.209578               True
+         0 right    151.1025        0.877841      350.4887          0.876319       108.655215               1.718419          75.289107                 0.532401              1.443173                    0.025002                  1.523004                        0.004816               -3.135366               True
+       400  left     52.8090        0.321732      160.4810          0.437189       258.193859               4.083424         131.509729                 0.929961              1.963306                    0.034013                  1.743243                        0.005817                6.377421               True
+       400 right    577.7995        3.116108      938.2540          2.383692        46.728667               0.739030          37.884995                 0.267901              1.233435                    0.021368                  1.274300                        0.003798               -1.882899               True

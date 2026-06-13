@@ -61,7 +61,7 @@
 | 43 | Mean arrival time and FPT versus x | `figs/P6_tmean_vs_x.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
 | 46 | Window-track collection effect: five-run test | `figs/exec08b_window_dip_profiles.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec08b_window_dip.py` |
 | 47 | Intrinsic End SUM4 timing | `figs/P7_deltaT_end.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
-| 48 | End arrival-time tails without any time acceptance window: narrower EndTop is physical | `figs/exec09_tail_comparison.png` | True | True | FORBIDDEN_EJ204_COPY | `analysis/exec07/exec09_timing_mechanism.py` |
+| 48 | End arrival-time tails without any time acceptance window: narrower EndTop is physical | `figs/exec09_tail_comparison.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec09_timing_mechanism.py` |
 | 49 | Apparent timing slopes: no propagation estimator passes | `figs/exec10_velocity_estimators.png` | True | True | EJ230_ANALYSIS | `analysis/exec07/exec10_veff_diagnosis.py` |
 | 52 | Position x=-690 mm | `figs/muon_-690mm_geometry.png` | True | True | STATIC_GEOMETRY | `analysis/exec07_photon_budget.py` |
 | 52 | Position x=-690 mm | `figs/muon_-690mm_top_profile.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
@@ -157,4 +157,4 @@
 | 112 | Position x=690 mm | `figs/muon_690mm_top_profile.png` | True | True | EJ230_ANALYSIS | `analysis/exec07_photon_budget.py` |
 | 113 | Run 31 $\|$ x = +690 mm $\|$ Photon arrival $\langle N(t)\rangle$ | `figs/exec11_arrival_690mm.png` | True | True | EJ230_ANALYSIS | `analysis/exec07/exec11_time_arrival.py` |
 | 115 | Backup: ID18 impact maps | `figs/exec08b_id18_impact_maps.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec08b_window_dip.py` |
-| 119 | Backup: EndTop versus End-only tail audit | `figs/exec09_tail_comparison.png` | True | True | FORBIDDEN_EJ204_COPY | `analysis/exec07/exec09_timing_mechanism.py` |
+| 119 | Backup: EndTop versus End-only tail audit | `figs/exec09_tail_comparison.png` | True | True | EJ230_SPECIAL_SIM | `analysis/exec07/exec09_timing_mechanism.py` |

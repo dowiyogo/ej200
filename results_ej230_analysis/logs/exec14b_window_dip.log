@@ -1,0 +1,5 @@
+existing_x-650: nearest ID 18 Npe=317.989+/-1.779; max ID 19 Npe=342.948+/-1.850; max/nearest=1.07849; delta=24.959+/-2.567 (9.72 sigma)
+run_A_x-652: nearest ID 18 Npe=317.315+/-1.712; max ID 18 Npe=317.315+/-1.712; max/nearest=1.00000; delta=0.000+/-2.421 (0.00 sigma)
+run_B_x-642: nearest ID 18 Npe=369.873+/-2.151; max ID 18 Npe=369.873+/-2.151; max/nearest=1.00000; delta=0.000+/-3.042 (0.00 sigma)
+run_C1_x-648: nearest ID 18 Npe=341.049+/-1.904; max ID 19 Npe=354.318+/-1.963; max/nearest=1.03891; delta=13.269+/-2.735 (4.85 sigma)
+run_C2_x-654_exact_mirror: nearest ID 18 Npe=317.656+/-1.898; max ID 17 Npe=343.200+/-2.003; max/nearest=1.08042; delta=25.544+/-2.760 (9.26 sigma)

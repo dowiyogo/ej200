@@ -165,8 +165,8 @@ def plot_overlays(
     for axis in axes[:, 1]:
         axis.set_ylabel("Area-normalized density [1/ns]")
     axes[0, 0].legend()
-    axes[0, 1].legend()
-    fig.suptitle("EXEC_10: End arrival times - absolute photon rate and normalized shape")
+    axes[0, 1].legend(loc="lower left")
+    fig.suptitle("EXEC_09: End arrival times - absolute photon rate and normalized shape")
     fig.tight_layout()
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output, dpi=180)

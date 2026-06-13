@@ -336,8 +336,8 @@ counting dominates only in the few-PE limit.
     late_sig = aggregate[["frac_gt10_difference_sigma", "frac_gt20_difference_sigma"]].abs().min().min()
     write(
         "endtop_endonly_tails.tex",
-        rf"Across $x=0,\pm400$ mm, EndTop minus End-only $t_{{99}}$ spans "
-        rf"{t99.min():.2f}--{t99.max():.2f} ns; the minimum absolute significance "
+        rf"Across $x=0,\pm400$ mm, EndTop minus End-only $t_{{99}}$ ranges from "
+        rf"{t99.min():.2f} to {t99.max():.2f} ns; the minimum absolute significance "
         rf"among the two late-fraction differences is {late_sig:.1f}$\sigma$.",
         [tails_path],
     )
