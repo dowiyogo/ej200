@@ -19,10 +19,11 @@ class G4GenericMessenger;
 //     ├─ BarPV (SSLG4 OPSC-101/EJ-204 by default)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
-//     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
+//     │   └─ TopSiPMPV       × 70  (global IDs 16–85, sipm mode only)
 //     └─ Reflector*PV panels (optical border surfaces, R=0.98)
 //
-// The +Y reflector is a physical panel with 70 exact 6x6 mm2 windows.
+// In sipm mode, the +Y reflector has 70 exact 6x6 mm2 windows.
+// In default mylar mode, +Y is a solid panel and no Top SiPMs are placed.
 // SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
 //
 // UI commands:
@@ -39,7 +40,7 @@ class G4GenericMessenger;
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
-    static constexpr G4int kNEndSiPMs = 8;   // per side (8×1 array)
+    static constexpr G4int kNEndSiPMs = 8;   // per side (8 single-element placements)
     static constexpr G4int kNTopSiPMs = 70;
     static constexpr G4int kNTotalSiPMs = 2 * kNEndSiPMs + kNTopSiPMs;
 

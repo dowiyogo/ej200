@@ -196,3 +196,48 @@ guardrail automatizado.
 - La base local contiene cinco commits no publicados sobre
   `origin/feat/endtop-sslg4`; la nueva rama parte deliberadamente del HEAD local
   solicitado como estado real.
+
+## Addendum posterior a la implementación
+
+El modo nuevo y sus defaults se exponen en
+`include/DetectorConstruction.hh:32-35,80-87,104-107` y se registran como
+comandos UI en `src/DetectorConstruction.cc:98-123`. `IsTopInstrumented()` exige
+ahora explícitamente `topSurface=sipm`
+(`src/DetectorConstruction.cc:198-200`), por lo que `mylar` no crea ventanas ni
+placements TOP (`src/DetectorConstruction.cc:361-380,419-437`) y el SD solo se
+asocia al logical volume END existente (`src/DetectorConstruction.cc:443-455`).
+
+Las caras no-END reales comparten una sola instancia de reflector seleccionada
+en `src/DetectorConstruction.cc:323-328` y las cuatro border surfaces se colocan
+en `src/DetectorConstruction.cc:344-380`. La superficie Mylar implementada es
+`unified/dielectric_metal/ground`, con reflectividad, lobe y sigmaAlpha
+configurables; spike y backscatter son cero
+(`src/Materials.cc:337-357`). El bloque END quedó sin cambios funcionales
+(`src/DetectorConstruction.cc:394-417`) y el guardrail compara ese bloque byte a
+byte contra `feat/endtop-sslg4`.
+
+Los threads se resuelven con prioridad CLI > entorno > default y se aplican al
+run manager en `main.cc:33-76`. El barrido portable, directorios timestamp,
+metadata, macro Mylar, validación ROOT y análisis automático están en
+`scripts/run_scan.sh:8-16,47-69,90-105,108-162`.
+
+El análisis END-only conserva pulso `0.5/5 ns`, umbral `4 PE`, primer SUM4 por
+extremo y `sigma(deltaT_LR)/sqrt(2)`
+(`analysis/endonly_sum4.py:16-21,45-119,202-250`). Emite la curva y fits de
+atenuación y la curva temporal en
+`analysis/endonly_sum4.py:317-400`; TOP se filtra condicionalmente y se cuenta
+como diagnóstico (`analysis/endonly_sum4.py:202-206,233-250,331-365`).
+
+Los cuatro CTest nuevos se registran en `CMakeLists.txt:67-84`: mapa sin TOP,
+presupuesto de fotones sin detección TOP, orden físico y paridad anti-artefacto.
+El guardrail de orden físico usa el único término total definido en el código:
+la suma en cuadratura de la resolución intrínseca y el jitter default de lectura
+de 20 ps (`analysis/endonly_sum4.py:20,110-119,345-362`). No compara contra los
+88 ps históricos, porque la propia base los identifica como referencia
+cualitativa de otro detector (`analysis/congruent_sum4_timing.C:267-275`).
+
+Smoke local ejecutado tras los guardrails: una posición (`x=0`), 200 eventos,
+16 threads, ROOT válido, 31 488 hits END, cero hits TOP, 100% de eventos con
+ambos extremos disparados y CSVs producidos. El ajuste corto dio
+`sigma_single = 128.4 ± 17.9 ps`; este valor no se hardcodea ni se usa como
+guardrail.
