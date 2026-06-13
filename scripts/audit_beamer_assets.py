@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import bisect
 import csv
 import hashlib
 import re
@@ -27,7 +28,6 @@ FORBIDDEN_DIR = Path("/home/reriosto/SHiP/ej200/analysis/exec07/figs")
 INCLUDE_RE = re.compile(
     r"\\includegraphics\s*(?:\[[^\]]*\])?\s*%?\s*\{([^{}]+)\}", re.DOTALL
 )
-FRAME_RE = re.compile(r"\\begin\{frame\}(?:\[[^\]]*\])?\{([^{}]*)\}")
 BACKREF_RE = re.compile(r"\\[1-9]")
 GRAPHICSPATH_RE = re.compile(r"\\graphicspath\s*\{((?:\{[^{}]*\}\s*)+)\}")
 
@@ -127,11 +127,34 @@ def generator_for(name: str) -> str:
     return ""
 
 
-def frame_at(text: str, position: int) -> tuple[int, str]:
-    frames = list(FRAME_RE.finditer(text, 0, position))
-    if not frames:
+def balanced_argument(text: str, start: int) -> tuple[str, int]:
+    depth = 0
+    for index in range(start, len(text)):
+        if text[index] == "{" and (index == 0 or text[index - 1] != "\\"):
+            depth += 1
+        elif text[index] == "}" and (index == 0 or text[index - 1] != "\\"):
+            depth -= 1
+            if depth == 0:
+                return text[start + 1:index], index + 1
+    raise ValueError("unterminated frame title")
+
+
+def frame_contexts(text: str) -> list[tuple[int, str]]:
+    output = []
+    for match in re.finditer(r"\\begin\{frame\}(?:\[[^\]]*\])?", text):
+        cursor = match.end()
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        title, _ = balanced_argument(text, cursor)
+        output.append((match.start(), title))
+    return output
+
+
+def frame_at(contexts: list[tuple[int, str]], position: int) -> tuple[int, str]:
+    index = bisect.bisect_right([item[0] for item in contexts], position)
+    if index == 0:
         return 0, "<preamble>"
-    return len(frames), frames[-1].group(1)
+    return index, contexts[index - 1][1]
 
 
 def write_manifest(rows: list[dict[str, str]], csv_path: Path, md_path: Path) -> None:
@@ -142,7 +165,7 @@ def write_manifest(rows: list[dict[str, str]], csv_path: Path, md_path: Path) ->
     ]
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     with csv_path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     with md_path.open("w", encoding="utf-8") as stream:
@@ -169,6 +192,7 @@ def main() -> int:
     report_dir = args.tex.resolve().parent
     paths = graphicspaths(text, report_dir)
     forbidden = forbidden_hashes()
+    contexts = frame_contexts(text)
     rows: list[dict[str, str]] = []
     errors: list[str] = []
     resolved_by_path: dict[Path, set[str]] = defaultdict(set)
@@ -187,7 +211,9 @@ def main() -> int:
 
     for match in INCLUDE_RE.finditer(text):
         raw = match.group(1).strip()
-        frame, title = frame_at(text, match.start())
+        frame, title = frame_at(contexts, match.start())
+        if Path(raw).is_absolute():
+            errors.append(f"frame {frame}: absolute image path is forbidden: {raw}")
         expected, candidates = resolve_reference(raw, report_dir, paths)
         exists = expected.is_file()
         valid, validation = image_valid(expected)

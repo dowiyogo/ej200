@@ -4,8 +4,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{booktabs}
 \usepackage{graphicx}
-\graphicspath{{../figs/}}
+\graphicspath{{../}}
 \usepackage{amsmath}
+\input{../tables/exec14_macros.tex}
 \usepackage{xcolor}
 \usepackage{tikz}
 \definecolor{shipblue}{RGB}{20,74,130}
@@ -13,29 +14,14 @@
 \setbeamercolor{structure}{fg=shipblue}
 \setbeamercolor{alerted text}{fg=warningorange}
 \setbeamertemplate{navigation symbols}{}
-\title{EXEC\_13 (EJ-230): EndTop photon budget --- material comparison}
-\subtitle{EJ-230 (OPSC-106) mirror of EXEC\_12 --- same analysis, new material}
+\title{EJ-230 EndTop photon budget and intrinsic timing}
+\subtitle{Standalone OPSC-106 analysis report}
 \author{Rene Rios (ULS)}
-\date{June 12, 2026}
+\date{June 13, 2026}
 \begin{document}
 \begin{frame}{Configuration and provenance}
 
-\begin{columns}[T]\column{0.62\textwidth}
-\textbf{Branch:} \texttt{feat/ej230-sslg4}\\
-\textbf{Commits:} \texttt{0201413}, \texttt{7b4bc80}, \texttt{ad26d78},
-\texttt{bcefa24}, \texttt{bdfe955}; this deck is generated from those published sources
-\begin{itemize}\small
-  \item 31 positions $\times$ 2000 events; 16 End + 70 Top channels; jitter fixed to zero.
-  \item EJ-230 via SSLG4 \texttt{OPSC-106}: yield 9700/MeV, $\tau_r=0.5$ ns,
-        $\tau_d=1.5$ ns, ABSLENGTH=120 cm (verified effective MPT inputs).
-  \item Broadcom AFBR-S4N66P024M: PDE 63\% at 420 nm.
-\end{itemize}
-\column{0.35\textwidth}
-\begin{alertblock}{Scope}
-Top 70 SiPM is a simulation coverage study. Real hardware: 32 Top SiPMs.
-All reported timing is intrinsic, without SPTR or electronics jitter.
-\end{alertblock}
-\end{columns}
+\input{../tables/provenance.tex}
 
 \end{frame}
 \begin{frame}{EndTop geometry and channel map}
@@ -105,17 +91,7 @@ to meet one, so late End photons are preferentially removed.
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-690mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $3363.1\pm18.1$ \\
-    End R $N_{pe}$ & $41.1\pm0.3$ \\
-    Nearest Top ID & 16 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.9\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7863\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34278\pm0.00023$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-690.tex}
 \end{columns}
 
 \end{frame}
@@ -131,13 +107,13 @@ to meet one, so late End photons are preferentially removed.
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-690mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_-690mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-690mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -152,17 +128,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-650mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $2366.2\pm13.1$ \\
-    End R $N_{pe}$ & $44.3\pm0.3$ \\
-    Nearest Top ID & 18 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $351.0\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7779\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34270\pm0.00024$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-650.tex}
 \end{columns}
 
 \end{frame}
@@ -178,13 +144,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-650mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_-650mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-650mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -199,17 +165,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-400mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $691.3\pm3.9$ \\
-    End R $N_{pe}$ & $74.5\pm0.5$ \\
-    Nearest Top ID & 31 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.3\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9399\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34597\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-400.tex}
 \end{columns}
 
 \end{frame}
@@ -225,13 +181,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-400mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_-400mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_-400mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -246,17 +202,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_0mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $194.4\pm1.1$ \\
-    End R $N_{pe}$ & $195.2\pm1.1$ \\
-    Nearest Top ID & 51 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $407.3\pm2.2$ \\
-    Nearest Top $\langle t\rangle$ &
-      $3.0030\pm0.0022$ ns \\
-    Nearest Top FPT & $0.35075\pm0.00020$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_0.tex}
 \end{columns}
 
 \end{frame}
@@ -272,13 +218,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_0mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_0mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_0mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -293,17 +239,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_400mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $75.0\pm0.5$ \\
-    End R $N_{pe}$ & $692.5\pm4.0$ \\
-    Nearest Top ID & 70 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.4\pm2.4$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9433\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34598\pm0.00022$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_400.tex}
 \end{columns}
 
 \end{frame}
@@ -319,13 +255,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_400mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_400mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_400mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -340,17 +276,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_650mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $44.4\pm0.3$ \\
-    End R $N_{pe}$ & $2357.1\pm13.0$ \\
-    Nearest Top ID & 83 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.9\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7803\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34268\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_650.tex}
 \end{columns}
 
 \end{frame}
@@ -366,13 +292,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_650mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_650mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_650mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -387,17 +313,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_690mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $41.4\pm0.3$ \\
-    End R $N_{pe}$ & $3383.2\pm18.3$ \\
-    Nearest Top ID & 85 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $353.0\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7881\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34236\pm0.00019$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_690.tex}
 \end{columns}
 
 \end{frame}
@@ -413,13 +329,13 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \column{0.60\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.78\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_690mm_top.png}
 \column{0.38\textwidth}
 \centering
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}\\[2pt]
+{figs/exec13_tn_690mm_endL.png}\\[2pt]
 \includegraphics[width=\textwidth,height=0.37\textheight,keepaspectratio]%
-{figs/exec13_tn_\1mm_\2.png}
+{figs/exec13_tn_690mm_endR.png}
 \end{columns}
 \par\scriptsize Error bars = RMS (event-to-event). Dashed band: statistical floor
 $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
@@ -430,18 +346,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 
 \centering\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]%
 {figs/exec13_tN_summary.png}
-\begin{block}{\footnotesize Interpretation and connection to $\sigma_{\rm group}$}
-\scriptsize
-$\sigma(t_N)$ is the single-side timing resolution at an ideal digital threshold of
-$N$ detected PE; it connects the cumulative $\langle N(t)\rangle$ curves to the
-published $\sigma_{\rm group}$ values.
-At high $N_{pe}$ (x=$\pm690,\pm650,\pm400$ near their respective End),
-$\sigma(t_4)\sim15$ ps is the pure photon-counting limit;
-$\sigma_{\rm group}\sim50$ ps is larger because the analog SUM4 discriminator
-adds jitter from the SPE pulse convolution ($\tau_r=0.5$ ns).
-At $x=0$ (moderate $N_{pe}$, both Ends equidistant), photon-counting noise dominates
-and both converge to $\sim120$ ps.
-\end{block}
+\input{../tables/tN_summary.tex}
 
 \end{frame}
 \begin{frame}{Why does $t_n$ disperse? Decomposition into four mechanisms}
@@ -464,7 +369,7 @@ and both converge to $\sim120$ ps.
        $c/(n\cos\theta)\to1.4$--$1.5$ ns/m per metre plus Mylar bounce tail ($R=0.98$).
        Low-$n$ photons: quasi-direct; high-$n$: reflection-dominated $\Rightarrow$ RMS $\propto n$.
  \item \textbf{Attenuation truncation:}
-       distant channels ($\lambda_{\rm eff}\approx33$ cm) populate only $n=1$--$3$
+       distant channels ($\lambda_{\rm eff}\approx\LambdaEffMean$ cm) populate only $n=1$--$3$
        with large purely statistical bars.
 \end{enumerate}
 \column{0.38\textwidth}
@@ -487,23 +392,22 @@ End: test-beam comparable, intrinsic precision (no SPTR / no jitter).
 \centering\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{figs/P1_npe_vs_x.png}\begin{block}{\footnotesize How to read this plot}
 \scriptsize\textbf{Why:}~Quantify $N_{pe}$ collected at each End and nearest-Top channel as the muon track scans the bar.
 \par\textbf{Axes:}~x: beam position [mm]; y: mean $N_{pe}$ per event (End sums left/right and nearest Top).
-\par\textbf{Takeaway:}~$N_{pe}$ decreases exponentially with track-to-End distance ($\lambda_{eff}\approx33$ cm $\ll$ ABSLENGTH $=120$ cm, system effective length); nearest-Top $N_{pe}$ peaks directly under the SiPM window.
+\par\textbf{Takeaway:}~$N_{pe}$ decreases exponentially with track-to-End distance ($\lambda_{eff}\approx\LambdaEffMean$ cm $\ll$ ABSLENGTH $=120$ cm, system effective length); nearest-Top $N_{pe}$ peaks directly under the SiPM window.
 \end{block}
 
 \end{frame}
 \begin{frame}{Top localization: full coverage diagonal}
-\centering\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]{figs/P2_npe_heatmap_top.png}\begin{block}{\footnotesize How to read this plot}
-\scriptsize\textbf{Why:}~Verify that the highest-$N_{pe}$ Top channel is always the geometrically nearest one across all 31 positions.
-\par\textbf{Axes:}~x: beam position [mm]; y: Top channel ID; colour: mean $N_{pe}$.
-\par\textbf{Takeaway:}~Strict diagonal coverage; window-track exception positions ($x\equiv10\pmod{20}$ mm) are labelled and pass the $<15$\% deficit criterion.
-\end{block}
+
+\centering\includegraphics[width=\textwidth,height=0.62\textheight,keepaspectratio]%
+{figs/P2_npe_heatmap_top.png}
+\input{../tables/top_localization_summary.tex}
 
 \end{frame}
 \begin{frame}{Attenuation and the historical mean-time slope}
-\centering\includegraphics[width=\textwidth,height=0.46\textheight,keepaspectratio]{figs/fits_attenuation_velocity.png}\par\scriptsize $\lambda_{eff,L}=30.70\pm0.02$ cm, $\lambda_{eff,R}=30.82\pm0.02$ cm; the mean-time slope is tail-biased and is not a propagation velocity.\vspace{2pt}\begin{block}{\footnotesize How to read this plot}
+\centering\includegraphics[width=\textwidth,height=0.46\textheight,keepaspectratio]{figs/fits_attenuation_velocity.png}\par\scriptsize \input{../tables/attenuation_fit.tex}\vspace{2pt}\begin{block}{\footnotesize How to read this plot}
 \scriptsize\textbf{Why:}~Measure the effective attenuation length $\lambda_{eff}$ and test whether the mean-time slope encodes a light-propagation velocity.
 \par\textbf{Axes:}~Left: mean $N_{pe}$ vs track-to-End distance [cm]; exponential fit gives $\lambda_{eff}$. Right: mean arrival time [ns] vs same distance.
-\par\textbf{Takeaway:}~$\lambda_{eff}\approx31$ cm $\ll$ ABSLENGTH $=120$ cm: $\lambda_{eff}$ is a system effective length combining bulk absorption, Mylar reflection losses, and Top window drainage---not the material property. The mean-time slope is tail-biased; no propagation velocity is reliably extracted.
+\par\textbf{Takeaway:}~$\lambda_{eff}\approx\LambdaEffMean$ cm $\ll$ ABSLENGTH $=120$ cm: $\lambda_{eff}$ is a system effective length combining bulk absorption, Mylar reflection losses, and Top window drainage---not the material property. The mean-time slope is tail-biased; no propagation velocity is reliably extracted.
 \end{block}
 
 \end{frame}
@@ -522,13 +426,13 @@ End: test-beam comparable, intrinsic precision (no SPTR / no jitter).
   (collection-efficiency terms absorbed in $c$).
   \item \textbf{Poisson limit $F\!\to\!1$:} only at $\langle N_{pe}\rangle\!\to\!0$
         (counting noise dominates over energy-loss fluctuations).
-  \item \textbf{Effective relative fluctuation:} $\sqrt{c}\approx0.249$
+  \item \textbf{Effective relative fluctuation:} $\sqrt{c}\approx\FanoSqrtC$
         is the combined energy-loss + collection jitter,
         consistent with a thin (10 mm) plastic absorber.
 \end{enumerate}
 \column{0.42\textwidth}
 \begin{block}{Fit result (see next slide)}
-$c = 0.062547\pm0.000117$\par\medskip
+$c = \FanoC\pm\FanoCerr$\par\medskip
 The \emph{same} Landau $\Delta E$ fluctuation that shapes
 the asymmetric $N_{pe}$ spectrum (next section)
 also generates the super-Poissonian Fano factor:
@@ -538,7 +442,7 @@ also generates the super-Poissonian Fano factor:
 
 \end{frame}
 \begin{frame}{Landau dominance: Fano factor versus mean $N_{pe}$}
-\centering\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{figs/exec10_fano_vs_mean.png}\par\scriptsize $F=1+c\langle N_{pe}\rangle$, $c=0.062547\pm0.000117$, $\chi^2/ndf=1.41$. Poisson $F=1$ is approached only at low light.\vspace{2pt}\begin{block}{\footnotesize How to read this plot}
+\centering\includegraphics[width=\textwidth,height=0.55\textheight,keepaspectratio]{figs/exec10_fano_vs_mean.png}\par\scriptsize \input{../tables/fano_fit.tex}\vspace{2pt}\begin{block}{\footnotesize How to read this plot}
 \scriptsize\textbf{Why:}~Measure $F=\mathrm{Var}(N_{pe})/\langle N_{pe}\rangle$ to distinguish Poisson ($F=1$) from Landau-dominated fluctuations.
 \par\textbf{Axes:}~x: $\langle N_{pe}\rangle$ per event; y: $\mathrm{Var}/\langle N_{pe}\rangle$. Dashed: Poisson $F=1$. Line: linear fit $F=1+c\langle N_{pe}\rangle$.
 \par\textbf{Takeaway:}~$F$ grows linearly: Landau $\Delta E$ fluctuations dominate counting noise at all light levels. $\sqrt{c}$ is the effective relative energy-loss fluctuation of this 10 mm absorber.
@@ -609,22 +513,7 @@ also generates the super-Poissonian Fano factor:
 \section{Window effect and timing}
 \begin{frame}{Nearest-Top Landau/Moyal MPVs at key positions}
 
-\centering\small
-\begin{tabular}{rrrrr}\toprule
-$x$ [mm] & channel & MPV [Npe] & Landau width [Npe] & $\chi^2/ndf$ \\ \midrule
--690 & 16 & $275.0\pm0.9$ & $23.3\pm0.8$ & 1.61 \\
--650 & 18 & $275.6\pm0.9$ & $23.7\pm0.8$ & 1.58 \\
--400 & 31 & $317.5\pm1.0$ & $26.8\pm0.9$ & 1.56 \\
-+0 & 50 & $318.5\pm1.0$ & $26.0\pm0.9$ & 1.17 \\
-+400 & 70 & $320.1\pm1.0$ & $25.3\pm0.8$ & 1.23 \\
-+650 & 83 & $275.0\pm0.9$ & $24.7\pm0.8$ & 1.87 \\
-+690 & 85 & $278.1\pm0.9$ & $24.6\pm0.8$ & 2.15 \\
-\bottomrule\end{tabular}
-\begin{block}{Interpretation}
-The right tail originates primarily from Landau-like energy-loss fluctuations; Poisson
-counting dominates only in the few-PE limit. MPVs are future inputs for the pending
-test-beam ToT(NPE) calibration comparison.
-\end{block}
+\input{../tables/landau_key_positions.tex}
 
 \end{frame}
 \begin{frame}{Window-track collection effect: mechanism}
@@ -637,9 +526,7 @@ test-beam ToT(NPE) calibration comparison.
   \item First-pass photon collection depends on the solid angle
         subtended by the window from the muon track (geometric
         working hypothesis, consistent with five-run pattern).
-  \item Empirically: a track at $\pm2$ mm from the window centre
-        collects $\approx9.8$\% more $N_{pe}$ ($\approx12\,\sigma$);
-        null at centre and at the midpoint; symmetric in mirror (C2).
+  \input{../tables/window_dip_mechanism.tex}
   \item Scan positions with $x\equiv10\pmod{20}$ mm fall at
         $\pm2$ mm from a window centre --- hence the
         ``(window-track exception)'' label in the tables.
@@ -685,27 +572,23 @@ At midpoint (C) both windows contribute equally and the effect is null.
 \begin{columns}[T]\column{0.47\textwidth}
 \scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
 Run & contrast [Npe] & significance \\ \midrule
-Existing -650 & $34.60\pm2.94$ & $11.78$ \\
-A -652 center & $2.86\pm2.65$ & $1.08$ \\
-B -642 midpoint & $-0.33\pm3.35$ & $-0.10$ \\
-C1 -648 (+4 mm) & $21.08\pm3.20$ & $6.59$ \\
-C2 -654 mirror & $34.38\pm2.95$ & $11.64$ \\
+\input{../tables/window_dip_test.tex}
 \bottomrule\end{tabular}}
 \column{0.51\textwidth}
 \includegraphics[width=\textwidth]{figs/exec08b_window_dip_profiles.png}
 \end{columns}
 \begin{block}{Finding}
-Local symmetric $\pm2$ mm effect: about 9.8\% at about 12 sigma; null when centered
-and at midpoint. The scan and channel map remain valid.
+\input{../tables/window_dip_summary.tex}
 \end{block}
 
 \end{frame}
 \begin{frame}{Intrinsic End SUM4 timing}
-\centering\includegraphics[width=\textwidth,height=0.60\textheight,keepaspectratio]{figs/P7_deltaT_end.png}\par\scriptsize $\sigma_{group}=\sigma(\Delta T_{AB})/\sqrt{2}$; no SPTR/jitter. The 88 ps hardware context is not directly comparable.
-\begin{block}{\footnotesize How to read this plot}
-\scriptsize\textbf{Why:}~Measure the intrinsic Same-End SUM4 coincidence timing resolution without SPTR or electronics jitter.
-\par\textbf{Axes:}~x: beam position [mm]; y: $\sigma_{group}$ [ps]. Lines for left and right End groups.
-\par\textbf{Takeaway:}~$\sigma_{group}$ decreases toward the nearer End (higher $N_{pe}$, earlier FPT); consistent with photon-counting scaling $\propto1/\sqrt{N_{pe}}$.
+
+\centering\includegraphics[width=\textwidth,height=0.60\textheight,keepaspectratio]%
+{figs/P7_deltaT_end.png}
+\par\scriptsize $\sigma_{group}=\sigma(\Delta T_{AB})/\sqrt{2}$; no SPTR or electronics jitter.
+\begin{block}{\footnotesize CSV-derived timing summary}
+\scriptsize\input{../tables/sum4_timing.tex}
 \end{block}
 
 \end{frame}
@@ -715,25 +598,16 @@ and at midpoint. The scan and channel map remain valid.
 \column{0.48\textwidth}
 \scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{rrrrr}\toprule
 $x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
--400 & L & $50.0\pm0.8$ & $66.1\pm0.5$ & $0.756\pm0.013$ \\
--400 & R & $219.9\pm3.5$ & $248.4\pm1.8$ & $0.885\pm0.015$ \\
-+0 & L & $107.5\pm1.7$ & $131.4\pm0.9$ & $0.818\pm0.014$ \\
-+0 & R & $107.2\pm1.7$ & $129.5\pm0.9$ & $0.828\pm0.014$ \\
-+400 & L & $223.8\pm3.5$ & $247.5\pm1.8$ & $0.904\pm0.016$ \\
-+400 & R & $51.5\pm0.8$ & $65.9\pm0.5$ & $0.781\pm0.014$ \\
+\input{../tables/endtop_endonly_ratio.tex}
 \bottomrule\end{tabular}}
 \vspace{2pt}
 \begin{alertblock}{\footnotesize Confirmed mechanism}
-\scriptsize Across $x=0,\pm400$ mm, EndTop lowers $t99$ by
-1.14 ns and suppresses late fractions
-at more than 10.3$\sigma$.
+\scriptsize\input{../tables/endtop_endonly_tails.tex}
 \end{alertblock}
 \column{0.50\textwidth}
 \includegraphics[width=0.88\textwidth,height=0.42\textheight,keepaspectratio]{figs/exec09_tail_comparison.png}
 \begin{block}{\footnotesize No time acceptance window}
-\scriptsize
-All End-photon arrivals are used without a $t<t_{max}$ cut
-(\texttt{exec08b\_timing\_gate.py}, \texttt{exec09\_timing\_mechanism.py}).
+\scriptsize All End-photon arrivals are used without a $t<t_{max}$ cut.
 EndTop tail narrowing persists over the full range: physical, not an artefact.
 \end{block}
 \end{columns}
@@ -746,20 +620,11 @@ EndTop tail narrowing persists over the full range: physical, not an artefact.
 \column{0.36\textwidth}
 \scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
 Estimator & slope-derived [cm/ns] & $\chi^2/ndf$ \\ \midrule
-all-photon mean & $25.616\pm0.005$ & 3189.9 \\
-all-photon $t_{50}$ & $25.625\pm0.005$ & 3615.1 \\
-mean FPT & $26.758\pm0.003$ & 1002.6 \\
+\input{../tables/velocity_estimators.tex}
 \bottomrule\end{tabular}}
 \begin{alertblock}{Refuted predictions}
-Mean FPT is not close to $c/n\simeq19$ cm/ns. The fixed-threshold $f(t>10\,ns)$
-increases with distance. Every global line fit is rejected.
+Every global line fit is rejected; slope-derived values are not accepted propagation velocities.
 \end{alertblock}
-\begin{block}{\footnotesize How to read this plot}
-\scriptsize\textbf{Why:}~Test whether any timing estimator reveals a light-propagation velocity.
-\par\textbf{Axes:}~x: track-to-End distance [cm]; y: timing estimator [ns]. Fits shown.
-\par\textbf{Takeaway:}~No estimator yields a statistically acceptable propagation-velocity fit; the slope is dominated by the long late-tail bias.
-\end{block}
-
 \end{columns}
 
 \end{frame}
@@ -770,57 +635,25 @@ increases with distance. Every global line fit is rejected.
 \scriptsize\setlength{\tabcolsep}{4pt}
 \begin{tabular}{rrr}\toprule
 $x$ [mm] & $N_{pe}$ & $\sigma_{t,est}$ [ps] \\ \midrule
--690 & $350.9\pm2.0$ & $59.92\pm0.17$ \\
--650 & $351.0\pm2.0$ & $59.91\pm0.17$ \\
--400 & $411.3\pm2.3$ & $55.35\pm0.16$ \\
-+0 & $407.3\pm2.2$ & $55.62\pm0.15$ \\
-+400 & $411.4\pm2.4$ & $55.34\pm0.16$ \\
-+650 & $350.9\pm2.1$ & $59.93\pm0.18$ \\
-+690 & $353.0\pm2.0$ & $59.75\pm0.17$ \\
+\input{../tables/top_timing_estimates.tex}
 \bottomrule\end{tabular}
 \column{0.56\textwidth}
 \begin{block}{\footnotesize Definition, derivation, and scope}
-\scriptsize $\sigma_{t,est}=\sqrt{\tau_r\tau_d}/\sqrt{N_{pe}}
-=1.122\,\mathrm{ns}/\sqrt{N_{pe}}$
-\par Threshold at low $N_{pe}$, double-exponential emission
-(Knoll, ch.\ 8; $\tau_r=0.5$ ns, $\tau_d=1.5$ ns).
-\textbf{Analytic orientation only}; Top has no test-beam counterpart.
+\scriptsize $\sigma_{t,est}=\sqrt{\tau_r\tau_d}/\sqrt{N_{pe}}$.
+Threshold at low $N_{pe}$, double-exponential emission; analytic orientation only.
 \end{block}
 \begin{block}{\footnotesize $\sigma_{t,est}$ vs.\ simulated $\sigma(t_4)$}
 \tiny\setlength{\tabcolsep}{3pt}\begin{tabular}{rcc}\toprule
-$x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
--690 & $60\pm0$ & $9$ \\
--650 & $60\pm0$ & $8$ \\
--400 & $55\pm0$ & $8$ \\
-+0 & $56\pm0$ & $8$ \\
-+400 & $55\pm0$ & $8$ \\
-+650 & $60\pm0$ & $9$ \\
-+690 & $60\pm0$ & $8$ \\
+$x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
+\input{../tables/top_timing_comparison.tex}
 \bottomrule\end{tabular}
-\par\tiny $\sigma(t_4)$: photon-counting lower bound.
 \end{block}
 \end{columns}
 
 \end{frame}
 \begin{frame}{Numerical conclusions}
 
-\small\begin{itemize}
- \item At center: End sum $302.1\pm1.2$, nearest Top $366.0\pm2.0$;
-       at $x=-690$ mm: End$_L$ $3073.3\pm16.8$, nearest Top $318.7\pm1.8$.
- \item $\lambda_{eff}$: L $30.70\pm0.02$ cm,
-       R $30.82\pm0.02$ cm
-       ($\ll$ ABSLENGTH $=120$ cm; system effective length, not material property).
- \item Nearest-Top $F=1+(0.062547\pm0.000117)\langle N_{pe}\rangle$
-       ($\chi^2/ndf=1.41$): Landau energy-loss fluctuations dominate.
-       Same mechanism: asymmetric $N_{pe}$ spectrum (Moyal$\otimes$Gauss) and $F>1$.
- \item Intrinsic End $\sigma_{group}$: mean 226 ps,
-       range 12--595 ps.
- \item EndTop/End-only timing ratio: N/A for EJ-230
-       (End-only runs not available; see \texttt{HOOK\_EXEC09\_EJ230}); no time-acceptance window in any script.
- \item $\sigma(t_4)$ (near-End SUM4): 15--123 ps (high-$N_{pe}$ to low); pure photon-counting lower bound, factor $\sim3$ below $\sigma_{group}$ at high $N_{pe}$ due to SPE pulse-convolution jitter in the analog discriminator. Nearest-Top $\sigma(t_4)$: 8--9 ps.
- \item Four findings: window-track mechanism defined and characterised; late-tail drain confirmed;
-       complete 86-channel coverage and localisation validated; $t_N$ photon-counting timing quantified.
-\end{itemize}
+\input{../tables/numerical_conclusions.tex}
 
 \end{frame}
 \section{Full scan, position by position}
@@ -832,17 +665,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-690mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $3363.1\pm18.1$ \\
-    End R $N_{pe}$ & $41.1\pm0.3$ \\
-    Nearest Top ID & 16 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.9\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7863\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34278\pm0.00023$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-690.tex}
 \end{columns}
 
 \end{frame}
@@ -857,17 +680,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-670mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $2764.3\pm15.0$ \\
-    End R $N_{pe}$ & $42.6\pm0.3$ \\
-    Nearest Top ID & 17 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.4\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7753\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34261\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-670.tex}
 \end{columns}
 
 \end{frame}
@@ -882,17 +695,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-650mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $2366.2\pm13.1$ \\
-    End R $N_{pe}$ & $44.3\pm0.3$ \\
-    Nearest Top ID & 18 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $351.0\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7779\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34270\pm0.00024$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-650.tex}
 \end{columns}
 
 \end{frame}
@@ -907,17 +710,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-600mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $1673.6\pm9.2$ \\
-    End R $N_{pe}$ & $48.0\pm0.3$ \\
-    Nearest Top ID & 21 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $408.0\pm2.2$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9421\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34610\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-600.tex}
 \end{columns}
 
 \end{frame}
@@ -932,17 +725,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-550mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $1323.9\pm7.6$ \\
-    End R $N_{pe}$ & $55.1\pm0.4$ \\
-    Nearest Top ID & 23 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.9\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7760\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34276\pm0.00025$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-550.tex}
 \end{columns}
 
 \end{frame}
@@ -957,17 +740,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-500mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $1042.2\pm5.9$ \\
-    End R $N_{pe}$ & $59.8\pm0.4$ \\
-    Nearest Top ID & 26 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $410.9\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9419\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34607\pm0.00023$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-500.tex}
 \end{columns}
 
 \end{frame}
@@ -982,17 +755,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-450mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $832.9\pm4.2$ \\
-    End R $N_{pe}$ & $65.8\pm0.4$ \\
-    Nearest Top ID & 28 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $345.8\pm1.8$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7793\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34237\pm0.00016$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-450.tex}
 \end{columns}
 
 \end{frame}
@@ -1007,17 +770,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-400mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $691.3\pm3.9$ \\
-    End R $N_{pe}$ & $74.5\pm0.5$ \\
-    Nearest Top ID & 31 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.3\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9399\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34597\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_-400.tex}
 \end{columns}
 
 \end{frame}
@@ -1032,17 +785,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-350mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $575.0\pm3.1$ \\
-    End R $N_{pe}$ & $84.1\pm0.5$ \\
-    Nearest Top ID & 33 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $349.3\pm1.9$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7748\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34234\pm0.00015$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-350.tex}
 \end{columns}
 
 \end{frame}
@@ -1057,17 +800,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-300mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $482.3\pm2.8$ \\
-    End R $N_{pe}$ & $94.2\pm0.6$ \\
-    Nearest Top ID & 36 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $413.7\pm2.5$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9387\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34593\pm0.00023$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-300.tex}
 \end{columns}
 
 \end{frame}
@@ -1082,17 +815,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-250mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $415.8\pm2.4$ \\
-    End R $N_{pe}$ & $105.5\pm0.7$ \\
-    Nearest Top ID & 38 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.2\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7758\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34224\pm0.00013$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-250.tex}
 \end{columns}
 
 \end{frame}
@@ -1107,17 +830,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-200mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $353.5\pm2.0$ \\
-    End R $N_{pe}$ & $118.4\pm0.7$ \\
-    Nearest Top ID & 41 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $412.5\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9407\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34577\pm0.00020$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-200.tex}
 \end{columns}
 
 \end{frame}
@@ -1132,17 +845,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-150mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $302.1\pm1.8$ \\
-    End R $N_{pe}$ & $134.7\pm0.8$ \\
-    Nearest Top ID & 43 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.8\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7749\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34232\pm0.00017$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-150.tex}
 \end{columns}
 
 \end{frame}
@@ -1157,17 +860,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-100mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $256.3\pm1.5$ \\
-    End R $N_{pe}$ & $151.4\pm0.9$ \\
-    Nearest Top ID & 46 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.0\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9426\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34620\pm0.00024$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-100.tex}
 \end{columns}
 
 \end{frame}
@@ -1182,17 +875,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_-50mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $226.7\pm1.4$ \\
-    End R $N_{pe}$ & $172.7\pm1.1$ \\
-    Nearest Top ID & 48 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.0\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7740\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34228\pm0.00018$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_-50.tex}
 \end{columns}
 
 \end{frame}
@@ -1207,17 +890,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_0mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $194.4\pm1.1$ \\
-    End R $N_{pe}$ & $195.2\pm1.1$ \\
-    Nearest Top ID & 51 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $407.3\pm2.2$ \\
-    Nearest Top $\langle t\rangle$ &
-      $3.0030\pm0.0022$ ns \\
-    Nearest Top FPT & $0.35075\pm0.00020$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_0.tex}
 \end{columns}
 
 \end{frame}
@@ -1232,17 +905,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_50mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $171.6\pm1.1$ \\
-    End R $N_{pe}$ & $226.4\pm1.3$ \\
-    Nearest Top ID & 53 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $348.8\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7787\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34237\pm0.00015$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_50.tex}
 \end{columns}
 
 \end{frame}
@@ -1257,17 +920,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_100mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $152.2\pm0.8$ \\
-    End R $N_{pe}$ & $258.3\pm1.4$ \\
-    Nearest Top ID & 55 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $412.8\pm2.2$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9429\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34581\pm0.00019$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_100.tex}
 \end{columns}
 
 \end{frame}
@@ -1282,17 +935,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_150mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $135.5\pm0.8$ \\
-    End R $N_{pe}$ & $303.6\pm1.7$ \\
-    Nearest Top ID & 58 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.1\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7821\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34253\pm0.00018$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_150.tex}
 \end{columns}
 
 \end{frame}
@@ -1307,17 +950,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_200mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $118.5\pm0.7$ \\
-    End R $N_{pe}$ & $354.1\pm2.1$ \\
-    Nearest Top ID & 60 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $413.3\pm2.4$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9367\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34547\pm0.00019$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_200.tex}
 \end{columns}
 
 \end{frame}
@@ -1332,17 +965,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_250mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $104.8\pm0.7$ \\
-    End R $N_{pe}$ & $417.0\pm2.4$ \\
-    Nearest Top ID & 63 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $353.0\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7759\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34302\pm0.00022$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_250.tex}
 \end{columns}
 
 \end{frame}
@@ -1357,17 +980,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_300mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $92.5\pm0.6$ \\
-    End R $N_{pe}$ & $477.5\pm2.8$ \\
-    Nearest Top ID & 65 (statistical tie: two nearest) \\
-    Nearest Top $N_{pe}$ & $408.7\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9359\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34570\pm0.00017$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_300.tex}
 \end{columns}
 
 \end{frame}
@@ -1382,17 +995,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_350mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $84.0\pm0.5$ \\
-    End R $N_{pe}$ & $575.5\pm3.3$ \\
-    Nearest Top ID & 68 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $349.8\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7768\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34257\pm0.00018$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_350.tex}
 \end{columns}
 
 \end{frame}
@@ -1407,17 +1010,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_400mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $75.0\pm0.5$ \\
-    End R $N_{pe}$ & $692.5\pm4.0$ \\
-    Nearest Top ID & 70 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.4\pm2.4$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9433\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34598\pm0.00022$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_400.tex}
 \end{columns}
 
 \end{frame}
@@ -1432,17 +1025,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_450mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $67.1\pm0.4$ \\
-    End R $N_{pe}$ & $845.1\pm4.8$ \\
-    Nearest Top ID & 73 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.2\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7735\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34289\pm0.00024$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_450.tex}
 \end{columns}
 
 \end{frame}
@@ -1457,17 +1040,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_500mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $59.9\pm0.4$ \\
-    End R $N_{pe}$ & $1039.9\pm5.9$ \\
-    Nearest Top ID & 75 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $410.5\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9405\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34627\pm0.00026$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_500.tex}
 \end{columns}
 
 \end{frame}
@@ -1482,17 +1055,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_550mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $55.1\pm0.4$ \\
-    End R $N_{pe}$ & $1325.9\pm7.7$ \\
-    Nearest Top ID & 78 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $352.3\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7796\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34251\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_550.tex}
 \end{columns}
 
 \end{frame}
@@ -1507,17 +1070,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_600mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $48.6\pm0.3$ \\
-    End R $N_{pe}$ & $1687.6\pm9.3$ \\
-    Nearest Top ID & 80 (exact geometry) \\
-    Nearest Top $N_{pe}$ & $411.6\pm2.3$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.9383\pm0.0022$ ns \\
-    Nearest Top FPT & $0.34587\pm0.00023$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_600.tex}
 \end{columns}
 
 \end{frame}
@@ -1532,17 +1085,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_650mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $44.4\pm0.3$ \\
-    End R $N_{pe}$ & $2357.1\pm13.0$ \\
-    Nearest Top ID & 83 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.9\pm2.1$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7803\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34268\pm0.00021$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_650.tex}
 \end{columns}
 
 \end{frame}
@@ -1557,17 +1100,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_670mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $42.2\pm0.3$ \\
-    End R $N_{pe}$ & $2763.5\pm15.3$ \\
-    Nearest Top ID & 84 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $350.2\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7833\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34231\pm0.00014$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/position_670.tex}
 \end{columns}
 
 \end{frame}
@@ -1582,17 +1115,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
   \column{0.46\textwidth}
   \includegraphics[width=\textwidth]{figs/muon_690mm_top_profile.png}
   \tiny
-  \begin{tabular}{lr}
-    \toprule Quantity & Value \\ \midrule
-    End L $N_{pe}$ & $41.4\pm0.3$ \\
-    End R $N_{pe}$ & $3383.2\pm18.3$ \\
-    Nearest Top ID & 85 (window-track exception) \\
-    Nearest Top $N_{pe}$ & $353.0\pm2.0$ \\
-    Nearest Top $\langle t\rangle$ &
-      $2.7881\pm0.0023$ ns \\
-    Nearest Top FPT & $0.34236\pm0.00019$ ns \\
-    \bottomrule
-  \end{tabular}
+  \input{../tables/key_position_690.tex}
 \end{columns}
 
 \end{frame}
@@ -1602,14 +1125,7 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
 \appendix
 \begin{frame}{Backup: validation and gates}
 
-\begin{itemize}
- \item 31/31 ROOT files pass: event IDs 0--1999, matching beam x, aggregate IDs 0--85.
- \item Top localization passes all positions: strict nearest maximum except the documented
-       $x\equiv10\pmod{20}$ window-track effect (maximum among nearest two, deficit below 15\%).
- \item At x=300 mm the two candidates differ by only 0.08 sigma and pass as a statistical tie.
- \item MPT checks pass: RINDEX 1.58, yield 9700/MeV, decay 1.5 ns, rise 0.5 ns,
-       ABSLENGTH 120 cm, emission peak $\approx391$ nm.
-\end{itemize}
+\input{../tables/validation_summary.tex}
 
 \end{frame}
 \begin{frame}{Backup: ID18 impact maps}
@@ -1618,21 +1134,12 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
 \begin{frame}{Backup: why a 4-PE leading-edge threshold}
 
 \begin{enumerate}\small
- \item \textbf{Noise rejection at hardware parity:} 1 PE is dark-count territory;
-       2--3 PE is reachable by correlated crosstalk in the real SiPM.
-       4 PE is the lowest fixed threshold outside the correlated-noise spectrum,
-       matching the operating point of a hardware leading-edge discriminator.
- \item \textbf{Slope optimum:} $\sigma_t\approx\sigma_V/(dV/dt)$; with the
-       0.5/5 ns SPE the SUM4 pulse has maximal rising-edge slope in the first
-       few PE. Lower thresholds expose the high relative variance of first-photon
-       order statistics; higher thresholds reduce slope and increase walk.
- \item \textbf{Far-end efficiency:} minimum signal in the scan is End~R
-       $\langle N_{pe}\rangle=41.1\pm0.3$ at $x=-690$ mm;
-       4 PE ($\approx10\%$ of the minimum pulse) keeps trigger efficiency
-       $\approx100\%$ at all 31 positions, avoiding position-dependent selection bias.
- \item \textbf{Bounded, correctable walk:} fixed-threshold time-walk is small
-       compared to $\sigma_{group}$ at 4 PE and is parametrized for future
-       correction via \texttt{HOOK\_WALK} (no correction applied in any campaign).
+ \item \textbf{Noise rejection at hardware parity:} 4 PE is the nominal fixed threshold outside
+       the correlated-noise spectrum.
+ \item \textbf{Slope optimum:} lower thresholds expose first-photon order statistics; higher
+       thresholds reduce slope and increase walk.
+ \item \textbf{Far-end efficiency:} \input{../tables/threshold_rationale.tex}
+ \item \textbf{Walk:} no time-walk correction is applied in this campaign.
 \end{enumerate}
 
 \end{frame}
@@ -1641,12 +1148,12 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
 \begin{itemize}
  \item SUM4 groups: \{0..3\}, \{4..7\}, \{8..11\}, \{12..15\}.
  \item Single-PE response: normalized 0.5/5 ns double exponential.
- \item Absolute leading-edge threshold: 4 PE equivalent
-       (noise rejection, slope optimum, $\approx100\%$ efficiency at all 31 positions;
-       see dedicated backup slide for full rationale).
+ \item Absolute leading-edge threshold: nominal 4 PE equivalent; the CSV-derived
+       far-end rationale is reported on the preceding backup slide.
  \item Estimator: $\sigma(\Delta T_{AB})/\sqrt{2}$.
- \item \texttt{HOOK\_WALK}: pending; no time-walk correction exists or was invented.
- \item EXEC\_09 anti-artifact audit verifies common threshold, pulse, t=0 and estimator.
+ \item No time-walk correction is applied in this campaign.
+ \item The EndTop/End-only anti-artifact audit uses a common threshold, pulse,
+       primary time convention and estimator.
 \end{itemize}
 
 \end{frame}
@@ -1664,25 +1171,20 @@ $x$ & $\sigma_{t,est}$ [ps] & $\sigma(t_4)$ [ps]\\ \midrule
  mirrors \{8--11\}, \{12--15\} on End~R.
  $\sigma_{\rm group}=\sigma(\Delta T_{AB})/\sqrt{2}$
  (\texttt{sum4\_timing.C:218--221}).
- \item[HOOK\_WALK] Reserved time-walk correction point; no correction in any campaign
- (\texttt{sum4\_timing.C:305--315}).
- \item[Intrinsic sigma] Excludes SPTR and electronics jitter; 88 ps hardware value not
- directly comparable.
+ \item[Time-walk] No time-walk correction is applied in the EJ-230 campaign.
+ \item[Intrinsic sigma] Excludes SPTR and electronics jitter.
  \item[Moyal] Closed-form Landau approximation for stable MINUIT fits. Undershoots extreme tail.
 \end{description}
 \column{0.50\textwidth}
 \tiny\begin{description}
  \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{0pt}
  \item[SPTR] Single Photon Time Resolution: SiPM intrinsic single-PE jitter.
- Excluded from all EXEC\_12 results (jitter$=0$); re-introduced via EXEC\_02b hooks,
- summed in quadrature with electronics jitter.
+ Excluded from all EJ-230 results; all reported timing is intrinsic.
  \item[SUM4] Analog sum of four SiPMs: \{0--3\}, \{4--7\}, \{8--11\}, \{12--15\}
  (\texttt{congruent\_sum4\_timing.C:\allowbreak{}218--221}).
  \item[Timing gate] \texttt{exec08b\_timing\_gate.py} tests EndTop vs.\ End-only
  $\sigma_{\rm group}$ at $x=0,\pm400$ mm; no time acceptance cut on photons.
- \item[Window-track effect] $\pm2$ mm track offset from window centre increases
- first-pass solid angle; empirically $\approx9.8\%$ at $\approx12\,\sigma$;
- null at centre and midpoint. Geometric working hypothesis.
+ \item[Window-track effect] \input{../tables/window_dip_summary.tex}
  \item[$t_N$ / time-to-threshold] $N$-th detected photoelectron arrival time per event.
  $\sigma(t_N)$: photon-counting timing resolution at ideal $N$-PE digital threshold.
  \item[(exact geometry)] Nearest SiPM = maximum, or window-track exception;

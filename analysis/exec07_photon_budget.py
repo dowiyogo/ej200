@@ -583,7 +583,7 @@ def save_geometry_figure(point: PointResult, path: pathlib.Path) -> None:
         f"distance to ends: L {point.x_mm + 700:.0f} mm / R {700 - point.x_mm:.0f} mm"
     )
     ax.set_title(subtitle, fontsize=10)
-    ax.text(0, -7, "EJ-204 OPSC-101, Mylar wrapped except End faces and 70 Top windows",
+    ax.text(0, -7, "EJ-230 OPSC-106, Mylar wrapped except End faces and 70 Top windows",
             ha="center", va="center", fontsize=8)
     ax.set(xlim=(-750, 750), ylim=(-50, 85), xlabel="x [mm]")
     ax.set_yticks([])
@@ -836,7 +836,7 @@ def write_reports(
         "",
         "## Numerical conclusions",
         "",
-        f"- Effective attenuation: left {fits.iloc[0].lambda_eff_cm:.2f} +/- {fits.iloc[0].lambda_eff_error_cm:.2f} cm; right {fits.iloc[1].lambda_eff_cm:.2f} +/- {fits.iloc[1].lambda_eff_error_cm:.2f} cm. These include light extraction through 70 Top windows and are not expected to equal the 160 cm bulk ABSLENGTH.",
+        f"- Effective attenuation: left {fits.iloc[0].lambda_eff_cm:.2f} +/- {fits.iloc[0].lambda_eff_error_cm:.2f} cm; right {fits.iloc[1].lambda_eff_cm:.2f} +/- {fits.iloc[1].lambda_eff_error_cm:.2f} cm. These include light extraction through 70 Top windows and are not expected to equal the 120 cm bulk ABSLENGTH.",
         f"- Apparent slope-derived velocity from mean all-photon time: left {fits.iloc[0].v_eff_cm_ns:.2f} +/- {fits.iloc[0].v_eff_error_cm_ns:.2f} cm/ns; right {fits.iloc[1].v_eff_cm_ns:.2f} +/- {fits.iloc[1].v_eff_error_cm_ns:.2f} cm/ns. EXEC_10 shows this is not a direct propagation velocity.",
         f"- Typical nearest-Top var/mean: median {nearest_top.var_over_mean.median():.2f}, range {nearest_top.var_over_mean.min():.2f}-{nearest_top.var_over_mean.max():.2f}. N_pe is not forced to Poisson.",
         f"- Intrinsic End SUM4 sigma_group= sigma(DeltaT)/sqrt(2): mean {np.mean(sigma_group):.2f} ps, range {np.min(sigma_group):.2f}-{np.max(sigma_group):.2f} ps. No SPTR/electronics jitter.",
@@ -846,7 +846,7 @@ def write_reports(
         "",
         "## Method notes",
         "",
-        f"- EJ-204 estimate uses sqrt(tau_r*tau_d)={SIGMA_NUMERATOR_NS:.3f} ns from tau_r={TAU_R_NS} ns and tau_d={TAU_D_NS} ns.",
+        f"- EJ-230 estimate uses sqrt(tau_r*tau_d)={SIGMA_NUMERATOR_NS:.3f} ns from tau_r={TAU_R_NS} ns and tau_d={TAU_D_NS} ns.",
         f"- SUM4 leading edge is ported from `analysis/congruent_sum4_timing.C`: normalized double exponential {SPR_RISE_NS}/{SPR_FALL_NS} ns, absolute threshold {LEADING_EDGE_THRESHOLD_PE} PE, no time-walk correction.",
         "- Gaussian overlays are diagnostic only. Poisson-tail plots use log-y and report both Poisson and Gaussian chi2/ndf.",
     ]
@@ -855,7 +855,7 @@ def write_reports(
     with PdfPages(output_dir / "exec07_photon_budget_report.pdf") as pdf:
         fig = plt.figure(figsize=(11.69, 8.27))
         fig.text(0.06, 0.94, "EXEC_08 - EXEC_07 EndTop photon budget", fontsize=20, weight="bold")
-        fig.text(0.06, 0.88, "31 positions x 2000 events, 86 channels, EJ-204 OPSC-101, Broadcom AFBR-S4N66P024M", fontsize=11)
+        fig.text(0.06, 0.88, "31 positions x 2000 events, 86 channels, EJ-230 OPSC-106, Broadcom AFBR-S4N66P024M", fontsize=11)
         fig.text(0.06, 0.82, "Intrinsic simulation: /sipm/jitterSigma 0", fontsize=11, color="tab:red")
         fig.text(0.06, 0.73, "\n".join(conclusions[5:11]), fontsize=10, va="top")
         fig.text(0.06, 0.18, "Top uses 70 simulated SiPM elements and does not replicate the 32-SiPM hardware setup.", fontsize=10)

@@ -25,8 +25,8 @@ TOP_POSITIONS_MM = tuple(
     + [12.0 + 20.0 * i for i in range(35)]
 )
 BAR_HALF_LENGTH_MM = 700.0
-TAU_R_NS = 0.7
-TAU_D_NS = 1.8
+TAU_R_NS = 0.5
+TAU_D_NS = 1.5
 SIGMA_NUMERATOR_NS = (TAU_R_NS * TAU_D_NS) ** 0.5
 
 # Existing SUM4 + leading-edge hooks from analysis/congruent_sum4_timing.C.

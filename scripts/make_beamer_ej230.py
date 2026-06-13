@@ -25,9 +25,9 @@ import sys
 SUBSTITUTIONS = [
     # Title / subtitle
     (r"EXEC\\\_12: EndTop photon budget --- pedagogical review",
-     r"EXEC\\_13 (EJ-230): EndTop photon budget --- material comparison"),
+     r"EJ-230 EndTop photon budget and intrinsic timing"),
     (r"t_N distributions, Fano/Landau motivation, window-track mechanism, full scan",
-     r"EJ-230 (OPSC-106) mirror of EXEC\\_12 --- same analysis, new material"),
+     r"Standalone OPSC-106 analysis report"),
     # Date
     (r"June 11, 2026", r"June 12, 2026"),
     # Branch
@@ -43,7 +43,7 @@ SUBSTITUTIONS = [
     (r"exec12_tN_summary\.png", r"exec13_tN_summary.png"),
     # Dispersion figures (exec12b → exec13b naming)
     (r"figs/tn_(-?\d+)mm_(endL|endR|top)\.png",
-     r"figs/exec13_tn_\\1mm_\\2.png"),
+     r"figs/exec13_tn_\g<1>mm_\g<2>.png"),
     # Material name throughout
     (r"EJ-204 bar:", r"EJ-230 bar:"),
     (r"\{EJ-204 bar\}", r"{EJ-230 bar}"),
@@ -110,7 +110,7 @@ def main() -> int:
     parser.add_argument(
         "--results-dir", type=pathlib.Path,
         default=None,
-        help="If provided, add \\graphicspath pointing to results figures.",
+        help="If provided, add the canonical report/../ graphicspath.",
     )
     args = parser.parse_args()
 
@@ -123,13 +123,9 @@ def main() -> int:
 
     new_text = apply_substitutions(source_text)
 
-    # Add \graphicspath to results figures if requested
+    # Reports compile from results_ej230_analysis/report and keep figs/... paths.
     if args.results_dir is not None:
-        figs_path = args.results_dir / "figures"
-        graphicspath = (
-            f"\\graphicspath{{{{{figs_path}/}},"
-            f"{{figs/}}}}"
-        )
+        graphicspath = r"\graphicspath{{../}}"
         new_text = new_text.replace(
             r"\begin{document}",
             graphicspath + "\n" + r"\begin{document}",

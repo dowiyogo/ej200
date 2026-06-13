@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""Check ordered Beamer frametitle parity against the EXEC_12 reference."""
+
+from __future__ import annotations
+
+import argparse
+import re
+from pathlib import Path
+
+
+REPO = Path(__file__).resolve().parents[1]
+
+
+def balanced_argument(text: str, start: int) -> tuple[str, int]:
+    if text[start] != "{":
+        raise ValueError("argument does not start with {")
+    depth = 0
+    for index in range(start, len(text)):
+        if text[index] == "{" and (index == 0 or text[index - 1] != "\\"):
+            depth += 1
+        elif text[index] == "}" and (index == 0 or text[index - 1] != "\\"):
+            depth -= 1
+            if depth == 0:
+                return text[start + 1:index], index + 1
+    raise ValueError("unterminated balanced argument")
+
+
+def titles(path: Path) -> list[str]:
+    text = path.read_text(encoding="utf-8")
+    output = []
+    for match in re.finditer(r"\\begin\{frame\}(?:\[[^\]]*\])?", text):
+        cursor = match.end()
+        while cursor < len(text) and text[cursor].isspace():
+            cursor += 1
+        title, _ = balanced_argument(text, cursor)
+        output.append(title)
+    return output
+
+
+def normalize(title: str) -> str:
+    return (
+        title.replace("EJ-204", "EJ-MATERIAL")
+        .replace("EJ-230", "EJ-MATERIAL")
+        .replace("exec12", "execXX")
+        .replace("exec13", "execXX")
+        .replace("EXEC\\_12", "EXEC\\_XX")
+        .replace("EXEC\\_13", "EXEC\\_XX")
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--reference", type=Path, default=REPO / "analysis/exec07/exec12_report_full.tex"
+    )
+    parser.add_argument(
+        "--report",
+        type=Path,
+        default=REPO / "results_ej230_analysis/report/exec13_ej230_report_full.tex",
+    )
+    args = parser.parse_args()
+    expected, observed = titles(args.reference), titles(args.report)
+    mismatches = []
+    for index, (left, right) in enumerate(zip(expected, observed), 1):
+        if normalize(left) != normalize(right):
+            mismatches.append((index, left, right))
+    if len(expected) != len(observed):
+        print(f"ERROR: frame count reference={len(expected)} report={len(observed)}")
+        return 1
+    if mismatches:
+        for index, left, right in mismatches:
+            print(f"ERROR frame {index}: reference={left!r} report={right!r}")
+        return 1
+    print(f"frame_parity=PASS frames={len(observed)} ordered_titles={len(observed)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
