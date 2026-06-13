@@ -43,6 +43,7 @@ ej200_bar_sim
 *.tmp
 *.bak
 results/
+output/
 
 # Diagnostic script outputs
 diag/yield_audit_report.txt
