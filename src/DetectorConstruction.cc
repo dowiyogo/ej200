@@ -13,7 +13,6 @@
 #include "G4RunManager.hh"
 #include "G4SDManager.hh"
 #include "G4StateManager.hh"
-#include "G4SubtractionSolid.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VSolid.hh"
 #include "G4VisAttributes.hh"
@@ -36,28 +35,15 @@ static constexpr G4double kEndHalfY   = 3.0  * mm;  // 6 mm in Y
 static constexpr G4double kEndHalfZ   = 3.0  * mm;  // 6 mm in Z
 static constexpr G4double kEndPitch   = 2*kEndHalfY + 1.5*mm; // 7.5 mm
 
-// Top SiPM (on +Y face): thin slab, 6×6 mm² active area
-static constexpr G4double kTopHalfX   = 3.0  * mm;  // 6 mm in X
-static constexpr G4double kTopHalfY   = 0.25 * mm;  // thickness
-static constexpr G4double kTopHalfZ   = 3.0  * mm;  // 6 mm in Z
-
 // ── Static helpers ────────────────────────────────────────────────────────────
-G4double DetectorConstruction::TopSiPMCenterX(G4int idx) {
-    if (idx < 0 || idx >= kNTopSiPMs) return 0.0;
-    if (idx < 35) return (-692.0 + 20.0 * idx) * mm;
-    return (12.0 + 20.0 * (idx - 35)) * mm;
-}
-
 G4int DetectorConstruction::FaceType(G4int globalId) {
     if (globalId < kNEndSiPMs)       return 0;  // end left
-    if (globalId < 2 * kNEndSiPMs)   return 1;  // end right
-    return 2;                                    // top
+    return 1;                                    // end right
 }
 
 G4int DetectorConstruction::LocalId(G4int globalId) {
     if (globalId < kNEndSiPMs)     return globalId;
-    if (globalId < 2*kNEndSiPMs)   return globalId - kNEndSiPMs;
-    return globalId - 2*kNEndSiPMs;
+    return globalId - kNEndSiPMs;
 }
 
 // ── Constructor / Destructor ──────────────────────────────────────────────────
@@ -76,12 +62,6 @@ DetectorConstruction::DetectorConstruction() {
         &DetectorConstruction::SetScintillatorCode,
         "Legacy alias for /det/scintillator.");
     legacyMatCmd.SetParameterName("code", false);
-
-    auto& readoutCmd = fMessenger->DeclareMethod(
-        "readout",
-        &DetectorConstruction::SetReadoutConfiguration,
-        "Set readout/wrapping configuration: End (default), Top, or EndTop.");
-    readoutCmd.SetParameterName("configuration", false);
 
     fMessenger->DeclareMethod(
         "edgeWrap",
@@ -136,39 +116,6 @@ void DetectorConstruction::SetSiPMModel(G4String model) {
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
-}
-
-void DetectorConstruction::SetReadoutConfiguration(G4String configuration) {
-    std::transform(configuration.begin(), configuration.end(), configuration.begin(),
-                   [](unsigned char ch) { return static_cast<char>(std::toupper(ch)); });
-    configuration.erase(
-        std::remove_if(configuration.begin(), configuration.end(),
-                       [](unsigned char ch) { return ch == '-' || ch == '_' || ch == ' '; }),
-        configuration.end());
-
-    G4String canonical;
-    if (configuration == "END") canonical = "End";
-    else if (configuration == "TOP") canonical = "Top";
-    else if (configuration == "ENDTOP") canonical = "EndTop";
-    else {
-        G4cerr << "[DetectorConstruction] Unknown /det/readout \"" << configuration
-               << "\". Use End, Top, or EndTop.\n";
-        return;
-    }
-    if (canonical == fReadoutConfiguration) return;
-
-    fReadoutConfiguration = canonical;
-    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
-        G4RunManager::GetRunManager()->ReinitializeGeometry();
-    }
-}
-
-G4bool DetectorConstruction::IsEndInstrumented() const {
-    return fReadoutConfiguration == "End" || fReadoutConfiguration == "EndTop";
-}
-
-G4bool DetectorConstruction::IsTopInstrumented() const {
-    return fReadoutConfiguration == "Top" || fReadoutConfiguration == "EndTop";
 }
 
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
@@ -281,7 +228,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                  worldLV, false, 0, true);
 
     fEndSiPMLV = nullptr;
-    fTopSiPMLV = nullptr;
     fSiPMSurfaces.clear();
     fReflectorSurfaces.clear();
 
@@ -293,15 +239,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                                       kBarHalfX, foilHalfT, kBarHalfZ);
     auto* reflZSolid = new G4Box("ReflectorZSolid",
                                  kBarHalfX, kBarHalfY, foilHalfT);
-    auto* reflXSolid = new G4Box("ReflectorXSolid",
-                                 foilHalfT, kBarHalfY, kBarHalfZ);
     auto* reflYMinusLV = new G4LogicalVolume(reflYMinusSolid, worldMat,
                                              "ReflectorYMinusLV");
     auto* reflZLV = new G4LogicalVolume(reflZSolid, worldMat, "ReflectorZLV");
-    auto* reflXLV = new G4LogicalVolume(reflXSolid, worldMat, "ReflectorXLV");
     reflYMinusLV->SetVisAttributes(G4VisAttributes::GetInvisible());
     reflZLV->SetVisAttributes(G4VisAttributes::GetInvisible());
-    reflXLV->SetVisAttributes(G4VisAttributes::GetInvisible());
 
     auto* reflYMinusPhys = new G4PVPlacement(
         nullptr, {0.0, -(kBarHalfY + foilHalfT), 0.0},
@@ -320,18 +262,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fReflectorSurfaces["+Z"] = new G4LogicalBorderSurface(
         "BarReflector_ZPlus", fBarPhys, reflZPlusPhys, reflector);
 
-    G4VSolid* reflYPlusSolid = new G4Box(
+    auto* reflYPlusSolid = new G4Box(
         "ReflectorYPlusBaseSolid", kBarHalfX, foilHalfT, kBarHalfZ);
-    if (IsTopInstrumented()) {
-        auto* window = new G4Box(
-            "ReflectorYPlusWindowSolid", kTopHalfX, 2.0 * foilHalfT, kTopHalfZ);
-        for (G4int i = 0; i < kNTopSiPMs; ++i) {
-            reflYPlusSolid = new G4SubtractionSolid(
-                "ReflectorYPlusCut_" + std::to_string(i),
-                reflYPlusSolid, window, nullptr,
-                G4ThreeVector(TopSiPMCenterX(i), 0.0, 0.0));
-        }
-    }
     auto* reflYPlusLV = new G4LogicalVolume(
         reflYPlusSolid, worldMat, "ReflectorYPlusLV");
     reflYPlusLV->SetVisAttributes(G4VisAttributes::GetInvisible());
@@ -340,20 +272,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         reflYPlusLV, "ReflectorYPlusPV", worldLV, false, 5, true);
     fReflectorSurfaces["+Y"] = new G4LogicalBorderSurface(
         "BarReflector_YPlus", fBarPhys, reflYPlusPhys, reflector);
-    if (!IsEndInstrumented()) {
-        auto* reflXMinusPhys = new G4PVPlacement(
-            nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
-            reflXLV, "ReflectorXMinusPV", worldLV, false, 1, true);
-        auto* reflXPlusPhys = new G4PVPlacement(
-            nullptr, {+(kBarHalfX + foilHalfT), 0.0, 0.0},
-            reflXLV, "ReflectorXPlusPV", worldLV, false, 2, true);
-        fReflectorSurfaces["-X"] = new G4LogicalBorderSurface(
-            "BarReflector_XMinus", fBarPhys, reflXMinusPhys, reflector);
-        fReflectorSurfaces["+X"] = new G4LogicalBorderSurface(
-            "BarReflector_XPlus", fBarPhys, reflXPlusPhys, reflector);
-    }
-
-    if (IsEndInstrumented()) {
+    {
         auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
         fEndSiPMLV = new G4LogicalVolume(endSolid, sipmMat, "EndSiPMLV");
         auto* va = new G4VisAttributes(G4Colour(0.0, 0.85, 0.2, 0.6));
@@ -378,26 +297,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         }
     }
 
-    if (IsTopInstrumented()) {
-        auto* topSolid = new G4Box("TopSiPMSolid", kTopHalfX, kTopHalfY, kTopHalfZ);
-        fTopSiPMLV = new G4LogicalVolume(topSolid, sipmMat, "TopSiPMLV");
-        auto* va = new G4VisAttributes(G4Colour(1.0, 0.2, 0.0, 0.6));
-        va->SetForceSolid(true);
-        fTopSiPMLV->SetVisAttributes(va);
-
-        for (G4int i = 0; i < kNTopSiPMs; ++i) {
-            const G4int globalId = 2 * kNEndSiPMs + i;
-            const G4double cx = TopSiPMCenterX(i);
-
-            auto* topPhys = new G4PVPlacement(
-                nullptr, G4ThreeVector(cx, kBarHalfY - kTopHalfY, 0.0),
-                fTopSiPMLV, "TopSiPMPV", barLV, false, globalId, true);
-
-            fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
-                "SiPMSurf_" + std::to_string(globalId), fBarPhys, topPhys, sipmSurface);
-        }
-    }
-
     return worldPhys;
 }
 
@@ -414,5 +313,4 @@ void DetectorConstruction::ConstructSDandField() {
     sipmSD->SetModel(fSiPMModel);
 
     if (fEndSiPMLV != nullptr) SetSensitiveDetector(fEndSiPMLV, sipmSD);
-    if (fTopSiPMLV != nullptr) SetSensitiveDetector(fTopSiPMLV, sipmSD);
 }

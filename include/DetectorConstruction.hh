@@ -18,15 +18,12 @@ class G4GenericMessenger;
 //     ├─ BarPV (SSLG4 OPSC-106/EJ-230 by default — EXEC_13 campaign)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
-//     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
-//     └─ Reflector*PV panels (optical border surfaces, R=0.98)
+//     └─ Reflector*PV panels on every non-END face
 //
-// The +Y reflector is a physical panel with 70 exact 6x6 mm2 windows.
 // SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
 //
 // UI commands:
 //   /det/scintillator OPSC-106|OPSC-101|OPSC-100
-//   /det/readout End|Top|EndTop
 //   /sipm/model AFBR-S4N66P024M
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
@@ -35,8 +32,7 @@ class G4GenericMessenger;
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
     static constexpr G4int kNEndSiPMs = 8;   // per side (8×1 array)
-    static constexpr G4int kNTopSiPMs = 70;
-    static constexpr G4int kNTotalSiPMs = 2 * kNEndSiPMs + kNTopSiPMs;
+    static constexpr G4int kNTotalSiPMs = 2 * kNEndSiPMs;
 
     DetectorConstruction();
     ~DetectorConstruction() override;
@@ -50,10 +46,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     const std::map<G4String, G4LogicalBorderSurface*>& GetReflectorSurfaces() const
     { return fReflectorSurfaces; }
 
-    // X-centre of top SiPM local index 0..69 [G4 units].
-    static G4double TopSiPMCenterX(G4int idx);
-    G4int GetNTopSiPMs() const { return kNTopSiPMs; }
-
     // Active scintillator selector — triggers geometry rebuild
     void        SetScintillatorCode(G4String code);
     G4String    GetScintillatorCode() const { return fScintCode; }
@@ -62,31 +54,21 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     void     SetSiPMModel(G4String model);
     G4String GetSiPMModel() const { return fSiPMModel; }
 
-    // Readout/wrapping selector — triggers geometry rebuild
-    void     SetReadoutConfiguration(G4String configuration);
-    G4String GetReadoutConfiguration() const { return fReadoutConfiguration; }
-    G4bool   IsEndInstrumented() const;
-    G4bool   IsTopInstrumented() const;
-    G4int    GetNActiveEndSiPMs() const
-    { return IsEndInstrumented() ? 2 * kNEndSiPMs : 0; }
-    G4int    GetNActiveTopSiPMs() const
-    { return IsTopInstrumented() ? kNTopSiPMs : 0; }
+    G4int GetNActiveEndSiPMs() const { return 2 * kNEndSiPMs; }
 
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
 
     // Helpers for analysis (independent of pitch/count)
-    static G4int FaceType(G4int globalId);  // 0=end_left, 1=end_right, 2=top
+    static G4int FaceType(G4int globalId);  // 0=end_left, 1=end_right
     static G4int LocalId (G4int globalId);  // index within face
 
   private:
     G4LogicalVolume*   fEndSiPMLV  = nullptr;
-    G4LogicalVolume*   fTopSiPMLV  = nullptr;
     G4VPhysicalVolume* fBarPhys          = nullptr;
 
     G4String           fScintCode = "OPSC-106";
     G4String           fSiPMModel = "AFBR-S4N66P024M";
-    G4String           fReadoutConfiguration = "End";
     G4Material*         fActiveScintillator = nullptr;
 
     G4GenericMessenger* fMessenger = nullptr;

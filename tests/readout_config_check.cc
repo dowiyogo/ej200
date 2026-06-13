@@ -57,21 +57,19 @@ void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
             "SiPM reflectivity is not zero");
 }
 
-void RequireTopWindowedReflector(const DetectorConstruction& detector, bool windowed) {
+void RequireSolidYPlusReflector(const DetectorConstruction& detector) {
     const auto& surfaces = detector.GetReflectorSurfaces();
     const auto found = surfaces.find("+Y");
     Require(found != surfaces.end(), "+Y reflector is missing");
     const G4String entityType =
         found->second->GetVolume2()->GetLogicalVolume()->GetSolid()->GetEntityType();
-    Require((entityType == "G4SubtractionSolid") == windowed,
-            windowed ? "+Y reflector has no top windows"
-                     : "+Y reflector is unexpectedly perforated");
+    Require(entityType == "G4Box", "+Y reflector is unexpectedly perforated");
 }
 
-void RequireEndTopPlacements(const DetectorConstruction& detector) {
+void RequireEndPlacements(const DetectorConstruction& detector) {
     const auto& surfaces = detector.GetSiPMSurfaces();
     Require(surfaces.size() == DetectorConstruction::kNTotalSiPMs,
-            "EndTop does not have 86 SiPM border surfaces");
+            "end-only geometry does not have 16 SiPM border surfaces");
 
     std::set<G4int> copyNumbers;
     for (G4int globalId = 0; globalId < DetectorConstruction::kNTotalSiPMs; ++globalId) {
@@ -83,80 +81,26 @@ void RequireEndTopPlacements(const DetectorConstruction& detector) {
                 "copy number differs from global ID " + std::to_string(globalId));
         Require(copyNumbers.insert(physical->GetCopyNo()).second,
                 "duplicate copy number " + std::to_string(globalId));
-        if (globalId >= 16) {
-            const G4int localId = globalId - 16;
-            const G4double expected = DetectorConstruction::TopSiPMCenterX(localId);
-            Require(std::abs(physical->GetTranslation().x() - expected) < 0.01 * mm,
-                    "wrong Top x for global ID " + std::to_string(globalId));
-            Require(std::abs(physical->GetTranslation().z()) < 0.01 * mm,
-                    "wrong Top z for global ID " + std::to_string(globalId));
-        }
     }
-    Require(std::abs(DetectorConstruction::TopSiPMCenterX(35) -
-                     DetectorConstruction::TopSiPMCenterX(34) - 24.0 * mm) < 0.01 * mm,
-            "central Top pair is not separated by 24 mm");
 }
 
-void CheckEnd() {
+void CheckEndOnly() {
     DetectorConstruction detector;
-    Require(detector.GetReadoutConfiguration() == "End", "default configuration is not End");
     detector.Construct();
 
-    Require(detector.IsEndInstrumented(), "End config does not instrument the ends");
-    Require(!detector.IsTopInstrumented(), "End config instruments Top");
-    Require(detector.GetNActiveEndSiPMs() == 16, "End config does not activate 16 End SiPMs");
-    Require(detector.GetNActiveTopSiPMs() == 0, "End config activates Top SiPMs");
-    Require(detector.GetSiPMSurfaces().size() == 16, "End config has wrong SiPM surface count");
+    Require(detector.GetNActiveEndSiPMs() == 16, "geometry does not activate 16 End SiPMs");
+    Require(detector.GetSiPMSurfaces().size() == 16, "geometry has wrong SiPM surface count");
     RequireReflector(detector, "+Y", true);
-    RequireTopWindowedReflector(detector, false);
+    RequireSolidYPlusReflector(detector);
     RequireReflector(detector, "-X", false);
     RequireReflector(detector, "+X", false);
-    RequireSiPMSurfaceProperties(detector);
-}
-
-void CheckTop() {
-    DetectorConstruction detector;
-    detector.SetReadoutConfiguration("Top");
-    detector.Construct();
-
-    Require(!detector.IsEndInstrumented(), "Top config instruments End");
-    Require(detector.IsTopInstrumented(), "Top config does not instrument Top");
-    Require(detector.GetNActiveEndSiPMs() == 0, "Top config activates End SiPMs");
-    Require(detector.GetNActiveTopSiPMs() == detector.GetNTopSiPMs(),
-            "Top config has wrong active Top SiPM count");
-    Require(detector.GetNActiveTopSiPMs() == 70, "Top config does not activate 70 Top SiPMs");
-    Require(detector.GetSiPMSurfaces().size() ==
-                static_cast<std::size_t>(detector.GetNTopSiPMs()),
-            "Top config has wrong SiPM surface count");
-    RequireReflector(detector, "+Y", true);
-    RequireTopWindowedReflector(detector, true);
-    RequireReflector(detector, "-X", true);
-    RequireReflector(detector, "+X", true);
-    RequireSiPMSurfaceProperties(detector);
-}
-
-void CheckEndTop() {
-    DetectorConstruction detector;
-    detector.SetReadoutConfiguration("EndTop");
-    detector.Construct();
-
-    Require(detector.IsEndInstrumented() && detector.IsTopInstrumented(),
-            "EndTop does not instrument both readouts");
-    Require(detector.GetNActiveEndSiPMs() == 16, "EndTop does not activate 16 End SiPMs");
-    Require(detector.GetNActiveTopSiPMs() == 70, "EndTop does not activate 70 Top SiPMs");
-    RequireReflector(detector, "+Y", true);
-    RequireTopWindowedReflector(detector, true);
-    RequireReflector(detector, "-X", false);
-    RequireReflector(detector, "+X", false);
-    RequireEndTopPlacements(detector);
+    RequireEndPlacements(detector);
     RequireSiPMSurfaceProperties(detector);
 }
 } // namespace
 
 int main() {
-    CheckEnd();
-    CheckTop();
-    CheckEndTop();
+    CheckEndOnly();
     std::cout << "readout_config_check PASSED\n";
     return EXIT_SUCCESS;
 }
