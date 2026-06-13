@@ -365,7 +365,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
        with $\mathrm{Var}(N_{pe})$ from the documented $F=1+c\langle N_{pe}\rangle$.
        Statistical but non-Poissonian.
  \item \textbf{Optical path-length dispersion:}
-       TIR photons at $n=1.58$ ($\theta_c\approx39°$) span axial speeds
+       TIR photons at $n=1.58$ ($\theta_c\approx39^\circ$) span axial speeds
        $c/(n\cos\theta)\to1.4$--$1.5$ ns/m per metre plus Mylar bounce tail ($R=0.98$).
        Low-$n$ photons: quasi-direct; high-$n$: reflection-dominated $\Rightarrow$ RMS $\propto n$.
  \item \textbf{Attenuation truncation:}
@@ -520,7 +520,7 @@ also generates the super-Poissonian Fano factor:
 
 \begin{columns}[T]
 \column{0.52\textwidth}
-\begin{itemize}\footnotesize
+\begin{itemize}\scriptsize
   \item Top SiPMs couple through index-matched windows
         ($6\times6$ mm$^2$) in the +Y Mylar face.
   \item First-pass photon collection depends on the solid angle
@@ -570,10 +570,7 @@ At midpoint (C) both windows contribute equally and the effect is null.
 \begin{frame}{Window-track collection effect: five-run test}
 
 \begin{columns}[T]\column{0.47\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
-Run & contrast [Npe] & significance \\ \midrule
 \input{../tables/window_dip_test.tex}
-\bottomrule\end{tabular}}
 \column{0.51\textwidth}
 \includegraphics[width=\textwidth]{figs/exec08b_window_dip_profiles.png}
 \end{columns}
@@ -596,10 +593,7 @@ Run & contrast [Npe] & significance \\ \midrule
 
 \begin{columns}[T]
 \column{0.48\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{rrrrr}\toprule
-$x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
 \input{../tables/endtop_endonly_ratio.tex}
-\bottomrule\end{tabular}}
 \vspace{2pt}
 \begin{alertblock}{\footnotesize Confirmed mechanism}
 \scriptsize\input{../tables/endtop_endonly_tails.tex}
@@ -618,10 +612,7 @@ EndTop tail narrowing persists over the full range: physical, not an artefact.
 \begin{columns}[T]\column{0.62\textwidth}
 \includegraphics[width=\textwidth]{figs/exec10_velocity_estimators.png}
 \column{0.36\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
-Estimator & slope-derived [cm/ns] & $\chi^2/ndf$ \\ \midrule
 \input{../tables/velocity_estimators.tex}
-\bottomrule\end{tabular}}
 \begin{alertblock}{Refuted predictions}
 Every global line fit is rejected; slope-derived values are not accepted propagation velocities.
 \end{alertblock}
@@ -632,21 +623,14 @@ Every global line fit is rejected; slope-derived values are not accepted propaga
 
 \begin{columns}[T]
 \column{0.42\textwidth}
-\scriptsize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{rrr}\toprule
-$x$ [mm] & $N_{pe}$ & $\sigma_{t,est}$ [ps] \\ \midrule
 \input{../tables/top_timing_estimates.tex}
-\bottomrule\end{tabular}
 \column{0.56\textwidth}
 \begin{block}{\footnotesize Definition, derivation, and scope}
 \scriptsize $\sigma_{t,est}=\sqrt{\tau_r\tau_d}/\sqrt{N_{pe}}$.
 Threshold at low $N_{pe}$, double-exponential emission; analytic orientation only.
 \end{block}
 \begin{block}{\footnotesize $\sigma_{t,est}$ vs.\ simulated $\sigma(t_4)$}
-\tiny\setlength{\tabcolsep}{3pt}\begin{tabular}{rcc}\toprule
-$x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
 \input{../tables/top_timing_comparison.tex}
-\bottomrule\end{tabular}
 \end{block}
 \end{columns}
 

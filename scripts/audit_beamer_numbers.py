@@ -113,6 +113,8 @@ def main() -> int:
             errors.append(f"{path.name}: contains an uncertainty rounded to zero")
         for macro in NEWCOMMAND_RE.findall(text):
             macro_owners.setdefault(macro, []).append(path.name)
+            if not macro.isalpha():
+                errors.append(f"{path.name}: invalid non-alphabetic newcommand name: {macro}")
         sources = SOURCE_RE.findall(text)
         if not sources:
             errors.append(f"{path.name}: missing source-sha256 metadata")

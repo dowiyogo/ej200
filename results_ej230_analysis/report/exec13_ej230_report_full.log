@@ -1,6 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2026.5.9)  13 JUN 2026 00:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2026.5.9)  13 JUN 2026 11:19
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **exec13_ej230_report_full.tex
 (./exec13_ej230_report_full.tex
@@ -776,6 +777,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count325
 \@thisrulewidth=\dimen296
 )
+(../tables/exec14_macros.tex)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
 Package: pgf 2020/12/27 v3.1.8b (3.1.8b)
@@ -855,24 +857,24 @@ File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 (./exec13_ej230_report_full.aux)
 \openout1 = `exec13_ej230_report_full.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -930,7 +932,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 20.
+Package hyperref Info: Link coloring OFF on input line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -943,71 +945,71 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count342
 )
-LaTeX Info: Redefining \ref on input line 20.
-LaTeX Info: Redefining \pageref on input line 20.
-LaTeX Info: Redefining \nameref on input line 20.
+LaTeX Info: Redefining \ref on input line 21.
+LaTeX Info: Redefining \pageref on input line 21.
+LaTeX Info: Redefining \nameref on input line 21.
 
 (./exec13_ej230_report_full.out) (./exec13_ej230_report_full.out)
 \@outlinefile=\write5
 \openout5 = `exec13_ej230_report_full.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 20.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 21.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 20.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 21.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 20.
+(Font)                  OT1/cmss/m/n --> T1/cmr/m/n on input line 21.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 20.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 20.
+(Font)                  OT1/cmr/bx/n --> T1/cmss/b/n on input line 21.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 20.
+(Font)                  OT1/cmss/m/n --> T1/cmss/m/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 20.
+(Font)                  OT1/cmss/bx/n --> T1/cmss/m/n on input line 21.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 20.
+(Font)                  OT1/cmr/m/it --> T1/cmss/m/it on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 20.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 20.
+(Font)                  OT1/cmr/bx/it --> T1/cmss/m/it on input line 21.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 20.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 20.
+(Font)                  OT1/cmtt/m/n --> T1/cmtt/m/n on input line 21.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 20.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 21.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 20.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 20.
+(Font)                  OT1/cmss/b/n --> T1/cmr/b/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 20.
+(Font)                  T1/cmss/b/n --> T1/cmss/b/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 20.
+(Font)                  T1/cmss/m/n --> T1/cmss/b/n on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 20.
+(Font)                  T1/cmss/m/it --> T1/cmss/b/it on input line 21.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 20.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 20.
+(Font)                  T1/cmtt/m/n --> T1/cmtt/b/n on input line 21.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 21.
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `normal' on input line 20
+(Font)              `pureletters' in the math version `normal' on input line 21
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 20
+(Font)                  T1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 21
 .
 LaTeX Font Info:    Encoding `T1' has changed to `OT1' for symbol font
-(Font)              `pureletters' in the math version `bold' on input line 20.
+(Font)              `pureletters' in the math version `bold' on input line 21.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 20
+(Font)                  T1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 21
 .
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 20.
+ut line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/translator/translator-basic-dictionary
 -English.dict
@@ -1032,32 +1034,32 @@ Dictionary: translator-numbers-dictionary, Language: English
 (/usr/share/texlive/texmf-dist/tex/latex/translator/translator-theorem-dictiona
 ry-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./exec13_ej230_report_full.nav)
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 4
-0.
+) (./exec13_ej230_report_full.nav) (../tables/provenance.tex
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 6
+.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 14.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 14.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 40.
+ut line 14.
 
 (/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
-)
+))
 [1
 
 {/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}] [2
@@ -1068,3622 +1070,1297 @@ thkerncmss.
 ] [4
 
 ]
-
-LaTeX Warning: File `figs/muon_-690mm_geometry.png' not found on input line 121
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-690mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.121 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-690mm_top_profile.png' not found on input line 
-121.
-
-
-! Package pdftex.def Error: File `figs/muon_-690mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.121 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 121
- []
-
-[5
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-690mm.png' not found on input line 12
-4.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-690mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.124 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[6
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_-690mm.png' not found on input line 127.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_-690mm.png' not found: using d
-raft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.127 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[7
-
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 146.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.146 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 146.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.146 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.146 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 146.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.146 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[8
-
-]
-
-LaTeX Warning: File `figs/muon_-650mm_geometry.png' not found on input line 168
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-650mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.168 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-650mm_top_profile.png' not found on input line 
-168.
-
-
-! Package pdftex.def Error: File `figs/muon_-650mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.168 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 168
- []
-
-[9
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-650mm.png' not found on input line 17
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-650mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.171 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[10
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_-650mm.png' not found on input line 174.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_-650mm.png' not found: using d
-raft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.174 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+<..//figs/muon_-690mm_geometry.png, id=68, 867.24pt x 231.264pt>
+File: ..//figs/muon_-690mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-690mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-690mm_geometry.png  used on input line 
+97.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-690mm_top_profile.png, id=70, 578.16pt x 325.215pt>
+File: ..//figs/muon_-690mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-690mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-690mm_top_profile.png  used on input li
+ne 97.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_-690.tex) [5
+
+ <..//figs/muon_-690mm_geometry.png> <..//figs/muon_-690mm_top_profile.png>]
+<..//figs/exec11_arrival_-690mm.png, id=81, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-690mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-690mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-690mm.png  used on input line
+ 100.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [6
+
+ <..//figs/exec11_arrival_-690mm.png>]
+<..//figs/exec13_tN_-690mm.png, id=90, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_-690mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_-690mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_-690mm.png  used on input line 103.
+
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+ [7
+
+ <..//figs/exec13_tN_-690mm.png>]
+<..//figs/exec13_tn_-690mm_top.png, id=98, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_-690mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_-690mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-690mm_top.png  used on input line 
+122.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_-690mm_endL.png, id=99, 981.4266pt x 377.2494pt>
+File: ..//figs/exec13_tn_-690mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_-690mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-690mm_endL.png  used on input line
+ 122.
+(pdftex.def)             Requested size: 151.37077pt x 58.18523pt.
+<..//figs/exec13_tn_-690mm_endR.png, id=100, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_-690mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_-690mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-690mm_endR.png  used on input line
+ 122.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+ [8
+
+ <..//figs/exec13_tn_-690mm_top.png> <..//figs/exec13_tn_-690mm_endL.png> <..//
+figs/exec13_tn_-690mm_endR.png>]
+<..//figs/muon_-650mm_geometry.png, id=112, 867.24pt x 231.264pt>
+File: ..//figs/muon_-650mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-650mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-650mm_geometry.png  used on input line 
+134.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-650mm_top_profile.png, id=113, 578.16pt x 325.215pt>
+File: ..//figs/muon_-650mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-650mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-650mm_top_profile.png  used on input li
+ne 134.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/key_position_-650.tex) [9
+
+ <..//figs/muon_-650mm_geometry.png> <..//figs/muon_-650mm_top_profile.png>]
+<..//figs/exec11_arrival_-650mm.png, id=121, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-650mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-650mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-650mm.png  used on input line
+ 137.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [10
+
+ <..//figs/exec11_arrival_-650mm.png>]
+<..//figs/exec13_tN_-650mm.png, id=128, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_-650mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_-650mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_-650mm.png  used on input line 140.
+
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
 
 [11
 
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+ <..//figs/exec13_tN_-650mm.png>]
+<..//figs/exec13_tn_-650mm_top.png, id=135, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_-650mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_-650mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-650mm_top.png  used on input line 
+159.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_-650mm_endL.png, id=136, 973.7178pt x 377.2494pt>
+File: ..//figs/exec13_tn_-650mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_-650mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-650mm_endL.png  used on input line
+ 159.
+(pdftex.def)             Requested size: 151.37042pt x 58.64574pt.
+<..//figs/exec13_tn_-650mm_endR.png, id=137, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_-650mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_-650mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-650mm_endR.png  used on input line
+ 159.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+ [12
 
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+ <..//figs/exec13_tn_-650mm_top.png> <..//figs/exec13_tn_-650mm_endL.png> <..//
+figs/exec13_tn_-650mm_endR.png>]
+<..//figs/muon_-400mm_geometry.png, id=146, 867.24pt x 231.264pt>
+File: ..//figs/muon_-400mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-400mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-400mm_geometry.png  used on input line 
+171.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-400mm_top_profile.png, id=147, 578.16pt x 325.215pt>
+File: ..//figs/muon_-400mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-400mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-400mm_top_profile.png  used on input li
+ne 171.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
+(../tables/key_position_-400.tex) [13
 
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 193.
+ <..//figs/muon_-400mm_geometry.png> <..//figs/muon_-400mm_top_profile.png>]
+<..//figs/exec11_arrival_-400mm.png, id=156, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-400mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-400mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-400mm.png  used on input line
+ 174.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [14
 
+ <..//figs/exec11_arrival_-400mm.png>]
+<..//figs/exec13_tN_-400mm.png, id=163, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_-400mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_-400mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_-400mm.png  used on input line 177.
 
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.193 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 193.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.193 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.193 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 193.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.193 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[12
-
-]
-
-LaTeX Warning: File `figs/muon_-400mm_geometry.png' not found on input line 215
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-400mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.215 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-400mm_top_profile.png' not found on input line 
-215.
-
-
-! Package pdftex.def Error: File `figs/muon_-400mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.215 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 215
- []
-
-[13
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-400mm.png' not found on input line 21
-8.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-400mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.218 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[14
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_-400mm.png' not found on input line 221.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_-400mm.png' not found: using d
-raft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.221 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
 
 [15
 
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
+ <..//figs/exec13_tN_-400mm.png>]
+<..//figs/exec13_tn_-400mm_top.png, id=170, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_-400mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_-400mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-400mm_top.png  used on input line 
+196.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_-400mm_endL.png, id=171, 973.7178pt x 377.2494pt>
+File: ..//figs/exec13_tn_-400mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_-400mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-400mm_endL.png  used on input line
+ 196.
+(pdftex.def)             Requested size: 151.37042pt x 58.64574pt.
+<..//figs/exec13_tn_-400mm_endR.png, id=172, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_-400mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_-400mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_-400mm_endR.png  used on input line
+ 196.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+ [16
 
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 240.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.240 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 240.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.240 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.240 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 240.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.240 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[16
-
-]
-
-LaTeX Warning: File `figs/muon_0mm_geometry.png' not found on input line 262.
-
-
-! Package pdftex.def Error: File `figs/muon_0mm_geometry.png' not found: using 
-draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.262 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_0mm_top_profile.png' not found on input line 262
+ <..//figs/exec13_tn_-400mm_top.png> <..//figs/exec13_tn_-400mm_endL.png> <..//
+figs/exec13_tn_-400mm_endR.png>]
+<..//figs/muon_0mm_geometry.png, id=181, 867.24pt x 231.264pt>
+File: ..//figs/muon_0mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_0mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_0mm_geometry.png  used on input line 208
 .
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_0mm_top_profile.png, id=182, 578.16pt x 325.215pt>
+File: ..//figs/muon_0mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_0mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_0mm_top_profile.png  used on input line 
+208.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
+(../tables/key_position_0.tex) [17
 
-! Package pdftex.def Error: File `figs/muon_0mm_top_profile.png' not found: usi
-ng draft setting.
+ <..//figs/muon_0mm_geometry.png> <..//figs/muon_0mm_top_profile.png>]
+<..//figs/exec11_arrival_0mm.png, id=190, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_0mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_0mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 21
+1.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [18
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.262 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/exec11_arrival_0mm.png>]
+<..//figs/exec13_tN_0mm.png, id=197, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_0mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_0mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_0mm.png  used on input line 214.
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+ [19
 
-
-Overfull \vbox (25.58682pt too high) detected at line 262
- []
-
-[17
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_0mm.png' not found on input line 265.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_0mm.png' not found: using
- draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.265 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[18
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_0mm.png' not found on input line 268.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_0mm.png' not found: using draf
-t setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.268 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[19
-
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 287.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.287 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 287.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.287 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.287 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 287.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.287 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[20
-
-]
-
-LaTeX Warning: File `figs/muon_400mm_geometry.png' not found on input line 309.
-
-
-
-! Package pdftex.def Error: File `figs/muon_400mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.309 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_400mm_top_profile.png' not found on input line 3
-09.
-
-
-! Package pdftex.def Error: File `figs/muon_400mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.309 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 309
- []
-
-[21
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_400mm.png' not found on input line 312
+ <..//figs/exec13_tN_0mm.png>]
+<..//figs/exec13_tn_0mm_top.png, id=205, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_0mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_0mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_0mm_top.png  used on input line 233
 .
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_0mm_endL.png, id=206, 967.9362pt x 377.2494pt>
+File: ..//figs/exec13_tn_0mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_0mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_0mm_endL.png  used on input line 23
+3.
+(pdftex.def)             Requested size: 151.3578pt x 58.99112pt.
+<..//figs/exec13_tn_0mm_endR.png, id=207, 967.9362pt x 377.2494pt>
+File: ..//figs/exec13_tn_0mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_0mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_0mm_endR.png  used on input line 23
+3.
+(pdftex.def)             Requested size: 151.3578pt x 58.99112pt.
+ [20
 
+ <..//figs/exec13_tn_0mm_top.png> <..//figs/exec13_tn_0mm_endL.png> <..//figs/e
+xec13_tn_0mm_endR.png>]
+<..//figs/muon_400mm_geometry.png, id=216, 867.24pt x 231.264pt>
+File: ..//figs/muon_400mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_400mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_400mm_geometry.png  used on input line 2
+45.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_400mm_top_profile.png, id=217, 578.16pt x 325.215pt>
+File: ..//figs/muon_400mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_400mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_400mm_top_profile.png  used on input lin
+e 245.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_400.tex) [21
 
-! Package pdftex.def Error: File `figs/exec11_arrival_400mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.312 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/muon_400mm_geometry.png> <..//figs/muon_400mm_top_profile.png>]
+<..//figs/exec11_arrival_400mm.png, id=225, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_400mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_400mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_400mm.png  used on input line 
+248.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 
 [22
 
-]
+ <..//figs/exec11_arrival_400mm.png>]
+<..//figs/exec13_tN_400mm.png, id=233, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_400mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_400mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_400mm.png  used on input line 251.
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+ [23
 
-LaTeX Warning: File `figs/exec13_tN_400mm.png' not found on input line 315.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_400mm.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.315 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[23
-
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 334.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.334 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 334.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.334 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.334 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 334.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.334 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/exec13_tN_400mm.png>]
+<..//figs/exec13_tn_400mm_top.png, id=240, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_400mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_400mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_400mm_top.png  used on input line 2
+70.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_400mm_endL.png, id=241, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_400mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_400mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_400mm_endL.png  used on input line 
+270.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+<..//figs/exec13_tn_400mm_endR.png, id=242, 973.7178pt x 377.2494pt>
+File: ..//figs/exec13_tn_400mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_400mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_400mm_endR.png  used on input line 
+270.
+(pdftex.def)             Requested size: 151.37042pt x 58.64574pt.
 
 [24
 
-]
+ <..//figs/exec13_tn_400mm_top.png> <..//figs/exec13_tn_400mm_endL.png> <..//fi
+gs/exec13_tn_400mm_endR.png>]
+<..//figs/muon_650mm_geometry.png, id=251, 867.24pt x 231.264pt>
+File: ..//figs/muon_650mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_650mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_650mm_geometry.png  used on input line 2
+82.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_650mm_top_profile.png, id=252, 578.16pt x 325.215pt>
+File: ..//figs/muon_650mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_650mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_650mm_top_profile.png  used on input lin
+e 282.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_650.tex) [25
 
-LaTeX Warning: File `figs/muon_650mm_geometry.png' not found on input line 356.
+ <..//figs/muon_650mm_geometry.png> <..//figs/muon_650mm_top_profile.png>]
+<..//figs/exec11_arrival_650mm.png, id=261, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_650mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_650mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_650mm.png  used on input line 
+285.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [26
 
+ <..//figs/exec11_arrival_650mm.png>]
+<..//figs/exec13_tN_650mm.png, id=268, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_650mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_650mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_650mm.png  used on input line 288.
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+ [27
 
+ <..//figs/exec13_tN_650mm.png>]
+<..//figs/exec13_tn_650mm_top.png, id=275, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_650mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_650mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_650mm_top.png  used on input line 3
+07.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_650mm_endL.png, id=276, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_650mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_650mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_650mm_endL.png  used on input line 
+307.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+<..//figs/exec13_tn_650mm_endR.png, id=277, 973.7178pt x 377.2494pt>
+File: ..//figs/exec13_tn_650mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_650mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_650mm_endR.png  used on input line 
+307.
+(pdftex.def)             Requested size: 151.37042pt x 58.64574pt.
+ [28
 
-! Package pdftex.def Error: File `figs/muon_650mm_geometry.png' not found: usin
-g draft setting.
+ <..//figs/exec13_tn_650mm_top.png> <..//figs/exec13_tn_650mm_endL.png> <..//fi
+gs/exec13_tn_650mm_endR.png>]
+<..//figs/muon_690mm_geometry.png, id=286, 867.24pt x 231.264pt>
+File: ..//figs/muon_690mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_690mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_690mm_geometry.png  used on input line 3
+19.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_690mm_top_profile.png, id=287, 578.16pt x 325.215pt>
+File: ..//figs/muon_690mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_690mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_690mm_top_profile.png  used on input lin
+e 319.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_690.tex) [29
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.356 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/muon_690mm_geometry.png> <..//figs/muon_690mm_top_profile.png>]
+<..//figs/exec11_arrival_690mm.png, id=295, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_690mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_690mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_690mm.png  used on input line 
+322.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [30
 
+ <..//figs/exec11_arrival_690mm.png>]
+<..//figs/exec13_tN_690mm.png, id=302, 1011.78pt x 614.295pt>
+File: ..//figs/exec13_tN_690mm.png Graphic file (type png)
+<use ..//figs/exec13_tN_690mm.png>
+Package pdftex.def Info: ..//figs/exec13_tN_690mm.png  used on input line 325.
+(pdftex.def)             Requested size: 348.7557pt x 211.74452pt.
+ [31
 
-LaTeX Warning: File `figs/muon_650mm_top_profile.png' not found on input line 3
-56.
+ <..//figs/exec13_tN_690mm.png>]
+<..//figs/exec13_tn_690mm_top.png, id=310, 832.0686pt x 553.5882pt>
+File: ..//figs/exec13_tn_690mm_top.png Graphic file (type png)
+<use ..//figs/exec13_tn_690mm_top.png>
+Package pdftex.def Info: ..//figs/exec13_tn_690mm_top.png  used on input line 3
+44.
+(pdftex.def)             Requested size: 238.99568pt x 159.00754pt.
+<..//figs/exec13_tn_690mm_endL.png, id=311, 971.7906pt x 377.2494pt>
+File: ..//figs/exec13_tn_690mm_endL.png Graphic file (type png)
+<use ..//figs/exec13_tn_690mm_endL.png>
+Package pdftex.def Info: ..//figs/exec13_tn_690mm_endL.png  used on input line 
+344.
+(pdftex.def)             Requested size: 151.3674pt x 58.76086pt.
+<..//figs/exec13_tn_690mm_endR.png, id=312, 981.4266pt x 377.2494pt>
+File: ..//figs/exec13_tn_690mm_endR.png Graphic file (type png)
+<use ..//figs/exec13_tn_690mm_endR.png>
+Package pdftex.def Info: ..//figs/exec13_tn_690mm_endR.png  used on input line 
+344.
+(pdftex.def)             Requested size: 151.37077pt x 58.18523pt.
+ [32
 
-
-! Package pdftex.def Error: File `figs/muon_650mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.356 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 356
- []
-
-[25
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_650mm.png' not found on input line 359
+ <..//figs/exec13_tn_690mm_top.png> <..//figs/exec13_tn_690mm_endL.png> <..//fi
+gs/exec13_tn_690mm_endR.png>]
+<..//figs/exec13_tN_summary.png, id=321, 939.51pt x 361.35pt>
+File: ..//figs/exec13_tN_summary.png Graphic file (type png)
+<use ..//figs/exec13_tN_summary.png>
+Package pdftex.def Info: ..//figs/exec13_tN_summary.png  used on input line 351
 .
+(pdftex.def)             Requested size: 398.33315pt x 153.20505pt.
+(../tables/tN_summary.tex) [33
 
-
-! Package pdftex.def Error: File `figs/exec11_arrival_650mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.359 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[26
+ <..//figs/exec13_tN_summary.png>] [34
 
 ]
+<..//figs/P1_npe_vs_x.png, id=338, 650.43pt x 397.485pt>
+File: ..//figs/P1_npe_vs_x.png Graphic file (type png)
+<use ..//figs/P1_npe_vs_x.png>
+Package pdftex.def Info: ..//figs/P1_npe_vs_x.png  used on input line 398.
+(pdftex.def)             Requested size: 255.74095pt x 156.28613pt.
+ [35
 
-LaTeX Warning: File `figs/exec13_tN_650mm.png' not found on input line 362.
+ <..//figs/P1_npe_vs_x.png>]
+<..//figs/P2_npe_heatmap_top.png, id=345, 722.7pt x 505.89pt>
+File: ..//figs/P2_npe_heatmap_top.png Graphic file (type png)
+<use ..//figs/P2_npe_heatmap_top.png>
+Package pdftex.def Info: ..//figs/P2_npe_heatmap_top.png  used on input line 40
+5.
+(pdftex.def)             Requested size: 223.26276pt x 156.28392pt.
+ (../tables/top_localization_summary.tex) [36
 
+ <..//figs/P2_npe_heatmap_top.png>]
+<..//figs/fits_attenuation_velocity.png, id=352, 867.24pt x 361.35pt>
+File: ..//figs/fits_attenuation_velocity.png Graphic file (type png)
+<use ..//figs/fits_attenuation_velocity.png>
+Package pdftex.def Info: ..//figs/fits_attenuation_velocity.png  used on input 
+line 413.
+(pdftex.def)             Requested size: 278.29pt x 115.95416pt.
+ (../tables/attenuation_fit.tex) [37
 
-! Package pdftex.def Error: File `figs/exec13_tN_650mm.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.362 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[27
-
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 381.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.381 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 381.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.381 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.381 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 381.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.381 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[28
+ <..//figs/fits_attenuation_velocity.png>] [38
 
 ]
+<..//figs/exec10_fano_vs_mean.png, id=371, 614.295pt x 397.485pt>
+File: ..//figs/exec10_fano_vs_mean.png Graphic file (type png)
+<use ..//figs/exec10_fano_vs_mean.png>
+Package pdftex.def Info: ..//figs/exec10_fano_vs_mean.png  used on input line 4
+51.
+(pdftex.def)             Requested size: 214.26596pt x 138.64268pt.
+ (../tables/fano_fit.tex) [39
 
-LaTeX Warning: File `figs/muon_690mm_geometry.png' not found on input line 403.
-
-
-
-! Package pdftex.def Error: File `figs/muon_690mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.403 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_690mm_top_profile.png' not found on input line 4
-03.
-
-
-! Package pdftex.def Error: File `figs/muon_690mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.403 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 403
- []
-
-[29
+ <..//figs/exec10_fano_vs_mean.png>] [40
 
 ]
+<..//figs/exec10_landau_fit_example.png, id=389, 614.295pt x 397.485pt>
+File: ..//figs/exec10_landau_fit_example.png Graphic file (type png)
+<use ..//figs/exec10_landau_fit_example.png>
+Package pdftex.def Info: ..//figs/exec10_landau_fit_example.png  used on input 
+line 496.
+(pdftex.def)             Requested size: 214.26596pt x 138.64268pt.
+ [41
 
-LaTeX Warning: File `figs/exec11_arrival_690mm.png' not found on input line 406
+ <..//figs/exec10_landau_fit_example.png>]
+<..//figs/P5_tdist_examples.png, id=397, 867.24pt x 794.97pt>
+File: ..//figs/P5_tdist_examples.png Graphic file (type png)
+<use ..//figs/P5_tdist_examples.png>
+Package pdftex.def Info: ..//figs/P5_tdist_examples.png  used on input line 504
 .
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_690mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.406 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[30
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_690mm.png' not found on input line 409.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_690mm.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.409 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[31
-
-]
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 428.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.428 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 428.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.428 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-! Undefined control sequence.
-<write> 
-LaTeX Warning: File `figs/exec13_tn_\1
-                                               mm_\2.png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-! Undefined control sequence.
-<write> ...X Warning: File `figs/exec13_tn_\1mm_\2
-                                                  .png' not found\on@line .
-l.428 \end{frame}
-                 
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-LaTeX Warning: File `figs/exec13_tn_mm_.png' not found on input line 428.
-
-
-! Package pdftex.def Error: File `figs/exec13_tn_1mm_2.png' not found: using dr
-aft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.428 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[32
-
-]
-
-LaTeX Warning: File `figs/exec13_tN_summary.png' not found on input line 446.
-
-
-! Package pdftex.def Error: File `figs/exec13_tN_summary.png' not found: using 
-draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.446 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (7.00607pt too high) detected at line 446
- []
-
-[33
-
-]
-
-LaTeX Warning: Command \textdegree invalid in math mode on input line 484.
-
-LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 
-484.
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
-File: ts1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-)
-
-LaTeX Warning: Command \textdegree invalid in math mode on input line 484.
-
-Missing character: There is no ° in font cmss8!
-[34
-
-]
-
-LaTeX Warning: File `figs/P1_npe_vs_x.png' not found on input line 493.
-
-
-! Package pdftex.def Error: File `figs/P1_npe_vs_x.png' not found: using draft 
-setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.493 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[35
-
-]
-
-LaTeX Warning: File `figs/P2_npe_heatmap_top.png' not found on input line 501.
-
-
-! Package pdftex.def Error: File `figs/P2_npe_heatmap_top.png' not found: using
- draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.501 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[36
-
-]
-
-LaTeX Warning: File `figs/fits_attenuation_velocity.png' not found on input lin
-e 509.
-
-
-! Package pdftex.def Error: File `figs/fits_attenuation_velocity.png' not found
-: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.509 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[37
-
-] [38
-
-]
-
-LaTeX Warning: File `figs/exec10_fano_vs_mean.png' not found on input line 547.
-
-
-
-! Package pdftex.def Error: File `figs/exec10_fano_vs_mean.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.547 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[39
-
-] [40
-
-]
-
-LaTeX Warning: File `figs/exec10_landau_fit_example.png' not found on input lin
-e 592.
-
-
-! Package pdftex.def Error: File `figs/exec10_landau_fit_example.png' not found
-: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.592 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[41
-
-]
-
-LaTeX Warning: File `figs/P5_tdist_examples.png' not found on input line 600.
-
-
-! Package pdftex.def Error: File `figs/P5_tdist_examples.png' not found: using 
-draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.600 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[42
-
-]
-
-LaTeX Warning: File `figs/P6_tmean_vs_x.png' not found on input line 608.
-
-
-! Package pdftex.def Error: File `figs/P6_tmean_vs_x.png' not found: using draf
-t setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.608 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (4.20651pt too high) detected at line 608
- []
-
-[43
-
-] [44
-
-] [45
-
-]
-
-LaTeX Warning: File `figs/exec08b_window_dip_profiles.png' not found on input l
-ine 702.
-
-
-! Package pdftex.def Error: File `figs/exec08b_window_dip_profiles.png' not fou
-nd: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.702 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (30.18819pt too high) detected at line 702
- []
-
+(pdftex.def)             Requested size: 151.23994pt x 138.63661pt.
+ [42
+
+ <..//figs/P5_tdist_examples.png>]
+<..//figs/P6_tmean_vs_x.png, id=404, 939.51pt x 361.35pt>
+File: ..//figs/P6_tmean_vs_x.png Graphic file (type png)
+<use ..//figs/P6_tmean_vs_x.png>
+Package pdftex.def Info: ..//figs/P6_tmean_vs_x.png  used on input line 512.
+(pdftex.def)             Requested size: 398.33315pt x 153.20505pt.
+ [43
+
+ <..//figs/P6_tmean_vs_x.png>]
+(../tables/landau_key_positions.tex) [44
+
+] (../tables/window_dip_mechanism.tex)
+[45
+
+] (../tables/window_dip_test.tex)
+<..//figs/exec08b_window_dip_profiles.png, id=422, 1409.265pt x 650.43pt>
+File: ..//figs/exec08b_window_dip_profiles.png Graphic file (type png)
+<use ..//figs/exec08b_window_dip_profiles.png>
+Package pdftex.def Info: ..//figs/exec08b_window_dip_profiles.png  used on inpu
+t line 581.
+(pdftex.def)             Requested size: 203.15048pt x 93.75911pt.
+ (../tables/window_dip_summary.tex)
 [46
 
-]
-
-LaTeX Warning: File `figs/P7_deltaT_end.png' not found on input line 711.
-
-
-! Package pdftex.def Error: File `figs/P7_deltaT_end.png' not found: using draf
-t setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.711 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/exec08b_window_dip_profiles.png>]
+<..//figs/P7_deltaT_end.png, id=429, 939.51pt x 361.35pt>
+File: ..//figs/P7_deltaT_end.png Graphic file (type png)
+<use ..//figs/P7_deltaT_end.png>
+Package pdftex.def Info: ..//figs/P7_deltaT_end.png  used on input line 591.
+(pdftex.def)             Requested size: 393.24394pt x 151.24767pt.
+ (../tables/sum4_timing.tex)
 [47
 
-]
+ <..//figs/P7_deltaT_end.png>] (../tables/endtop_endonly_ratio.tex)
+(../tables/endtop_endonly_tails.tex)
+<..//figs/exec09_tail_comparison.png, id=437, 975.645pt x 867.24pt>
+File: ..//figs/exec09_tail_comparison.png Graphic file (type png)
+<use ..//figs/exec09_tail_comparison.png>
+Package pdftex.def Info: ..//figs/exec09_tail_comparison.png  used on input lin
+e 609.
+(pdftex.def)             Requested size: 119.09698pt x 105.864pt.
+ [48
 
-LaTeX Warning: File `figs/exec09_tail_comparison.png' not found on input line 7
-41.
+ <..//figs/exec09_tail_comparison.png>]
+<..//figs/exec10_velocity_estimators.png, id=444, 939.51pt x 650.43pt>
+File: ..//figs/exec10_velocity_estimators.png Graphic file (type png)
+<use ..//figs/exec10_velocity_estimators.png>
+Package pdftex.def Info: ..//figs/exec10_velocity_estimators.png  used on input
+ line 621.
+(pdftex.def)             Requested size: 246.96797pt x 170.97366pt.
+(../tables/velocity_estimators.tex) [49
 
+ <..//figs/exec10_velocity_estimators.png>] (../tables/top_timing_estimates.tex
+) (../tables/top_timing_comparison.tex)
+[50
 
-! Package pdftex.def Error: File `figs/exec09_tail_comparison.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.741 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[48
-
-]
-
-LaTeX Warning: File `figs/exec10_velocity_estimators.png' not found on input li
-ne 765.
-
-
-! Package pdftex.def Error: File `figs/exec10_velocity_estimators.png' not foun
-d: using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.765 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (26.81566pt too high) detected at line 765
- []
-
-[49
-
-] [50
-
-] [51
+] (../tables/numerical_conclusions.tex (../tables/sum4_timing.tex)) [51
 
 ]
+File: ..//figs/muon_-690mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-690mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-690mm_geometry.png  used on input line 
+655.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_-690mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-690mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-690mm_top_profile.png  used on input li
+ne 655.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-LaTeX Warning: File `figs/muon_-690mm_geometry.png' not found on input line 848
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-690mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.848 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-690mm_top_profile.png' not found on input line 
-848.
-
-
-! Package pdftex.def Error: File `figs/muon_-690mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.848 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 848
- []
-
-[52
+(../tables/key_position_-690.tex) [52
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_-690mm.png' not found on input line 85
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-690mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.851 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[53
+File: ..//figs/exec11_arrival_-690mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-690mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-690mm.png  used on input line
+ 658.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [53
 
 ]
-
-LaTeX Warning: File `figs/muon_-670mm_geometry.png' not found on input line 873
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-670mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.873 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-670mm_top_profile.png' not found on input line 
-873.
-
-
-! Package pdftex.def Error: File `figs/muon_-670mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.873 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 873
- []
-
+<..//figs/muon_-670mm_geometry.png, id=475, 867.24pt x 231.264pt>
+File: ..//figs/muon_-670mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-670mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-670mm_geometry.png  used on input line 
+670.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-670mm_top_profile.png, id=476, 578.16pt x 325.215pt>
+File: ..//figs/muon_-670mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-670mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-670mm_top_profile.png  used on input li
+ne 670.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-670.tex)
 [54
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-670mm.png' not found on input line 87
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-670mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.876 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-670mm_geometry.png> <..//figs/muon_-670mm_top_profile.png>]
+<..//figs/exec11_arrival_-670mm.png, id=484, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-670mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-670mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-670mm.png  used on input line
+ 673.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [55
 
-]
-
-LaTeX Warning: File `figs/muon_-650mm_geometry.png' not found on input line 898
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-650mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.898 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-650mm_top_profile.png' not found on input line 
-898.
-
-
-! Package pdftex.def Error: File `figs/muon_-650mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.898 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 898
- []
-
+ <..//figs/exec11_arrival_-670mm.png>]
+File: ..//figs/muon_-650mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-650mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-650mm_geometry.png  used on input line 
+685.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_-650mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-650mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-650mm_top_profile.png  used on input li
+ne 685.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_-650.tex)
 [56
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_-650mm.png' not found on input line 90
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-650mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.901 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[57
+File: ..//figs/exec11_arrival_-650mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-650mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-650mm.png  used on input line
+ 688.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [57
 
 ]
+<..//figs/muon_-600mm_geometry.png, id=502, 867.24pt x 231.264pt>
+File: ..//figs/muon_-600mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-600mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-600mm_geometry.png  used on input line 
+700.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-600mm_top_profile.png, id=503, 578.16pt x 325.215pt>
+File: ..//figs/muon_-600mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-600mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-600mm_top_profile.png  used on input li
+ne 700.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-600.tex) [58
 
-LaTeX Warning: File `figs/muon_-600mm_geometry.png' not found on input line 923
-.
+ <..//figs/muon_-600mm_geometry.png> <..//figs/muon_-600mm_top_profile.png>]
+<..//figs/exec11_arrival_-600mm.png, id=511, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-600mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-600mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-600mm.png  used on input line
+ 703.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [59
 
+ <..//figs/exec11_arrival_-600mm.png>]
+<..//figs/muon_-550mm_geometry.png, id=518, 867.24pt x 231.264pt>
+File: ..//figs/muon_-550mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-550mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-550mm_geometry.png  used on input line 
+715.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-550mm_top_profile.png, id=519, 578.16pt x 325.215pt>
+File: ..//figs/muon_-550mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-550mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-550mm_top_profile.png  used on input li
+ne 715.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-550.tex) [60
 
-! Package pdftex.def Error: File `figs/muon_-600mm_geometry.png' not found: usi
-ng draft setting.
+ <..//figs/muon_-550mm_geometry.png> <..//figs/muon_-550mm_top_profile.png>]
+<..//figs/exec11_arrival_-550mm.png, id=527, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-550mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-550mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-550mm.png  used on input line
+ 718.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [61
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.923 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/exec11_arrival_-550mm.png>]
+<..//figs/muon_-500mm_geometry.png, id=535, 867.24pt x 231.264pt>
+File: ..//figs/muon_-500mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-500mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-500mm_geometry.png  used on input line 
+730.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-500mm_top_profile.png, id=536, 578.16pt x 325.215pt>
+File: ..//figs/muon_-500mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-500mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-500mm_top_profile.png  used on input li
+ne 730.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
+(../tables/position_-500.tex) [62
 
-LaTeX Warning: File `figs/muon_-600mm_top_profile.png' not found on input line 
-923.
+ <..//figs/muon_-500mm_geometry.png> <..//figs/muon_-500mm_top_profile.png>]
+<..//figs/exec11_arrival_-500mm.png, id=544, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-500mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-500mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-500mm.png  used on input line
+ 733.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [63
 
+ <..//figs/exec11_arrival_-500mm.png>]
+<..//figs/muon_-450mm_geometry.png, id=551, 867.24pt x 231.264pt>
+File: ..//figs/muon_-450mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-450mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-450mm_geometry.png  used on input line 
+745.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-450mm_top_profile.png, id=552, 578.16pt x 325.215pt>
+File: ..//figs/muon_-450mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-450mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-450mm_top_profile.png  used on input li
+ne 745.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-! Package pdftex.def Error: File `figs/muon_-600mm_top_profile.png' not found: 
-using draft setting.
+(../tables/position_-450.tex) [64
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.923 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/muon_-450mm_geometry.png> <..//figs/muon_-450mm_top_profile.png>]
+<..//figs/exec11_arrival_-450mm.png, id=560, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-450mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-450mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-450mm.png  used on input line
+ 748.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [65
 
+ <..//figs/exec11_arrival_-450mm.png>]
+File: ..//figs/muon_-400mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-400mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-400mm_geometry.png  used on input line 
+760.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_-400mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-400mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-400mm_top_profile.png  used on input li
+ne 760.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-Overfull \vbox (25.58682pt too high) detected at line 923
- []
-
-[58
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-600mm.png' not found on input line 92
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-600mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.926 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[59
-
-]
-
-LaTeX Warning: File `figs/muon_-550mm_geometry.png' not found on input line 948
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-550mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.948 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-550mm_top_profile.png' not found on input line 
-948.
-
-
-! Package pdftex.def Error: File `figs/muon_-550mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.948 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 948
- []
-
-[60
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-550mm.png' not found on input line 95
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-550mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.951 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[61
+(../tables/key_position_-400.tex) [66
 
 ]
-
-LaTeX Warning: File `figs/muon_-500mm_geometry.png' not found on input line 973
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-500mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.973 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-500mm_top_profile.png' not found on input line 
-973.
-
-
-! Package pdftex.def Error: File `figs/muon_-500mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.973 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 973
- []
-
-[62
+File: ..//figs/exec11_arrival_-400mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-400mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-400mm.png  used on input line
+ 763.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [67
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_-500mm.png' not found on input line 97
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-500mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.976 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[63
-
-]
-
-LaTeX Warning: File `figs/muon_-450mm_geometry.png' not found on input line 998
-.
-
-
-! Package pdftex.def Error: File `figs/muon_-450mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.998 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-450mm_top_profile.png' not found on input line 
-998.
-
-
-! Package pdftex.def Error: File `figs/muon_-450mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.998 \end{frame}
-                 
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 998
- []
-
-[64
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-450mm.png' not found on input line 10
-01.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-450mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1001 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[65
-
-]
-
-LaTeX Warning: File `figs/muon_-400mm_geometry.png' not found on input line 102
-3.
-
-
-! Package pdftex.def Error: File `figs/muon_-400mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1023 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-400mm_top_profile.png' not found on input line 
-1023.
-
-
-! Package pdftex.def Error: File `figs/muon_-400mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1023 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1023
- []
-
-[66
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-400mm.png' not found on input line 10
-26.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-400mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1026 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[67
-
-]
-
-LaTeX Warning: File `figs/muon_-350mm_geometry.png' not found on input line 104
-8.
-
-
-! Package pdftex.def Error: File `figs/muon_-350mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1048 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-350mm_top_profile.png' not found on input line 
-1048.
-
-
-! Package pdftex.def Error: File `figs/muon_-350mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1048 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1048
- []
-
+<..//figs/muon_-350mm_geometry.png, id=578, 867.24pt x 231.264pt>
+File: ..//figs/muon_-350mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-350mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-350mm_geometry.png  used on input line 
+775.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-350mm_top_profile.png, id=579, 578.16pt x 325.215pt>
+File: ..//figs/muon_-350mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-350mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-350mm_top_profile.png  used on input li
+ne 775.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-350.tex)
 [68
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-350mm.png' not found on input line 10
-51.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-350mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1051 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-350mm_geometry.png> <..//figs/muon_-350mm_top_profile.png>]
+<..//figs/exec11_arrival_-350mm.png, id=587, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-350mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-350mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-350mm.png  used on input line
+ 778.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [69
 
-]
-
-LaTeX Warning: File `figs/muon_-300mm_geometry.png' not found on input line 107
-3.
-
-
-! Package pdftex.def Error: File `figs/muon_-300mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1073 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-300mm_top_profile.png' not found on input line 
-1073.
-
-
-! Package pdftex.def Error: File `figs/muon_-300mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1073 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1073
- []
-
+ <..//figs/exec11_arrival_-350mm.png>]
+<..//figs/muon_-300mm_geometry.png, id=594, 867.24pt x 231.264pt>
+File: ..//figs/muon_-300mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-300mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-300mm_geometry.png  used on input line 
+790.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-300mm_top_profile.png, id=595, 578.16pt x 325.215pt>
+File: ..//figs/muon_-300mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-300mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-300mm_top_profile.png  used on input li
+ne 790.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-300.tex)
 [70
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-300mm.png' not found on input line 10
-76.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-300mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1076 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-300mm_geometry.png> <..//figs/muon_-300mm_top_profile.png>]
+<..//figs/exec11_arrival_-300mm.png, id=603, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-300mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-300mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-300mm.png  used on input line
+ 793.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [71
 
-]
-
-LaTeX Warning: File `figs/muon_-250mm_geometry.png' not found on input line 109
-8.
-
-
-! Package pdftex.def Error: File `figs/muon_-250mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1098 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-250mm_top_profile.png' not found on input line 
-1098.
-
-
-! Package pdftex.def Error: File `figs/muon_-250mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1098 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1098
- []
-
+ <..//figs/exec11_arrival_-300mm.png>]
+<..//figs/muon_-250mm_geometry.png, id=611, 867.24pt x 231.264pt>
+File: ..//figs/muon_-250mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-250mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-250mm_geometry.png  used on input line 
+805.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-250mm_top_profile.png, id=612, 578.16pt x 325.215pt>
+File: ..//figs/muon_-250mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-250mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-250mm_top_profile.png  used on input li
+ne 805.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-250.tex)
 [72
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-250mm.png' not found on input line 11
-01.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-250mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1101 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-250mm_geometry.png> <..//figs/muon_-250mm_top_profile.png>]
+<..//figs/exec11_arrival_-250mm.png, id=620, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-250mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-250mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-250mm.png  used on input line
+ 808.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [73
 
-]
-
-LaTeX Warning: File `figs/muon_-200mm_geometry.png' not found on input line 112
-3.
-
-
-! Package pdftex.def Error: File `figs/muon_-200mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1123 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-200mm_top_profile.png' not found on input line 
-1123.
-
-
-! Package pdftex.def Error: File `figs/muon_-200mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1123 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1123
- []
-
+ <..//figs/exec11_arrival_-250mm.png>]
+<..//figs/muon_-200mm_geometry.png, id=628, 867.24pt x 231.264pt>
+File: ..//figs/muon_-200mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-200mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-200mm_geometry.png  used on input line 
+820.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-200mm_top_profile.png, id=629, 578.16pt x 325.215pt>
+File: ..//figs/muon_-200mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-200mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-200mm_top_profile.png  used on input li
+ne 820.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-200.tex)
 [74
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-200mm.png' not found on input line 11
-26.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-200mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1126 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-200mm_geometry.png> <..//figs/muon_-200mm_top_profile.png>]
+<..//figs/exec11_arrival_-200mm.png, id=637, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-200mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-200mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-200mm.png  used on input line
+ 823.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [75
 
-]
-
-LaTeX Warning: File `figs/muon_-150mm_geometry.png' not found on input line 114
-8.
-
-
-! Package pdftex.def Error: File `figs/muon_-150mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1148 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-150mm_top_profile.png' not found on input line 
-1148.
-
-
-! Package pdftex.def Error: File `figs/muon_-150mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1148 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1148
- []
-
+ <..//figs/exec11_arrival_-200mm.png>]
+<..//figs/muon_-150mm_geometry.png, id=644, 867.24pt x 231.264pt>
+File: ..//figs/muon_-150mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-150mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-150mm_geometry.png  used on input line 
+835.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-150mm_top_profile.png, id=645, 578.16pt x 325.215pt>
+File: ..//figs/muon_-150mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-150mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-150mm_top_profile.png  used on input li
+ne 835.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-150.tex)
 [76
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-150mm.png' not found on input line 11
-51.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-150mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1151 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-150mm_geometry.png> <..//figs/muon_-150mm_top_profile.png>]
+<..//figs/exec11_arrival_-150mm.png, id=653, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-150mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-150mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-150mm.png  used on input line
+ 838.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [77
 
-]
-
-LaTeX Warning: File `figs/muon_-100mm_geometry.png' not found on input line 117
-3.
-
-
-! Package pdftex.def Error: File `figs/muon_-100mm_geometry.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1173 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-100mm_top_profile.png' not found on input line 
-1173.
-
-
-! Package pdftex.def Error: File `figs/muon_-100mm_top_profile.png' not found: 
-using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1173 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1173
- []
-
+ <..//figs/exec11_arrival_-150mm.png>]
+<..//figs/muon_-100mm_geometry.png, id=660, 867.24pt x 231.264pt>
+File: ..//figs/muon_-100mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-100mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-100mm_geometry.png  used on input line 
+850.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-100mm_top_profile.png, id=661, 578.16pt x 325.215pt>
+File: ..//figs/muon_-100mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-100mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-100mm_top_profile.png  used on input li
+ne 850.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-100.tex)
 [78
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_-100mm.png' not found on input line 11
-76.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-100mm.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1176 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+ <..//figs/muon_-100mm_geometry.png> <..//figs/muon_-100mm_top_profile.png>]
+<..//figs/exec11_arrival_-100mm.png, id=669, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-100mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-100mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-100mm.png  used on input line
+ 853.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 [79
 
-]
+ <..//figs/exec11_arrival_-100mm.png>]
+<..//figs/muon_-50mm_geometry.png, id=677, 867.24pt x 231.264pt>
+File: ..//figs/muon_-50mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_-50mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_-50mm_geometry.png  used on input line 8
+65.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_-50mm_top_profile.png, id=678, 578.16pt x 325.215pt>
+File: ..//figs/muon_-50mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_-50mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_-50mm_top_profile.png  used on input lin
+e 865.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_-50.tex) [80
 
-LaTeX Warning: File `figs/muon_-50mm_geometry.png' not found on input line 1198
+ <..//figs/muon_-50mm_geometry.png> <..//figs/muon_-50mm_top_profile.png>]
+<..//figs/exec11_arrival_-50mm.png, id=686, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_-50mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_-50mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_-50mm.png  used on input line 
+868.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [81
+
+ <..//figs/exec11_arrival_-50mm.png>]
+File: ..//figs/muon_0mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_0mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_0mm_geometry.png  used on input line 880
 .
-
-
-! Package pdftex.def Error: File `figs/muon_-50mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1198 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_-50mm_top_profile.png' not found on input line 1
-198.
-
-
-! Package pdftex.def Error: File `figs/muon_-50mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1198 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1198
- []
-
-[80
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_0mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_0mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_0mm_top_profile.png  used on input line 
+880.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_0.tex) [82
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_-50mm.png' not found on input line 120
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_-50mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1201 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[81
-
-]
-
-LaTeX Warning: File `figs/muon_0mm_geometry.png' not found on input line 1223.
-
-
-! Package pdftex.def Error: File `figs/muon_0mm_geometry.png' not found: using 
-draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1223 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_0mm_top_profile.png' not found on input line 122
+File: ..//figs/exec11_arrival_0mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_0mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_0mm.png  used on input line 88
 3.
-
-
-! Package pdftex.def Error: File `figs/muon_0mm_top_profile.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1223 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1223
- []
-
-[82
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [83
 
 ]
+<..//figs/muon_50mm_geometry.png, id=703, 867.24pt x 231.264pt>
+File: ..//figs/muon_50mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_50mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_50mm_geometry.png  used on input line 89
+5.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_50mm_top_profile.png, id=704, 578.16pt x 325.215pt>
+File: ..//figs/muon_50mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_50mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_50mm_top_profile.png  used on input line
+ 895.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-LaTeX Warning: File `figs/exec11_arrival_0mm.png' not found on input line 1226.
+(../tables/position_50.tex) [84
 
+ <..//figs/muon_50mm_geometry.png> <..//figs/muon_50mm_top_profile.png>]
+<..//figs/exec11_arrival_50mm.png, id=712, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_50mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_50mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_50mm.png  used on input line 8
+98.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [85
 
+ <..//figs/exec11_arrival_50mm.png>]
+<..//figs/muon_100mm_geometry.png, id=720, 867.24pt x 231.264pt>
+File: ..//figs/muon_100mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_100mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_100mm_geometry.png  used on input line 9
+10.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_100mm_top_profile.png, id=721, 578.16pt x 325.215pt>
+File: ..//figs/muon_100mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_100mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_100mm_top_profile.png  used on input lin
+e 910.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-! Package pdftex.def Error: File `figs/exec11_arrival_0mm.png' not found: using
- draft setting.
+(../tables/position_100.tex) [86
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1226 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/muon_100mm_geometry.png> <..//figs/muon_100mm_top_profile.png>]
+<..//figs/exec11_arrival_100mm.png, id=729, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_100mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_100mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_100mm.png  used on input line 
+913.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [87
 
-[83
+ <..//figs/exec11_arrival_100mm.png>]
+<..//figs/muon_150mm_geometry.png, id=736, 867.24pt x 231.264pt>
+File: ..//figs/muon_150mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_150mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_150mm_geometry.png  used on input line 9
+25.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_150mm_top_profile.png, id=737, 578.16pt x 325.215pt>
+File: ..//figs/muon_150mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_150mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_150mm_top_profile.png  used on input lin
+e 925.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/position_150.tex) [88
+
+ <..//figs/muon_150mm_geometry.png> <..//figs/muon_150mm_top_profile.png>]
+<..//figs/exec11_arrival_150mm.png, id=745, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_150mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_150mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_150mm.png  used on input line 
+928.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [89
+
+ <..//figs/exec11_arrival_150mm.png>]
+<..//figs/muon_200mm_geometry.png, id=752, 867.24pt x 231.264pt>
+File: ..//figs/muon_200mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_200mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_200mm_geometry.png  used on input line 9
+40.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_200mm_top_profile.png, id=753, 578.16pt x 325.215pt>
+File: ..//figs/muon_200mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_200mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_200mm_top_profile.png  used on input lin
+e 940.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/position_200.tex) [90
+
+ <..//figs/muon_200mm_geometry.png> <..//figs/muon_200mm_top_profile.png>]
+<..//figs/exec11_arrival_200mm.png, id=761, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_200mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_200mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_200mm.png  used on input line 
+943.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [91
+
+ <..//figs/exec11_arrival_200mm.png>]
+<..//figs/muon_250mm_geometry.png, id=769, 867.24pt x 231.264pt>
+File: ..//figs/muon_250mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_250mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_250mm_geometry.png  used on input line 9
+55.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_250mm_top_profile.png, id=770, 578.16pt x 325.215pt>
+File: ..//figs/muon_250mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_250mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_250mm_top_profile.png  used on input lin
+e 955.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/position_250.tex) [92
+
+ <..//figs/muon_250mm_geometry.png> <..//figs/muon_250mm_top_profile.png>]
+<..//figs/exec11_arrival_250mm.png, id=778, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_250mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_250mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_250mm.png  used on input line 
+958.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [93
+
+ <..//figs/exec11_arrival_250mm.png>]
+<..//figs/muon_300mm_geometry.png, id=785, 867.24pt x 231.264pt>
+File: ..//figs/muon_300mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_300mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_300mm_geometry.png  used on input line 9
+70.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_300mm_top_profile.png, id=786, 578.16pt x 325.215pt>
+File: ..//figs/muon_300mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_300mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_300mm_top_profile.png  used on input lin
+e 970.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/position_300.tex) [94
+
+ <..//figs/muon_300mm_geometry.png> <..//figs/muon_300mm_top_profile.png>]
+<..//figs/exec11_arrival_300mm.png, id=794, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_300mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_300mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_300mm.png  used on input line 
+973.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [95
+
+ <..//figs/exec11_arrival_300mm.png>]
+<..//figs/muon_350mm_geometry.png, id=801, 867.24pt x 231.264pt>
+File: ..//figs/muon_350mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_350mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_350mm_geometry.png  used on input line 9
+85.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_350mm_top_profile.png, id=802, 578.16pt x 325.215pt>
+File: ..//figs/muon_350mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_350mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_350mm_top_profile.png  used on input lin
+e 985.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/position_350.tex) [96
+
+ <..//figs/muon_350mm_geometry.png> <..//figs/muon_350mm_top_profile.png>]
+<..//figs/exec11_arrival_350mm.png, id=811, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_350mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_350mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_350mm.png  used on input line 
+988.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [97
+
+ <..//figs/exec11_arrival_350mm.png>]
+File: ..//figs/muon_400mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_400mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_400mm_geometry.png  used on input line 1
+000.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_400mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_400mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_400mm_top_profile.png  used on input lin
+e 1000.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+
+(../tables/key_position_400.tex) [98
 
 ]
-
-LaTeX Warning: File `figs/muon_50mm_geometry.png' not found on input line 1248.
-
-
-
-! Package pdftex.def Error: File `figs/muon_50mm_geometry.png' not found: using
- draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1248 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_50mm_top_profile.png' not found on input line 12
-48.
-
-
-! Package pdftex.def Error: File `figs/muon_50mm_top_profile.png' not found: us
-ing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1248 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1248
- []
-
-[84
+File: ..//figs/exec11_arrival_400mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_400mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_400mm.png  used on input line 
+1003.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [99
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_50mm.png' not found on input line 1251
-.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_50mm.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1251 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[85
-
-]
-
-LaTeX Warning: File `figs/muon_100mm_geometry.png' not found on input line 1273
-.
-
-
-! Package pdftex.def Error: File `figs/muon_100mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1273 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_100mm_top_profile.png' not found on input line 1
-273.
-
-
-! Package pdftex.def Error: File `figs/muon_100mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1273 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1273
- []
-
-[86
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_100mm.png' not found on input line 127
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_100mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1276 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[87
-
-]
-
-LaTeX Warning: File `figs/muon_150mm_geometry.png' not found on input line 1298
-.
-
-
-! Package pdftex.def Error: File `figs/muon_150mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1298 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_150mm_top_profile.png' not found on input line 1
-298.
-
-
-! Package pdftex.def Error: File `figs/muon_150mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1298 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1298
- []
-
-[88
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_150mm.png' not found on input line 130
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_150mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1301 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[89
-
-]
-
-LaTeX Warning: File `figs/muon_200mm_geometry.png' not found on input line 1323
-.
-
-
-! Package pdftex.def Error: File `figs/muon_200mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1323 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_200mm_top_profile.png' not found on input line 1
-323.
-
-
-! Package pdftex.def Error: File `figs/muon_200mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1323 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1323
- []
-
-[90
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_200mm.png' not found on input line 132
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_200mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1326 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[91
-
-]
-
-LaTeX Warning: File `figs/muon_250mm_geometry.png' not found on input line 1348
-.
-
-
-! Package pdftex.def Error: File `figs/muon_250mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1348 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_250mm_top_profile.png' not found on input line 1
-348.
-
-
-! Package pdftex.def Error: File `figs/muon_250mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1348 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1348
- []
-
-[92
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_250mm.png' not found on input line 135
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_250mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1351 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[93
-
-]
-
-LaTeX Warning: File `figs/muon_300mm_geometry.png' not found on input line 1373
-.
-
-
-! Package pdftex.def Error: File `figs/muon_300mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1373 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_300mm_top_profile.png' not found on input line 1
-373.
-
-
-! Package pdftex.def Error: File `figs/muon_300mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1373 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1373
- []
-
-[94
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_300mm.png' not found on input line 137
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_300mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1376 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[95
-
-]
-
-LaTeX Warning: File `figs/muon_350mm_geometry.png' not found on input line 1398
-.
-
-
-! Package pdftex.def Error: File `figs/muon_350mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1398 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_350mm_top_profile.png' not found on input line 1
-398.
-
-
-! Package pdftex.def Error: File `figs/muon_350mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1398 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1398
- []
-
-[96
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_350mm.png' not found on input line 140
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_350mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1401 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[97
-
-]
-
-LaTeX Warning: File `figs/muon_400mm_geometry.png' not found on input line 1423
-.
-
-
-! Package pdftex.def Error: File `figs/muon_400mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1423 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_400mm_top_profile.png' not found on input line 1
-423.
-
-
-! Package pdftex.def Error: File `figs/muon_400mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1423 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1423
- []
-
-[98
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_400mm.png' not found on input line 142
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_400mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1426 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[99
-
-]
-
-LaTeX Warning: File `figs/muon_450mm_geometry.png' not found on input line 1448
-.
-
-
-! Package pdftex.def Error: File `figs/muon_450mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1448 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_450mm_top_profile.png' not found on input line 1
-448.
-
-
-! Package pdftex.def Error: File `figs/muon_450mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1448 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1448
- []
-
+<..//figs/muon_450mm_geometry.png, id=829, 867.24pt x 231.264pt>
+File: ..//figs/muon_450mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_450mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_450mm_geometry.png  used on input line 1
+015.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_450mm_top_profile.png, id=830, 578.16pt x 325.215pt>
+File: ..//figs/muon_450mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_450mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_450mm_top_profile.png  used on input lin
+e 1015.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_450.tex)
 [100
 
-]
-
-LaTeX Warning: File `figs/exec11_arrival_450mm.png' not found on input line 145
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_450mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1451 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/muon_450mm_geometry.png> <..//figs/muon_450mm_top_profile.png>]
+<..//figs/exec11_arrival_450mm.png, id=838, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_450mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_450mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_450mm.png  used on input line 
+1018.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
 
 [101
 
-]
+ <..//figs/exec11_arrival_450mm.png>]
+<..//figs/muon_500mm_geometry.png, id=845, 867.24pt x 231.264pt>
+File: ..//figs/muon_500mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_500mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_500mm_geometry.png  used on input line 1
+030.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_500mm_top_profile.png, id=846, 578.16pt x 325.215pt>
+File: ..//figs/muon_500mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_500mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_500mm_top_profile.png  used on input lin
+e 1030.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_500.tex) [102
 
-LaTeX Warning: File `figs/muon_500mm_geometry.png' not found on input line 1473
-.
+ <..//figs/muon_500mm_geometry.png> <..//figs/muon_500mm_top_profile.png>]
+<..//figs/exec11_arrival_500mm.png, id=854, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_500mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_500mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_500mm.png  used on input line 
+1033.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [103
 
+ <..//figs/exec11_arrival_500mm.png>]
+<..//figs/muon_550mm_geometry.png, id=862, 867.24pt x 231.264pt>
+File: ..//figs/muon_550mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_550mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_550mm_geometry.png  used on input line 1
+045.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_550mm_top_profile.png, id=863, 578.16pt x 325.215pt>
+File: ..//figs/muon_550mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_550mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_550mm_top_profile.png  used on input lin
+e 1045.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_550.tex) [104
 
-! Package pdftex.def Error: File `figs/muon_500mm_geometry.png' not found: usin
-g draft setting.
+ <..//figs/muon_550mm_geometry.png> <..//figs/muon_550mm_top_profile.png>]
+<..//figs/exec11_arrival_550mm.png, id=871, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_550mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_550mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_550mm.png  used on input line 
+1048.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [105
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1473 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
+ <..//figs/exec11_arrival_550mm.png>]
+<..//figs/muon_600mm_geometry.png, id=878, 867.24pt x 231.264pt>
+File: ..//figs/muon_600mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_600mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_600mm_geometry.png  used on input line 1
+060.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_600mm_top_profile.png, id=879, 578.16pt x 325.215pt>
+File: ..//figs/muon_600mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_600mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_600mm_top_profile.png  used on input lin
+e 1060.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/position_600.tex) [106
 
+ <..//figs/muon_600mm_geometry.png> <..//figs/muon_600mm_top_profile.png>]
+<..//figs/exec11_arrival_600mm.png, id=887, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_600mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_600mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_600mm.png  used on input line 
+1063.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [107
 
-LaTeX Warning: File `figs/muon_500mm_top_profile.png' not found on input line 1
-473.
-
-
-! Package pdftex.def Error: File `figs/muon_500mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1473 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1473
- []
-
-[102
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_500mm.png' not found on input line 147
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_500mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1476 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[103
-
-]
-
-LaTeX Warning: File `figs/muon_550mm_geometry.png' not found on input line 1498
-.
-
-
-! Package pdftex.def Error: File `figs/muon_550mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1498 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_550mm_top_profile.png' not found on input line 1
-498.
-
-
-! Package pdftex.def Error: File `figs/muon_550mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1498 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1498
- []
-
-[104
+ <..//figs/exec11_arrival_600mm.png>]
+File: ..//figs/muon_650mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_650mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_650mm_geometry.png  used on input line 1
+075.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_650mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_650mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_650mm_top_profile.png  used on input lin
+e 1075.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
+ (../tables/key_position_650.tex) [108
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_550mm.png' not found on input line 150
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_550mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1501 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[105
+File: ..//figs/exec11_arrival_650mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_650mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_650mm.png  used on input line 
+1078.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [109
 
 ]
+<..//figs/muon_670mm_geometry.png, id=905, 867.24pt x 231.264pt>
+File: ..//figs/muon_670mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_670mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_670mm_geometry.png  used on input line 1
+090.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+<..//figs/muon_670mm_top_profile.png, id=906, 578.16pt x 325.215pt>
+File: ..//figs/muon_670mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_670mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_670mm_top_profile.png  used on input lin
+e 1090.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-LaTeX Warning: File `figs/muon_600mm_geometry.png' not found on input line 1523
-.
+(../tables/position_670.tex) [110
 
+ <..//figs/muon_670mm_geometry.png> <..//figs/muon_670mm_top_profile.png>]
+<..//figs/exec11_arrival_670mm.png, id=914, 975.645pt x 346.896pt>
+File: ..//figs/exec11_arrival_670mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_670mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_670mm.png  used on input line 
+1093.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [111
 
-! Package pdftex.def Error: File `figs/muon_600mm_geometry.png' not found: usin
-g draft setting.
+ <..//figs/exec11_arrival_670mm.png>]
+File: ..//figs/muon_690mm_geometry.png Graphic file (type png)
+<use ..//figs/muon_690mm_geometry.png>
+Package pdftex.def Info: ..//figs/muon_690mm_geometry.png  used on input line 1
+105.
+(pdftex.def)             Requested size: 207.13776pt x 55.2363pt.
+File: ..//figs/muon_690mm_top_profile.png Graphic file (type png)
+<use ..//figs/muon_690mm_top_profile.png>
+Package pdftex.def Info: ..//figs/muon_690mm_top_profile.png  used on input lin
+e 1105.
+(pdftex.def)             Requested size: 183.23842pt x 103.06851pt.
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1523 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_600mm_top_profile.png' not found on input line 1
-523.
-
-
-! Package pdftex.def Error: File `figs/muon_600mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1523 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1523
- []
-
-[106
+(../tables/key_position_690.tex) [112
 
 ]
-
-LaTeX Warning: File `figs/exec11_arrival_600mm.png' not found on input line 152
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_600mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1526 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[107
-
-]
-
-LaTeX Warning: File `figs/muon_650mm_geometry.png' not found on input line 1548
-.
-
-
-! Package pdftex.def Error: File `figs/muon_650mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1548 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_650mm_top_profile.png' not found on input line 1
-548.
-
-
-! Package pdftex.def Error: File `figs/muon_650mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1548 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1548
- []
-
-[108
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_650mm.png' not found on input line 155
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_650mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1551 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[109
-
-]
-
-LaTeX Warning: File `figs/muon_670mm_geometry.png' not found on input line 1573
-.
-
-
-! Package pdftex.def Error: File `figs/muon_670mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1573 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_670mm_top_profile.png' not found on input line 1
-573.
-
-
-! Package pdftex.def Error: File `figs/muon_670mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1573 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1573
- []
-
-[110
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_670mm.png' not found on input line 157
-6.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_670mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1576 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[111
-
-]
-
-LaTeX Warning: File `figs/muon_690mm_geometry.png' not found on input line 1598
-.
-
-
-! Package pdftex.def Error: File `figs/muon_690mm_geometry.png' not found: usin
-g draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1598 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `figs/muon_690mm_top_profile.png' not found on input line 1
-598.
-
-
-! Package pdftex.def Error: File `figs/muon_690mm_top_profile.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1598 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-Overfull \vbox (25.58682pt too high) detected at line 1598
- []
-
-[112
-
-]
-
-LaTeX Warning: File `figs/exec11_arrival_690mm.png' not found on input line 160
-1.
-
-
-! Package pdftex.def Error: File `figs/exec11_arrival_690mm.png' not found: usi
-ng draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1601 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[113
+File: ..//figs/exec11_arrival_690mm.png Graphic file (type png)
+<use ..//figs/exec11_arrival_690mm.png>
+Package pdftex.def Info: ..//figs/exec11_arrival_690mm.png  used on input line 
+1108.
+(pdftex.def)             Requested size: 398.3348pt x 141.63014pt.
+ [113
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\translate ' on input line 1603.
+(hyperref)                removing `\translate ' on input line 1110.
 
-[114
+(../tables/validation_summary.tex) [114
 
 ]
+<..//figs/exec08b_id18_impact_maps.png, id=936, 1300.86pt x 650.43pt>
+File: ..//figs/exec08b_id18_impact_maps.png Graphic file (type png)
+<use ..//figs/exec08b_id18_impact_maps.png>
+Package pdftex.def Info: ..//figs/exec08b_id18_impact_maps.png  used on input l
+ine 1117.
+(pdftex.def)             Requested size: 393.23843pt x 196.61922pt.
+ [115
 
-LaTeX Warning: File `figs/exec08b_id18_impact_maps.png' not found on input line
- 1617.
-
-
-! Package pdftex.def Error: File `figs/exec08b_id18_impact_maps.png' not found:
- using draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1617 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[115
-
-] [116
+ <..//figs/exec08b_id18_impact_maps.png>] (../tables/threshold_rationale.tex) [
+116
 
 ] [117
 
-] [118
+]
+(../tables/window_dip_summary.tex) [118
 
 ]
-
-LaTeX Warning: File `figs/exec09_tail_comparison.png' not found on input line 1
-696.
-
-
-! Package pdftex.def Error: File `figs/exec09_tail_comparison.png' not found: u
-sing draft setting.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.1696 \end{frame}
-                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-[119
+File: ..//figs/exec09_tail_comparison.png Graphic file (type png)
+<use ..//figs/exec09_tail_comparison.png>
+Package pdftex.def Info: ..//figs/exec09_tail_comparison.png  used on input lin
+e 1182.
+(pdftex.def)             Requested size: 221.1929pt x 196.6159pt.
+ [119
 
 ]
 \tf@nav=\write6
@@ -4701,11 +2378,11 @@ d.
 (rerunfilecheck)             Checksum: 12D2AF632013C3D5F05F3AA97EB3E234;766.
  ) 
 Here is how much of TeX's memory you used:
- 26280 strings out of 481008
- 519451 string characters out of 5909440
- 807239 words of memory out of 5000000
- 42441 multiletter control sequences out of 15000+600000
- 436655 words of font info for 105 fonts, out of 8000000 for 9000
+ 25468 strings out of 481008
+ 495701 string characters out of 5909440
+ 771885 words of memory out of 5000000
+ 41571 multiletter control sequences out of 15000+600000
+ 436315 words of font info for 104 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  131i,14n,132p,511b,982s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr
@@ -4750,10 +2427,10 @@ e/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/share/texlive/texmf
 onts/type1/public/cm-super/sftt0800.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/public/cm-super/sftt1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
 lic/cm-super/sftt1095.pfb>
-Output written on exec13_ej230_report_full.pdf (119 pages, 652729 bytes).
+Output written on exec13_ej230_report_full.pdf (119 pages, 19467913 bytes).
 PDF statistics:
- 892 PDF objects out of 1000 (max. 8388607)
- 713 compressed objects within 8 object streams
+ 1161 PDF objects out of 1200 (max. 8388607)
+ 714 compressed objects within 8 object streams
  244 named destinations out of 1000 (max. 500000)
- 83 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 753 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -34,7 +34,11 @@ def source_header(paths: list[Path]) -> str:
 def write(name: str, body: str, sources: list[Path]) -> None:
     path = TABLES / name
     path.write_text(source_header(sources) + body.rstrip() + "\n", encoding="utf-8")
-    print(f"wrote {path.relative_to(REPO)}")
+    try:
+        display_path = path.relative_to(REPO)
+    except ValueError:
+        display_path = path
+    print(f"wrote {display_path}")
 
 
 def row(summary: pd.DataFrame, x_mm: int, group: str) -> pd.Series:
@@ -55,7 +59,20 @@ def macro_number(value: float, digits: int) -> str:
 
 
 def macro_x(x_mm: int) -> str:
-    return f"neg{abs(x_mm)}" if x_mm < 0 else f"pos{x_mm}"
+    digit_words = {
+        "0": "Zero",
+        "1": "One",
+        "2": "Two",
+        "3": "Three",
+        "4": "Four",
+        "5": "Five",
+        "6": "Six",
+        "7": "Seven",
+        "8": "Eight",
+        "9": "Nine",
+    }
+    sign = "neg" if x_mm < 0 else "pos"
+    return sign + "".join(digit_words[digit] for digit in str(abs(x_mm)))
 
 
 def only(frame: pd.DataFrame, column: str) -> object:
@@ -293,14 +310,28 @@ counting dominates only in the few-PE limit.
             rf"{velocity_labels[estimator]} & {pm(item.velocity_cm_ns, item.velocity_error_cm_ns, 3)} "
             rf"& {item.chi2_ndf:.1f} \\"
         )
-    write("velocity_estimators.tex", "\n".join(velocity_rows), [velocity_path])
+    write(
+        "velocity_estimators.tex",
+        r"""\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
+Estimator & slope-derived [cm/ns] & $\chi^2/ndf$ \\ \midrule
+""" + "\n".join(velocity_rows) + r"""
+\bottomrule\end{tabular}}""",
+        [velocity_path],
+    )
 
     test_rows = []
     for item in contrasts.itertuples():
         test_rows.append(
             rf"{item.label} & {pm(item.contrast, item.error, 2)} & ${item.significance:.2f}$ \\"
         )
-    write("window_dip_test.tex", "\n".join(test_rows), [window_path])
+    write(
+        "window_dip_test.tex",
+        r"""\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
+Run & contrast [Npe] & significance \\ \midrule
+""" + "\n".join(test_rows) + r"""
+\bottomrule\end{tabular}}""",
+        [window_path],
+    )
     mirror = contrasts[contrasts.run.isin(["existing_x-650", "run_C2_x-654_exact_mirror"])]
     centered = contrasts.loc[contrasts.run == "run_A_x-652"].iloc[0]
     midpoint = contrasts.loc[contrasts.run == "run_B_x-642"].iloc[0]
@@ -330,7 +361,14 @@ counting dominates only in the few-PE limit.
             rf"{pm(item.sigma_end_only_ps, item.sigma_end_only_error_ps, 1)} & "
             rf"{pm(item.observed_sigma_ratio, item.observed_sigma_ratio_error, 3)} \\"
         )
-    write("endtop_endonly_ratio.tex", "\n".join(ratio_rows), [timing_path])
+    write(
+        "endtop_endonly_ratio.tex",
+        r"""\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{rrrrr}\toprule
+$x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
+""" + "\n".join(ratio_rows) + r"""
+\bottomrule\end{tabular}}""",
+        [timing_path],
+    )
     aggregate = tails[tails.group == "all_end"]
     t99 = aggregate.t99_ns_difference
     late_sig = aggregate[["frac_gt10_difference_sigma", "frac_gt20_difference_sigma"]].abs().min().min()
@@ -350,7 +388,15 @@ counting dominates only in the few-PE limit.
         timing_rows.append(
             rf"{x_mm:+d} & {pm(top.npe_mean, npe_error, 1)} & {pm(top.sigma_est_ps, sigma_error, 2)} \\"
         )
-    write("top_timing_estimates.tex", "\n".join(timing_rows), [summary_path])
+    write(
+        "top_timing_estimates.tex",
+        r"""\scriptsize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{rrr}\toprule
+$x$ [mm] & $N_{pe}$ & $\sigma_{t,est}$ [ps] \\ \midrule
+""" + "\n".join(timing_rows) + r"""
+\bottomrule\end{tabular}""",
+        [summary_path],
+    )
     comparison_rows = []
     for x_mm in KEY_POSITIONS:
         top = row(summary, x_mm, "nearest_top")
@@ -365,7 +411,14 @@ counting dominates only in the few-PE limit.
         comparison_rows.append(
             rf"{x_mm:+d} & {pm(top.sigma_est_ps, estimate_error, 2)} & {fit_text} \\"
         )
-    write("top_timing_comparison.tex", "\n".join(comparison_rows), [summary_path, tn_path])
+    write(
+        "top_timing_comparison.tex",
+        r"""\tiny\setlength{\tabcolsep}{3pt}\begin{tabular}{rcc}\toprule
+$x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
+""" + "\n".join(comparison_rows) + r"""
+\bottomrule\end{tabular}""",
+        [summary_path, tn_path],
+    )
 
     sigma_rows = summary[summary.grupo.isin(["end_left_A_SUM4", "end_right_A_SUM4"])]
     sigma_values = sigma_rows.sigma_grupo_ps.dropna()

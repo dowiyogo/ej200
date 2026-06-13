@@ -104,6 +104,7 @@ def main() -> int:
     text = replace_body(text, 33, frame33)
     text = text.replace(r"\lambda_{\rm eff}\approx33", r"\lambda_{\rm eff}\approx\LambdaEffMean")
     text = text.replace(r"\lambda_{eff}\approx33", r"\lambda_{eff}\approx\LambdaEffMean")
+    text = text.replace(r"\theta_c\approx39°", r"\theta_c\approx39^\circ")
     text = replace_body(
         text,
         36,
@@ -149,16 +150,14 @@ def main() -> int:
         count=1,
         flags=re.DOTALL,
     )
+    body45 = body45.replace(r"\begin{itemize}\footnotesize", r"\begin{itemize}\scriptsize")
     text = text[:start45] + body45 + text[end45:]
 
     text = replace_body(
         text,
         46,
         r"""\begin{columns}[T]\column{0.47\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
-Run & contrast [Npe] & significance \\ \midrule
 \input{../tables/window_dip_test.tex}
-\bottomrule\end{tabular}}
 \column{0.51\textwidth}
 \includegraphics[width=\textwidth]{figs/exec08b_window_dip_profiles.png}
 \end{columns}
@@ -181,10 +180,7 @@ Run & contrast [Npe] & significance \\ \midrule
         48,
         r"""\begin{columns}[T]
 \column{0.48\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{rrrrr}\toprule
-$x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
 \input{../tables/endtop_endonly_ratio.tex}
-\bottomrule\end{tabular}}
 \vspace{2pt}
 \begin{alertblock}{\footnotesize Confirmed mechanism}
 \scriptsize\input{../tables/endtop_endonly_tails.tex}
@@ -203,10 +199,7 @@ EndTop tail narrowing persists over the full range: physical, not an artefact.
         r"""\begin{columns}[T]\column{0.62\textwidth}
 \includegraphics[width=\textwidth]{figs/exec10_velocity_estimators.png}
 \column{0.36\textwidth}
-\scriptsize\resizebox{\textwidth}{!}{\begin{tabular}{lrr}\toprule
-Estimator & slope-derived [cm/ns] & $\chi^2/ndf$ \\ \midrule
 \input{../tables/velocity_estimators.tex}
-\bottomrule\end{tabular}}
 \begin{alertblock}{Refuted predictions}
 Every global line fit is rejected; slope-derived values are not accepted propagation velocities.
 \end{alertblock}
@@ -217,21 +210,14 @@ Every global line fit is rejected; slope-derived values are not accepted propaga
         50,
         r"""\begin{columns}[T]
 \column{0.42\textwidth}
-\scriptsize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{rrr}\toprule
-$x$ [mm] & $N_{pe}$ & $\sigma_{t,est}$ [ps] \\ \midrule
 \input{../tables/top_timing_estimates.tex}
-\bottomrule\end{tabular}
 \column{0.56\textwidth}
 \begin{block}{\footnotesize Definition, derivation, and scope}
 \scriptsize $\sigma_{t,est}=\sqrt{\tau_r\tau_d}/\sqrt{N_{pe}}$.
 Threshold at low $N_{pe}$, double-exponential emission; analytic orientation only.
 \end{block}
 \begin{block}{\footnotesize $\sigma_{t,est}$ vs.\ simulated $\sigma(t_4)$}
-\tiny\setlength{\tabcolsep}{3pt}\begin{tabular}{rcc}\toprule
-$x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
 \input{../tables/top_timing_comparison.tex}
-\bottomrule\end{tabular}
 \end{block}
 \end{columns}""",
     )
