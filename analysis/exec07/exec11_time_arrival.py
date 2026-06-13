@@ -515,7 +515,7 @@ def make_tex(
 \textbf{{Base:}} \texttt{{7596697}} (= origin/feat/endtop-sslg4)\\
 \begin{{itemize}}\small
   \item 31 positions $\times$ 2000 events; 16 End + 70 Top channels; jitter fixed to zero.
-  \item EJ-204 via SSLG4 \texttt{{OPSC-101}}: yield 10400/MeV, $\tau_r=0.7$ ns, $\tau_d=1.8$ ns.
+  \item EJ-230 via SSLG4 \texttt{{OPSC-106}}: yield 9700/MeV, $\tau_r=0.5$ ns, $\tau_d=1.5$ ns.
   \item Quantity: $\langle N_{{pe}}(\leq t)\rangle$ — mean cumulative photon count vs time.
   \item Mode: \texttt{{{mode_label}}}; band: \texttt{{{args.band}}}; grouping: \texttt{{{args.end_grouping}}}
   \item Top window: 0--{args.t_max_top:.0f} ns ($\Delta t={args.dt:.2f}$ ns); End window: 0--{args.t_max_end:.0f} ns.

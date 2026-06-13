@@ -263,7 +263,7 @@ def _make_top_figure(
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main(argv: list[str] | None = None) -> int:
-    # Allow override of tau_d for non-EJ-204 materials (e.g. EJ-230: 1.5 ns).
+    # Allow an explicit material-specific decay time; EJ-230 uses 1.5 ns.
     global TAU_D_NS
     _tau_d_default = TAU_D_NS
     parser = argparse.ArgumentParser(description=__doc__)

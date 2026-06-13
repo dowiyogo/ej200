@@ -1,7 +1,7 @@
 """EXEC_13 (EJ-230) geometry and analysis constants.
 
 Geometry and channel layout are BYTE-IDENTICAL to exec07/common.py.
-Only the scintillator constants differ (EJ-230 vs EJ-204).
+This module owns the EJ-230 scintillator constants used by EXEC_13.
 """
 
 from __future__ import annotations
