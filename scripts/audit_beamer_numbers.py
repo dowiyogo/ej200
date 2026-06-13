@@ -27,7 +27,8 @@ REQUIRED = {
     "landau_key_positions.tex", "velocity_estimators.tex", "sum4_timing.tex",
     "tN_summary.tex", "numerical_conclusions.tex", "window_dip_test.tex",
     "endtop_endonly_tails.tex", "endtop_endonly_ratio.tex", "exec14_macros.tex",
-    "top_localization_summary.tex",
+    "top_localization_summary.tex", "endtop_physical_diagnosis.tex",
+    "adaptive_tN.tex",
 }
 RESULT_FRAMES = {
     1, 33, 36, 37, 38, 39, 44, 45, 46, 47, 48, 49, 50, 51, 114, 116, 118,

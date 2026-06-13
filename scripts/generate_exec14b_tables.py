@@ -75,6 +75,10 @@ def macro_x(x_mm: int) -> str:
     return sign + "".join(digit_words[digit] for digit in str(abs(x_mm)))
 
 
+def macro_threshold(threshold: int) -> str:
+    return "N" + macro_x(threshold).removeprefix("pos")
+
+
 def only(frame: pd.DataFrame, column: str) -> object:
     values = frame[column].dropna().unique()
     if len(values) != 1:
@@ -154,6 +158,8 @@ def main() -> int:
     landau_path = RESULTS / "exec10_landau_mpv.csv"
     velocity_path = RESULTS / "exec10_velocity_fits.csv"
     tn_path = RESULTS / "csv/exec13_tN_summary.csv"
+    adaptive_tn_path = RESULTS / "csv/exec14d_adaptive_tN.csv"
+    endtop_diag_path = RESULTS / "csv/exec14d_endtop_diag.csv"
     window_path = RESULTS / "csv/exec08b_window_dip_profiles.csv"
     timing_path = RESULTS / "csv/exec08b_timing_gate.csv"
     tails_path = RESULTS / "csv/exec09_tail_comparison.csv"
@@ -161,8 +167,8 @@ def main() -> int:
 
     required = [
         summary_path, position_path, localization_path, fit_path, fano_path,
-        landau_path, velocity_path, tn_path, window_path, timing_path, tails_path,
-        root_validation_path,
+        landau_path, velocity_path, tn_path, adaptive_tn_path, endtop_diag_path,
+        window_path, timing_path, tails_path, root_validation_path,
     ]
     missing = [path for path in required if not path.is_file()]
     if missing:
@@ -176,6 +182,8 @@ def main() -> int:
     landau = pd.read_csv(landau_path)
     velocity = pd.read_csv(velocity_path)
     tn = pd.read_csv(tn_path)
+    adaptive_tn = pd.read_csv(adaptive_tn_path)
+    endtop_diag = pd.read_csv(endtop_diag_path)
     profiles = pd.read_csv(window_path)
     timing = pd.read_csv(timing_path)
     tails = pd.read_csv(tails_path)
@@ -236,9 +244,13 @@ All reported timing is intrinsic, without SPTR or electronics jitter.
         rf"\newcommand{{\FanoChi}}{{{fano.chi2_ndf:.2f}}}",
         rf"\newcommand{{\FanoSqrtC}}{{{math.sqrt(fano.c):.3f}}}",
     ]
-    n_words = {4: "Nfour", 20: "Ntwenty"}
     for item in tn.itertuples():
-        stem = f"execXIII{item.group.replace('_', '')}x{macro_x(int(item.x_mm))}{n_words[int(item.N)]}"
+        if pd.isna(item.N_eff):
+            continue
+        stem = (
+            f"execXIII{item.group.replace('_', '')}x{macro_x(int(item.x_mm))}"
+            f"{macro_threshold(int(item.N_eff))}"
+        )
         macro_lines.extend([
             rf"\newcommand{{\{stem}MeanPs}}{{{macro_number(item.mean_ns * 1000, 0)}}}",
             rf"\newcommand{{\{stem}RmsPs}}{{{macro_number(item.rms_ns * 1000, 0)}}}",
@@ -379,6 +391,26 @@ $x$ & side & EndTop [ps] & End-only [ps] & ratio \\ \midrule
         rf"among the two late-fraction differences is {late_sig:.1f}$\sigma$.",
         [tails_path],
     )
+    bootstrap_ratio = endtop_diag.ratio_bootstrap_mean
+    bootstrap_error = endtop_diag.ratio_bootstrap_std
+    npe_gain = endtop_diag.npe_end_only_mean / endtop_diag.npe_endtop_mean
+    t99_reduction = -endtop_diag.t99_difference_ns
+    write(
+        "endtop_physical_diagnosis.tex",
+        rf"""\scriptsize\textbf{{PHYSICAL after apples-to-apples audit.}}
+Both configurations use the same End SUM4 groups and
+$\sigma_{{group}}=\sigma(\Delta T_{{AB}})/\sqrt{{2}}$ estimator.
+After bootstrapping End-only to {int(endtop_diag.bootstrap_sample_events.iloc[0])}
+events, the ratio spans
+${bootstrap_ratio.min():.3f}\pm{bootstrap_error.min():.3f}$ to
+${bootstrap_ratio.max():.3f}\pm{bootstrap_error.max():.3f}$; the smallest
+95\% lower quantile is {endtop_diag.ratio_bootstrap_q025.min():.3f}.
+End-only retains {npe_gain.min():.2f}--{npe_gain.max():.2f}$\times$ more End
+photoelectrons. EndTop still shortens side $t_{{99}}$ by
+{t99_reduction.min():.3f}--{t99_reduction.max():.3f} ns, but the photon loss
+dominates the timing width for EJ-230.""",
+        [endtop_diag_path],
+    )
 
     timing_rows = []
     for x_mm in KEY_POSITIONS:
@@ -431,17 +463,61 @@ $x$ & $\sigma_{t,est}$ [ps] & fitted $\sigma(t_4)$ [ps]\\ \midrule
         [summary_path],
     )
 
-    tn4 = tn[tn.N == 4]
-    near = tn4[tn4.group == "end_near"].rms_ns * 1000
-    top4 = tn4[tn4.group == "top_nearest"].rms_ns * 1000
+    tn_key = tn[tn.x_mm.isin(KEY_POSITIONS)]
+    near = tn_key[tn_key.group == "end_near"].sigma_fit_ns * 1000
+    top4 = tn_key[tn_key.group == "top_nearest"].sigma_fit_ns * 1000
+    far_key = tn_key[tn_key.group == "end_far"]
+    reduced_key = far_key[far_key.reduced_threshold]
+    center_near = near.loc[
+        tn_key[(tn_key.group == "end_near") & (tn_key.x_mm == 0)].index[0]
+    ]
     write(
         "tN_summary.tex",
-        rf"""\begin{{block}}{{\footnotesize CSV-derived synthesis}}
-\scriptsize Near-End RMS$(t_4)$ spans {near.min():.0f}--{near.max():.0f} ps across key positions;
-nearest-Top RMS$(t_4)$ spans {top4.min():.0f}--{top4.max():.0f} ps.
-At $x=0$, the two End groups give {near.loc[tn4[(tn4.group == "end_near") & (tn4.x_mm == 0)].index[0]]:.0f} ps.
+        rf"""\begin{{block}}{{\footnotesize How to read this plot}}
+\scriptsize\textbf{{Why:}}~Separate the fitted photon-counting core
+$\sigma_{{fit}}(t_4)$ from the far-End adaptive $t_{{N_{{eff}}}}$ observable.
+\par\textbf{{Axes:}}~x is beam position; y is fitted Gaussian-core width.
+Orange markers identify a data-selected threshold below nominal $N=20$.
+\par\textbf{{Takeaway:}}~Across key positions, nearest-Top fitted
+$\sigma(t_4)$ spans {top4.min():.1f}--{top4.max():.1f} ps and near-End fitted
+$\sigma(t_4)$ spans {near.min():.1f}--{near.max():.1f} ps
+({center_near:.1f} ps at center). {len(reduced_key)}/{len(far_key)} key far-End
+points use reduced $N_{{eff}}$; none are genuine starvation.
 \end{{block}}""",
         [tn_path],
+    )
+
+    adaptive_rows = []
+    for x_mm in sorted(adaptive_tn.x_mm.unique()):
+        selected = adaptive_tn[adaptive_tn.x_mm == x_mm].set_index("group")
+        far_item = selected.loc["end_far"]
+        adaptive_rows.append(
+            rf"{int(x_mm):+d} & {int(selected.loc['top_nearest'].N_eff)} & "
+            rf"{int(selected.loc['end_near'].N_eff)} & {int(far_item.N_eff)} & "
+            rf"{100.0 * far_item.reach_nominal:.1f}\% \\"
+        )
+    split = math.ceil(len(adaptive_rows) / 2)
+    adaptive_table_header = r"""\begin{tabular}{rrrrr}\toprule
+$x$ & Top & near-End & far-End & $R_{\rm far}(20)$ \\ \midrule
+"""
+    adaptive_table_footer = r"""\bottomrule\end{tabular}"""
+    write(
+        "adaptive_tN.tex",
+        rf"""\tiny\begin{{columns}}[T]
+\column{{0.49\textwidth}}
+{adaptive_table_header}{chr(10).join(adaptive_rows[:split])}
+{adaptive_table_footer}
+\column{{0.49\textwidth}}
+{adaptive_table_header}{chr(10).join(adaptive_rows[split:])}
+{adaptive_table_footer}
+\end{{columns}}
+\par\scriptsize $N_{{eff}}$ is the largest threshold with event reach at least
+{100.0 * adaptive_tn.reach_min.iloc[0]:.0f}\%; nominal Top/near-End/far-End
+thresholds are {int(adaptive_tn[adaptive_tn.group == 'top_nearest'].N_nominal.iloc[0])}/
+{int(adaptive_tn[adaptive_tn.group == 'end_near'].N_nominal.iloc[0])}/
+{int(adaptive_tn[adaptive_tn.group == 'end_far'].N_nominal.iloc[0])} PE.
+No genuine-starvation point remains.""",
+        [adaptive_tn_path],
     )
 
     center_left = row(summary, 0, "end_left_all")
@@ -461,12 +537,16 @@ At $x=0$, the two End groups give {near.loc[tn4[(tn4.group == "end_near") & (tn4
  \item Nearest-Top $F=1+({fano.c:.6f}\pm{fano.c_error:.6f})\langle N_{{pe}}\rangle$
        ($\chi^2/ndf={fano.chi2_ndf:.2f}$).
  \item \input{{../tables/sum4_timing.tex}}
- \item EndTop/End-only timing ratio: {ratio_min:.3f}--{ratio_max:.3f}; no time-acceptance window.
- \item Near-End RMS$(t_4)$: {near.min():.0f}--{near.max():.0f} ps; nearest-Top RMS$(t_4)$:
-       {top4.min():.0f}--{top4.max():.0f} ps.
- \item Directed EJ-230 window and End-only controls replace all inherited special-control placeholders.
+ \item EndTop/End-only timing ratio: {ratio_min:.3f}--{ratio_max:.3f}.
+       Tail drainage persists, but EndTop widens End timing because its End-photon
+       loss dominates for EJ-230.
+ \item Fitted near-End $\sigma(t_4)$: {near.min():.1f}--{near.max():.1f} ps;
+       fitted nearest-Top $\sigma(t_4)$: {top4.min():.1f}--{top4.max():.1f} ps.
+ \item Four findings: window-track mechanism characterised; tail drainage and its
+       photon-budget tradeoff confirmed; complete channel coverage/localisation
+       validated; adaptive $t_N$ removes unreachable fixed-threshold fits.
 \end{{itemize}}""",
-        [summary_path, fit_path, fano_path, timing_path, tn_path],
+        [summary_path, fit_path, fano_path, timing_path, tn_path, endtop_diag_path],
     )
 
     write(

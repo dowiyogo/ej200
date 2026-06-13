@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 REPO = Path(__file__).resolve().parents[1]
+ALLOW_RE = re.compile(r"<!--\s*parity-allow:\s*(\d+)\s*-->")
 
 
 def balanced_argument(text: str, start: int) -> tuple[str, int]:
@@ -58,8 +59,17 @@ def main() -> int:
         type=Path,
         default=REPO / "results_ej230_analysis/report/exec13_ej230_report_full.tex",
     )
+    parser.add_argument(
+        "--allowlist",
+        type=Path,
+        default=REPO / "docs/exec14d_title_exceptions.md",
+    )
     args = parser.parse_args()
     expected, observed = titles(args.reference), titles(args.report)
+    allowlisted = {
+        int(value)
+        for value in ALLOW_RE.findall(args.allowlist.read_text(encoding="utf-8"))
+    }
     mismatches = []
     for index, (left, right) in enumerate(zip(expected, observed), 1):
         if normalize(left) != normalize(right):
@@ -67,11 +77,19 @@ def main() -> int:
     if len(expected) != len(observed):
         print(f"ERROR: frame count reference={len(expected)} report={len(observed)}")
         return 1
-    if mismatches:
-        for index, left, right in mismatches:
+    unexpected = [item for item in mismatches if item[0] not in allowlisted]
+    unused = sorted(allowlisted - {item[0] for item in mismatches})
+    if unexpected or unused:
+        for index, left, right in unexpected:
             print(f"ERROR frame {index}: reference={left!r} report={right!r}")
+        for index in unused:
+            print(f"ERROR frame {index}: allowlisted title exception is not present")
         return 1
-    print(f"frame_parity=PASS frames={len(observed)} ordered_titles={len(observed)}")
+    exact = len(observed) - len(mismatches)
+    print(
+        f"frame_parity=PASS frames={len(observed)} exact_titles={exact} "
+        f"allowlisted_exceptions={len(mismatches)}"
+    )
     return 0
 
 

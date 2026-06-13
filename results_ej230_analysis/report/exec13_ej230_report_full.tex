@@ -344,7 +344,7 @@ $\sigma_{stat}(t_n)\approx\sqrt{n}\,\tau_d/\langle N_{pe}\rangle$
 \end{frame}
 \begin{frame}{$\sigma(t_N)$ vs beam position: synthesis}
 
-\centering\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]%
+\centering\includegraphics[width=\textwidth,height=0.57\textheight,keepaspectratio]%
 {figs/exec13_tN_summary.png}
 \input{../tables/tN_summary.tex}
 
@@ -581,15 +581,19 @@ At midpoint (C) both windows contribute equally and the effect is null.
 \end{frame}
 \begin{frame}{Intrinsic End SUM4 timing}
 
-\centering\includegraphics[width=\textwidth,height=0.60\textheight,keepaspectratio]%
+\centering\includegraphics[width=\textwidth,height=0.54\textheight,keepaspectratio]%
 {figs/P7_deltaT_end.png}
-\par\scriptsize $\sigma_{group}=\sigma(\Delta T_{AB})/\sqrt{2}$; no SPTR or electronics jitter.
-\begin{block}{\footnotesize CSV-derived timing summary}
-\scriptsize\input{../tables/sum4_timing.tex}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:}~Measure intrinsic Same-End SUM4 coincidence timing
+without SPTR or electronics jitter.
+\par\textbf{Axes:}~x is beam position; y is
+$\sigma_{group}=\sigma(\Delta T_{AB})/\sqrt{2}$ for the left and right End groups.
+\par\textbf{Takeaway:}~The nearer End improves with its larger photon budget,
+consistent with $1/\sqrt{N_{pe}}$ scaling. \input{../tables/sum4_timing.tex}
 \end{block}
 
 \end{frame}
-\begin{frame}{End arrival-time tails without any time acceptance window: narrower EndTop is physical}
+\begin{frame}{End arrival-time tails: drainage persists, but EndTop widens End timing}
 
 \begin{columns}[T]
 \column{0.48\textwidth}
@@ -600,22 +604,25 @@ At midpoint (C) both windows contribute equally and the effect is null.
 \end{alertblock}
 \column{0.50\textwidth}
 \includegraphics[width=0.88\textwidth,height=0.42\textheight,keepaspectratio]{figs/exec09_tail_comparison.png}
-\begin{block}{\footnotesize No time acceptance window}
-\scriptsize All End-photon arrivals are used without a $t<t_{max}$ cut.
-EndTop tail narrowing persists over the full range: physical, not an artefact.
+\begin{block}{\footnotesize Apples-to-apples diagnosis}
+\input{../tables/endtop_physical_diagnosis.tex}
 \end{block}
 \end{columns}
 
 \end{frame}
 \begin{frame}{Apparent timing slopes: no propagation estimator passes}
 
-\begin{columns}[T]\column{0.62\textwidth}
+\begin{columns}[T]\column{0.61\textwidth}
 \includegraphics[width=\textwidth]{figs/exec10_velocity_estimators.png}
-\column{0.36\textwidth}
+\column{0.37\textwidth}
 \input{../tables/velocity_estimators.tex}
-\begin{alertblock}{Refuted predictions}
-Every global line fit is rejected; slope-derived values are not accepted propagation velocities.
-\end{alertblock}
+\begin{block}{\footnotesize How to read this plot}
+\scriptsize\textbf{Why:}~Test whether an arrival-time estimator reveals a
+light-propagation velocity.
+\par\textbf{Axes:}~x is track-to-End distance; y is the timing estimator.
+\par\textbf{Takeaway:}~Every global line fit is rejected. The reported slopes
+are apparent velocities dominated by estimator-dependent late-tail bias.
+\end{block}
 \end{columns}
 
 \end{frame}
@@ -637,7 +644,9 @@ Threshold at low $N_{pe}$, double-exponential emission; analytic orientation onl
 \end{frame}
 \begin{frame}{Numerical conclusions}
 
+\begin{block}{EJ-230 synthesis: four findings and numerical checks}
 \input{../tables/numerical_conclusions.tex}
+\end{block}
 
 \end{frame}
 \section{Full scan, position by position}
@@ -1117,14 +1126,10 @@ Threshold at low $N_{pe}$, double-exponential emission; analytic orientation onl
 \end{frame}
 \begin{frame}{Backup: why a 4-PE leading-edge threshold}
 
-\begin{enumerate}\small
- \item \textbf{Noise rejection at hardware parity:} 4 PE is the nominal fixed threshold outside
-       the correlated-noise spectrum.
- \item \textbf{Slope optimum:} lower thresholds expose first-photon order statistics; higher
-       thresholds reduce slope and increase walk.
- \item \textbf{Far-end efficiency:} \input{../tables/threshold_rationale.tex}
- \item \textbf{Walk:} no time-walk correction is applied in this campaign.
-\end{enumerate}
+\input{../tables/adaptive_tN.tex}
+\begin{alertblock}{\footnotesize Nominal threshold context}
+\scriptsize\input{../tables/threshold_rationale.tex}
+\end{alertblock}
 
 \end{frame}
 \begin{frame}{Backup: timing methodology}

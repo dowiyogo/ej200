@@ -507,7 +507,7 @@ def plot_synthesis(summary: pd.DataFrame, figs_dir: pathlib.Path) -> None:
     right.set_ylabel(r"$\sigma_{fit}(t_{N_{eff}})$ [ps]", fontsize=9)
     right.legend(fontsize=8)
     right.grid(alpha=0.25)
-    fig.suptitle(r"EJ-230 fitted timing metrics with HOOK_ADAPTIVE_TN", fontsize=10)
+    fig.suptitle(r"EJ-230 fitted timing metrics with data-adaptive far-End threshold", fontsize=10)
     fig.tight_layout()
     out = figs_dir / "exec13_tN_summary.png"
     fig.savefig(out, dpi=180)
