@@ -63,3 +63,22 @@ add_test(NAME endtop_balance_smoke
                  ${CMAKE_CURRENT_BINARY_DIR}/ej200_bar_sim
                  ${CMAKE_CURRENT_BINARY_DIR}/macros/endtop_smoke_center.mac)
 set_tests_properties(endtop_balance_smoke PROPERTIES TIMEOUT 300)
+
+add_executable(endonly_geometry_check tests/endonly_geometry_check.cc ${sources} ${headers})
+configure_ej200_target(endonly_geometry_check)
+
+add_test(NAME endonly_no_top_channels COMMAND endonly_geometry_check)
+
+add_test(NAME endonly_photon_budget_guard
+         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endonly_photon_budget.py
+                 ${CMAKE_CURRENT_BINARY_DIR}/ej200_bar_sim
+                 ${PROJECT_SOURCE_DIR}/macros/endonly_guard.mac)
+set_tests_properties(endonly_photon_budget_guard PROPERTIES TIMEOUT 300)
+
+add_test(NAME physical_ordering_guard
+         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_physical_ordering.py
+                 ${PROJECT_SOURCE_DIR}/analysis/endonly_sum4.py)
+
+add_test(NAME anti_artifact_parity_guard
+         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_anti_artifact_parity.py
+                 ${PROJECT_SOURCE_DIR})

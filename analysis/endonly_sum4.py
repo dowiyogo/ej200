@@ -17,6 +17,7 @@ BAR_HALF_LENGTH_MM = 700.0
 SPR_RISE_NS = 0.5
 SPR_FALL_NS = 5.0
 LEADING_EDGE_THRESHOLD_PE = 4.0
+DEFAULT_READOUT_JITTER_PS = 20.0
 SQRT2 = math.sqrt(2.0)
 
 
@@ -104,6 +105,18 @@ def earliest(first: float, second: float) -> float:
     if not math.isfinite(second):
         return first
     return min(first, second)
+
+
+def modeled_total_sigma_ps(intrinsic_sigma_ps: float) -> float:
+    """Quadrature total using the SiPMSD default readout jitter."""
+    return math.hypot(intrinsic_sigma_ps, DEFAULT_READOUT_JITTER_PS)
+
+
+def require_physical_ordering(intrinsic_sigma_ps: float, total_sigma_ps: float) -> None:
+    if not total_sigma_ps > intrinsic_sigma_ps:
+        raise ValueError(
+            f"non-physical resolution ordering: intrinsic={intrinsic_sigma_ps}, total={total_sigma_ps}"
+        )
 
 
 def robust_sigma(values: np.ndarray) -> float:
@@ -341,6 +354,10 @@ def main() -> int:
                 "sigma_lr_rms_ps": point.sigma_lr_rms_ps,
                 "sigma_single_ps": point.sigma_single_ps,
                 "sigma_single_error_ps": point.sigma_single_err_ps,
+                "sigma_total_default_readout_ps": modeled_total_sigma_ps(point.sigma_single_ps),
+                "physical_ordering_pass": (
+                    modeled_total_sigma_ps(point.sigma_single_ps) > point.sigma_single_ps
+                ),
                 "fit_used": point.fit_used,
             }
         )
