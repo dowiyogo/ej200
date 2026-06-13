@@ -15,8 +15,15 @@ REPORT = REPO / "results_ej230_analysis/report/exec13_ej230_report_full.tex"
 INCLUDE_RE = re.compile(r"\\includegraphics\s*(?:\[[^\]]*\])?\s*%?\s*\{([^{}]+)\}", re.DOTALL)
 
 
-def references(path: Path) -> list[str]:
-    return [item.strip() for item in INCLUDE_RE.findall(path.read_text(encoding="utf-8"))]
+def references(path: Path, frame_limit: int | None = None) -> list[str]:
+    text = path.read_text(encoding="utf-8")
+    if frame_limit is not None:
+        frames = []
+        for match in re.finditer(r"\\begin\{frame\}", text):
+            end = text.find(r"\end{frame}", match.end())
+            frames.append(text[match.start():end + len(r"\end{frame}")])
+        text = "\n".join(frames[:frame_limit])
+    return [item.strip() for item in INCLUDE_RE.findall(text)]
 
 
 def normalize(path: str) -> str:
@@ -27,7 +34,7 @@ def normalize(path: str) -> str:
 
 def main() -> int:
     expected = references(REFERENCE)
-    observed = references(REPORT)
+    observed = references(REPORT, frame_limit=119)
     expected_normalized = [normalize(path) for path in expected]
     observed_normalized = [normalize(path) for path in observed]
     errors: list[str] = []

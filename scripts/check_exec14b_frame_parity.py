@@ -74,8 +74,13 @@ def main() -> int:
     for index, (left, right) in enumerate(zip(expected, observed), 1):
         if normalize(left) != normalize(right):
             mismatches.append((index, left, right))
-    if len(expected) != len(observed):
+    if len(observed) < len(expected):
         print(f"ERROR: frame count reference={len(expected)} report={len(observed)}")
+        return 1
+    appended = observed[len(expected):]
+    invalid_appended = [title for title in appended if not title.startswith("Backup: far-End adaptive")]
+    if invalid_appended:
+        print(f"ERROR: non-adaptive frames appended after primary deck: {invalid_appended}")
         return 1
     unexpected = [item for item in mismatches if item[0] not in allowlisted]
     unused = sorted(allowlisted - {item[0] for item in mismatches})
@@ -85,10 +90,10 @@ def main() -> int:
         for index in unused:
             print(f"ERROR frame {index}: allowlisted title exception is not present")
         return 1
-    exact = len(observed) - len(mismatches)
+    exact = len(expected) - len(mismatches)
     print(
-        f"frame_parity=PASS frames={len(observed)} exact_titles={exact} "
-        f"allowlisted_exceptions={len(mismatches)}"
+        f"frame_parity=PASS primary_frames={len(expected)} appended_frames={len(appended)} "
+        f"exact_titles={exact} allowlisted_exceptions={len(mismatches)}"
     )
     return 0
 

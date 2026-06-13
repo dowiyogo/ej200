@@ -41,8 +41,8 @@ def main() -> int:
     errors: list[str] = []
     dispersion_paths: list[str] = []
 
-    if len(bodies) != 119:
-        errors.append(f"expected 119 frames, found {len(bodies)}")
+    if len(bodies) < 119:
+        errors.append(f"expected at least 119 frames, found {len(bodies)}")
 
     for frame_number, x_mm in DISPERSION_FRAMES.items():
         body = bodies[frame_number - 1]
@@ -119,6 +119,20 @@ def main() -> int:
         expected = f"figs/exec13_tN_{x_mm}mm.png"
         if figures != [expected]:
             errors.append(f"tN frame x={x_mm} contains {figures}, expected [{expected}]")
+
+    adaptive_expected = {
+        "figs/exec14d_adaptive_tN_summary.png",
+        *(f"figs/exec14d_adaptive_tN_{x_mm}mm.png" for x_mm in KEY_POSITIONS),
+    }
+    adaptive_actual = {
+        path for body in bodies[119:] for path in INCLUDE_RE.findall(body)
+        if path.startswith("figs/exec14d_adaptive_tN_")
+    }
+    if adaptive_actual != adaptive_expected:
+        errors.append(
+            f"appended adaptive figures={sorted(adaptive_actual)}, "
+            f"expected={sorted(adaptive_expected)}"
+        )
 
     print(
         f"frames={len(bodies)} dispersion_paths={len(dispersion_paths)} "

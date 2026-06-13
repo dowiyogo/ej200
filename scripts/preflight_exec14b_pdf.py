@@ -66,7 +66,7 @@ def main() -> int:
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: value for key, value in result.items() if key != "image_counts_by_page"}, indent=2))
     passed = (
-        result["pages_total"] == 119
+        result["pages_total"] >= 119
         and not literal_figs
         and not filename_text
         and not suspicious
