@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""EXEC_13/14D (EJ-230) time-to-threshold t_N analysis.
+"""EXEC_13/14D/14E (EJ-230) time-to-threshold t_N analysis.
 
 The nominal thresholds remain t4 for nearest-Top/near-End and t20 for far-End.
 HOOK_ADAPTIVE_TN lowers only the far-End threshold when the nominal threshold
-does not reach a configurable fraction of events.
+does not reach a configurable fraction of events. EXEC_14E keeps that adaptive
+view as Backup material while restoring the fixed-threshold, fixed-bin display
+for the main per-position figures.
 
 Output (all under RESULTS_DIR):
-  figs/exec13_tN_{x}mm.png       -- three-panel figure per key position
-  figs/exec13_tN_summary.png     -- fitted sigma vs x
+  figs/exec13_tN_{x}mm.png       -- fixed-threshold six-panel main figure
+  figs/exec13_tN_summary.png     -- fitted t4 + fixed far-End t20 synthesis
+  figs/exec14d_adaptive_tN_*.png -- preserved adaptive Backup figures
   csv/exec13_tN_summary.csv      -- one row per (x, semantic group)
+  csv/exec14e_fixed_tN_summary.csv -- one row per (x, fixed group, N)
   csv/exec14d_adaptive_tN.csv    -- explicit adaptive-threshold audit
 """
 
@@ -51,6 +55,8 @@ _N_TOP = len(TOP_IDS)
 # HOOK_ADAPTIVE_TN: defaults are exposed through CLI arguments in main().
 DEFAULT_REACH_MIN = 0.95
 DEFAULT_MINIMUM_THRESHOLD = 4
+FIXED_DISPLAY_BIN_WIDTH_NS = 0.025
+FIXED_DISPLAY_THRESHOLDS = (4, 20)
 NOMINAL_THRESHOLDS = {
     "top_nearest": 4,
     "end_near": 4,
@@ -366,8 +372,206 @@ def analyze_position(
     return rows, panels, nearest_top_id, near_label, far_label
 
 
-def plot_position(x_mm: int, panels: dict, near_label: str, far_label: str,
-                  figs_dir: pathlib.Path) -> None:
+def fixed_gaussian_core_fit(
+    tN: np.ndarray,
+) -> tuple[float, float, float, float, float, bool, str]:
+    """Reproduce the historical 25 ps display fit without fabricating a curve."""
+    valid = tN[np.isfinite(tN)]
+    n = len(valid)
+    mean_v = float(np.mean(valid)) if n > 0 else math.nan
+    rms_v = float(np.std(valid, ddof=1)) if n > 1 else math.nan
+    if n < 20 or not math.isfinite(rms_v) or rms_v <= 0.0:
+        return mean_v, rms_v, math.nan, math.nan, math.nan, False, "insufficient"
+
+    lo0, hi0 = mean_v - 2.0 * rms_v, mean_v + 2.0 * rms_v
+    core0 = valid[(valid >= lo0) & (valid <= hi0)]
+    edges0 = np.arange(lo0, hi0 + FIXED_DISPLAY_BIN_WIDTH_NS * 0.5,
+                       FIXED_DISPLAY_BIN_WIDTH_NS)
+    if len(core0) < 10 or len(edges0) < 4:
+        return mean_v, rms_v, math.nan, math.nan, math.nan, False, "mean-rms"
+    counts0, _ = np.histogram(core0, bins=edges0)
+    centers0 = 0.5 * (edges0[:-1] + edges0[1:])
+    try:
+        popt0, _ = curve_fit(
+            _gauss, centers0, counts0.astype(float),
+            p0=[float(counts0.max()), mean_v, rms_v], maxfev=10000,
+        )
+        mu1, sig1 = float(popt0[1]), abs(float(popt0[2]))
+    except Exception:
+        return mean_v, rms_v, math.nan, math.nan, math.nan, False, "mean-rms"
+
+    if not math.isfinite(sig1) or sig1 <= FIXED_DISPLAY_BIN_WIDTH_NS:
+        return mean_v, rms_v, mu1, sig1, math.nan, False, "mean-rms-ultrafine"
+
+    lo1, hi1 = mu1 - 2.0 * sig1, mu1 + 2.0 * sig1
+    core1 = valid[(valid >= lo1) & (valid <= hi1)]
+    edges1 = np.arange(lo1, hi1 + FIXED_DISPLAY_BIN_WIDTH_NS * 0.5,
+                       FIXED_DISPLAY_BIN_WIDTH_NS)
+    if len(core1) < 10 or len(edges1) < 4:
+        return mean_v, rms_v, mu1, sig1, math.nan, False, "mean-rms"
+    counts1, _ = np.histogram(core1, bins=edges1)
+    centers1 = 0.5 * (edges1[:-1] + edges1[1:])
+    try:
+        popt1, pcov1 = curve_fit(
+            _gauss, centers1, counts1.astype(float),
+            p0=[float(counts1.max()), mu1, sig1], maxfev=10000,
+        )
+        mu_fit = float(popt1[1])
+        sigma_fit = abs(float(popt1[2]))
+        variance = float(pcov1[2, 2])
+        sigma_fit_err = math.sqrt(variance) if variance >= 0.0 else math.nan
+    except Exception:
+        return mean_v, rms_v, mu1, sig1, math.nan, False, "mean-rms"
+
+    fit_valid = (
+        math.isfinite(mu_fit)
+        and math.isfinite(sigma_fit)
+        and math.isfinite(sigma_fit_err)
+        and sigma_fit > FIXED_DISPLAY_BIN_WIDTH_NS
+        and sigma_fit_err <= sigma_fit
+    )
+    method = "fixed-25ps-gaussian-core" if fit_valid else "mean-rms"
+    return mean_v, rms_v, mu_fit, sigma_fit, sigma_fit_err, fit_valid, method
+
+
+def analyze_fixed_position(x_mm: int, data_dir: pathlib.Path) -> tuple[list[dict], dict]:
+    """Analyze explicit Top/End-L/End-R groups at fixed N and 25 ps bins."""
+    path = expected_file(data_dir, x_mm)
+    with uproot.open(path) as rf:
+        arrays = rf["sipm_hits"].arrays(
+            ["event_id", "global_id", "time_ns"], library="np")
+    event_id = arrays["event_id"].astype(int)
+    global_id = arrays["global_id"].astype(int)
+    times = arrays["time_ns"].astype(float)
+
+    nearest_top_id = _select_nearest_top(x_mm, _top_profile(event_id, global_id))
+    left_ids, left_cluster = _dominant_cluster(
+        global_id, END_CLUSTERS["end_left_A_SUM4"], END_CLUSTERS["end_left_B_SUM4"])
+    right_ids, right_cluster = _dominant_cluster(
+        global_id, END_CLUSTERS["end_right_A_SUM4"], END_CLUSTERS["end_right_B_SUM4"])
+    far_side = "end_right" if x_mm < 0 else "end_left" if x_mm > 0 else "none"
+    groups = (
+        ("top_nearest", (nearest_top_id,), f"Top nearest ID {nearest_top_id}", "top"),
+        ("end_left", left_ids, f"End-L {left_cluster} SUM4", "far" if far_side == "end_left" else "near"),
+        ("end_right", right_ids, f"End-R {right_cluster} SUM4", "far" if far_side == "end_right" else "near"),
+    )
+
+    rows: list[dict] = []
+    panels: dict = {}
+    for threshold in FIXED_DISPLAY_THRESHOLDS:
+        for group, channel_ids, label, side_role in groups:
+            t_n, frac_excluded = compute_tN(
+                event_id, global_id, times, channel_ids, threshold)
+            counts = group_counts(event_id, global_id, channel_ids)
+            (
+                mean_v, rms_v, mu_fit, sigma_fit, sigma_fit_err,
+                fit_valid, fit_method,
+            ) = fixed_gaussian_core_fit(t_n)
+            row = {
+                "x_mm": x_mm,
+                "group": group,
+                "side_role": side_role,
+                "N": threshold,
+                "n_events": N_EVENTS,
+                "n_reached": int(np.count_nonzero(np.isfinite(t_n))),
+                "reach": round(1.0 - frac_excluded, 6),
+                "frac_excluded": round(frac_excluded, 6),
+                "npe_mean": round(float(np.mean(counts)), 5),
+                "mean_ns": round(mean_v, 6) if math.isfinite(mean_v) else math.nan,
+                "rms_ns": round(rms_v, 6) if math.isfinite(rms_v) else math.nan,
+                "fit_mu_ns": round(mu_fit, 6) if math.isfinite(mu_fit) else math.nan,
+                "sigma_fit_ns": round(sigma_fit, 6) if math.isfinite(sigma_fit) else math.nan,
+                "sigma_fit_err_ns": round(sigma_fit_err, 6) if math.isfinite(sigma_fit_err) else math.nan,
+                "fit_valid": fit_valid,
+                "fit_method": fit_method,
+                "display_bin_width_ns": FIXED_DISPLAY_BIN_WIDTH_NS,
+                "channels": str(channel_ids),
+            }
+            rows.append(row)
+            panels[(threshold, group)] = {**row, "tN": t_n, "label": label}
+    return rows, panels
+
+
+def plot_fixed_position(x_mm: int, panels: dict, figs_dir: pathlib.Path) -> None:
+    """Render the main six-panel historical display at a fixed 25 ps bin width."""
+    columns = (
+        ("top_nearest", "Top nearest"),
+        ("end_left", "End-L SUM4"),
+        ("end_right", "End-R SUM4"),
+    )
+    row_labels = {4: r"$t_4$ [N=4 PE threshold]", 20: r"$t_{20}$ [N=20 PE threshold]"}
+    fig, axes = plt.subplots(2, 3, figsize=(14, 8.5))
+    for row_index, threshold in enumerate(FIXED_DISPLAY_THRESHOLDS):
+        for column_index, (group, title) in enumerate(columns):
+            ax = axes[row_index, column_index]
+            panel = panels[(threshold, group)]
+            valid = panel["tN"][np.isfinite(panel["tN"])]
+            ax.set_xlabel("Arrival time [ns]", fontsize=8)
+            ax.set_ylabel("Events / 25 ps", fontsize=8)
+            if row_index == 0:
+                ax.set_title(title, fontsize=9)
+            ax.text(0.03, 0.97, row_labels[threshold], transform=ax.transAxes,
+                    ha="left", va="top", fontsize=7)
+            if len(valid) > 1:
+                mean_v = float(np.mean(valid))
+                rms_v = float(np.std(valid, ddof=1))
+                lo = max(float(np.min(valid)), mean_v - 4.0 * rms_v)
+                hi = min(float(np.max(valid)), mean_v + 4.0 * rms_v)
+                if hi <= lo:
+                    lo, hi = mean_v - 0.5, mean_v + 0.5
+                edges = np.arange(lo, hi + FIXED_DISPLAY_BIN_WIDTH_NS * 0.5,
+                                  FIXED_DISPLAY_BIN_WIDTH_NS)
+                if len(edges) < 3:
+                    edges = np.array([lo, lo + FIXED_DISPLAY_BIN_WIDTH_NS,
+                                      lo + 2.0 * FIXED_DISPLAY_BIN_WIDTH_NS])
+                histogram, edges = np.histogram(valid, bins=edges)
+                centers = 0.5 * (edges[:-1] + edges[1:])
+                ax.step(centers, histogram, where="mid", lw=1.3, color="tab:blue")
+                if panel["fit_valid"]:
+                    x_fit = np.linspace(lo, hi, 400)
+                    ax.plot(
+                        x_fit,
+                        _gauss(x_fit, float(histogram.max()), panel["fit_mu_ns"],
+                               panel["sigma_fit_ns"]),
+                        "r--", lw=1.1,
+                        label=(rf"$\sigma_{{fit}}={panel['sigma_fit_ns']*1000:.0f}"
+                               rf"\pm{panel['sigma_fit_err_ns']*1000:.0f}$ ps"),
+                    )
+                    ax.legend(fontsize=7, loc="lower left")
+                ax.text(
+                    0.97, 0.97,
+                    f"mean = {mean_v*1000:.0f} ps\n"
+                    f"RMS = {rms_v*1000:.0f} ps\n"
+                    f"excluded = {100*panel['frac_excluded']:.1f}%",
+                    transform=ax.transAxes, ha="right", va="top", fontsize=7,
+                    bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "0.75"},
+                )
+            else:
+                ax.text(0.5, 0.5, "insufficient reached events",
+                        ha="center", va="center", transform=ax.transAxes, fontsize=8)
+
+            if threshold == 20 and panel["side_role"] == "far" and not panel["fit_valid"]:
+                ax.text(
+                    0.04, 0.34,
+                    f"N=20 not fitable (R(20)={100*panel['reach']:.1f}%, "
+                    rf"$\langle N_{{pe}}\rangle\approx{panel['npe_mean']:.1f}$)"
+                    "\nsee Backup adaptive $t_N$ ($N_{eff}$)",
+                    transform=ax.transAxes, ha="left", va="top", fontsize=7,
+                    color="darkred",
+                    bbox={"facecolor": "mistyrose", "alpha": 0.92,
+                          "edgecolor": "darkred"},
+                )
+            ax.grid(alpha=0.22)
+    fig.suptitle(rf"EJ-230 fixed-threshold $t_N$ $|$ $x = {x_mm:+d}$ mm", fontsize=11)
+    fig.tight_layout()
+    output = figs_dir / f"exec13_tN_{x_mm}mm.png"
+    fig.savefig(output, dpi=180)
+    plt.close(fig)
+    print(f"  wrote {output}", flush=True)
+
+
+def plot_adaptive_position(x_mm: int, panels: dict, near_label: str, far_label: str,
+                           figs_dir: pathlib.Path) -> None:
     col_titles = ["Top nearest", f"{near_label} SUM4", f"{far_label} SUM4"]
     fig, axes = plt.subplots(1, 3, figsize=(15, 5.2))
     for col_i, grp_key in enumerate(("top_nearest", "end_near", "end_far")):
@@ -453,13 +657,13 @@ def plot_position(x_mm: int, panels: dict, near_label: str, far_label: str,
         ax.grid(alpha=0.22)
     fig.suptitle(rf"EJ-230 $t_N$ $|$ $x = {x_mm:+d}$ mm", fontsize=11)
     fig.tight_layout()
-    out = figs_dir / f"exec13_tN_{x_mm}mm.png"
+    out = figs_dir / f"exec14d_adaptive_tN_{x_mm}mm.png"
     fig.savefig(out, dpi=180)
     plt.close(fig)
     print(f"  wrote {out}", flush=True)
 
 
-def plot_synthesis(summary: pd.DataFrame, figs_dir: pathlib.Path) -> None:
+def plot_adaptive_synthesis(summary: pd.DataFrame, figs_dir: pathlib.Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharey=False)
     left = axes[0]
     for grp_key, color, marker, label in (
@@ -509,10 +713,67 @@ def plot_synthesis(summary: pd.DataFrame, figs_dir: pathlib.Path) -> None:
     right.grid(alpha=0.25)
     fig.suptitle(r"EJ-230 fitted timing metrics with data-adaptive far-End threshold", fontsize=10)
     fig.tight_layout()
-    out = figs_dir / "exec13_tN_summary.png"
+    out = figs_dir / "exec14d_adaptive_tN_summary.png"
     fig.savefig(out, dpi=180)
     plt.close(fig)
     print(f"  wrote {out}", flush=True)
+
+
+def plot_main_synthesis(
+    adaptive_summary: pd.DataFrame,
+    fixed_summary: pd.DataFrame,
+    figs_dir: pathlib.Path,
+) -> None:
+    """Keep fitted t4 on the left and restore fixed far-End t20 on the right."""
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharey=False)
+    left = axes[0]
+    for group, color, marker, label in (
+        ("top_nearest", "tab:green", "^", "Top nearest fitted t4"),
+        ("end_near", "tab:blue", "o", "near-End fitted t4"),
+    ):
+        subset = adaptive_summary[adaptive_summary["group"] == group]
+        left.errorbar(
+            subset["x_mm"].to_numpy(dtype=float),
+            subset["sigma_fit_ns"].to_numpy(dtype=float) * 1000.0,
+            yerr=subset["sigma_fit_err_ns"].to_numpy(dtype=float) * 1000.0,
+            fmt=marker, color=color, ms=5, capsize=2, label=label,
+        )
+    left.set_title("Photon-counting limit: fitted sigma(t4)", fontsize=10)
+    left.set_xlabel("Beam position x [mm]", fontsize=9)
+    left.set_ylabel(r"$\sigma_{fit}(t_4)$ [ps]", fontsize=9)
+    left.legend(fontsize=8)
+    left.grid(alpha=0.25)
+
+    right = axes[1]
+    far = fixed_summary[
+        (fixed_summary["N"] == 20) & (fixed_summary["side_role"] == "far")
+    ].copy()
+    fitted = far[far["fit_valid"].astype(bool)]
+    unfitted = far[~far["fit_valid"].astype(bool)]
+    right.errorbar(
+        fitted["x_mm"].to_numpy(dtype=float),
+        fitted["sigma_fit_ns"].to_numpy(dtype=float) * 1000.0,
+        yerr=fitted["sigma_fit_err_ns"].to_numpy(dtype=float) * 1000.0,
+        fmt="s", color="tab:red", ms=5, capsize=2,
+        label="far-End fixed t20: fitted core",
+    )
+    if not unfitted.empty:
+        right.plot(
+            unfitted["x_mm"].to_numpy(dtype=float),
+            unfitted["rms_ns"].to_numpy(dtype=float) * 1000.0,
+            "x", color="0.4", ms=6, label="far-End fixed t20: RMS (not fitable)",
+        )
+    right.set_title("Far-End fixed t20 at 25 ps/bin", fontsize=10)
+    right.set_xlabel("Beam position x [mm]", fontsize=9)
+    right.set_ylabel(r"$\sigma_{fit}(t_{20})$ [ps]", fontsize=9)
+    right.legend(fontsize=8)
+    right.grid(alpha=0.25)
+    fig.suptitle("EJ-230 fixed-threshold timing synthesis", fontsize=10)
+    fig.tight_layout()
+    output = figs_dir / "exec13_tN_summary.png"
+    fig.savefig(output, dpi=180)
+    plt.close(fig)
+    print(f"  wrote {output}", flush=True)
 
 
 def write_adaptive_doc(
@@ -593,6 +854,7 @@ def main() -> int:
     args.csv_dir.mkdir(parents=True, exist_ok=True)
 
     all_rows: list[dict] = []
+    all_fixed_rows: list[dict] = []
 
     for x_mm in EXPECTED_POSITIONS_MM:
         path = expected_file(args.data_dir, x_mm)
@@ -603,8 +865,11 @@ def main() -> int:
         rows, panels, nearest_top_id, near_label, far_label = analyze_position(
             x_mm, args.data_dir, args.reach_min, args.minimum_threshold)
         all_rows.extend(rows)
+        fixed_rows, fixed_panels = analyze_fixed_position(x_mm, args.data_dir)
+        all_fixed_rows.extend(fixed_rows)
         if x_mm in KEY_POSITIONS:
-            plot_position(x_mm, panels, near_label, far_label, args.figs_dir)
+            plot_fixed_position(x_mm, fixed_panels, args.figs_dir)
+            plot_adaptive_position(x_mm, panels, near_label, far_label, args.figs_dir)
 
     if not all_rows:
         print("No data found — run the scan first.", flush=True)
@@ -623,7 +888,13 @@ def main() -> int:
     ]
     summary[adaptive_columns].to_csv(adaptive_path, index=False)
     print(f"  wrote {adaptive_path}", flush=True)
-    plot_synthesis(summary, args.figs_dir)
+    fixed_summary = pd.DataFrame(all_fixed_rows).sort_values(
+        ["x_mm", "N", "group"]).reset_index(drop=True)
+    fixed_path = args.csv_dir / "exec14e_fixed_tN_summary.csv"
+    fixed_summary.to_csv(fixed_path, index=False)
+    print(f"  wrote {fixed_path}", flush=True)
+    plot_main_synthesis(summary, fixed_summary, args.figs_dir)
+    plot_adaptive_synthesis(summary, args.figs_dir)
     write_adaptive_doc(
         summary, args.document, args.reach_min, args.minimum_threshold,
     )
