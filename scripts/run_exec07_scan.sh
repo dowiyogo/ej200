@@ -56,6 +56,7 @@ for index in "${!positions[@]}"; do
 /tracking/verbose 0
 /run/numberOfThreads $workers
 /det/readout EndTop
+/ship/geom/topSurface sipm
 /det/scintillator OPSC-101
 /sipm/model AFBR-S4N66P024M
 /run/initialize

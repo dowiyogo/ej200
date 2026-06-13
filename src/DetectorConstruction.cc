@@ -94,9 +94,38 @@ DetectorConstruction::DetectorConstruction() {
         "model", &DetectorConstruction::SetSiPMModel,
         "Set SiPM model. Default and currently supported: AFBR-S4N66P024M.");
     sipmModelCmd.SetParameterName("model", false);
+
+    fGeometryMessenger =
+        new G4GenericMessenger(this, "/ship/geom/", "End-only geometry control");
+    auto& topSurfaceCmd = fGeometryMessenger->DeclareMethod(
+        "topSurface", &DetectorConstruction::SetTopSurface,
+        "Set top-face treatment: mylar (default, no Top SiPMs) or sipm (base EndTop behavior).");
+    topSurfaceCmd.SetParameterName("mode", false);
+
+    fMylarMessenger =
+        new G4GenericMessenger(this, "/ship/geom/mylar/", "Tunable Mylar reflector");
+    auto& reflectivityCmd = fMylarMessenger->DeclareMethod(
+        "reflectivity", &DetectorConstruction::SetMylarReflectivity,
+        "Set uniform aluminized-Mylar reflectivity.");
+    reflectivityCmd.SetParameterName("value", false);
+    reflectivityCmd.SetRange("value >= 0.0 && value <= 1.0");
+
+    auto& lobeCmd = fMylarMessenger->DeclareMethod(
+        "specularLobe", &DetectorConstruction::SetMylarSpecularLobe,
+        "Set unified-model specular-lobe fraction; the remainder is Lambertian.");
+    lobeCmd.SetParameterName("value", false);
+    lobeCmd.SetRange("value >= 0.0 && value <= 1.0");
+
+    auto& sigmaCmd = fMylarMessenger->DeclareMethodWithUnit(
+        "sigmaAlpha", "deg", &DetectorConstruction::SetMylarSigmaAlpha,
+        "Set unified-model microfacet roughness sigma alpha.");
+    sigmaCmd.SetParameterName("angle", false);
+    sigmaCmd.SetRange("angle >= 0.0");
 }
 
 DetectorConstruction::~DetectorConstruction() {
+    delete fMylarMessenger;
+    delete fGeometryMessenger;
     delete fSiPMMessenger;
     delete fMessenger;
 }
@@ -167,7 +196,47 @@ G4bool DetectorConstruction::IsEndInstrumented() const {
 }
 
 G4bool DetectorConstruction::IsTopInstrumented() const {
-    return fReadoutConfiguration == "Top" || fReadoutConfiguration == "EndTop";
+    return fTopSurface == "sipm" &&
+           (fReadoutConfiguration == "Top" || fReadoutConfiguration == "EndTop");
+}
+
+void DetectorConstruction::SetTopSurface(G4String mode) {
+    std::transform(mode.begin(), mode.end(), mode.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    if (mode != "mylar" && mode != "sipm") {
+        G4cerr << "[DetectorConstruction] Unknown /ship/geom/topSurface \""
+               << mode << "\". Use mylar or sipm.\n";
+        return;
+    }
+    if (mode == fTopSurface) return;
+    fTopSurface = mode;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetMylarReflectivity(G4double value) {
+    if (value == fMylarReflectivity) return;
+    fMylarReflectivity = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetMylarSpecularLobe(G4double value) {
+    if (value == fMylarSpecularLobe) return;
+    fMylarSpecularLobe = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetMylarSigmaAlpha(G4double value) {
+    if (value == fMylarSigmaAlpha) return;
+    fMylarSigmaAlpha = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
 }
 
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
@@ -253,7 +322,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
     // Reflective panels cover every non-instrumented face. Explicit sibling
     // volumes avoid global skin surfaces shadowing active SiPM faces.
-    auto* reflector = Materials::CreateBarSkinReflector();
+    auto* reflector = fTopSurface == "mylar"
+        ? Materials::CreateMylarReflector(
+              fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha)
+        : Materials::CreateBarSkinReflector();
     const G4double foilHalfT = 0.5 * um;
     auto* reflYMinusSolid = new G4Box("ReflectorYMinusSolid",
                                       kBarHalfX, foilHalfT, kBarHalfZ);

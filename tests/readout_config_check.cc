@@ -25,7 +25,7 @@ void Require(bool condition, const std::string& message) {
 }
 
 void RequireReflector(const DetectorConstruction& detector, const G4String& face,
-                      bool expected) {
+                      bool expected, const G4String& expectedName = "BarSkinReflector") {
     const auto& surfaces = detector.GetReflectorSurfaces();
     const auto found = surfaces.find(face);
     Require((found != surfaces.end()) == expected,
@@ -34,8 +34,8 @@ void RequireReflector(const DetectorConstruction& detector, const G4String& face
 
     auto* optical = dynamic_cast<G4OpticalSurface*>(found->second->GetSurfaceProperty());
     Require(optical != nullptr, std::string(face) + " reflector is not an optical surface");
-    Require(optical->GetName() == "BarSkinReflector",
-            std::string(face) + " does not use BarSkinReflector");
+    Require(optical->GetName() == expectedName,
+            std::string(face) + " does not use " + std::string(expectedName));
 }
 
 void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
@@ -107,15 +107,27 @@ void CheckEnd() {
     Require(detector.GetNActiveEndSiPMs() == 16, "End config does not activate 16 End SiPMs");
     Require(detector.GetNActiveTopSiPMs() == 0, "End config activates Top SiPMs");
     Require(detector.GetSiPMSurfaces().size() == 16, "End config has wrong SiPM surface count");
-    RequireReflector(detector, "+Y", true);
+    RequireReflector(detector, "+Y", true, "MylarReflector");
     RequireTopWindowedReflector(detector, false);
     RequireReflector(detector, "-X", false);
     RequireReflector(detector, "+X", false);
     RequireSiPMSurfaceProperties(detector);
+
+    auto* mylar = dynamic_cast<G4OpticalSurface*>(
+        detector.GetReflectorSurfaces().at("+Y")->GetSurfaceProperty());
+    auto* mpt = mylar ? mylar->GetMaterialPropertiesTable() : nullptr;
+    Require(mpt != nullptr, "Mylar reflector has no MPT");
+    const G4double energy420 = 1239.84193 * eV * nm / (420.0 * nm);
+    Require(std::abs(mpt->GetProperty("REFLECTIVITY")->Value(energy420) - 0.90) < 1.0e-12,
+            "default Mylar reflectivity is not 0.90");
+    Require(std::abs(mpt->GetProperty("SPECULARLOBECONSTANT")->Value(energy420) - 1.0) <
+                1.0e-12,
+            "default Mylar specular lobe is not 1.0");
 }
 
 void CheckTop() {
     DetectorConstruction detector;
+    detector.SetTopSurface("sipm");
     detector.SetReadoutConfiguration("Top");
     detector.Construct();
 
@@ -137,6 +149,7 @@ void CheckTop() {
 
 void CheckEndTop() {
     DetectorConstruction detector;
+    detector.SetTopSurface("sipm");
     detector.SetReadoutConfiguration("EndTop");
     detector.Construct();
 

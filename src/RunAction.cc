@@ -84,6 +84,7 @@ void LogReadoutConfiguration() {
     G4cout
         << "\n=== Active Readout / Wrapping Configuration ==="
         << "\n  Readout configuration : " << detector->GetReadoutConfiguration()
+        << "\n  Top surface mode      : " << detector->GetTopSurface()
         << "\n  SiPM model            : " << detector->GetSiPMModel()
         << "\n  SiPM PDE file         : " << SiPMModel::DataFilePath(detector->GetSiPMModel())
         << "\n  -X face               : " << faceState("-X", detector->IsEndInstrumented())
@@ -93,6 +94,8 @@ void LogReadoutConfiguration() {
         << "\n  -Z face               : " << faceState("-Z", false)
         << "\n  +Z face               : " << faceState("+Z", false)
         << "\n  Reflector R           : " << reflectivity
+        << "\n  Mylar specular lobe   : " << detector->GetMylarSpecularLobe()
+        << "\n  Mylar sigma alpha     : " << detector->GetMylarSigmaAlpha() / deg << " deg"
         << "\n  Active End SiPMs      : " << detector->GetNActiveEndSiPMs()
         << " (L=" << detector->GetNActiveEndSiPMs() / 2
         << ", R=" << detector->GetNActiveEndSiPMs() / 2 << ")"

@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
     }
 
     DetectorConstruction detector;
+    detector.SetTopSurface("sipm");
     detector.SetReadoutConfiguration("EndTop");
     auto* world = detector.Construct();
 

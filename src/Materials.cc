@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 namespace Materials {
 
@@ -328,6 +329,30 @@ G4OpticalSurface* CreateBarSkinReflector() {
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("REFLECTIVITY", energy, reflectivity, n);
+    surf->SetMaterialPropertiesTable(mpt);
+    return surf;
+}
+
+// ---------------------------------------------------------------------------
+G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
+                                       G4double specularLobe,
+                                       G4double sigmaAlpha) {
+    auto* surf = new G4OpticalSurface("MylarReflector");
+    surf->SetType(dielectric_metal);
+    surf->SetModel(unified);
+    surf->SetFinish(ground);
+    surf->SetSigmaAlpha(sigmaAlpha);
+
+    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+    const std::vector<G4double> uniformReflectivity = {reflectivity, reflectivity};
+    const std::vector<G4double> lobe = {specularLobe, specularLobe};
+    const std::vector<G4double> zero = {0.0, 0.0};
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("REFLECTIVITY", energy, uniformReflectivity);
+    mpt->AddProperty("SPECULARLOBECONSTANT", energy, lobe);
+    mpt->AddProperty("SPECULARSPIKECONSTANT", energy, zero);
+    mpt->AddProperty("BACKSCATTERCONSTANT", energy, zero);
     surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }

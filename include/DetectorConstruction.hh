@@ -1,5 +1,6 @@
 #pragma once
 #include "G4LogicalBorderSurface.hh"
+#include "G4SystemOfUnits.hh"
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
 
@@ -28,6 +29,10 @@ class G4GenericMessenger;
 //   /det/scintillator OPSC-101|OPSC-100
 //   /det/readout End|Top|EndTop
 //   /sipm/model AFBR-S4N66P024M
+//   /ship/geom/topSurface mylar|sipm
+//   /ship/geom/mylar/reflectivity <0..1>
+//   /ship/geom/mylar/specularLobe <0..1>
+//   /ship/geom/mylar/sigmaAlpha <angle>
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
 // Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
@@ -72,6 +77,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4int    GetNActiveTopSiPMs() const
     { return IsTopInstrumented() ? kNTopSiPMs : 0; }
 
+    void     SetTopSurface(G4String mode);
+    G4String GetTopSurface() const { return fTopSurface; }
+    void     SetMylarReflectivity(G4double value);
+    void     SetMylarSpecularLobe(G4double value);
+    void     SetMylarSigmaAlpha(G4double value);
+    G4double GetMylarReflectivity() const { return fMylarReflectivity; }
+    G4double GetMylarSpecularLobe() const { return fMylarSpecularLobe; }
+    G4double GetMylarSigmaAlpha() const { return fMylarSigmaAlpha; }
+
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
 
@@ -87,10 +101,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4String           fScintCode = "OPSC-101";
     G4String           fSiPMModel = "AFBR-S4N66P024M";
     G4String           fReadoutConfiguration = "End";
+    G4String           fTopSurface = "mylar";
+    G4double           fMylarReflectivity = 0.90;
+    G4double           fMylarSpecularLobe = 1.0;
+    G4double           fMylarSigmaAlpha = 0.1 * CLHEP::deg;
     G4Material*         fActiveScintillator = nullptr;
 
     G4GenericMessenger* fMessenger = nullptr;
     G4GenericMessenger* fSiPMMessenger = nullptr;
+    G4GenericMessenger* fGeometryMessenger = nullptr;
+    G4GenericMessenger* fMylarMessenger = nullptr;
 
     std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
     std::map<G4String, G4LogicalBorderSurface*> fReflectorSurfaces;
