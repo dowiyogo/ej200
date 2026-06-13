@@ -20,7 +20,6 @@ class EventAction : public G4UserEventAction {
 
     void AddEndLeftHit()  { ++fNEndLeft;  }
     void AddEndRightHit() { ++fNEndRight; }
-    void AddTopHit()      { ++fNTop;      }
 
     // Posicion x del muon primario en este evento [mm].
     // Extraida del G4PrimaryVertex en BeginOfEventAction y consumida
@@ -31,6 +30,5 @@ class EventAction : public G4UserEventAction {
     RunAction* fRunAction = nullptr;
     G4int      fNEndLeft  = 0;
     G4int      fNEndRight = 0;
-    G4int      fNTop      = 0;
     G4double   fGunXmm    = 0.0;
 };

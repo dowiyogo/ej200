@@ -56,9 +56,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     // BoundaryInvokeSD calls the SD while the track is still in the bar, so
     // the post-step physical volume is the authoritative SiPM placement.
     auto* pv = post->GetPhysicalVolume();
-    if (pv == nullptr ||
-        (pv->GetLogicalVolume()->GetName() != "EndSiPMLV" &&
-         pv->GetLogicalVolume()->GetName() != "TopSiPMLV")) {
+    if (pv == nullptr || pv->GetLogicalVolume()->GetName() != "EndSiPMLV") {
         pv = track->GetVolume();
     }
     if (pv == nullptr) {
@@ -66,6 +64,10 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         return false;
     }
     const G4int globalId = pv->GetCopyNo();
+    if (globalId < 0 || globalId >= DetectorConstruction::kNTotalSiPMs) {
+        track->SetTrackStatus(fStopAndKill);
+        return false;
+    }
 
     // ── Photon kinematics ────────────────────────────────────────────────────
     const G4double energy    = pre->GetKineticEnergy();
@@ -88,9 +90,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         G4EventManager::GetEventManager()->GetUserEventAction());
     if (ea != nullptr) {
         const G4int face = DetectorConstruction::FaceType(globalId);
-        if      (face == 0) ea->AddEndLeftHit();
-        else if (face == 1) ea->AddEndRightHit();
-        else                ea->AddTopHit();
+        if (face == 0) ea->AddEndLeftHit();
+        else           ea->AddEndRightHit();
     }
 
     auto* am = G4AnalysisManager::Instance();

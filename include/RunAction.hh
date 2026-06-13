@@ -16,14 +16,12 @@ class RunAction : public G4UserRunAction {
     // Called by EventAction at end-of-event with per-event photon counts
     void AddEndLeft (G4int n) { fNEndLeft  += n; }
     void AddEndRight(G4int n) { fNEndRight += n; }
-    void AddTop     (G4int n) { fNTop      += n; }
     void FlushEvent (G4bool anyHit) { if (anyHit) fNEventsWithHits += 1; }
     void AddScintPhoton() { fNScintPhotons += 1; }
 
   private:
     G4Accumulable<G4int> fNEndLeft       {"NEndLeft",        0};
     G4Accumulable<G4int> fNEndRight      {"NEndRight",       0};
-    G4Accumulable<G4int> fNTop           {"NTop",            0};
     G4Accumulable<G4int> fNEventsWithHits{"NEventsWithHits", 0};
     G4Accumulable<G4int> fNScintPhotons  {"NScintPhotons",   0};
 };

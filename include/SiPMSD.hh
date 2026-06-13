@@ -9,7 +9,7 @@
 class G4GenericMessenger;
 
 // --------------------------------------------------------------------------
-// SiPMSD — sensitive detector for all SiPM volumes (end-left, end-right, top).
+// SiPMSD — sensitive detector for the two END SiPM arrays.
 //
 // PDE is applied by G4OpBoundaryProcess from the selected surface EFFICIENCY
 // curve. This SD records only photons accepted by that boundary process.
@@ -22,7 +22,6 @@ class G4GenericMessenger;
 // Copy-number convention (set by DetectorConstruction):
 //   0 –  7  →  end-left  (face -X)
 //   8 – 15  →  end-right (face +X)
-//  16 …    →  top        (face +Y)
 // --------------------------------------------------------------------------
 class SiPMSD : public G4VSensitiveDetector
 {

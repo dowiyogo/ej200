@@ -9,7 +9,6 @@
 /tracking/verbose 0
 
 # ── Detector geometry/material/sensor ────────────────────────
-# /det/readout EndTop
 # /det/scintillator OPSC-101
 # /sipm/model AFBR-S4N66P024M
 
@@ -27,7 +26,6 @@
 /muon/angle    0
 /muon/gunX     0 mm
 
-# Option B — midpoint between two top SiPMs (uncomment to use)
 # /muon/midpointSiPMs 34 35
 
 # Option C — tilted muon (angle in degrees from -Z vertical)

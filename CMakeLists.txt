@@ -67,9 +67,3 @@ if(ENABLE_GDML_TEST AND Geant4_gdml_FOUND)
 elseif(ENABLE_GDML_TEST AND NOT Geant4_gdml_FOUND)
     message(WARNING "ENABLE_GDML_TEST=ON but Geant4_gdml_FOUND is false — GDML tests skipped.")
 endif()
-
-add_test(NAME endtop_balance_smoke
-         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_balance.py
-                 ${CMAKE_CURRENT_BINARY_DIR}/ej200_bar_sim
-                 ${CMAKE_CURRENT_BINARY_DIR}/macros/endtop_smoke_center.mac)
-set_tests_properties(endtop_balance_smoke PROPERTIES TIMEOUT 300)

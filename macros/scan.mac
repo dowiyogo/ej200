@@ -9,7 +9,6 @@
 /tracking/verbose 0
 
 # ── Detector geometry/material/sensor ────────────────────────
-# /det/readout EndTop
 # /det/scintillator OPSC-101
 # /sipm/model AFBR-S4N66P024M
 

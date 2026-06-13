@@ -28,7 +28,7 @@ namespace {
     }
 
     bool IsReflectorLV(const G4String& name) {
-        return name == "ReflectorYMinusLV" || name == "ReflectorXLV" ||
+        return name == "ReflectorYMinusLV" || name == "ReflectorYPlusLV" ||
                name == "ReflectorZLV";
     }
 }
@@ -89,8 +89,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         if (IsBarLV(preVolName) && IsBarLV(postVolName))
             ++gMylarReflected;
 
-        if (IsBarLV(preVolName) &&
-            (postVolName == "EndSiPMLV" || postVolName == "TopSiPMLV"))
+        if (IsBarLV(preVolName) && postVolName == "EndSiPMLV")
             ++gMylarToSiPM;
     }
 
@@ -120,7 +119,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     }
 
     // Kill photons that reach the air (world) volume. Photons entering a SiPM
-    // land in EndSiPMLV or TopSiPMLV, so this correctly spares detected photons.
+    // land in EndSiPMLV, so this correctly spares detected photons.
     if (postVol->GetLogicalVolume()->GetName() == "WorldLV") {
         ++gKilledWorld;
         track->SetTrackStatus(fStopAndKill);

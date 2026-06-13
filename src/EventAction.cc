@@ -10,7 +10,6 @@ EventAction::EventAction(RunAction* ra) : fRunAction(ra) {}
 void EventAction::BeginOfEventAction(const G4Event* event) {
     fNEndLeft  = 0;
     fNEndRight = 0;
-    fNTop      = 0;
 
     // Extraer posicion x del vertice primario.
     // G4ParticleGun siempre crea exactamente un G4PrimaryVertex, por lo
@@ -26,6 +25,5 @@ void EventAction::EndOfEventAction(const G4Event*) {
     // Flush per-event counters (incremented by SiPMSD) into run accumulables.
     fRunAction->AddEndLeft (fNEndLeft);
     fRunAction->AddEndRight(fNEndRight);
-    fRunAction->AddTop     (fNTop);
-    fRunAction->FlushEvent (fNEndLeft > 0 || fNEndRight > 0 || fNTop > 0);
+    fRunAction->FlushEvent (fNEndLeft > 0 || fNEndRight > 0);
 }

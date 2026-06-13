@@ -83,20 +83,19 @@ void LogReadoutConfiguration() {
 
     G4cout
         << "\n=== Active Readout / Wrapping Configuration ==="
-        << "\n  Readout configuration : " << detector->GetReadoutConfiguration()
+        << "\n  Readout configuration : End-only"
         << "\n  SiPM model            : " << detector->GetSiPMModel()
         << "\n  SiPM PDE file         : " << SiPMModel::DataFilePath(detector->GetSiPMModel())
-        << "\n  -X face               : " << faceState("-X", detector->IsEndInstrumented())
-        << "\n  +X face               : " << faceState("+X", detector->IsEndInstrumented())
+        << "\n  -X face               : instrumented"
+        << "\n  +X face               : instrumented"
         << "\n  -Y face               : " << faceState("-Y", false)
-        << "\n  +Y face               : " << faceState("+Y", detector->IsTopInstrumented())
+        << "\n  +Y face               : " << faceState("+Y", false)
         << "\n  -Z face               : " << faceState("-Z", false)
         << "\n  +Z face               : " << faceState("+Z", false)
         << "\n  Reflector R           : " << reflectivity
         << "\n  Active End SiPMs      : " << detector->GetNActiveEndSiPMs()
         << " (L=" << detector->GetNActiveEndSiPMs() / 2
         << ", R=" << detector->GetNActiveEndSiPMs() / 2 << ")"
-        << "\n  Active Top SiPMs      : " << detector->GetNActiveTopSiPMs()
         << "\n=============================================="
         << G4endl;
 }
@@ -107,7 +106,6 @@ RunAction::RunAction() {
         auto* accMgr = G4AccumulableManager::Instance();
         accMgr->Register(fNEndLeft);
         accMgr->Register(fNEndRight);
-        accMgr->Register(fNTop);
         accMgr->Register(fNEventsWithHits);
         accMgr->Register(fNScintPhotons);
     }
@@ -117,7 +115,7 @@ RunAction::RunAction() {
     am->SetDefaultFileType("root");
     am->SetNtupleMerging(true);
 
-    am->CreateNtuple("sipm_hits", "Detected optical photons in all SiPMs");
+    am->CreateNtuple("sipm_hits", "Detected optical photons in END SiPMs");
     am->CreateNtupleIColumn("event_id");
     am->CreateNtupleIColumn("face_type");
     am->CreateNtupleIColumn("global_id");
@@ -169,7 +167,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         outFile += ".root";
 
     const G4int nSc  = fNScintPhotons.GetValue();
-    const G4int nDet = fNEndLeft.GetValue() + fNEndRight.GetValue() + fNTop.GetValue();
+    const G4int nDet = fNEndLeft.GetValue() + fNEndRight.GetValue();
     const G4double eff = (nSc > 0) ? 100.0 * nDet / nSc : 0.0;
 
     G4cout
@@ -179,7 +177,6 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         << "\n  Events with ≥1 hit    : " << fNEventsWithHits.GetValue()
         << "\n  End-left  photons     : " << fNEndLeft.GetValue()
         << "\n  End-right photons     : " << fNEndRight.GetValue()
-        << "\n  Top SiPM  photons     : " << fNTop.GetValue()
         << "\n  Scint photons generated: " << nSc
         << "\n  Total photons detected : " << nDet
         << "\n  Detection efficiency   : " << std::fixed << std::setprecision(4)
