@@ -39,8 +39,13 @@ from analysis.exec13.common13 import (  # noqa: E402
     expected_file,
 )
 
-DT_FINE_NS = 0.025
-DT_COARSE_NS = 0.100
+# HOOK_ADAPTIVE_T4_FIT: robust histogram and core-fit controls.
+FIT_IQR_BIN_SCALE = 2.0
+FIT_MIN_BIN_WIDTH_NS = 0.025
+FIT_MIN_BINS = 6
+FIT_MAX_BINS = 160
+FIT_INITIAL_CORE_SIGMA = 2.0
+FIT_FINAL_CORE_SIGMA = 2.5
 _N_TOP = len(TOP_IDS)
 
 
@@ -70,50 +75,115 @@ def compute_tN(
     return tN, frac_excl
 
 
-def gaussian_core_fit(
-    tN: np.ndarray, dt_ns: float
+def robust_sigma(values: np.ndarray) -> float:
+    q25, q75 = np.quantile(values, [0.25, 0.75])
+    sigma = float((q75 - q25) / 1.3489795003921634)
+    if not math.isfinite(sigma) or sigma <= 0.0:
+        sigma = float(np.std(values, ddof=1))
+    return sigma
+
+
+def adaptive_edges(
+    values: np.ndarray, minimum_width_ns: float = 0.0, use_full_range: bool = False,
+) -> np.ndarray:
+    """Freedman-Diaconis binning constrained by documented bin-count bounds."""
+    center = float(np.median(values))
+    spread = robust_sigma(values)
+    if use_full_range:
+        lo, hi = float(np.min(values)), float(np.max(values))
+    else:
+        lo = max(float(np.min(values)), center - 4.0 * spread)
+        hi = min(float(np.max(values)), center + 4.0 * spread)
+    if not math.isfinite(lo) or not math.isfinite(hi) or hi <= lo:
+        return np.linspace(center - 0.5, center + 0.5, FIT_MIN_BINS + 1)
+    iqr = spread * 1.3489795003921634
+    width = max(
+        minimum_width_ns,
+        FIT_IQR_BIN_SCALE * iqr / np.cbrt(max(len(values), 1)),
+    )
+    requested = int(math.ceil((hi - lo) / width)) if width > 0.0 else FIT_MIN_BINS
+    n_bins = min(FIT_MAX_BINS, max(1, requested))
+    return np.linspace(lo, hi, n_bins + 1)
+
+
+def fit_histogram(
+    values: np.ndarray,
+    mu0: float,
+    sigma0: float,
+    minimum_width_ns: float,
+    range_bounds: tuple[float, float] | None = None,
 ) -> tuple[float, float, float, float]:
+    if range_bounds is not None:
+        lo, hi = range_bounds
+        requested = int(math.ceil((hi - lo) / minimum_width_ns))
+        edges = np.linspace(lo, hi, max(requested, 1) + 1)
+    else:
+        edges = adaptive_edges(values, minimum_width_ns, use_full_range=minimum_width_ns > 0.0)
+    counts, _ = np.histogram(values, bins=edges)
+    centers = 0.5 * (edges[:-1] + edges[1:])
+    valid = np.ones_like(counts, dtype=bool) if minimum_width_ns > 0.0 else counts > 0
+    if np.count_nonzero(valid) < 3:
+        raise RuntimeError("fewer than three occupied adaptive bins")
+    bin_width = float(edges[1] - edges[0])
+    popt, pcov = curve_fit(
+        _gauss,
+        centers[valid],
+        counts[valid].astype(float),
+        p0=[float(counts.max()), mu0, sigma0],
+        bounds=(
+            [0.0, float(edges[0]), max(bin_width / 10.0, np.finfo(float).eps)],
+            [math.inf, float(edges[-1]), float(edges[-1] - edges[0])],
+        ),
+        maxfev=20000,
+    )
+    sigma = abs(float(popt[2]))
+    variance = float(pcov[2, 2])
+    error = math.sqrt(variance) if variance >= 0.0 else math.nan
+    counting_error = sigma / math.sqrt(2.0 * max(len(values) - 1, 1))
+    if not math.isfinite(error) or error > sigma:
+        error = counting_error
+    return float(popt[1]), sigma, error, bin_width
+
+
+def gaussian_core_fit(
+    tN: np.ndarray,
+) -> tuple[float, float, float, float, float, bool, str]:
+    """Adaptive Gaussian core fit, stable from few-ps to broad t_N cores."""
     valid = tN[np.isfinite(tN)]
     n = len(valid)
     if n < 20:
         m = float(np.mean(valid)) if n > 0 else math.nan
         r = float(np.std(valid, ddof=1)) if n > 1 else math.nan
-        return m, r, math.nan, math.nan
+        return m, r, math.nan, math.nan, math.nan, False, "insufficient"
     mean0 = float(np.mean(valid))
     rms0 = float(np.std(valid, ddof=1))
-    lo0, hi0 = mean0 - 2.0 * rms0, mean0 + 2.0 * rms0
+    median0 = float(np.median(valid))
+    robust0 = robust_sigma(valid)
+    lo0 = mean0 - FIT_INITIAL_CORE_SIGMA * rms0
+    hi0 = mean0 + FIT_INITIAL_CORE_SIGMA * rms0
     core0 = valid[(valid >= lo0) & (valid <= hi0)]
-    if len(core0) < 10:
-        return mean0, rms0, math.nan, math.nan
-    edges0 = np.arange(lo0, hi0 + dt_ns * 0.5, dt_ns)
-    if len(edges0) < 4:
-        return mean0, rms0, math.nan, math.nan
-    counts0, _ = np.histogram(core0, bins=edges0)
-    centers0 = 0.5 * (edges0[:-1] + edges0[1:])
     try:
-        popt0, _ = curve_fit(_gauss, centers0, counts0.astype(float),
-                             p0=[float(counts0.max()), mean0, rms0], maxfev=5000)
-        mu1, sig1 = float(popt0[1]), abs(float(popt0[2]))
+        mu1, sig1, err1, bin1 = fit_histogram(
+            core0, mean0, rms0, FIT_MIN_BIN_WIDTH_NS, (lo0, hi0)
+        )
     except Exception:
-        return mean0, rms0, math.nan, math.nan
-    lo1, hi1 = mu1 - 2.0 * sig1, mu1 + 2.0 * sig1
+        try:
+            mu1, sig1, err1, bin1 = fit_histogram(core0, median0, robust0, 0.0)
+        except Exception:
+            return mean0, rms0, math.nan, math.nan, math.nan, False, "failed-pass-one"
+        return mean0, rms0, sig1, err1, bin1, True, "resolution-limited-adaptive"
+    lo1 = mu1 - FIT_FINAL_CORE_SIGMA * sig1
+    hi1 = mu1 + FIT_FINAL_CORE_SIGMA * sig1
     core1 = valid[(valid >= lo1) & (valid <= hi1)]
-    if len(core1) < 10:
-        return mean0, rms0, sig1, math.nan
-    edges1 = np.arange(lo1, hi1 + dt_ns * 0.5, dt_ns)
-    if len(edges1) < 4:
-        return mean0, rms0, sig1, math.nan
-    counts1, _ = np.histogram(core1, bins=edges1)
-    centers1 = 0.5 * (edges1[:-1] + edges1[1:])
     try:
-        popt1, pcov1 = curve_fit(_gauss, centers1, counts1.astype(float),
-                                 p0=[float(counts1.max()), mu1, sig1], maxfev=5000)
-        sigma_fit = abs(float(popt1[2]))
-        var_sig = float(pcov1[2, 2])
-        sigma_fit_err = math.sqrt(var_sig) if var_sig >= 0.0 else math.nan
+        _, sigma_fit, sigma_fit_err, bin_width = fit_histogram(
+            core1, mu1, sig1, FIT_MIN_BIN_WIDTH_NS, (lo1, hi1)
+        )
     except Exception:
-        return mean0, rms0, sig1, math.nan
-    return mean0, rms0, sigma_fit, sigma_fit_err
+        limited = bool(sig1 <= FIT_MIN_BIN_WIDTH_NS)
+        return mean0, rms0, sig1, err1, bin1, limited, "adaptive-histogram-pass-one"
+    limited = bool(sigma_fit <= bin_width)
+    return mean0, rms0, sigma_fit, sigma_fit_err, bin_width, limited, "adaptive-histogram"
 
 
 def _top_profile(event_id: np.ndarray, global_id: np.ndarray) -> np.ndarray:
@@ -168,14 +238,12 @@ def analyze_position(x_mm: int, data_dir: pathlib.Path) -> tuple:
     else:
         near_ids, near_label = right_ids, "End-R"
         far_ids, far_label = left_ids, "End-L"
-    far_dt = DT_FINE_NS if abs(dist_left - dist_right) < 50.0 else DT_COARSE_NS
-
     groups = [
-        ("top_nearest", (nearest_top_id,), DT_FINE_NS,
+        ("top_nearest", (nearest_top_id,),
          f"Top nearest ID {nearest_top_id}"),
-        ("end_near", near_ids, DT_FINE_NS,
+        ("end_near", near_ids,
          f"{near_label} SUM4 {{{','.join(map(str, near_ids))}}}"),
-        ("end_far", far_ids, far_dt,
+        ("end_far", far_ids,
          f"{far_label} SUM4 {{{','.join(map(str, far_ids))}}}"),
     ]
 
@@ -183,15 +251,20 @@ def analyze_position(x_mm: int, data_dir: pathlib.Path) -> tuple:
     panels: dict = {}
 
     for N in N_THRESHOLDS:
-        for grp_key, ch_ids, dt_ns, label in groups:
+        for grp_key, ch_ids, label in groups:
             tN, frac_excl = compute_tN(event_id, global_id, times, ch_ids, N)
             valid = tN[np.isfinite(tN)]
             mean_v = float(np.mean(valid)) if len(valid) > 0 else math.nan
             rms_v = float(np.std(valid, ddof=1)) if len(valid) > 1 else math.nan
             if frac_excl > 0.5:
-                sigma_fit = sigma_fit_err = math.nan
+                sigma_fit = sigma_fit_err = bin_width = math.nan
+                resolution_limited = False
+                fit_method = "reach-below-50-percent"
             else:
-                _, _, sigma_fit, sigma_fit_err = gaussian_core_fit(tN, dt_ns)
+                (
+                    _, _, sigma_fit, sigma_fit_err, bin_width,
+                    resolution_limited, fit_method,
+                ) = gaussian_core_fit(tN)
             rows.append({
                 "x_mm": x_mm, "group": grp_key, "N": N,
                 "n_events": N_EVENTS, "frac_excluded": round(frac_excl, 4),
@@ -199,9 +272,14 @@ def analyze_position(x_mm: int, data_dir: pathlib.Path) -> tuple:
                 "rms_ns": round(rms_v, 5) if math.isfinite(rms_v) else float("nan"),
                 "sigma_fit_ns": round(sigma_fit, 6) if math.isfinite(sigma_fit) else float("nan"),
                 "sigma_fit_err_ns": round(sigma_fit_err, 6) if math.isfinite(sigma_fit_err) else float("nan"),
+                "fit_bin_width_ns": round(bin_width, 8) if math.isfinite(bin_width) else float("nan"),
+                "resolution_limited": resolution_limited, "fit_method": fit_method,
                 "channels": str(ch_ids), "near_label": near_label, "far_label": far_label,
             })
-            panels[(N, grp_key)] = (tN, dt_ns, label, frac_excl, sigma_fit, sigma_fit_err)
+            panels[(N, grp_key)] = (
+                tN, label, frac_excl, sigma_fit, sigma_fit_err, bin_width,
+                resolution_limited,
+            )
 
     return rows, panels, nearest_top_id, near_label, far_label
 
@@ -214,11 +292,14 @@ def plot_position(x_mm: int, panels: dict, near_label: str, far_label: str,
     for row_i, N in enumerate(N_THRESHOLDS):
         for col_i, grp_key in enumerate(("top_nearest", "end_near", "end_far")):
             ax = axes[row_i, col_i]
-            tN, dt_ns, label, frac_excl, sigma_fit, sigma_fit_err = panels[(N, grp_key)]
+            (
+                tN, label, frac_excl, sigma_fit, sigma_fit_err, bin_width,
+                resolution_limited,
+            ) = panels[(N, grp_key)]
             valid = tN[np.isfinite(tN)]
             ax.set_xlabel("Arrival time [ns]", fontsize=8)
             if col_i == 0:
-                ax.set_ylabel(f"Events / {dt_ns*1000:.0f} ps", fontsize=8)
+                ax.set_ylabel("Events / adaptive bin", fontsize=8)
             if row_i == 0:
                 ax.set_title(col_titles[col_i], fontsize=9)
             if frac_excl > 0.5:
@@ -238,9 +319,7 @@ def plot_position(x_mm: int, panels: dict, near_label: str, far_label: str,
             rms_v = float(np.std(valid, ddof=1))
             lo = max(0.0, mean_v - 4.0 * rms_v)
             hi = mean_v + 4.0 * rms_v
-            edges = np.arange(lo, hi + dt_ns * 0.5, dt_ns)
-            if len(edges) < 3:
-                edges = np.linspace(lo, hi, 50)
+            edges = adaptive_edges(valid)
             counts, edges = np.histogram(valid, bins=edges)
             centers = 0.5 * (edges[:-1] + edges[1:])
             ax.step(centers, counts, where="mid", lw=1.3, color="tab:blue")
@@ -252,10 +331,17 @@ def plot_position(x_mm: int, panels: dict, near_label: str, far_label: str,
                         label=(rf"$\sigma_{{fit}}={sigma_fit*1000:.0f}"
                                rf"\pm{sigma_fit_err*1000:.0f}$ ps"))
                 ax.legend(fontsize=7, loc="upper right")
+            if resolution_limited:
+                ax.text(
+                    0.03, 0.82, "resolution-limited core",
+                    transform=ax.transAxes, ha="left", va="top", fontsize=7,
+                    color="darkorange",
+                )
             excl_str = f"{100*frac_excl:.1f}%" if frac_excl > 0 else "0%"
             ax.text(0.97, 0.97,
                     f"mean = {mean_v*1000:.0f} ps\n"
                     f"RMS  = {rms_v*1000:.0f} ps\n"
+                    f"bin = {bin_width*1000:.1f} ps\n"
                     f"excl. = {excl_str}",
                     transform=ax.transAxes, ha="right", va="top", fontsize=7,
                     bbox={"facecolor": "white", "alpha": 0.85, "edgecolor": "0.75"})
