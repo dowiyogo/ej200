@@ -147,3 +147,21 @@ At x=0 mm, the nearest-Top channel is a geometric tie between IDs 50 (at −12 m
 | λ_eff | 33.1 cm | 30.8 cm | Shorter for EJ-230 despite bulk att=120 cm vs 160 cm |
 
 The σ_group increase at the far End is physical: EJ-230 yield (9700/MeV) is 6.7 % below EJ-204 (10400/MeV), and the shorter λ_eff amplifies this effect for far-End channels.
+
+---
+
+## 6. Cierre de procedencia del reporte (EXEC_14C)
+
+- El scan principal permanece intacto: `31/31` ROOT válidos, 2000 eventos por
+  posición, sesión `session_20260612_171407` producida en `t0minidaq` con 24
+  threads.
+- Las siete simulaciones especiales fueron producidas con OPSC-106, jitter cero
+  y 16 threads en MSI: cuatro window-dip de 2000 eventos y tres End-only de
+  10000 eventos.
+- Las tres figuras especiales antes heredadas fueron regeneradas desde datos
+  EJ-230 y sus SHA256 difieren de las versiones EJ-204.
+- El reporte visible es standalone EJ-230: la auditoría OCR sobre 134 PNG
+  únicos no encontró `EJ-204`, `OPSC-101`, `EXEC_12`, `material comparison` ni
+  `mirror of`.
+- `HOOK_OPSC106_MASSFRACTION` permanece documentado; EXEC_14C no modificó
+  `src/`, `include/`, `main.cc`, física ni geometría.

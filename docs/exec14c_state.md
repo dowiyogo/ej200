@@ -60,3 +60,25 @@ desde `/home/reriosto/SHiP/t0minidaq/results_ej230/data/` y no se modificaron.
 2. Regenerar tablas CSV-derived, ejecutar auditorías de assets/números y compilar
    estrictamente.
 3. Preflight, render visual, documentación final y push.
+
+## Cierre EXEC_14C
+
+- EXEC_09 se regeneró desde los tres ROOT End-only EJ-230 válidos. La figura
+  `exec09_tail_comparison.png` tiene SHA256
+  `90d4670d4ec8870747a39a767d397cdcaff15686c2990aa0515db8b581e923c7`,
+  distinto de la figura heredada EJ-204.
+- Las figuras especiales window-dip también son EJ-230 auténticas:
+  `exec08b_window_dip_profiles.png` tiene SHA256
+  `77d1573267c6ec3342534c5329a71e7f5ab141c5217451474bc0e3de7babc00c`
+  y `exec08b_id18_impact_maps.png` tiene SHA256
+  `7e9a9d18fd426f4f9c95f373b8508c175e472defcc47001a38bdfef6b1dfd017`.
+- El auditor de assets resolvió `156/156` referencias, sin backreferences ni
+  copias raster EJ-204. El auditor numérico verificó 119 frames, 50 `\input{}`
+  y 50 tablas regenerables desde CSV, sin diferencias.
+- La compilación estricta con `latexmk -halt-on-error` terminó con exit code 0.
+  El PDF final tiene 119 páginas, 104 páginas con raster, 156 referencias de
+  imagen incrustadas y cero páginas con texto literal `figs/` o cajas vacías
+  sospechosas.
+- Se renderizaron las 119 páginas a 130 dpi. Se inspeccionaron 5--8, 17--20,
+  35, 37, 39, 41--49, 113, 115, 117 y 119; la última corrección compactó las
+  etiquetas A/B/C del diagrama de mecanismo en la página 45.

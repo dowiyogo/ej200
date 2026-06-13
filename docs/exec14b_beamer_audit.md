@@ -31,4 +31,22 @@
 
 ## Final state
 
-Pending reconstruction and strict PDF preflight.
+- Canonical paths: `\graphicspath{{../}}` with every external reference written
+  as `figs/<asset>.png`.
+- All 21 corrupted dispersion references were replaced explicitly by the proper
+  `top`, `endL`, and `endR` asset names for the seven key positions.
+- Asset audit: `156/156` references found, zero missing/invalid/backreference
+  errors, and zero forbidden EJ-204 data-figure copies.
+- Numeric audit: 119 frames import 50 generated CSV-derived tables; regeneration
+  comparison reports zero differences. Macro names are alphabetic and unique,
+  including distinct `Nfour` and `Ntwenty` thresholds.
+- Frame parity: `119/119` frametitles in the EXEC_12 structural order. Asset
+  parity: 156 references and 134 unique assets on both sides.
+- Strict compile: exit code 0 with `latexmk -pdf -halt-on-error`; no missing
+  files, draft setting, undefined commands, duplicate commands, missing
+  characters, or overfull boxes.
+- Final PDF preflight: 119 pages, 104 pages with raster images, 156 page-image
+  references, zero literal `figs/`, zero filename boxes, and zero suspicious
+  empty image boxes. `pdfimages -list` detects embedded images.
+- Visual render: all 119 pages rendered at 130 dpi; required pages 5--8, 17--20,
+  35, 37, 39, 41--49, 113, 115, 117, and 119 inspected successfully.

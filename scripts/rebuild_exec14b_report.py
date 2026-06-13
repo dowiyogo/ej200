@@ -151,6 +151,24 @@ def main() -> int:
         flags=re.DOTALL,
     )
     body45 = body45.replace(r"\begin{itemize}\footnotesize", r"\begin{itemize}\scriptsize")
+    body45 = body45.replace(
+        r"""\draw[ultra thick,blue!80] (-0.6,3.2) -- (-0.6,2.1)
+        node[right,blue!80] {\textbf{A} (centred)};""",
+        r"""\draw[ultra thick,blue!80] (-0.6,3.2) -- (-0.6,2.1);
+  \node[left,blue!80] at (-0.6,2.65) {\textbf{A}};""",
+    )
+    body45 = body45.replace(
+        r"""\draw[ultra thick,red!80] (0.0,3.2) -- (0.0,2.1)
+        node[right,red!80] {\textbf{B} ($+2$ mm)};""",
+        r"""\draw[ultra thick,red!80] (0.0,3.2) -- (0.0,2.1);
+  \node[above,red!80] at (0.0,3.2) {\textbf{B}};""",
+    )
+    body45 = body45.replace(
+        r"""\draw[ultra thick,green!55!black] (0.5,3.2) -- (0.5,2.1)
+        node[right,green!55!black] {\textbf{C} (midpoint)};""",
+        r"""\draw[ultra thick,green!55!black] (0.5,3.2) -- (0.5,2.1);
+  \node[right,green!55!black] at (0.5,2.65) {\textbf{C}};""",
+    )
     text = text[:start45] + body45 + text[end45:]
 
     text = replace_body(

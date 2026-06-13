@@ -8,7 +8,8 @@ Source: `results_ej230_analysis/exec10_landau_mpv.csv`.
 
 - 257 fits were requested and 257 converged (`fit_status=ok`); failed fits: **0**.
 - 345 low-light spectra are explicitly `not-requested`, not failed fits.
-- 35 converged fits place `sigma_gauss` at the 0.1 Npe identifiability bound.
+- 35 converged fits place `sigma_gauss` at or numerically near the 0.1 Npe
+  identifiability bound: 33 at the bound within `1e-6` and 2 near it.
 - 36 converged fits have `sigma_gauss_error > 10 sigma_gauss`.
 - 55 converged fits have chi2/ndf above 3.
 - 31 high-light fits (`mean > 50 Npe`) have chi2/ndf above 5, consistent with
@@ -43,3 +44,6 @@ EXEC_14B ran authentic EJ-230 window-track and End-only controls. Their CSV and 
 products replace the three previously copied EJ-204 figures. The EndTop/End-only
 timing gate is allowed to return its documented scientific non-zero status when
 EndTop is narrower; this is a physical result, not a fit or execution failure.
+
+The final EndTop/End-only fitted-width ratio spans `1.223218--1.963382`; no
+ratio was replaced, clipped, or interpreted as an execution failure.

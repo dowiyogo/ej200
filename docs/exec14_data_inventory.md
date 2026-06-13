@@ -41,14 +41,16 @@ SSLG4 code: OPSC-106
 ```
 Hook reserved: `HOOK_OPSC106_MASSFRACTION`. See `docs/EJ230_material_audit.md` §"Hallazgos de ejecución".
 
-## Figures with no EJ-230 equivalent
+## Special EJ-230 controls completed in EXEC_14B/14C
 
-Two figures in the Beamer template require special simulation campaigns not executed for EJ-230:
+The report's special figures now have authentic EJ-230 equivalents:
 
-| Figure | Origin | Reason not regenerated for EJ-230 |
-|---|---|---|
-| `figs/exec09_tail_comparison.png` | `exec09_timing_mechanism.py` | Requires End-only runs (no Top SiPMs) — not in EXEC_13 scope |
-| `figs/exec08b_window_dip_profiles.png` | `exec08b_window_dip.py` | Requires window-dip scan runs — not in EXEC_13 scope |
-| `figs/exec08b_id18_impact_maps.png` | `exec08b_window_dip.py` | Same as above |
+| Figure | Origin | EJ-230 inputs | Status |
+|---|---|---|---|
+| `figs/exec09_tail_comparison.png` | `exec09_timing_mechanism.py` | Main EndTop plus End-only x=-400,0,+400 | Regenerated; SHA differs from EJ-204 |
+| `figs/exec08b_window_dip_profiles.png` | `exec08b_window_dip.py` | Main x=-650 plus directed x=-652,-642,-648,-654 | Regenerated; SHA differs from EJ-204 |
+| `figs/exec08b_id18_impact_maps.png` | `exec08b_window_dip.py` | Same five EJ-230 runs | Regenerated; SHA differs from EJ-204 |
 
-These three figures are purely geometric effects (same geometry for EJ-204 and EJ-230). The EJ-204 versions are used verbatim with explicit provenance notes in the Beamer captions. Documented in `docs/exec14_fit_failures.md`.
+All seven special ROOT files are validated in
+`results_ej230_analysis/root_validation_exec14b.csv`. No EJ-204 data figure is
+used by the final report.

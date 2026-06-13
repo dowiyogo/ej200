@@ -545,16 +545,16 @@ also generates the super-Poissonian Fano factor:
   \node[below] at (-0.6,-0.35) {W$_1$};
   \node[below] at (1.6,-0.35) {W$_2$};
   % Track A: centred
-  \draw[ultra thick,blue!80] (-0.6,3.2) -- (-0.6,2.1)
-        node[right,blue!80] {\textbf{A} (centred)};
+  \draw[ultra thick,blue!80] (-0.6,3.2) -- (-0.6,2.1);
+  \node[left,blue!80] at (-0.6,2.65) {\textbf{A}};
   \draw[->,thick,blue!50,dashed] (-0.6,2.1) -- (-0.6,0.02);
   % Track B: +2 mm
-  \draw[ultra thick,red!80] (0.0,3.2) -- (0.0,2.1)
-        node[right,red!80] {\textbf{B} ($+2$ mm)};
+  \draw[ultra thick,red!80] (0.0,3.2) -- (0.0,2.1);
+  \node[above,red!80] at (0.0,3.2) {\textbf{B}};
   \draw[->,thick,red!50,dashed] (0.0,2.1) -- (0.0,-0.15);
   % Track C: midpoint
-  \draw[ultra thick,green!55!black] (0.5,3.2) -- (0.5,2.1)
-        node[right,green!55!black] {\textbf{C} (midpoint)};
+  \draw[ultra thick,green!55!black] (0.5,3.2) -- (0.5,2.1);
+  \node[right,green!55!black] at (0.5,2.65) {\textbf{C}};
   \draw[->,thick,green!45!black,dashed] (0.5,2.1) -- (0.5,1.8);
   \node[below,align=center] at (-3.5,-1.2) {};
 \end{tikzpicture}
