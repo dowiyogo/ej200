@@ -68,6 +68,36 @@ def main() -> int:
     if end_block != base_end_block:
         raise SystemExit("base parity violation: END geometry/placements changed")
 
+    construction = block(
+        detector,
+        "G4VPhysicalVolume* DetectorConstruction::Construct() {",
+        "    // ── World volume",
+    )
+    base_construction = block(
+        base_detector,
+        "G4VPhysicalVolume* DetectorConstruction::Construct() {",
+        "    // ── World volume",
+    )
+    if construction != base_construction:
+        raise SystemExit("base parity violation: scintillator/SiPM material construction changed")
+
+    materials = (repo / "src/Materials.cc").read_text()
+    base_materials = git(repo, "show", f"{base}:src/Materials.cc").decode()
+    for label, start, stop in (
+        (
+            "SiPM coupling",
+            "G4Material* CreateSiPMCoupling() {",
+            "G4OpticalSurface* CreateBarSurface() {",
+        ),
+        (
+            "SiPM optical surface",
+            "G4OpticalSurface* CreateSiPMSurface",
+            "G4Material* CreateMylar() {",
+        ),
+    ):
+        if block(materials, start, stop) != block(base_materials, start, stop):
+            raise SystemExit(f"base parity violation: {label} changed")
+
     cpp = (repo / "analysis/congruent_sum4_timing.C").read_text()
     python = (repo / "analysis/endonly_sum4.py").read_text()
     pairs = (
