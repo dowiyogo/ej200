@@ -159,7 +159,7 @@ Stats table: \texttt{exec13\_f1\_tn\_histograms.csv} (no manual transcription).
 \frametitle{F5 --- N\'ucleo de $t_4$ a 2\,ps/bin (canal nearest, escala fija)}
 \centering\includegraphics[width=0.95\textwidth]{exec13_f5_t4_core}
 \begin{block}{\footnotesize C\'omo leer este gr\'afico}
-\scriptsize\textbf{Por qu\'e:} F1 usa 10\,ps/bin: el n\'ucleo de $t_4$ no se resuelve. Este panel usa 2\,ps/bin con zoom al n\'ucleo (modo\,$\pm\coreBinPS$\,ps), exponiendo la estructura ``core vs cola.''
+\scriptsize\textbf{Por qu\'e:} F1 usa 10\,ps/bin: el n\'ucleo de $t_4$ no se resuelve. Este panel usa 2\,ps/bin con zoom al n\'ucleo (modo\,$\pm\coreWindowPS$\,ps), exponiendo la estructura ``core vs cola.''
 \quad\textbf{Ejes:} x: $t_4$ (ps); y: eventos/2\,ps. Los tres paneles comparten escalas id\'enticas.
 \quad\textbf{Curvas:} continua = ajuste gaussiano al n\'ucleo (modo\,$\pm\coreWindowPS$\,ps);
 discontinua gris = $\sigma_{\rm stat}^{\rm teor}$ (f\'ormula estad\'istica de orden).
@@ -172,45 +172,47 @@ discontinua gris = $\sigma_{\rm stat}^{\rm teor}$ (f\'ormula estad\'istica de or
 \small
 \begin{columns}
 \begin{column}{0.52\textwidth}
-\textbf{Ajuste gaussiano al n\'ucleo ($\coreBinPS$\,ps/bin, modo\,$\pm\coreWindowPS$\,ps):}
+\textbf{Estimador robusto del n\'ucleo (MAD$\times$1.4826):}
 \vspace{2pt}
 {\footnotesize
 \begin{itemize}
-  \item $x=-690$\,mm (ID\,16): $\sigma_{\rm core}=\coreRunOneSigCore\pm\coreRunOneSigCoreErr$\,ps,
+  \item $x=-690$\,mm (ID\,16): \textbf{MAD\,$=\coreRunOneMAD$\,ps},
         cola\,=\,\coreRunOneTailPct\,\%
-  \item $x=-400$\,mm (ID\,31): $\sigma_{\rm core}=\coreRunThreeSigCore\pm\coreRunThreeSigCoreErr$\,ps,
+  \item $x=-400$\,mm (ID\,31): \textbf{MAD\,$=\coreRunThreeMAD$\,ps},
         cola\,=\,\coreRunThreeTailPct\,\%
-  \item $x=+0$\,mm (ID\,51): $\sigma_{\rm core}=\coreRunFourSigCore\pm\coreRunFourSigCoreErr$\,ps,
+  \item $x=+0$\,mm (ID\,51): \textbf{MAD\,$=\coreRunFourMAD$\,ps},
         cola\,=\,\coreRunFourTailPct\,\%
 \end{itemize}
 }
-\vspace{4pt}
-\textbf{Estimadores robustos (IQR/1.349 / MAD$\times$1.4826):}\\
-{\footnotesize $x=-690$: \coreRunOneIQR / \coreRunOneMAD\,ps;\quad
-$x=-400$: \coreRunThreeIQR / \coreRunThreeMAD\,ps;\quad
-$x=+0$: MAD\,$=\coreRunFourMAD$\,ps.}
+\vspace{2pt}
+{\footnotesize\textit{Ajuste gaussiano} (\coreBinPS\,ps/bin, modo\,$\pm\coreWindowPS$\,ps):
+$\sigma_{\rm core}=$ \coreRunOneSigCore / \coreRunThreeSigCore / \coreRunFourSigCore\,ps;
+$\chi^2/\mathrm{ndf}=$ \coreRunOneChiNdf / \coreRunThreeChiNdf / \coreRunFourChiNdf
+$\Rightarrow$ fit pobre: MAD m\'as fiable.}\\[3pt]
+{\footnotesize\textit{Nota:} $\mathrm{IQR}_{\rm Run4}=\coreRunFourIQR$\,ps est\'a contaminado
+por la cola (\coreRunFourTailPct\,\%); se reporta MAD en su lugar.}
 \end{column}
 \begin{column}{0.46\textwidth}
 \textbf{Comparaci\'on con EXEC\_12 ($\sigma_{\rm fit}\approx 8$--9\,ps):}
 \vspace{2pt}
 {\footnotesize
 \begin{itemize}
-  \item Replicado con mismos datos, 25\,ps/bin, ventana $[\mu\pm2\sigma]$:
-        \coreRunOneSigEx\,/\,\coreRunThreeSigEx\,/\,\coreRunFourSigEx\,ps
-        $\to$ \textbf{coincide} con EXEC\_12.
+  \item Replicado: 25\,ps/bin, $[\mu\pm2\sigma]$ $\to$
+        \coreRunOneSigEx / \coreRunThreeSigEx / \coreRunFourSigEx\,ps
+        (\textbf{coincide} con EXEC\_12).
   \item $\sigma_{\rm stat}^{\rm teor}=\sqrt{4}\,\tau_d/\langle N_{pe}\rangle$:
-        \coreRunOneSigStat\,/\,\coreRunThreeSigStat\,/\,\coreRunFourSigStat\,ps
-        $\to$ consistente con estilo EXEC\_12.
-  \item \textbf{Discrepancia documentada:} $\sigma_{\rm core}$\,(2\,ps)
-        $\neq$ $\sigma_{\rm fit}$\,(EXEC\_12). La diferencia es
-        \textbf{metodol\'ogica}: ventana estrecha captura \'unicamente
-        el n\'ucleo prompt; ventana $\pm2\sigma_{\rm RMS}$ captura
-        n\'ucleo + cola interna.
-  \item \textbf{Cu\'al citar:} abierto. $\sigma_{\rm core}\approx2$\,ps para
-        discriminaci\'on de n\'ucleo; $\sigma_{\rm fit}\approx8$\,ps para
-        eficiencia global de trigger. Ambos son v\'alidos seg\'un contexto.
+        \coreRunOneSigStat / \coreRunThreeSigStat / \coreRunFourSigStat\,ps
+        (consistente).
+  \item \textbf{Discrepancia documentada:} ventana estrecha captura
+        s\'olo el n\'ucleo prompt; ventana $\pm2\sigma_{\rm RMS}$ captura
+        n\'ucleo~+~cola~interna. Abierto: cu\'al citar seg\'un contexto.
 \end{itemize}
 }
+\vspace{3pt}
+{\footnotesize\textit{Perspectiva:} $\sigma_{\rm core}\approx\coreMeanSigCore$\,ps y
+$\sigma_{\rm fit}\approx\coreMeanSigEx$\,ps son intr\'insecos de simulaci\'on
+(sin ruido electr\'onico). La resoluci\'on real estar\'a dominada por el
+SPTR ($\sim\coreSPTRps$\,ps), introducido en EXEC\_02b.}
 \end{column}
 \end{columns}
 \end{frame}

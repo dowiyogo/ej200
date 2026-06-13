@@ -478,7 +478,7 @@ def write_macros(all_results: dict, out_dir: pathlib.Path) -> None:
             cmd("TailPct", r4["tail_fraction"] * 100.0, ".0f"),
             cmd("SigEx", r4["sigma_exec12_style_ps"]),
             cmd("SigStat", r4["sigma_stat_theory_ps"]),
-            cmd("Exec12Ref", r4["exec12_sigma_fit_ref_ps"]),
+            cmd("ExecTwelveRef", r4["exec12_sigma_fit_ref_ps"]),
             cmd("TailK", TAIL_K, ".0f"),
             cmd("Reconciled", r4["reconciled_2ps_vs_exec12"]),
             "",
@@ -504,6 +504,8 @@ def write_macros(all_results: dict, out_dir: pathlib.Path) -> None:
         mean_cmd("MeanSigCore", sigs_core),
         mean_cmd("MeanSigEx", sigs_ex),
         mean_cmd("MeanSigStat", sigs_stat),
+        # SPTR reference value from EXEC_02b (external parameter, not from CSV)
+        "\\newcommand{\\coreSPTRps}{100}",
         "",
     ]
 
