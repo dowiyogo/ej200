@@ -154,6 +154,8 @@ EOF
     echo "DONE x=$x mm root=$final"
 done
 
+python3 "$repo/analysis/endonly_sum4.py" --input-dir "$output_dir" --events "$events"
+
 {
     echo "end=$(date --iso-8601=seconds)"
     echo "status=complete"
