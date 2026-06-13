@@ -6,8 +6,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
    5     3 smask    2400  1350  gray    1   8  image  no        70  0   947   947 3162B 0.1%
    6     4 image    2970  1056  rgb     3   8  image  no        81  0   539   539  198K 2.2%
    6     5 smask    2970  1056  gray    1   8  image  no        81  0   539   539 3062B 0.1%
-   7     6 image    2700   936  rgb     3   8  image  no        90  0   490   490  147K 2.0%
-   7     7 smask    2700   936  gray    1   8  image  no        90  0   490   490 2472B 0.1%
+   7     6 image    2520  1530  rgb     3   8  image  no        90  0   522   522  210K 1.9%
+   7     7 smask    2520  1530  gray    1   8  image  no        90  0   522   522 3759B 0.1%
    8     8 image    1727  1149  rgb     3   8  image  no        98  0   522   522  160K 2.7%
    8     9 smask    1727  1149  gray    1   8  image  no        98  0   522   522 1946B 0.1%
    8    10 image    2037   783  rgb     3   8  image  no        99  0   973   973  138K 2.9%
@@ -20,8 +20,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
    9    17 smask    2400  1350  gray    1   8  image  no       113  0   947   947 3162B 0.1%
   10    18 image    2970  1056  rgb     3   8  image  no       121  0   539   539  190K 2.1%
   10    19 smask    2970  1056  gray    1   8  image  no       121  0   539   539 3062B 0.1%
-  11    20 image    2700   936  rgb     3   8  image  no       128  0   490   490  147K 2.0%
-  11    21 smask    2700   936  gray    1   8  image  no       128  0   490   490 2472B 0.1%
+  11    20 image    2520  1530  rgb     3   8  image  no       128  0   522   522  218K 1.9%
+  11    21 smask    2520  1530  gray    1   8  image  no       128  0   522   522 3759B 0.1%
   12    22 image    1727  1149  rgb     3   8  image  no       135  0   522   522  160K 2.7%
   12    23 smask    1727  1149  gray    1   8  image  no       135  0   522   522 1946B 0.1%
   12    24 image    2021   783  rgb     3   8  image  no       136  0   965   965  127K 2.7%
@@ -34,8 +34,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
   13    31 smask    2400  1350  gray    1   8  image  no       147  0   947   947 3162B 0.1%
   14    32 image    2970  1056  rgb     3   8  image  no       156  0   539   539  182K 2.0%
   14    33 smask    2970  1056  gray    1   8  image  no       156  0   539   539 3062B 0.1%
-  15    34 image    2700   936  rgb     3   8  image  no       163  0   490   490  146K 2.0%
-  15    35 smask    2700   936  gray    1   8  image  no       163  0   490   490 2472B 0.1%
+  15    34 image    2520  1530  rgb     3   8  image  no       163  0   522   522  209K 1.9%
+  15    35 smask    2520  1530  gray    1   8  image  no       163  0   522   522 3759B 0.1%
   16    36 image    1727  1149  rgb     3   8  image  no       170  0   522   522  157K 2.7%
   16    37 smask    1727  1149  gray    1   8  image  no       170  0   522   522 1946B 0.1%
   16    38 image    2021   783  rgb     3   8  image  no       171  0   965   965  124K 2.7%
@@ -48,8 +48,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
   17    45 smask    2400  1350  gray    1   8  image  no       182  0   947   947 3162B 0.1%
   18    46 image    2970  1056  rgb     3   8  image  no       190  0   539   539  169K 1.8%
   18    47 smask    2970  1056  gray    1   8  image  no       190  0   539   539 3062B 0.1%
-  19    48 image    2700   936  rgb     3   8  image  no       197  0   490   490  142K 1.9%
-  19    49 smask    2700   936  gray    1   8  image  no       197  0   490   490 2472B 0.1%
+  19    48 image    2520  1530  rgb     3   8  image  no       197  0   522   522  218K 1.9%
+  19    49 smask    2520  1530  gray    1   8  image  no       197  0   522   522 3759B 0.1%
   20    50 image    1727  1149  rgb     3   8  image  no       205  0   522   522  157K 2.7%
   20    51 smask    1727  1149  gray    1   8  image  no       205  0   522   522 1946B 0.1%
   20    52 image    2009   783  rgb     3   8  image  no       206  0   959   959  118K 2.6%
@@ -62,8 +62,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
   21    59 smask    2400  1350  gray    1   8  image  no       217  0   947   947 3162B 0.1%
   22    60 image    2970  1056  rgb     3   8  image  no       225  0   539   539  183K 2.0%
   22    61 smask    2970  1056  gray    1   8  image  no       225  0   539   539 3062B 0.1%
-  23    62 image    2700   936  rgb     3   8  image  no       233  0   490   490  149K 2.0%
-  23    63 smask    2700   936  gray    1   8  image  no       233  0   490   490 2472B 0.1%
+  23    62 image    2520  1530  rgb     3   8  image  no       233  0   522   522  213K 1.9%
+  23    63 smask    2520  1530  gray    1   8  image  no       233  0   522   522 3759B 0.1%
   24    64 image    1727  1149  rgb     3   8  image  no       240  0   522   522  158K 2.7%
   24    65 smask    1727  1149  gray    1   8  image  no       240  0   522   522 1946B 0.1%
   24    66 image    2017   783  rgb     3   8  image  no       241  0   963   963  121K 2.6%
@@ -76,8 +76,8 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
   25    73 smask    2400  1350  gray    1   8  image  no       252  0   947   947 3162B 0.1%
   26    74 image    2970  1056  rgb     3   8  image  no       261  0   539   539  189K 2.1%
   26    75 smask    2970  1056  gray    1   8  image  no       261  0   539   539 3062B 0.1%
-  27    76 image    2700   936  rgb     3   8  image  no       268  0   490   490  149K 2.0%
-  27    77 smask    2700   936  gray    1   8  image  no       268  0   490   490 2472B 0.1%
+  27    76 image    2520  1530  rgb     3   8  image  no       268  0   522   522  217K 1.9%
+  27    77 smask    2520  1530  gray    1   8  image  no       268  0   522   522 3759B 0.1%
   28    78 image    1727  1149  rgb     3   8  image  no       275  0   522   522  160K 2.8%
   28    79 smask    1727  1149  gray    1   8  image  no       275  0   522   522 1946B 0.1%
   28    80 image    2017   783  rgb     3   8  image  no       276  0   963   963  107K 2.3%
@@ -90,15 +90,15 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
   29    87 smask    2400  1350  gray    1   8  image  no       287  0   947   947 3162B 0.1%
   30    88 image    2970  1056  rgb     3   8  image  no       295  0   539   539  196K 2.1%
   30    89 smask    2970  1056  gray    1   8  image  no       295  0   539   539 3062B 0.1%
-  31    90 image    2700   936  rgb     3   8  image  no       302  0   490   490  148K 2.0%
-  31    91 smask    2700   936  gray    1   8  image  no       302  0   490   490 2472B 0.1%
+  31    90 image    2520  1530  rgb     3   8  image  no       302  0   522   522  215K 1.9%
+  31    91 smask    2520  1530  gray    1   8  image  no       302  0   522   522 3759B 0.1%
   32    92 image    1727  1149  rgb     3   8  image  no       310  0   522   522  160K 2.7%
   32    93 smask    1727  1149  gray    1   8  image  no       310  0   522   522 1946B 0.1%
   32    94 image    2017   783  rgb     3   8  image  no       311  0   963   963 99.2K 2.1%
   32    95 smask    2017   783  gray    1   8  image  no       311  0   963   963 1553B 0.1%
   32    96 image    2037   783  rgb     3   8  image  no       312  0   973   973  139K 3.0%
   32    97 smask    2037   783  gray    1   8  image  no       312  0   973   973 1568B 0.1%
-  33    98 image    2340   900  rgb     3   8  image  no       321  0   453   453 96.5K 1.6%
+  33    98 image    2340   900  rgb     3   8  image  no       321  0   453   453 84.5K 1.4%
   33    99 smask    2340   900  gray    1   8  image  no       321  0   453   453 2063B 0.1%
   35   100 image    2700  1650  rgb     3   8  image  no       338  0   763   763  186K 1.4%
   35   101 smask    2700  1650  gray    1   8  image  no       338  0   763   763 4352B 0.1%
@@ -312,3 +312,19 @@ page   num  type   width height color comp bpc  enc interp  object ID x-ppi y-pp
  115   309 smask    5400  2700  gray    1   8  image  no       936  0   992   992 13.9K 0.1%
  119   310 image    2430  2160  rgb     3   8  image  no       438  0   794   794  270K 1.8%
  119   311 smask    2430  2160  gray    1   8  image  no       438  0   794   794 5121B 0.1%
+ 121   312 image    2340   900  rgb     3   8  image  no       970  0   425   425 96.5K 1.6%
+ 121   313 smask    2340   900  gray    1   8  image  no       970  0   425   425 2063B 0.1%
+ 122   314 image    2700   936  rgb     3   8  image  no       979  0   490   490  147K 2.0%
+ 122   315 smask    2700   936  gray    1   8  image  no       979  0   490   490 2472B 0.1%
+ 123   316 image    2700   936  rgb     3   8  image  no       986  0   490   490  147K 2.0%
+ 123   317 smask    2700   936  gray    1   8  image  no       986  0   490   490 2472B 0.1%
+ 124   318 image    2700   936  rgb     3   8  image  no       993  0   490   490  146K 2.0%
+ 124   319 smask    2700   936  gray    1   8  image  no       993  0   490   490 2472B 0.1%
+ 125   320 image    2700   936  rgb     3   8  image  no      1000  0   490   490  142K 1.9%
+ 125   321 smask    2700   936  gray    1   8  image  no      1000  0   490   490 2472B 0.1%
+ 126   322 image    2700   936  rgb     3   8  image  no      1007  0   490   490  149K 2.0%
+ 126   323 smask    2700   936  gray    1   8  image  no      1007  0   490   490 2472B 0.1%
+ 127   324 image    2700   936  rgb     3   8  image  no      1014  0   490   490  149K 2.0%
+ 127   325 smask    2700   936  gray    1   8  image  no      1014  0   490   490 2472B 0.1%
+ 128   326 image    2700   936  rgb     3   8  image  no      1022  0   490   490  148K 2.0%
+ 128   327 smask    2700   936  gray    1   8  image  no      1022  0   490   490 2472B 0.1%

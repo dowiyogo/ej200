@@ -1,12 +1,12 @@
 Configuration and provenance
 Standalone EJ-230 report
 Branch: feat/ej230-sslg4
-Generation source commit: 80fd1fd3647b
+Generation source commit: ebbb630434ce
 Data session: session_20260612_171407 on
 t0minidaq
 Data path: results_ej230/data; generated
 2026-06-12
-Report generation: 2026-06-13 12:57 CEST
+Report generation: 2026-06-13 16:20 CEST
 I 31 positions × 2000 events; main scan produced on
 t0minidaq with 24 threads.
 I Directed controls on MSI with 16 threads: 4 EndTop
@@ -341,11 +341,12 @@ n τd /hNpe i (τd = 1.5 ns). See
 σ(tN ) vs beam position: synthesis
 
 How to read this plot
-Why: Separate the fitted photon-counting core σfit (t4 ) from the far-End adaptive tNeff observable.
-Axes: x is beam position; y is fitted Gaussian-core width. Orange markers identify a data-selected threshold
-below nominal N = 20.
+Why: Separate the fitted photon-counting core σfit (t4 ) from the fixed-threshold far-End t20 display.
+Axes: x is beam position; y is the fitted Gaussian-core width; all key-position fixed t20 cores have valid Gaussian
+fits.
 Takeaway: Across key positions, nearest-Top fitted σ(t4 ) spans 7.8–9.6 ps and near-End fitted σ(t4 ) spans
-0.6–127.7 ps (127.7 ps at center). 6/7 key far-End points use reduced Neff ; none are genuine starvation.
+0.6–127.7 ps (127.7 ps at center). Fixed t20 is fitable at 6/6 key far-End positions; unfitable cores retain their
+measured histogram and RMS, with adaptive Neff in Backup.
 
 Why does tn disperse? Decomposition into four mechanisms
 
@@ -1624,6 +1625,68 @@ ABSLENGTH 120 cm, emission peak ≈ 391 nm.
 Backup: ID18 impact maps
 
 Backup: why a 4-PE leading-edge threshold
+
+1. Noise rejection at hardware parity: 4 PE is the nominal fixed threshold outside the
+correlated-noise spectrum.
+2. Slope optimum: lower thresholds expose first-photon order statistics; higher thresholds
+reduce slope and increase walk.
+3. Far-end efficiency: Minimum signal in the scan is End R 27.4 ± 0.2 at x = −690 mm;
+the nominal 4 PE threshold remains far below that signal.
+4. Walk: no time-walk correction is applied in this campaign.
+
+Backup: timing methodology
+
+I SUM4 groups: {0..3}, {4..7}, {8..11}, {12..15}.
+I Single-PE response: normalized 0.5/5 ns double exponential.
+I Absolute leading-edge threshold: nominal 4 PE equivalent; the CSV-derived
+far-end rationale is reported on the preceding backup slide.
+√
+I Estimator: σ(∆TAB )/ 2.
+I No time-walk correction is applied in this campaign.
+I The EndTop/End-only anti-artifact audit uses a common threshold, pulse, primary
+time convention and estimator.
+
+Backup: glossary
+
+FPT First photon time: first detected photon
+per event.
+Fano factor F ≡ Var(Npe )/hNpe i = 1 + chNpe i when
+Landau ∆E fluctuations are present.
+Group A / Group B Same-End SUM4 groups: A={0–3},
+B={4–7} on End L; mirrors {8–11},
+{12–15} on End R.
+√
+σgroup = σ(∆TAB )/ 2
+(sum4_timing.C:218–221).
+Time-walk No time-walk correction is applied in the
+EJ-230 campaign.
+Intrinsic sigma Excludes SPTR and electronics jitter.
+Moyal Closed-form Landau approximation for
+stable MINUIT fits. Undershoots extreme
+tail.
+
+SPTR Single Photon Time Resolution: SiPM
+intrinsic single-PE jitter. Excluded from all
+EJ-230 results; all reported timing is intrinsic.
+SUM4 Analog sum of four SiPMs: {0–3}, {4–7},
+{8–11}, {12–15} (congruent_sum4_timing.C:
+218–221).
+Timing gate exec08b_timing_gate.py tests EndTop vs.
+End-only σgroup at x = 0, ±400 mm; no time
+acceptance cut on photons.
+Window-track effect Local symmetric ±2 mm effect: 7.9% with
+significance 9.3–9.7σ; centered/midpoint
+contrast significances: -1.02σ/-0.06σ.
+tN / time-to-threshold N-th detected photoelectron arrival time
+per event. σ(tN ): photon-counting timing
+resolution at ideal N-PE digital threshold.
+(exact geometry) Nearest SiPM = maximum, or window-track
+exception; x = 300 mm is a statistical tie.
+
+Backup: EndTop versus End-only tail audit
+
+Backup: far-End adaptive tN (Neff where 20 PE is unreachable)
+
 x
 
 Top
@@ -1812,59 +1875,20 @@ Rfar (20)
 Neff is the largest threshold with event reach at least 95%; nominal Top/near-End/far-End thresholds are 4/ 4/
 20 PE. No genuine-starvation point remains.
 
-Nominal threshold context
-Minimum signal in the scan is End R 27.4 ± 0.2 at x = −690 mm; the nominal 4 PE threshold remains far
-below that signal.
+Backup: far-End adaptive tN synthesis
 
-Backup: timing methodology
+Backup: far-End adaptive tN at x = −690 mm
 
-I SUM4 groups: {0..3}, {4..7}, {8..11}, {12..15}.
-I Single-PE response: normalized 0.5/5 ns double exponential.
-I Absolute leading-edge threshold: nominal 4 PE equivalent; the CSV-derived
-far-end rationale is reported on the preceding backup slide.
-√
-I Estimator: σ(∆TAB )/ 2.
-I No time-walk correction is applied in this campaign.
-I The EndTop/End-only anti-artifact audit uses a common threshold, pulse, primary
-time convention and estimator.
+Backup: far-End adaptive tN at x = −650 mm
 
-Backup: glossary
+Backup: far-End adaptive tN at x = −400 mm
 
-FPT First photon time: first detected photon
-per event.
-Fano factor F ≡ Var(Npe )/hNpe i = 1 + chNpe i when
-Landau ∆E fluctuations are present.
-Group A / Group B Same-End SUM4 groups: A={0–3},
-B={4–7} on End L; mirrors {8–11},
-{12–15} on End R.
-√
-σgroup = σ(∆TAB )/ 2
-(sum4_timing.C:218–221).
-Time-walk No time-walk correction is applied in the
-EJ-230 campaign.
-Intrinsic sigma Excludes SPTR and electronics jitter.
-Moyal Closed-form Landau approximation for
-stable MINUIT fits. Undershoots extreme
-tail.
+Backup: far-End adaptive tN at x = +0 mm
 
-SPTR Single Photon Time Resolution: SiPM
-intrinsic single-PE jitter. Excluded from all
-EJ-230 results; all reported timing is intrinsic.
-SUM4 Analog sum of four SiPMs: {0–3}, {4–7},
-{8–11}, {12–15} (congruent_sum4_timing.C:
-218–221).
-Timing gate exec08b_timing_gate.py tests EndTop vs.
-End-only σgroup at x = 0, ±400 mm; no time
-acceptance cut on photons.
-Window-track effect Local symmetric ±2 mm effect: 7.9% with
-significance 9.3–9.7σ; centered/midpoint
-contrast significances: -1.02σ/-0.06σ.
-tN / time-to-threshold N-th detected photoelectron arrival time
-per event. σ(tN ): photon-counting timing
-resolution at ideal N-PE digital threshold.
-(exact geometry) Nearest SiPM = maximum, or window-track
-exception; x = 300 mm is a statistical tie.
+Backup: far-End adaptive tN at x = +400 mm
 
-Backup: EndTop versus End-only tail audit
+Backup: far-End adaptive tN at x = +650 mm
+
+Backup: far-End adaptive tN at x = +690 mm
 
 

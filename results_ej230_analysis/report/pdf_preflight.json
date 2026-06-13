@@ -1,8 +1,8 @@
 {
   "pdf": "/mnt/d/SHiP/ej230/results_ej230_analysis/report/exec13_ej230_report_full.pdf",
-  "pages_total": 119,
-  "pages_with_raster_images": 104,
-  "total_page_image_references": 156,
+  "pages_total": 128,
+  "pages_with_raster_images": 112,
+  "total_page_image_references": 164,
   "pages_with_literal_figs": [],
   "pages_with_filename_text": [],
   "pages_with_suspicious_empty_image_boxes": [],
@@ -125,6 +125,15 @@
     "116": 0,
     "117": 0,
     "118": 0,
-    "119": 1
+    "119": 1,
+    "120": 0,
+    "121": 1,
+    "122": 1,
+    "123": 1,
+    "124": 1,
+    "125": 1,
+    "126": 1,
+    "127": 1,
+    "128": 1
   }
 }
