@@ -1,1 +1,1 @@
-Photon fate budget aggregated over 31 positions × 2000 events. Generated=1.23e+09; Mylar-absorbed≈89.4% (R=0.90, many bounces → cumulative loss). SiPM entering=5.77%; detected=3.63%.
+Photon budget: Panel A — terminal fates (surface+bulk absorbed, escaped, SiPM-entering); Panel B — SiPM conversion. Generated=1.23e+09. Surface+bulk≈89.4% (Mylar R=0.90, loss per interaction 1−R=0.10; cumulative over many bounces). SiPM entering=5.77%; detected=3.63% of total (=63% of SiPM-entering).
