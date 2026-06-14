@@ -65,27 +65,24 @@ def run(out_dir: pathlib.Path) -> int:
         print(f"{FAIL} deck_values.json not found at {json_path}")
         failures += 1
 
-    print("\n=== 1. deck_values.json vs. attenuation_fits.csv ===")
+    print("\n=== 1. deck_values.json vs. attenuation_fits.csv (λ value only) ===")
+    # Note: errors in JSON are scaled by √(χ²/ndf) — intentionally differ from raw CSV errors.
     if att_csv.exists():
         with open(att_csv, newline="") as f:
             att_rows = {r["side"]: r for r in csv.DictReader(f)}
-        for side, json_key_lam, json_key_err in [
-            ("left",     "lambda_eff_left_cm",     "lambda_eff_left_err_cm"),
-            ("right",    "lambda_eff_right_cm",    "lambda_eff_right_err_cm"),
-            ("combined", "lambda_eff_combined_cm", "lambda_eff_combined_err_cm"),
+        for side, json_key_lam in [
+            ("left",     "lambda_eff_left_cm"),
+            ("right",    "lambda_eff_right_cm"),
+            ("combined", "lambda_eff_combined_cm"),
         ]:
             row = att_rows.get(side, {})
-            csv_lam = float(row.get("lambda_eff_cm", "nan"))
-            csv_err = float(row.get("lambda_eff_error_cm", "nan"))
+            csv_lam  = float(row.get("lambda_eff_cm", "nan"))
             json_lam = v.get(json_key_lam)
-            json_err = v.get(json_key_err)
-            ok_lam = _approx_eq(json_lam, csv_lam)
-            ok_err = _approx_eq(json_err, csv_err)
-            tag = PASS if (ok_lam and ok_err) else FAIL
+            ok_lam   = _approx_eq(json_lam, csv_lam, rtol=1e-3)
+            tag = PASS if ok_lam else FAIL
             if tag == FAIL:
                 failures += 1
-            print(f"  {tag} λ_eff {side}: JSON={json_lam:.4f} CSV={csv_lam:.4f}  "
-                  f"err: JSON={json_err:.4f} CSV={csv_err:.4f}")
+            print(f"  {tag} λ_eff {side}: JSON={json_lam:.4f} CSV={csv_lam:.4f}")
     else:
         print(f"  {SKIP} {att_csv} not found")
 
@@ -156,7 +153,57 @@ def run(out_dir: pathlib.Path) -> int:
     else:
         print(f"  {SKIP} main.tex not found at {tex_path}")
 
+    print("\n=== 3b. Extended fit keys (three-model attenuation) ===")
+    for side_key in ("att_left", "att_right"):
+        d = v.get(side_key, {})
+        label = side_key.replace("att_", "")
+        # single-exp
+        chi1 = d.get("single_chi2ndf")
+        lam_p = d.get("expoff_lam_cm")
+        lam_t = d.get("tail_lam_cm")
+        for name, val, lo, hi in [
+            (f"{label} single χ²/ndf", chi1, 100, 1e7),
+            (f"{label} prompt λ (cm)",  lam_p, 10, 50),
+            (f"{label} tail λ (cm)",    lam_t, 20, 80),
+        ]:
+            if val is None:
+                print(f"  {FAIL} {name}: MISSING")
+                failures += 1
+            elif lo < float(val) < hi:
+                print(f"  {PASS} {name}: {float(val):.2f}")
+            else:
+                print(f"  {FAIL} {name}: {float(val):.2f}  (expected {lo}–{hi})")
+                failures += 1
+
+    print("\n=== 3c. EJ-204 datasheet properties ===")
+    ds_checks = [
+        ("scint_yield_per_MeV", 10400),
+        ("peak_emission_nm",    408.0),
+        ("refractive_index",    1.58),
+        ("density_gcc",         1.023),
+    ]
+    for key, expected in ds_checks:
+        val = v.get(key)
+        ok  = val is not None and _approx_eq(float(val), float(expected), rtol=1e-3)
+        tag = PASS if ok else FAIL
+        if tag == FAIL:
+            failures += 1
+        print(f"  {tag} {key}: JSON={val}  expected={expected}")
+
+    print("\n=== 3d. No ±0.0 in main.tex ===")
+    if tex_path.exists():
+        tex_check = tex_path.read_text()
+        bad_pm = re.findall(r"\\pm\s*0\.0(?:\b|\s)", tex_check)
+        if bad_pm:
+            print(f"  {FAIL} Found {len(bad_pm)} occurrence(s) of '\\pm 0.0' — check χ²/ndf scaling")
+            failures += 1
+        else:
+            print(f"  {PASS} No '\\pm 0.0' patterns found")
+    else:
+        print(f"  {SKIP} main.tex not found")
+
     print("\n=== 4. Physical sanity checks ===")
+    et = v.get("endtop", {})
     sanity = [
         ("λ_eff > 0",       v.get("lambda_eff_combined_cm", -1) is not None
                              and v.get("lambda_eff_combined_cm", -1) > 0),
@@ -173,6 +220,11 @@ def run(out_dir: pathlib.Path) -> int:
         ("budget_escaped < budget_generated",
                              (v.get("photon_budget_escaped") or 0) <
                              (v.get("photon_budget_generated") or 1)),
+        ("yield = 10400",    v.get("scint_yield_per_MeV") == 10400),
+        ("endtop available", et.get("available", False)),
+        ("endtop NPE > mylar NPE at x=0",
+                             (et.get("npe_left_at_x0") or 0) >
+                             (v.get("npe_left_at_x0") or 0)),
     ]
     for label, result in sanity:
         tag = PASS if result else FAIL
