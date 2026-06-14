@@ -150,6 +150,30 @@ def _expoff(d: np.ndarray, A: float, lam: float, C: float) -> np.ndarray:
     return A * np.exp(-d / lam) + C
 
 
+def _exp2_reparam(d: np.ndarray, A_s: float, lam_s: float,
+                  A_l: float, log_dlam: float) -> np.ndarray:
+    """Double-exp with ordering constraint: lam_l = lam_s + exp(log_dlam) > lam_s."""
+    lam_l = lam_s + math.exp(log_dlam)
+    return A_s * np.exp(-d / lam_s) + A_l * np.exp(-d / lam_l)
+
+
+def _aic(chi2: float, npar: int) -> float:
+    """AIC = chi2 + 2*k (uses chi2 as -2*log L under Gaussian errors)."""
+    return chi2 + 2.0 * npar
+
+
+def _aicc(chi2: float, npar: int, n: int) -> float:
+    """AICc = AIC + 2k(k+1)/(n-k-1)."""
+    aic = _aic(chi2, npar)
+    denom = n - npar - 1
+    return aic + (2.0 * npar * (npar + 1) / denom) if denom > 0 else math.nan
+
+
+def _bic(chi2: float, npar: int, n: int) -> float:
+    """BIC = chi2 + k*ln(n)."""
+    return chi2 + npar * math.log(n) if n > 0 else math.nan
+
+
 def _weighted_fit(model_fn, d, y, yerr, p0, bounds=(-np.inf, np.inf)):
     """
     Weighted curve_fit. Returns (popt, perr_scaled, chi2ndf).
@@ -174,29 +198,126 @@ def _weighted_fit(model_fn, d, y, yerr, p0, bounds=(-np.inf, np.inf)):
         return np.full(npar, math.nan), np.full(npar, math.nan), math.nan
 
 
-def _fit_side(dist_mm: np.ndarray, npe: np.ndarray, npe_err: np.ndarray,
-              label: str = "") -> dict:
+def _bootstrap_fits(d: np.ndarray, y: np.ndarray, yerr: np.ndarray,
+                    n_boot: int = 200, rng_seed: int = 42) -> dict:
     """
-    Fit three models to (dist_mm, npe) data with per-point SEM weights.
+    Pairs bootstrap on (d, y, yerr) data (31 fit points), n_boot replicas.
+    Resamples with replacement; refits M3 (exp+offset), M4 (lambda_tail), M2 (double-exp).
+    Returns percentile summaries.  Seed is fixed for reproducibility.
+    """
+    rng = np.random.default_rng(rng_seed)
+    n = len(d)
+    res_m3_lam, res_m3_c, res_m4_lam, res_m2_lam_s, res_m2_lam_l = [], [], [], [], []
+    n_fail_m2 = 0
 
-    Returns dict with single-exp, exp+offset, and tail-only results.
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        db, yb, eb = d[idx], y[idx], yerr[idx]
+
+        # M3: exp+offset
+        try:
+            C_g = max(float(np.min(yb)) * 0.9, 0.1)
+            p0 = [max(float(yb[0]) - C_g, 1.0), 18.0, C_g]
+            popt, _, _ = _weighted_fit(_expoff, db, yb, eb, p0,
+                                       ([0, 0.5, 0], [np.inf, 300, np.inf]))
+            if all(np.isfinite(popt)):
+                res_m3_lam.append(float(popt[1]))
+                res_m3_c.append(float(popt[2]))
+        except Exception:
+            pass
+
+        # M4: tail slope
+        tail_m = db > D_TAIL_CM
+        if tail_m.sum() >= 4:
+            try:
+                p0 = [float(np.max(yb[tail_m])) * 3.0, 42.0]
+                popt, _, _ = _weighted_fit(_exp1, db[tail_m], yb[tail_m], eb[tail_m],
+                                           p0, ([0, 5], [np.inf, 500]))
+                if all(np.isfinite(popt)):
+                    res_m4_lam.append(float(popt[1]))
+            except Exception:
+                pass
+
+        # M2: constrained double-exponential
+        try:
+            p0 = [float(yb[0]) * 0.7, 10.0, float(yb[0]) * 0.3, math.log(30.0)]
+            bounds = ([0, 0.5, 0, -5.0], [np.inf, 50.0, np.inf, 10.0])
+            popt, _, _ = _weighted_fit(_exp2_reparam, db, yb, eb, p0, bounds)
+            if all(np.isfinite(popt)):
+                lam_l = float(popt[1]) + math.exp(float(popt[3]))
+                res_m2_lam_s.append(float(popt[1]))
+                res_m2_lam_l.append(lam_l)
+        except Exception:
+            n_fail_m2 += 1
+
+    def _summ(vals):
+        v = np.array(vals)
+        if len(v) < 10:
+            return None
+        return {"n": len(v), "median": float(np.median(v)),
+                "p16": float(np.percentile(v, 16)), "p84": float(np.percentile(v, 84)),
+                "mean": float(np.mean(v)), "std": float(np.std(v))}
+
+    return {
+        "n_boot": n_boot, "seed": rng_seed,
+        "M3_lam_cm": _summ(res_m3_lam),
+        "M3_C_PE":   _summ(res_m3_c),
+        "M4_lam_cm": _summ(res_m4_lam),
+        "M2_lam_s_cm": _summ(res_m2_lam_s),
+        "M2_lam_l_cm": _summ(res_m2_lam_l),
+        "M2_n_fail": n_fail_m2,
+        "M2_failure_fraction": n_fail_m2 / n_boot if n_boot > 0 else math.nan,
+    }
+
+
+def _fit_side(dist_mm: np.ndarray, npe: np.ndarray, npe_err: np.ndarray,
+              label: str = "", run_bootstrap: bool = False,
+              n_boot: int = 200) -> dict:
+    """
+    Fit four models to (dist_mm, npe) data with per-point SEM weights.
+
+    M1: single exponential (reference, χ²/ndf diagnostic)
+    M2: constrained double-exponential (λ_l > λ_s enforced via reparametrization)
+    M3: exponential + constant offset  A·exp(-d/λ) + C
+    M4: single-exp in tail region only (d > D_TAIL_CM)
+
+    Returns dict with all fit results plus AIC/BIC per model.
     """
     d = dist_mm / 10.0  # convert mm → cm for all fits
+    n_pts = len(d)
 
-    # --- Model (a): single exponential (reference only; expected poor chi2/ndf) ---
+    # --- M1: single exponential ---
     p0_a = [float(npe[0]), 30.0]
     bounds_a = ([0, 1], [np.inf, 500])
     popt_a, perr_a, chi2_a = _weighted_fit(_exp1, d, npe, npe_err, p0_a, bounds_a)
+    ndf_a = n_pts - 2
+    raw_chi2_a = chi2_a * ndf_a if math.isfinite(chi2_a) else math.nan
 
-    # --- Model (b): exponential + offset A·exp(-d/λ) + C ---
-    # Initial guess: C ≈ minimum NPE (floor), A ≈ npe[0]-C, λ ≈ 18 cm
+    # --- M3: exponential + offset A·exp(-d/λ) + C ---
     C_guess = float(np.min(npe)) * 0.9
     A_guess = float(npe[0]) - C_guess
     p0_b = [max(A_guess, 1.0), 18.0, max(C_guess, 0.5)]
     bounds_b = ([0, 0.5, 0], [np.inf, 300, np.inf])
     popt_b, perr_b, chi2_b = _weighted_fit(_expoff, d, npe, npe_err, p0_b, bounds_b)
+    ndf_b = n_pts - 3
+    raw_chi2_b = chi2_b * ndf_b if math.isfinite(chi2_b) else math.nan
 
-    # --- Model (c): lambda_tail — single exp fit in tail region (d > D_TAIL_CM) ---
+    # --- M2: constrained double-exponential ---
+    p0_m2 = [float(npe[0]) * 0.7, 10.0, float(npe[0]) * 0.3, math.log(30.0)]
+    bounds_m2 = ([0, 0.5, 0, -5.0], [np.inf, 50.0, np.inf, 10.0])
+    popt_m2, perr_m2, chi2_m2 = _weighted_fit(
+        _exp2_reparam, d, npe, npe_err, p0_m2, bounds_m2)
+    ndf_m2 = n_pts - 4
+    raw_chi2_m2 = chi2_m2 * ndf_m2 if math.isfinite(chi2_m2) else math.nan
+    if all(np.isfinite(popt_m2)):
+        lam_s_m2 = float(popt_m2[1])
+        lam_l_m2 = lam_s_m2 + math.exp(float(popt_m2[3]))
+        A_s_m2, A_l_m2 = float(popt_m2[0]), float(popt_m2[2])
+        lam_l_err_m2 = float(perr_m2[3]) * math.exp(float(popt_m2[3]))  # error propagation
+    else:
+        lam_s_m2 = lam_l_m2 = A_s_m2 = A_l_m2 = lam_l_err_m2 = math.nan
+
+    # --- M4: lambda_tail — tail region only ---
     tail_mask = d > D_TAIL_CM
     n_tail = int(np.sum(tail_mask))
     if n_tail >= 4:
@@ -205,28 +326,60 @@ def _fit_side(dist_mm: np.ndarray, npe: np.ndarray, npe_err: np.ndarray,
         popt_c, perr_c, chi2_c = _weighted_fit(
             _exp1, d[tail_mask], npe[tail_mask], npe_err[tail_mask], p0_c, bounds_c
         )
+        ndf_c = n_tail - 2
+        raw_chi2_c = chi2_c * ndf_c if math.isfinite(chi2_c) else math.nan
     else:
         popt_c = perr_c = np.full(2, math.nan)
-        chi2_c = math.nan
+        chi2_c = raw_chi2_c = math.nan
         n_tail = 0
+        ndf_c = 0
+
+    # --- AIC / AICc / BIC (for M1, M2, M3 which share same n_pts) ---
+    aic_m1  = _aic(raw_chi2_a,  2)         if math.isfinite(raw_chi2_a)  else math.nan
+    aicc_m1 = _aicc(raw_chi2_a, 2, n_pts)  if math.isfinite(raw_chi2_a)  else math.nan
+    bic_m1  = _bic(raw_chi2_a,  2, n_pts)  if math.isfinite(raw_chi2_a)  else math.nan
+
+    aic_m3  = _aic(raw_chi2_b,  3)         if math.isfinite(raw_chi2_b)  else math.nan
+    aicc_m3 = _aicc(raw_chi2_b, 3, n_pts)  if math.isfinite(raw_chi2_b)  else math.nan
+    bic_m3  = _bic(raw_chi2_b,  3, n_pts)  if math.isfinite(raw_chi2_b)  else math.nan
+
+    aic_m2  = _aic(raw_chi2_m2,  4)        if math.isfinite(raw_chi2_m2) else math.nan
+    aicc_m2 = _aicc(raw_chi2_m2, 4, n_pts) if math.isfinite(raw_chi2_m2) else math.nan
+    bic_m2  = _bic(raw_chi2_m2,  4, n_pts) if math.isfinite(raw_chi2_m2) else math.nan
 
     if label:
         print(f"  Att fit [{label}]:")
-        print(f"    Single-exp:  N0={popt_a[0]:.0f}±{perr_a[0]:.0f} PE, "
-              f"λ={popt_a[1]:.2f}±{perr_a[1]:.2f} cm, χ²/ndf={chi2_a:.0f}")
-        print(f"    Exp+offset:  A={popt_b[0]:.0f}±{perr_b[0]:.0f} PE, "
+        print(f"    M1 single-exp:   N0={popt_a[0]:.0f}±{perr_a[0]:.0f} PE, "
+              f"λ={popt_a[1]:.2f}±{perr_a[1]:.2f} cm, χ²/ndf={chi2_a:.0f}, AICc={aicc_m1:.0f}")
+        print(f"    M3 exp+offset:   A={popt_b[0]:.0f}±{perr_b[0]:.0f} PE, "
               f"λ_p={popt_b[1]:.2f}±{perr_b[1]:.2f} cm, "
-              f"C={popt_b[2]:.1f}±{perr_b[2]:.1f} PE, χ²/ndf={chi2_b:.0f}")
-        print(f"    λ_tail (d>{D_TAIL_CM:.0f}cm, N={n_tail}): "
+              f"C={popt_b[2]:.1f}±{perr_b[2]:.1f} PE, χ²/ndf={chi2_b:.0f}, AICc={aicc_m3:.0f}")
+        print(f"    M2 double-exp:   A_s={A_s_m2:.0f} PE, λ_s={lam_s_m2:.1f} cm, "
+              f"A_l={A_l_m2:.0f} PE, λ_l={lam_l_m2:.1f} cm, "
+              f"χ²/ndf={chi2_m2:.0f}, AICc={aicc_m2:.0f}")
+        print(f"    M4 λ_tail (d>{D_TAIL_CM:.0f}cm, N={n_tail}): "
               f"N0={popt_c[0]:.0f}±{perr_c[0]:.0f} PE, "
               f"λ={popt_c[1]:.2f}±{perr_c[1]:.2f} cm, χ²/ndf={chi2_c:.1f}")
 
+    boot = None
+    if run_bootstrap:
+        print(f"    Bootstrap [{label}]: {n_boot} replicas...")
+        boot = _bootstrap_fits(d, npe, npe_err, n_boot=n_boot)
+        if boot["M2_failure_fraction"] > 0.3:
+            print(f"    WARNING: M2 bootstrap failure fraction = "
+                  f"{boot['M2_failure_fraction']:.0%} — M2 not robustly identifiable")
+
     return {
+        # M1: single-exp
         "single_n0":       _safe(float(popt_a[0])),
         "single_n0_err":   _safe(float(perr_a[0])),
         "single_lam_cm":   _safe(float(popt_a[1])),
         "single_lam_err":  _safe(float(perr_a[1])),
         "single_chi2ndf":  _safe(float(chi2_a)),
+        "single_aic":      _safe(aic_m1),
+        "single_aicc":     _safe(aicc_m1),
+        "single_bic":      _safe(bic_m1),
+        # M3: exp+offset
         "expoff_A":        _safe(float(popt_b[0])),
         "expoff_A_err":    _safe(float(perr_b[0])),
         "expoff_lam_cm":   _safe(float(popt_b[1])),
@@ -234,6 +387,23 @@ def _fit_side(dist_mm: np.ndarray, npe: np.ndarray, npe_err: np.ndarray,
         "expoff_C":        _safe(float(popt_b[2])),
         "expoff_C_err":    _safe(float(perr_b[2])),
         "expoff_chi2ndf":  _safe(float(chi2_b)),
+        "expoff_aic":      _safe(aic_m3),
+        "expoff_aicc":     _safe(aicc_m3),
+        "expoff_bic":      _safe(bic_m3),
+        # M2: constrained double-exp
+        "dblexp_A_s":      _safe(A_s_m2),
+        "dblexp_A_s_err":  _safe(float(perr_m2[0])) if all(np.isfinite(popt_m2)) else None,
+        "dblexp_lam_s_cm": _safe(lam_s_m2),
+        "dblexp_lam_s_err":_safe(float(perr_m2[1])) if all(np.isfinite(popt_m2)) else None,
+        "dblexp_A_l":      _safe(A_l_m2),
+        "dblexp_A_l_err":  _safe(float(perr_m2[2])) if all(np.isfinite(popt_m2)) else None,
+        "dblexp_lam_l_cm": _safe(lam_l_m2),
+        "dblexp_lam_l_err":_safe(lam_l_err_m2),
+        "dblexp_chi2ndf":  _safe(float(chi2_m2)),
+        "dblexp_aic":      _safe(aic_m2),
+        "dblexp_aicc":     _safe(aicc_m2),
+        "dblexp_bic":      _safe(bic_m2),
+        # M4: lambda_tail
         "tail_n0":         _safe(float(popt_c[0])),
         "tail_n0_err":     _safe(float(perr_c[0])),
         "tail_lam_cm":     _safe(float(popt_c[1])),
@@ -241,6 +411,8 @@ def _fit_side(dist_mm: np.ndarray, npe: np.ndarray, npe_err: np.ndarray,
         "tail_chi2ndf":    _safe(float(chi2_c)),
         "tail_n_points":   n_tail,
         "tail_dmin_cm":    D_TAIL_CM,
+        # Bootstrap
+        "bootstrap":       boot,
     }
 
 
@@ -471,15 +643,45 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
 
     # ── attenuation fits ──────────────────────────────────────────────────────
     print("Fitting attenuation models...")
-    fit_l = _fit_side(dist_l, npe_l, npe_l_err, label="left")
-    fit_r = _fit_side(dist_r, npe_r, npe_r_err, label="right")
+    fit_l = _fit_side(dist_l, npe_l, npe_l_err, label="left",
+                      run_bootstrap=True, n_boot=200)
+    fit_r = _fit_side(dist_r, npe_r, npe_r_err, label="right",
+                      run_bootstrap=True, n_boot=200)
 
     # Combined: mirror the right-side data and stack with left
-    # (same-distance pairs share the same underlying physics)
     dist_comb = np.concatenate([dist_l, dist_r])
     npe_comb  = np.concatenate([npe_l,  npe_r])
     err_comb  = np.concatenate([npe_l_err, npe_r_err])
-    fit_c = _fit_side(dist_comb, npe_comb, err_comb, label="combined")
+    fit_c = _fit_side(dist_comb, npe_comb, err_comb, label="combined",
+                      run_bootstrap=False)
+
+    # ── Lambda_tail range sensitivity (d >= 30, 40, 50 cm) ──────────────────
+    print("Computing lambda_tail range sensitivity...")
+    d_cm_l = dist_l / 10.0
+    d_cm_r = dist_r / 10.0
+    tail_sensitivity = {}
+    for d_min in [30.0, 40.0, 50.0]:
+        entry = {"dmin_cm": d_min}
+        for side_key, dc, yv, ye in [
+            ("left",  d_cm_l, npe_l, npe_l_err),
+            ("right", d_cm_r, npe_r, npe_r_err),
+        ]:
+            mask = dc > d_min
+            n_pts_s = int(np.sum(mask))
+            if n_pts_s >= 4:
+                p0 = [float(np.max(yv[mask])) * 3.0, 42.0]
+                popt, perr, chi2 = _weighted_fit(
+                    _exp1, dc[mask], yv[mask], ye[mask], p0, ([0, 5], [np.inf, 500])
+                )
+                entry[side_key] = {
+                    "lam_cm":   _safe(float(popt[1])),
+                    "lam_err":  _safe(float(perr[1])),
+                    "chi2ndf":  _safe(float(chi2)),
+                    "n_points": n_pts_s,
+                }
+            else:
+                entry[side_key] = None
+        tail_sensitivity[f"dmin_{int(d_min)}cm"] = entry
 
     # ── EndTop comparison ─────────────────────────────────────────────────────
     print("Processing EndTop reference data...")
@@ -924,7 +1126,7 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
           f"Center (x=0): {sigma_center:.0f} ps; ends (|x|=690 mm): {sigma_end690:.0f} ps. "
           r"Intrinsic only — SPTR and FastIC jitter not folded in.")
 
-    # ── FIG 9: Photon budget ──────────────────────────────────────────────────
+    # ── FIG 9: Photon budget (Panel A: terminal fates; Panel B: sensor conversion) ──
     key_panel = "Bar -> reflector panel"
     key_world = "Bar -> World (escaped)"
     key_sipm  = "Bar -> SiPM (entering)"
@@ -935,32 +1137,70 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
     n_esc  = float(total_census.get(key_world, 0))
     n_ref  = float(total_census.get(key_panel, 0))
     n_det  = n_sipm_budget * PDE_PEAK
+    # "Surface losses + bulk" = generated – escaped – SiPM-entering
+    # This lumps Mylar surface absorption and any bulk ABSLENGTH absorption.
+    # The simulation census records "Bar→reflector panel" crossings (not absorption
+    # events), so we cannot separate surface from bulk from this census alone.
+    n_surface_bulk = max(0.0, n_gen - n_esc - n_sipm_budget)
 
-    fig, ax = plt.subplots(figsize=(7, 4))
+    fig, axes_pb = plt.subplots(1, 2, figsize=(11, 4))
+
     if n_gen > 0:
-        labels = ["Escaped\n(Bar→World)", "Enter SiPM\n(before PDE)",
-                  "Detected\n(after PDE)", "Mylar-\nabsorbed"]
-        vals = np.array([n_esc, n_sipm_budget, n_det,
-                         max(0, n_gen - n_esc - n_sipm_budget)])
-        pct  = 100.0 * vals / n_gen
-        bars = ax.barh(labels[::-1], pct[::-1], color=["C1","C3","C2","C0"])
-        ax.set_xlabel("Fraction of generated photons (%)")
-        ax.set_title("Photon budget — End-only + Mylar (aggregated, 31 positions)")
-        for bar, p in zip(bars, pct[::-1]):
-            ax.text(bar.get_width() + 0.05, bar.get_y() + bar.get_height()/2,
-                    f"{p:.2f}%", va="center", fontsize=8)
-        ax.set_xlim(0, max(pct) * 1.2)
-        ax.text(0.98, 0.02, f"Mylar R={mylar_r:.2f}",
-                transform=ax.transAxes, ha="right", va="bottom", fontsize=8, color="gray")
+        # Panel A: terminal fates (mutually exclusive, sum ≈ 100%)
+        labels_a = ["Surface+bulk\nabsorbed", "Escaped\n(Bar→World)", "Entered\nSiPM"]
+        vals_a   = np.array([n_surface_bulk, n_esc, n_sipm_budget])
+        pct_a    = 100.0 * vals_a / n_gen
+        colors_a = ["C0", "C1", "C3"]
+        bars_a   = axes_pb[0].barh(labels_a[::-1], pct_a[::-1], color=colors_a[::-1])
+        axes_pb[0].set_xlabel("Fraction of generated photons (%)")
+        axes_pb[0].set_title(
+            f"Panel A — Terminal fates (sum = {pct_a.sum():.1f}%)\nMylar R={mylar_r:.2f}; "
+            r"loss per interaction $1-R=0.10$")
+        for bar, p in zip(bars_a, pct_a[::-1]):
+            axes_pb[0].text(bar.get_width() + 0.05,
+                            bar.get_y() + bar.get_height() / 2,
+                            f"{p:.2f}%", va="center", fontsize=8)
+        axes_pb[0].set_xlim(0, max(pct_a) * 1.18)
+
+        axes_pb[0].text(
+            0.02, 0.02,
+            "Note: 'Surface+bulk absorbed' = generated\n"
+            "minus escaped minus SiPM-entering.\n"
+            "Bulk ABSLENGTH and surface losses\nnot separately resolved in census.",
+            transform=axes_pb[0].transAxes,
+            fontsize=6.5, color="gray", va="bottom")
+
+        # Panel B: SiPM conversion chain (conditional on reaching SiPM)
+        if n_sipm_budget > 0:
+            pde_eff = n_det / n_sipm_budget
+            labels_b  = ["Not detected\n(1−PDE_eff)", "Detected\n(after PDE)"]
+            vals_b    = np.array([n_sipm_budget - n_det, n_det])
+            pct_b     = 100.0 * vals_b / n_sipm_budget
+            bars_b    = axes_pb[1].barh(labels_b[::-1], pct_b[::-1],
+                                        color=["lightgray", "C2"])
+            axes_pb[1].set_xlabel("Fraction of SiPM-entering photons (%)")
+            axes_pb[1].set_title(
+                f"Panel B — SiPM conversion\n"
+                f"Entered={n_sipm_budget/n_gen*100:.2f}% of total\n"
+                f"PDE_eff = {pde_eff:.2f} ({PDE_PEAK:.0%} nominal)")
+            for bar, p in zip(bars_b, pct_b[::-1]):
+                axes_pb[1].text(bar.get_width() + 0.3,
+                                bar.get_y() + bar.get_height() / 2,
+                                f"{p:.1f}%", va="center", fontsize=8)
+            axes_pb[1].set_xlim(0, 115)
     else:
-        ax.text(0.5, 0.5, "No log data available for budget",
-                transform=ax.transAxes, ha="center")
+        axes_pb[0].text(0.5, 0.5, "No log data available",
+                        transform=axes_pb[0].transAxes, ha="center")
+
     plt.tight_layout()
     _save(fig, fig_dir / "fig_photon_budget.png",
-          f"Photon fate budget aggregated over 31 positions × {n_events} events. "
-          f"Generated={n_gen:.2e}; Mylar-absorbed≈{max(0,n_gen-n_esc-n_sipm_budget)/n_gen*100:.1f}% "
-          f"(R={mylar_r:.2f}, many bounces → cumulative loss). "
-          f"SiPM entering={n_sipm_budget/n_gen*100:.2f}%; detected={n_det/n_gen*100:.2f}%.")
+          f"Photon budget: Panel A — terminal fates (surface+bulk absorbed, escaped, SiPM-entering); "
+          f"Panel B — SiPM conversion. "
+          f"Generated={n_gen:.2e}. "
+          f"Surface+bulk≈{n_surface_bulk/n_gen*100:.1f}% (Mylar R={mylar_r:.2f}, "
+          r"loss per interaction 1−R=0.10; cumulative over many bounces). "
+          f"SiPM entering={n_sipm_budget/n_gen*100:.2f}%; "
+          f"detected={n_det/n_gen*100:.2f}% of total (={PDE_PEAK*100:.0f}% of SiPM-entering).")
 
     # =========================================================================
     # TABLES
@@ -1067,6 +1307,34 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
             writer.writerow([c.replace("\\", "").replace("$", "").replace("~", " ")
                              for c in row])
 
+    # Lambda_tail range sensitivity table (CSV)
+    with open(tab_dir / "attenuation_range_sensitivity.csv", "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["dmin_cm", "side", "lam_cm", "lam_err", "chi2ndf", "n_points"])
+        for key, entry in tail_sensitivity.items():
+            for side in ("left", "right"):
+                d_info = entry.get(side)
+                if d_info:
+                    w.writerow([entry["dmin_cm"], side,
+                                 d_info["lam_cm"], d_info["lam_err"],
+                                 d_info["chi2ndf"], d_info["n_points"]])
+
+    # Bootstrap summary CSV
+    for side_key, fit_side_data in [("left", fit_l), ("right", fit_r)]:
+        boot = fit_side_data.get("bootstrap")
+        if boot is None:
+            continue
+        with open(tab_dir / f"attenuation_bootstrap_{side_key}.csv", "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["metric", "n", "median", "p16", "p84", "mean", "std"])
+            for met in ["M3_lam_cm", "M3_C_PE", "M4_lam_cm", "M2_lam_s_cm", "M2_lam_l_cm"]:
+                s = boot.get(met)
+                if s:
+                    w.writerow([met, s["n"], s["median"], s["p16"], s["p84"],
+                                 s["mean"], s["std"]])
+            w.writerow(["M2_n_fail", boot["M2_n_fail"], "", "", "", "", ""])
+            w.writerow(["M2_failure_frac", boot["M2_failure_fraction"], "", "", "", "", ""])
+
     # Table 3: sigma_t at key positions
     key_xvals = [-690, -400, 0, 400, 690]
     sig_table_tex_rows = [["$x$ (mm)", "$N_\\mathrm{trig}$",
@@ -1171,8 +1439,9 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
         "lambda_eff_right_err_cm":  fit_r["single_lam_err"],
         "lambda_eff_combined_cm":   fit_c["single_lam_cm"],
         "lambda_eff_combined_err_cm": fit_c["single_lam_err"],
-        # Tail threshold
+        # Tail threshold and range sensitivity
         "att_tail_dmin_cm": D_TAIL_CM,
+        "att_tail_range_sensitivity": tail_sensitivity,
         # sigma_t
         "sigma_t_at_key_positions": sigma_at,
         "sigma_t_center_ps":        _safe(sigma_center),
@@ -1181,13 +1450,24 @@ def run(data_dir: pathlib.Path, out_dir: pathlib.Path) -> None:
         "v_eff_fpt_mm_ns":  _safe(v_eff_fpt),
         "v_eff_t50_mm_ns":  _safe(v_eff_t50),
         "v_eff_sum4_mm_ns": _safe(v_eff_sum4),
-        # Photon budget
+        # Photon budget (Panel A: terminal fates; Panel B: SiPM conversion)
         "photon_budget_generated":          _safe(n_gen),
         "photon_budget_escaped":            _safe(n_esc),
         "photon_budget_sipm_entering":      _safe(n_sipm_budget),
         "photon_budget_detected":           _safe(n_det),
+        # "surface_bulk_absorbed" = generated - escaped - SiPM-entering
+        # = Mylar surface absorption + bulk ABSLENGTH absorption (not separately resolved)
+        "photon_budget_surface_bulk_absorbed": _safe(max(0.0, n_gen - n_esc - n_sipm_budget)),
         "photon_budget_mylar_absorbed":     _safe(max(0.0, n_gen - n_esc - n_sipm_budget)),
         "photon_budget_reflector_crossings":_safe(float(n_ref)),
+        "photon_budget_pct_surface_bulk":   _safe(100.0 * max(0.0, n_gen - n_esc - n_sipm_budget) / n_gen if n_gen > 0 else None),
+        "photon_budget_pct_escaped":        _safe(100.0 * n_esc / n_gen if n_gen > 0 else None),
+        "photon_budget_pct_sipm":           _safe(100.0 * n_sipm_budget / n_gen if n_gen > 0 else None),
+        "photon_budget_pct_detected":       _safe(100.0 * n_det / n_gen if n_gen > 0 else None),
+        "photon_budget_pde_eff":            _safe(n_det / n_sipm_budget if n_sipm_budget > 0 else None),
+        # Theoretical group velocity from flat RINDEX (no GROUPVEL property set in Materials.cc)
+        "group_velocity_theoretical_mm_ns": _safe(C_MM_NS / REFRACTIVE_INDEX),
+        "group_velocity_note": "Geant4 computes v_g from d(omega)/dk on flat RINDEX=1.58; equals c/n=189.7 mm/ns",
         # NPE at key positions (Mylar)
         "npe_left_at_x0":    _safe(float(npe_l[idx0])),
         "npe_right_at_x0":   _safe(float(npe_r[idx0])),
