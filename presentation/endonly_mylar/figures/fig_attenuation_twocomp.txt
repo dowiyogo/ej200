@@ -1,0 +1,1 @@
+Single-exp (red dashed) vs. exp+offset (solid) fit comparison. Red star: actual NPE at d≈0; red dotted: single-exp N0 extrapolated to d=0. Inconsistency factor ~3.6 shows single-exp model fails. Chi2/ndf single-exp≈2321 vs exp+offset≈954.

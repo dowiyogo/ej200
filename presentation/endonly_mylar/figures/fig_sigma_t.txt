@@ -1,1 +1,1 @@
-Intrinsic single-end timing resolution $\sigma_\mathrm{single} = \sigma_{LR}/\sqrt{2}$ (SUM4 leading-edge estimator, core Gaussian fit) vs. beam position. Center ($x=0$): 142 ps; Near ends ($|x|=690$ mm): 389 ps. $\sigma_t$ shown is \textbf{intrinsic simulation prediction} (optical propagation + SUM4 estimator only; SiPM SPTR and electronics jitter not folded in).
+Intrinsic σ_single = σ_LR/√2 (SUM4 leading-edge, core Gaussian fit) vs. x. Center (x=0): 142 ps; ends (|x|=690 mm): 389 ps. Intrinsic only — SPTR and FastIC jitter not folded in.

@@ -1,1 +1,1 @@
-Mean first-photon time (FPT) and median photon time ($t_{50}$) vs. beam position, for both ends. $v_\mathrm{eff}$ (FPT) ≈ 264.1 mm/ns. $v_\mathrm{eff}$ ($t_{50}$) ≈ 275.7 mm/ns. $v_\mathrm{eff}$ (SUM4 $\Delta t$) ≈ 213.7 mm/ns. $v_\mathrm{eff}$(FPT) > $v_\mathrm{eff}$($t_{50}$) due to distance-dependent tail of scattered (Mylar-reflected) photons.
+Mean FPT and t50 vs. position. v_eff(FPT)=264.1 mm/ns, v_eff(SUM4)=213.7 mm/ns.
