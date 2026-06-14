@@ -232,6 +232,93 @@ def run(out_dir: pathlib.Path) -> int:
             failures += 1
         print(f"  {tag} {label}")
 
+    print("\n=== 3e. Range sensitivity keys present ===")
+    rs = v.get("att_tail_range_sensitivity", {})
+    for dmin in ["30", "40", "50"]:
+        key = f"dmin_{dmin}cm"
+        entry = rs.get(key, {})
+        lam_l = (entry.get("left") or {}).get("lam_cm")
+        lam_r = (entry.get("right") or {}).get("lam_cm")
+        ok = lam_l is not None and lam_r is not None and 20 < float(lam_l) < 80
+        tag = PASS if ok else FAIL
+        if tag == FAIL:
+            failures += 1
+        print(f"  {tag} d≥{dmin} cm: L={lam_l}  R={lam_r}")
+
+    print("\n=== 3f. Photon budget closes to ~100% ===")
+    pct_sb  = v.get("photon_budget_pct_surface_bulk", 0) or 0
+    pct_esc = v.get("photon_budget_pct_escaped", 0) or 0
+    pct_sip = v.get("photon_budget_pct_sipm", 0) or 0
+    total   = pct_sb + pct_esc + pct_sip
+    ok_total = abs(total - 100.0) < 2.0
+    tag = PASS if ok_total else FAIL
+    if tag == FAIL:
+        failures += 1
+    print(f"  {tag} surf+bulk({pct_sb:.1f}%) + escaped({pct_esc:.2f}%) + SiPM({pct_sip:.2f}%) = {total:.2f}%  (want 100±2%)")
+
+    print("\n=== 3g. Mylar 1-R = 0.10 ===")
+    mylar_r = v.get("mylar_reflectivity")
+    if mylar_r is not None:
+        loss = 1.0 - float(mylar_r)
+        ok_loss = _approx_eq(loss, 0.10, rtol=1e-3)
+        tag = PASS if ok_loss else FAIL
+        if tag == FAIL:
+            failures += 1
+        print(f"  {tag} 1−R = {loss:.2f}  (want 0.10)")
+    else:
+        print(f"  {SKIP} mylar_reflectivity not found")
+
+    print("\n=== 3h. σ_eq terminology in main.tex ===")
+    if tex_path.exists():
+        tex_body = tex_path.read_text()
+        has_sigeq = r"\SigEq" in tex_body or r"sigma_eq" in tex_body or r"\sigma_{\rm eq}" in tex_body
+        bad_siglr = r"\sigma_{LR}" in tex_body or r"sigma_LR" in tex_body
+        tag_eq  = PASS if has_sigeq  else FAIL
+        tag_lr  = PASS if not bad_siglr else FAIL
+        if tag_eq  == FAIL: failures += 1
+        if tag_lr  == FAIL: failures += 1
+        print(f"  {tag_eq}  σ_eq macro present in main.tex")
+        print(f"  {tag_lr}  no legacy σ_LR label in main.tex")
+    else:
+        print(f"  {SKIP} main.tex not found")
+
+    print("\n=== 3i. No 'same attenuation' claim in main.tex ===")
+    if tex_path.exists():
+        bad_phrases = ["same attenuation", "identical attenuation", "reflector-independent"]
+        found = [p for p in bad_phrases if p.lower() in tex_path.read_text().lower()]
+        if found:
+            print(f"  {FAIL} Found overreaching phrase(s): {found}")
+            failures += 1
+        else:
+            print(f"  {PASS} No 'same attenuation' / 'reflector-independent' claim found")
+    else:
+        print(f"  {SKIP} main.tex not found")
+
+    print("\n=== 3j. M2 bootstrap stability ===")
+    boot_l = (v.get("att_left") or {}).get("bootstrap") or {}
+    fail_frac = boot_l.get("M2_failure_fraction")
+    if fail_frac is not None:
+        ok_boot = float(fail_frac) < 0.05
+        tag = PASS if ok_boot else FAIL
+        if tag == FAIL:
+            failures += 1
+        print(f"  {tag} M2 bootstrap failure fraction = {float(fail_frac)*100:.1f}%  (want <5%)")
+    else:
+        print(f"  {SKIP} M2_failure_fraction not found in deck_values.json")
+
+    print("\n=== 3k. v_app > c/n for all estimators ===")
+    vg = v.get("group_velocity_theoretical_mm_ns") or 189.74
+    for key, label in [("v_eff_sum4_mm_ns", "SUM4"), ("v_eff_fpt_mm_ns", "FPT"), ("v_eff_t50_mm_ns", "t50")]:
+        vapp = v.get(key)
+        if vapp is not None:
+            ok_v = float(vapp) > float(vg)
+            tag = PASS if ok_v else FAIL
+            if tag == FAIL:
+                failures += 1
+            print(f"  {tag} v_app({label}) = {float(vapp):.2f} > c/n = {float(vg):.2f} mm/ns")
+        else:
+            print(f"  {SKIP} {key} not found")
+
     print("\n=== 5. Figures exist ===")
     figs = v.get("figures", {})
     for key, rel in figs.items():
