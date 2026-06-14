@@ -1,0 +1,1 @@
+Mean photoelectron count at End-Left (IDs 0–7), End-Right (IDs 8–15), and their sum vs. beam position $x$ (longitudinal axis X). 2000 muon events per position. Log scale. Mylar wrapping on ±Y, ±Z faces: R=0.90, specular lobe=1.0.

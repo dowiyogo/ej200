@@ -1,0 +1,1 @@
+Per-event first photon arrival time (FPT) at End-Left and End-Right for representative positions. Counts (not normalized). Each panel N = events with at least one photon on that end.

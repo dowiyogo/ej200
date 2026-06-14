@@ -1,0 +1,1 @@
+Photon count vs. distance from the respective end, with exponential fits. $\lambda_\mathrm{eff}$: left = 32.2 cm, right = 31.4 cm, combined = 31.8 cm. Bulk EJ-204 $\lambda$ = 160 cm shown for reference (Mylar recirculation keeps photons in bar longer, but absorption per bounce reduces $\lambda_\mathrm{eff}$).

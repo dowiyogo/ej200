@@ -1,0 +1,1 @@
+Photon fate budget aggregated over all 31 positions × 2000 events. Generated=1.23e+09; escaped (Bar→World)=4.84%; entering SiPM=5.77%; detected (after PDE 63%)=3.63%. Remainder absorbed by Mylar (R=0.90 per bounce). Note: 'Bar→reflector panel' crossings (9.16e+09) count all bounces (not unique photons).

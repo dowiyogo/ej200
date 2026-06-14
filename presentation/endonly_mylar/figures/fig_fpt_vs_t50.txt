@@ -1,0 +1,1 @@
+Comparison of FPT (first photon) and $t_{50}$ (median photon) arrival time distributions at representative positions. Normalized to peak. Shows systematic shift of $t_{50}$ relative to FPT.
