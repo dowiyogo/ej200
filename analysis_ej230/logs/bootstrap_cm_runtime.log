@@ -1,0 +1,13 @@
+Loaded 31 data points from csv/attenuation_cm.csv
+
+Nominal fit (33.247 ms):
+  M1  lambda = 29.424 cm   chi2/ndf = 2270.823
+  M2  ls=8.893 ll=38.797 chi2/ndf=96.941
+  M3  lam=20.223 C=13.036 chi2/ndf=1030.185
+  M4  lam_tail=38.128 chi2/ndf=88.620
+
+Running 200 bootstrap replicas on 16 OpenMP threads...
+Bootstrap complete: 835.317 ms  (4.177 ms/replica)
+M2 failure fraction: 0/200 = 0.000%
+Written: csv/attenuation_bootstrap_replicates_right.csv
+Written: csv/attenuation_bootstrap_summary_right.csv

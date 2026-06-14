@@ -1,0 +1,3 @@
+configuration,reflector_R,npe_left_mean,npe_right_mean,n_positions,x_range_mm
+End-only+Mylar EJ-230,0.9,61.9966,61.857899999999994,5,|x|<=100
+EndTop EJ-230,0.98,155.0618,155.16310000000001,5,|x|<=100

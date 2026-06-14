@@ -1,0 +1,1 @@
+Mean PE at End-Left (IDs 0–7), End-Right (IDs 8–15), and Sum vs. x. 2000 muon events per position. Mylar R=0.90 (Materials.cc:347). EJ-230 OPSC-106.

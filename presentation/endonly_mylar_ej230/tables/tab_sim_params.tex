@@ -1,0 +1,24 @@
+\begin{tabular}{llll}\toprule
+Parameter & Value & Unit & Source \\
+\midrule
+Bar material & EJ-230 (OPSC-106) &  & src/Materials.cc:163 \\
+Bar dimensions & 1400\,$\times$\,60\,$\times$\,10 & mm$^3$ & GDML \\
+Readout & End-only ($\pm X$ faces) &  & geometry \\
+Wrapping ($\pm Y,\pm Z$) & Mylar surface (dielectric\_metal) &  & src/DetectorConstruction.cc:236 \\
+Mylar reflectivity $R$ & 0.90 &  & src/Materials.cc:347 (CreateMylarReflector) \\
+Mylar specular lobe & 1.0 &  & src/Materials.cc:348 \\
+Mylar $\sigma_\alpha$ & 0.1 & deg & src/Materials.cc:344 \\
+Loss per interaction $1-R$ & 0.10 &  & derived; $R=0.90$ \\
+Scint.~yield & 9,700 & $\gamma$/MeV & src/Materials.cc:182 \\
+Emission peak & 391 & nm & src/Materials.cc:181 \\
+Bulk $\lambda$ (ABSLENGTH) & 120 & cm & src/Materials.cc:181; DetectorConstruction.cc:183-186 \\
+Refractive index $n$ & 1.58 &  & src/Materials.cc:41 (flat, 4 energy points) \\
+Density & 1.023 & g/cm$^3$ & src/Materials.cc:24 (PVT) \\
+Rise time $\tau_r$ & 0.5 & ns & src/Materials.cc:182; DetectorConstruction.cc:194 \\
+Decay time $\tau_d$ & 1.5 & ns & src/Materials.cc:182 \\
+SiPM (physical) & AFBR-S4N66P014M &  & hardware \\
+SiPM PDE (at 391\,nm) & 0.6165 &  & interpolated: data/sipm/AFBR-S4N66P024M\_pde.txt \\
+Beam & $\mu^-$, 1\,GeV &  & macro \\
+Positions & 31 &  & run\_metadata \\
+Events/position & 2,000 &  & run\_metadata \\
+\bottomrule\end{tabular}

@@ -1,0 +1,13 @@
+Loaded 31 data points from /home/reriosto/SHiP/t0minidaq/endonly_mylar_230/analysis/attenuation_curve.csv
+
+Nominal fit (39.272 ms):
+  M1  lambda = 292.465 cm   chi2/ndf = 2367.072
+  M2  ls=89.547 ll=388.583 chi2/ndf=100.978
+  M3  lam=199.763 C=13.284 chi2/ndf=1070.077
+  M4  lam_tail=308.105 chi2/ndf=1375.811
+
+Running 200 bootstrap replicas on 16 OpenMP threads...
+Bootstrap complete: 804.273 ms  (4.021 ms/replica)
+M2 failure fraction: 7/200 = 3.500%
+Written: csv/attenuation_bootstrap_replicates.csv
+Written: csv/attenuation_bootstrap_summary.csv

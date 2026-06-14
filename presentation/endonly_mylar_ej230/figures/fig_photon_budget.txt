@@ -1,0 +1,1 @@
+Photon budget: Panel A — terminal fates; Panel B — SiPM conversion. EJ-230 End-only+Mylar. Generated=1.15e+09. Mylar R=0.90, loss per interaction 1−R=0.10. Surface+bulk: not separately resolved in boundary census. PDE at 391 nm = 0.6165 (interpolated from AFBR-S4N66P024M_pde.txt).

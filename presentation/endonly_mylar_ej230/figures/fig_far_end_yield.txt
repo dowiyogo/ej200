@@ -1,0 +1,1 @@
+Mean NPE at end SiPMs for center positions (|x|≤100 mm). End-only+Mylar (R=0.90): L=62.0, R=61.9 PE. EndTop (BarSkinReflector R=0.98): L=155.1, R=155.2 PE. Ratio EndTop/Mylar≈2.5×.

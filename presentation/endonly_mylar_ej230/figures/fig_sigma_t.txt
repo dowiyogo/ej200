@@ -1,0 +1,1 @@
+σ_eq = σ(t_L−t_R)/√2 (SUM4 leading-edge, core Gaussian) vs. x. Center (x=0): 140 ps; ends (|x|=690): 459 ps. Equivalent per-end metric under equal, independent-end assumption. Intrinsic optical+estimator only; SPTR and electronics NOT included.

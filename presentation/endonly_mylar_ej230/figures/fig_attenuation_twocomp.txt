@@ -1,0 +1,1 @@
+Single-exp (M1, red dashed) vs. exp+offset (M3, solid). Red star: observed NPE at d≈0; red dotted: M1 N0 extrapolated to d=0. Inconsistency confirms M1 fails for this geometry.

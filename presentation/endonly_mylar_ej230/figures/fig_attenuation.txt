@@ -1,0 +1,1 @@
+NPE vs. distance from end. Exp+offset (M3) and λ_tail (M4, d>40cm). Bulk ABSLENGTH=120.0cm applies to actual optical path, not directly comparable to empirical longitudinal scales. Mylar R=0.90 (Materials.cc:347).

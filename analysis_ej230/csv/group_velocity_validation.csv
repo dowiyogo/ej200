@@ -1,0 +1,6 @@
+quantity,value,unit,source,note
+RINDEX_flat,1.58,dimensionless,Materials.cc:41,Flat refractive index used for all wavelengths
+c_vacuum,299.792458,mm/ns,PDG 2022,Speed of light in vacuum
+v_g_theory,189.7421,mm/ns,c/n (derived),Theoretical group velocity; no GROUPVEL property set in Geant4
+GROUPVEL_set,False,bool,/mnt/d/SHiP/ej230_endonly_mylar/src/Materials.cc,Whether GROUPVEL property was found in Materials.cc
+validation_result,PASS,status,validate_group_velocity_ej230.py,PASS = Geant4 uses v_g=c/n as expected; FAIL = explicit GROUPVEL found

@@ -1,0 +1,5 @@
+estimator,v_app_mm_ns,note
+FPT_mean,263.60706547594714,slope-derived apparent response; NOT photon group velocity
+SUM4_deltaT,210.31400789208186,slope-derived apparent response; NOT photon group velocity
+t50_mean,275.5430877960111,slope-derived apparent response; NOT photon group velocity
+c_over_n_theory,189.74177215189872,c/n from flat RINDEX=1.58 (Materials.cc:41); no GROUPVEL set

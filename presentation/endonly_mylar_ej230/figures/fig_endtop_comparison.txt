@@ -1,0 +1,1 @@
+Apples-to-apples: end-SiPM NPE vs distance. End-only+Mylar (R=0.90) vs. EndTop (BarSkinReflector R=0.98). Same end-SiPM pipeline applied to both (face_type 0/1 only for EndTop). NPE amplitude differs due to reflector type; λ_tail comparison in tail region.

@@ -1,0 +1,104 @@
+Reading metadata...
+  positions=31, events/pos=2000, geometry=end-only-fixed-mylar
+  Mylar R=0.9 (Materials.cc:347), lobe=1.0 (Materials.cc:348), σ_α=0.1° (Materials.cc:344)
+Reading CSVs...
+  [csv] attenuation_points_endonly_mylar_ej230.csv
+  [csv] timing_resolution_by_position.csv
+Fitting attenuation models...
+  Att fit [left]:
+    M1 single-exp:   N0=782±100 PE, λ=29.25±1.61 cm, χ²/ndf=2367
+    M3 exp+offset:   A=1341±132 PE, λ_p=19.98±1.05 cm, C=13.3±1.6 PE, χ²/ndf=1070
+    M2 double-exp:   A_s=2104 PE, λ_s=9.0 cm, A_l=373 PE, λ_l=38.9 cm, χ²/ndf=101
+    M4 λ_tail (d>40cm, N=21): N0=394±19 PE, λ=38.13±0.77 cm, χ²/ndf=87.8
+    Bootstrap [left]: 200 replicas...
+  Att fit [right]:
+    M1 single-exp:   N0=773±99 PE, λ=29.42±1.59 cm, χ²/ndf=2271
+    M3 exp+offset:   A=1320±130 PE, λ_p=20.22±1.05 cm, C=13.0±1.6 PE, χ²/ndf=1030
+    M2 double-exp:   A_s=2114 PE, λ_s=8.9 cm, A_l=374 PE, λ_l=38.8 cm, χ²/ndf=97
+    M4 λ_tail (d>40cm, N=21): N0=393±19 PE, λ=38.13±0.77 cm, χ²/ndf=88.6
+    Bootstrap [right]: 200 replicas...
+  Att fit [combined]:
+    M1 single-exp:   N0=777±69 PE, λ=29.34±1.11 cm, χ²/ndf=2242
+    M3 exp+offset:   A=1330±90 PE, λ_p=20.10±0.72 cm, C=13.2±1.1 PE, χ²/ndf=997
+    M2 double-exp:   A_s=2108 PE, λ_s=8.9 cm, A_l=373 PE, λ_l=38.8 cm, χ²/ndf=92
+    M4 λ_tail (d>40cm, N=42): N0=394±13 PE, λ=38.13±0.53 cm, χ²/ndf=83.8
+  [csv] attenuation_model_comparison.csv
+Computing λ_tail range sensitivity...
+  [csv] attenuation_range_sensitivity.csv
+  [csv] attenuation_bootstrap_left.csv
+  [csv] attenuation_bootstrap_right.csv
+Processing EJ-230 EndTop reference data...
+  Loading 31 EndTop ROOT files (face_type 0/1 only)...
+  EndTop n_positions = 31
+  Att fit [endtop-left]:
+    M1 single-exp:   N0=1615±126 PE, λ=31.53±1.05 cm, χ²/ndf=1167
+    M3 exp+offset:   A=2176±116 PE, λ_p=24.39±0.78 cm, C=24.1±2.5 PE, χ²/ndf=409
+    M2 double-exp:   A_s=2180 PE, λ_s=12.0 cm, A_l=838 PE, λ_l=40.1 cm, χ²/ndf=33
+    M4 λ_tail (d>40cm, N=21): N0=992±38 PE, λ=37.86±0.59 cm, χ²/ndf=70.7
+  Att fit [endtop-right]:
+    M1 single-exp:   N0=1599±124 PE, λ=31.67±1.06 cm, χ²/ndf=1155
+    M3 exp+offset:   A=2151±117 PE, λ_p=24.50±0.80 cm, C=24.0±2.6 PE, χ²/ndf=416
+    M2 double-exp:   A_s=2178 PE, λ_s=11.9 cm, A_l=843 PE, λ_l=40.1 cm, χ²/ndf=33
+    M4 λ_tail (d>40cm, N=21): N0=988±37 PE, λ=37.96±0.58 cm, χ²/ndf=67.8
+  [csv] attenuation_points_endtop_ej230.csv
+Parsing boundary census from logs...
+  Parsed 31 position logs
+Loading ROOT files for timing analysis...
+  Loaded photon_hits_x-690mm.root [repr]
+  Loaded photon_hits_x-670mm.root
+  Loaded photon_hits_x-650mm.root
+  Loaded photon_hits_x-600mm.root
+  Loaded photon_hits_x-550mm.root
+  Loaded photon_hits_x-500mm.root
+  Loaded photon_hits_x-450mm.root
+  Loaded photon_hits_x-400mm.root [repr]
+  Loaded photon_hits_x-350mm.root
+  Loaded photon_hits_x-300mm.root
+  Loaded photon_hits_x-250mm.root
+  Loaded photon_hits_x-200mm.root
+  Loaded photon_hits_x-150mm.root
+  Loaded photon_hits_x-100mm.root
+  Loaded photon_hits_x-50mm.root
+  Loaded photon_hits_x0mm.root [repr]
+  Loaded photon_hits_x50mm.root
+  Loaded photon_hits_x100mm.root
+  Loaded photon_hits_x150mm.root
+  Loaded photon_hits_x200mm.root
+  Loaded photon_hits_x250mm.root
+  Loaded photon_hits_x300mm.root
+  Loaded photon_hits_x350mm.root
+  Loaded photon_hits_x400mm.root [repr]
+  Loaded photon_hits_x450mm.root
+  Loaded photon_hits_x500mm.root
+  Loaded photon_hits_x550mm.root
+  Loaded photon_hits_x600mm.root
+  Loaded photon_hits_x650mm.root
+  Loaded photon_hits_x670mm.root
+  Loaded photon_hits_x690mm.root [repr]
+  [csv] timing_estimator_slopes.csv
+Generating figures...
+  [fig] fig_npe_vs_x.png
+  [fig] fig_attenuation.png
+  [fig] fig_attenuation_twocomp.png
+  [fig] fig_endtop_comparison.png
+  [fig] fig_far_end_yield.png
+  [fig] fig_timing_histograms.png
+  [fig] fig_fpt_vs_t50.png
+  [fig] fig_mean_arrival_time.png
+  [fig] fig_sigma_t.png
+  [fig] fig_photon_budget.png
+Writing tables...
+  [csv] photon_budget_terminal_fates.csv
+  [csv] photon_budget_sensor_conversion.csv
+  [csv] far_end_light_yield.csv
+Writing deck_values.json...
+  [json] deck_values.json
+
+Sanity checks:
+  left: λ_single=29.2cm (χ²/ndf=2367)  λ_prompt=20.0cm  C=13.3PE  λ_tail=38.1cm
+  right: λ_single=29.4cm (χ²/ndf=2271)  λ_prompt=20.2cm  C=13.0PE  λ_tail=38.1cm
+  EJ-230 ABSLENGTH=120.0cm, yield=9700/MeV
+  Mylar R=0.90, loss/interaction=0.10
+  EndTop λ_tail_left=37.9cm  NPE@x=0 L=151.0  vs Mylar=60.1
+
+Done.

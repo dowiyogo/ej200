@@ -1,0 +1,6 @@
+quantity,value,note
+entered_sipm,63640929.0,photons reaching SiPM entrance
+detected_after_pde,39234632.7285,entered × PDE_eff=0.6165 at 391nm
+pde_eff,0.6165,detected/entered; consistent with PDE at 391nm
+pct_entered_of_generated,5.536334241581631,%
+pct_detected_of_generated,3.413150059935076,%

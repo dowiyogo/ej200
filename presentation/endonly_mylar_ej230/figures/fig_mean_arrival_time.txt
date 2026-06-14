@@ -1,0 +1,1 @@
+Mean FPT and t50 vs. position. EJ-230 End-only+Mylar. v_app(FPT)=263.6 mm/ns, v_app(SUM4)=210.3 mm/ns. These are slope-derived apparent estimator responses, not photon group velocity.
