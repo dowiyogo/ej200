@@ -13,6 +13,7 @@
 
 \definecolor{shipblue}{RGB}{20,74,130}
 \definecolor{warnorange}{RGB}{210,105,30}
+\definecolor{okgreen}{RGB}{0,128,0}
 \setbeamercolor{structure}{fg=shipblue}
 \setbeamercolor{alerted text}{fg=warnorange}
 \setbeamertemplate{navigation symbols}{}
@@ -22,19 +23,41 @@
 \newcommand{\BarLen}{1400}
 \newcommand{\NEv}{2,000}
 \newcommand{\NPos}{31}
+% Material properties (Eljen EJ-204 datasheet Aug 2023 + Materials.cc)
 \newcommand{\LamBulk}{160}
-\newcommand{\LamEffL}{\ensuremath{32.2\pm0.0}\,cm}
-\newcommand{\LamEffR}{\ensuremath{31.4\pm0.0}\,cm}
-\newcommand{\LamEffC}{\ensuremath{31.8\pm0.0}\,cm}
+\newcommand{\ScintYield}{10,400\,$\gamma$/MeV}
+\newcommand{\PeakEm}{408}
+\newcommand{\RefrIdx}{1.58}
+\newcommand{\DensityGcc}{1.023}
+\newcommand{\TauRise}{0.7\,ns}
+\newcommand{\TauDecay}{1.8\,ns}
+% Mylar
 \newcommand{\MylarR}{0.90}
 \newcommand{\MylarSL}{1.0}
 \newcommand{\MylarSA}{0.1}
+% SiPM
 \newcommand{\PDEpeak}{63\%}
 \newcommand{\SiPMModel}{AFBR-S4N66P014M}
 \newcommand{\SiPMModelPDE}{AFBR-S4N66P024M}
-\newcommand{\ScintYield}{10,000\,$\gamma$/MeV}
-\newcommand{\TauRise}{0.7\,ns}
-\newcommand{\TauDecay}{1.8\,ns}
+% Attenuation fit results
+\newcommand{\LamSingleL}{\ensuremath{32.2\pm1.9}\,cm}
+\newcommand{\LamSingleR}{\ensuremath{31.4\pm1.8}\,cm}
+\newcommand{\ChiSingleL}{2321}
+\newcommand{\LamPromptL}{\ensuremath{20.6\pm1.1}\,cm}
+\newcommand{\CFloorL}{\ensuremath{19.2\pm2.0}\,PE}
+\newcommand{\ChiExpoffL}{954}
+\newcommand{\LamTailL}{\ensuremath{41.7\pm0.9}\,cm}
+\newcommand{\LamTailR}{\ensuremath{42.0\pm0.9}\,cm}
+\newcommand{\ChiTailL}{96.5}
+\newcommand{\DTail}{40}
+\newcommand{\NzeroSingleL}{811}
+\newcommand{\ActualNearL}{2926}
+% EndTop comparison
+\newcommand{\EndtopR}{0.98}
+\newcommand{\LamTailET}{\ensuremath{41.4\pm0.7}\,cm}
+\newcommand{\NPETailMylar}{77.2}
+\newcommand{\NPETailET}{194.4}
+% sigma_t
 \newcommand{\SigmaAtMsixnine}{$406\pm27$\,ps}
 \newcommand{\SigmaAtMfour}{$211\pm11$\,ps}
 \newcommand{\SigmaAtZero}{$142\pm4$\,ps}
@@ -43,9 +66,11 @@
 \newcommand{\VeffFPT}{264.1\,mm/ns}
 \newcommand{\VeffSUMfour}{213.7\,mm/ns}
 \newcommand{\VeffTfifty}{275.7\,mm/ns}
+% Photon budget
 \newcommand{\BudgetEsc}{4.84\%}
 \newcommand{\BudgetSiPM}{5.77\%}
 \newcommand{\BudgetDet}{3.63\%}
+% NPE at key positions
 \newcommand{\NpeLeftZero}{77.2}
 \newcommand{\NpeRightZero}{77.0}
 \newcommand{\NpeLeftNear}{2926}
@@ -76,7 +101,7 @@
       \item \textbf{Goals:}
         \begin{itemize}
           \item Isolate end-readout contribution.
-          \item Verify exponential attenuation with Mylar recirculation.
+          \item Characterize multi-component attenuation with Mylar.
           \item Benchmark the SUM4 timing estimator on a clean geometry.
         \end{itemize}
       \item \NPos\ beam positions ($x=-690\ldots+690$\,mm),
@@ -99,7 +124,7 @@
   \end{columns}
 \end{frame}
 
-% ─── FRAME 3: Geometry & simulation setup ────────────────────────────────────
+% ─── FRAME 3: Geometry & simulation setup ─────────────────────────────────────
 \begin{frame}{Geometry \& simulation setup}
   \begin{columns}[T]
     \column{0.55\textwidth}
@@ -120,113 +145,209 @@
       \item \textbf{Beam:} $\mu^-$, 1\,GeV, normal incidence.
     \end{itemize}
     \column{0.43\textwidth}
-    \begin{block}{SiPM model}
-      \textbf{\SiPMModel} (single-element, Broadcom).\\
-      PDE \PDEpeak\ @ 420\,nm.\\
-      \small\textit{Note: macro uses \texttt{\SiPMModelPDE} string
-      only for the PDE curve; physical device is the single-element P014M.}
-    \end{block}
-    \begin{block}{Software stack}
-      Geant4 11.4.0; SSLG4/OPSim.
-    \end{block}
-  \end{columns}
-\end{frame}
-
-% ─── FRAME 4: Physics inputs ──────────────────────────────────────────────────
-\begin{frame}{Physics inputs}
-  \begin{columns}[T]
-    \column{0.50\textwidth}
-    \begin{block}{EJ-204 (OPSC-101)}
-      \small
-      \begin{tabular}{lll}
-        \toprule
-        Property & Value & Unit \\
-        \midrule
-        Scint.\ yield & \ScintYield & \\
-        Rise time $\tau_r$ & \TauRise & \\
-        Decay time $\tau_d$ & \TauDecay & \\
-        Bulk atten.\ $\lambda$ & \LamBulk & cm \\
-        \bottomrule
-      \end{tabular}
-    \end{block}
-    \begin{block}{Mylar wrapping ($\pm Y,\pm Z$)}
-      \small $R=\MylarR$; specular lobe $=\MylarSL$;
-      $\sigma_\alpha=\MylarSA^\circ$
-    \end{block}
-    \column{0.48\textwidth}
-    \begin{block}{SiPM: \SiPMModel}
+    \begin{block}{Key parameters}
       \small
       \begin{tabular}{ll}
         \toprule
-        Property & Value \\
-        \midrule
-        PDE (peak) & \PDEpeak\ @ 420\,nm \\
-        Type & Single-element \\
-        PDE curve model & \SiPMModelPDE \\
+        Scint.~yield  & \ScintYield \\
+        Emission peak & \PeakEm\,nm \\
+        Bulk $\lambda$ & \LamBulk\,cm \\
+        $n$           & \RefrIdx \\
+        $\tau_r / \tau_d$ & \TauRise/\TauDecay \\
+        Mylar $R$     & \MylarR \\
         \bottomrule
       \end{tabular}
-    \end{block}
-    \begin{block}{Scan parameters}
-      \small \NPos\ positions; \NEv\ events each;
-      $\mu^-$ 1\,GeV normal incidence.
     \end{block}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 5: Photon count vs position ────────────────────────────────────────
-\begin{frame}{Photon count at ends vs.\ beam position}
+% ─── FRAME 4: Photon count vs position ───────────────────────────────────────
+\begin{frame}{Photon yield at ends vs.\ beam position}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_npe_vs_x.png}
     \column{0.33\textwidth}
-    \begin{block}{Key values}
+    \begin{block}{Characteristic values}
       \small
-      At $x=0$:\\
-      $\langle N^\mathrm{L}_\mathrm{pe}\rangle = \NpeLeftZero$\,PE\\
-      $\langle N^\mathrm{R}_\mathrm{pe}\rangle = \NpeRightZero$\,PE
-      \medskip
-
-      Near $x=-690$\,mm:\\
+      Near left end ($x=-690$\,mm):\\
       Left $\approx \NpeLeftNear$\,PE\\
       Right $\approx \NpeRightNear$\,PE
+      \medskip
+
+      Center ($x=0$):\\
+      $\langle N^\mathrm{L}_\mathrm{pe}\rangle = \NpeLeftZero$\,PE\\
+      $\langle N^\mathrm{R}_\mathrm{pe}\rangle = \NpeRightZero$\,PE
     \end{block}
-    \begin{alertblock}{\small Mylar role}
-      \small Without Mylar the far-end count would collapse;
-      Mylar recirculates photons and sustains far-end yield.
-      Log scale shows exponential falloff.
+    \begin{alertblock}{\small Observation}
+      \small Log-scale reveals two regimes:
+      prompt near-end region (steep)
+      and recirculated floor ($\sim\NpeLeftZero$\,PE at center).
+      Mylar recirculates but also absorbs.
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 6: Attenuation curve & λ_eff ──────────────────────────────────────
-\begin{frame}{Attenuation curve \& effective attenuation length $\lambda_\mathrm{eff}$}
+% ─── FRAME 5: Bulk vs effective attenuation ──────────────────────────────────
+\begin{frame}{Two attenuation lengths: datasheet vs.\ system measurement}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+    \begin{block}{$\lambda_\mathrm{bulk}$ = \LamBulk\,cm (datasheet)}
+      \small
+      \textbf{Material property.} Loaded as \texttt{ABSLENGTH} in
+      \texttt{Materials.cc:99}.
+      Probability of straight-line absorption in the plastic.
+      \textbf{Knows nothing} about bar geometry or reflectors.
+    \end{block}
+    \begin{exampleblock}{$\lambda_\mathrm{eff}$ (what we fit)}
+      \small
+      \textbf{System observable}: slope of NPE vs.\ distance at end.
+      Combines bulk absorption \emph{and} geometry \emph{and} reflection losses.
+      Always $\lambda_\mathrm{eff} < \lambda_\mathrm{bulk}$.
+      \textbf{These two quantities are not directly comparable.}
+    \end{exampleblock}
+    \column{0.48\textwidth}
+    \begin{alertblock}{Why a single exponential fails}
+      \small
+      Three numbers that should agree if $N_0 e^{-d/\lambda}$ held:
+      \begin{enumerate}
+        \item Two-point ($d$=10\,mm $\to$ 700\,mm): $\lambda\approx19$\,cm
+        \item Single-exp fit: $\lambda\approx\LamSingleL$, $N_0=\NzeroSingleL$\,PE
+        \item Actual NPE at $d\approx0$: \ActualNearL\,PE
+      \end{enumerate}
+      Items (2) and (3) disagree by $\approx3.6\times$.
+      $\chi^2/\mathrm{ndf} = \ChiSingleL$ confirms the model is wrong.
+      \medskip
+
+      \textbf{Physical reason:} the NPE profile has two components ---
+      prompt (short-range) and recirculated floor (Mylar-sustained).
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─── FRAME 6: Attenuation curve (exp+offset fit) ─────────────────────────────
+\begin{frame}{Attenuation: two-component fit and tail $\lambda$}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_attenuation.png}
     \column{0.33\textwidth}
-    \begin{block}{Fit results}
+    \begin{block}{Exp+offset model (left side)}
       \small
-      \begin{tabular}{ll}
-        \toprule
-        Side & $\lambda_\mathrm{eff}$ (cm) \\
-        \midrule
-        Left     & \LamEffL \\
-        Right    & \LamEffR \\
-        Combined & \LamEffC \\
-        \bottomrule
-      \end{tabular}
+      $N(d) = A\,e^{-d/\lambda_p} + C$
+      \medskip
+
+      $\lambda_p = \LamPromptL$ (prompt)\\
+      $C = \CFloorL$ (recirculated floor)\\
+      $\chi^2/\mathrm{ndf} = \ChiExpoffL$
+      \medskip
+
+      Tail fit ($d>\DTail$\,cm):\\
+      $\lambda_\mathrm{tail} = \LamTailL$
     \end{block}
-    \begin{alertblock}{\small $\lambda_\mathrm{eff} \ll \lambda_\mathrm{bulk}$}
-      \small $\lambda_\mathrm{eff}\approx\LamEffC$ vs.\
-      bulk $\lambda=\LamBulk$.
-      Mylar ($R=\MylarR$) recirculates light but each bounce
-      has a $(1-R)$ loss. Many bounces $\Rightarrow$ short
-      effective range.
+    \begin{alertblock}{\small $\lambda_\mathrm{eff} \neq \lambda_\mathrm{bulk}$}
+      \small \LamBulk\,cm (bulk) is the material ABSLENGTH.
+      $\lambda_p\approx21$\,cm and $\lambda_\mathrm{tail}\approx42$\,cm
+      are \emph{system} observables: dominated by
+      geometry + Mylar losses, not bulk absorption.
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 7: Timing distributions ───────────────────────────────────────────
+% ─── FRAME 7: Two-component fit diagnostics ──────────────────────────────────
+\begin{frame}{Single-exp vs.\ exp+offset: model comparison}
+  \begin{columns}[T]
+    \column{0.65\textwidth}
+    \includegraphics[width=\textwidth]{figures/fig_attenuation_twocomp.png}
+    \column{0.33\textwidth}
+    \begin{block}{Key diagnostics}
+      \small
+      \begin{tabular}{lrr}
+        \toprule
+        Model & $\lambda$ (cm) & $\chi^2/\mathrm{ndf}$ \\
+        \midrule
+        Single-exp  & \LamSingleL  & \ChiSingleL \\
+        Exp+offset  & \LamPromptL  & \ChiExpoffL \\
+        $\lambda_\mathrm{tail}$ ($d>\DTail$\,cm) & \LamTailL & \ChiTailL \\
+        \bottomrule
+      \end{tabular}
+    \end{block}
+    \begin{alertblock}{\small Inconsistency proof}
+      \small
+      Red star: actual NPE at $d\approx0$ is \ActualNearL\,PE.\\
+      Single-exp $N_0 = \NzeroSingleL$\,PE (red dashed).\\
+      Factor $\approx3.6$ inconsistency.\\
+      Single-exp $\chi^2/\mathrm{ndf}=\ChiSingleL$ confirms failure.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─── FRAME 8: Far-end light yield ────────────────────────────────────────────
+\begin{frame}{Far-end light yield: where reflector quality matters}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \includegraphics[width=\textwidth]{figures/fig_far_end_yield.png}
+    \column{0.43\textwidth}
+    \begin{block}{Center-of-bar NPE ($|x|\leq100$\,mm)}
+      \small
+      \begin{tabular}{lrr}
+        \toprule
+        Config & $R$ & NPE \\
+        \midrule
+        End-only+Mylar & \MylarR & \NPETailMylar\,PE \\
+        EndTop & \EndtopR & \NPETailET\,PE \\
+        \bottomrule
+      \end{tabular}
+      \medskip
+
+      Ratio EndTop/Mylar $\approx 2.5\times$.
+    \end{block}
+    \begin{alertblock}{\small Physical interpretation}
+      \small
+      Both configs see photons after $\geq60$\,cm propagation
+      and many reflections.
+      At $R=\MylarR$ (Mylar), each bounce absorbs 10\%: cumulative loss
+      dominates. At $R=\EndtopR$, only 2\% per bounce.
+      \medskip
+      \textbf{Reflector quality, not $\lambda_\mathrm{bulk}$,
+      controls the recirculated light level.}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─── FRAME 9: Apples-to-apples comparison ────────────────────────────────────
+\begin{frame}{Apples-to-apples: End-only+Mylar vs.\ EndTop}
+  \begin{columns}[T]
+    \column{0.65\textwidth}
+    \includegraphics[width=\textwidth]{figures/fig_endtop_comparison.png}
+    \column{0.33\textwidth}
+    \begin{block}{Identical pipeline}
+      \small
+      Both datasets processed with the \textbf{same} end-SiPM-only
+      selection, attenuation models, and tail-fit range.
+    \end{block}
+    \begin{block}{$\lambda_\mathrm{tail}$ comparison ($d>\DTail$\,cm)}
+      \small
+      \begin{tabular}{lr}
+        \toprule
+        Config & $\lambda_\mathrm{tail}$ \\
+        \midrule
+        End-only+Mylar & \LamTailL \\
+        EndTop & \LamTailET \\
+        \bottomrule
+      \end{tabular}
+      \medskip
+      \textbf{Similar slope} --- dominated by geometry, not reflector type.
+    \end{block}
+    \begin{alertblock}{\small Conclusion}
+      \small
+      $\lambda_\mathrm{tail}$ does \emph{not} distinguish configs;
+      the NPE \emph{amplitude} does.
+      End-only+Mylar has $\approx2.5\times$ less light at center
+      due to $R=\MylarR$ vs $R=\EndtopR$.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─── FRAME 10: Timing distributions ──────────────────────────────────────────
 \begin{frame}{Arrival-time distributions: FPT at representative positions}
   \begin{columns}[T]
     \column{0.65\textwidth}
@@ -241,34 +362,38 @@
     \end{block}
     \begin{alertblock}{\small Key feature}
       \small Distribution shifts to larger $t$ and broadens as beam
-      moves away from the respective end --- from longer propagation
+      moves away from the respective end --- longer propagation
       path and fewer photons (statistical minimum effect).
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 8: FPT vs t50 ─────────────────────────────────────────────────────
+% ─── FRAME 11: FPT vs t50 ────────────────────────────────────────────────────
 \begin{frame}{FPT vs.\ $t_{50}$: comparing timing estimators}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_fpt_vs_t50.png}
     \column{0.33\textwidth}
-    \begin{block}{Estimators}
+    \begin{block}{FPT vs.\ $t_{50}$}
       \small
-      \textbf{FPT} = first photon arrival time per event.\\
-      $t_{50}$ = median photon arrival time per event.
+      FPT: minimum of photon arrival times per event.\\
+      $t_{50}$: median --- less sensitive to the
+      $N$-dependent statistical minimum.
+      \medskip
+      $t_{50}$ systematically later than FPT;
+      offset grows with distance.
     \end{block}
-    \begin{block}{Observation}
-      \small $t_{50}$ is shifted to later times relative to FPT,
-      due to Mylar-reflected photons with longer paths.
-      The shift grows with distance from the end
-      (more reflected photons at large $d$).
-    \end{block}
+    \begin{alertblock}{\small $v_\mathrm{eff}$ bias}
+      \small
+      FPT $v_\mathrm{eff} = \VeffFPT$ (apparent, biased
+      by $N$-dependent statistical minimum).\\
+      SUM4 $\Delta t$ gives $v_\mathrm{eff} = \VeffSUMfour$ (robust).
+    \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 9: Mean arrival time & v_eff ──────────────────────────────────────
-\begin{frame}{Mean arrival time \& effective velocity $v_\mathrm{eff}$}
+% ─── FRAME 12: Mean arrival time + v_eff ─────────────────────────────────────
+\begin{frame}{Mean arrival time and effective velocity}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_mean_arrival_time.png}
@@ -277,95 +402,105 @@
       \small
       \begin{tabular}{ll}
         \toprule
-        Estimator & $v_\mathrm{eff}$ (mm/ns) \\
+        Estimator & $v_\mathrm{eff}$ \\
         \midrule
-        FPT       & \VeffFPT \\
-        $t_{50}$  & \VeffTfifty \\
         SUM4 $\Delta t$ & \VeffSUMfour \\
+        FPT slope & \VeffFPT \\
+        $t_{50}$ slope & \VeffTfifty \\
         \bottomrule
       \end{tabular}
     \end{block}
-    \begin{alertblock}{\small $v_\mathrm{eff}$(FPT) anomaly}
-      \small FPT bias: near the end ($N_\mathrm{pe}\sim 3000$)
-      the statistical minimum is very small; far away
-      ($N_\mathrm{pe}\sim 17$) it is larger.
-      This $N$-dependent effect inflates the apparent slope,
-      yielding $v_\mathrm{eff}(\mathrm{FPT}) > v_\mathrm{eff}(\Delta t)$.
-      The SUM4 $\Delta t$ value (\VeffSUMfour) is more reliable.
+    \begin{alertblock}{\small FPT anomaly}
+      \small
+      $v_\mathrm{eff}^\mathrm{FPT} > c/n$
+      ($c/n \approx 190$\,mm/ns for $n=\RefrIdx$).
+      Artifact: FPT = statistical minimum of $N$ photon
+      arrival times; fewer photons at large $d$ $\to$ earlier
+      FPT bias.
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 10: σ_t(x) ────────────────────────────────────────────────────────
+% ─── FRAME 13: sigma_t ────────────────────────────────────────────────────────
 \begin{frame}{Intrinsic timing resolution $\sigma_t(x)$}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_sigma_t.png}
     \column{0.33\textwidth}
-    \begin{block}{$\sigma_t$ at key positions}
+    \begin{block}{Key values}
       \small
-      \begin{tabular}{rl}
+      \begin{tabular}{ll}
         \toprule
-        $x$ (mm) & $\sigma_\mathrm{single}$ (ps) \\
+        Position & $\sigma_\mathrm{single}$ \\
         \midrule
-        $-690$ & \SigmaAtMsixnine \\
-        $-400$ & \SigmaAtMfour    \\
-        $0$    & \SigmaAtZero     \\
-        $+400$ & \SigmaAtFour     \\
-        $+690$ & \SigmaAtSixnine  \\
+        $x=-690$\,mm & \SigmaAtMsixnine \\
+        $x=-400$\,mm & \SigmaAtMfour \\
+        $x=0$        & \SigmaAtZero \\
+        $x=+400$\,mm & \SigmaAtFour \\
+        $x=+690$\,mm & \SigmaAtSixnine \\
         \bottomrule
       \end{tabular}
     \end{block}
     \begin{alertblock}{\small Intrinsic only}
-      \small $\sigma_t$ shown = optical + SUM4 estimator.
-      SiPM SPTR and electronics jitter \textbf{not} included.
-      $\sigma_t^\mathrm{total} = \sqrt{\sigma_t^2
-      + \sigma_\mathrm{SPTR}^2 + \sigma_\mathrm{elec}^2}$.
+      \small
+      $\sigma_t$ = optical + SUM4 estimator.
+      \alert{SPTR ($\approx106$\,ps) and FastIC ($\approx10$\,ps)
+      not folded in.}
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 11: Photon budget ──────────────────────────────────────────────────
-\begin{frame}{Photon budget: fate of scintillation photons}
+% ─── FRAME 14: Photon budget ──────────────────────────────────────────────────
+\begin{frame}{Photon budget --- End-only + Mylar}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_photon_budget.png}
     \column{0.33\textwidth}
-    \begin{block}{Budget (all 31 positions)}
+    \begin{block}{Fractions}
       \small
-      \begin{tabular}{ll}
+      \begin{tabular}{lr}
         \toprule
         Fate & Fraction \\
         \midrule
-        Escaped       & \BudgetEsc \\
-        Enter SiPM    & \BudgetSiPM \\
-        Detected      & \BudgetDet \\
+        Mylar-absorbed & $\approx\BudgetEsc$ \\
+        Enters SiPM & \BudgetSiPM \\
+        Detected (PDE) & \BudgetDet \\
         \bottomrule
       \end{tabular}
     \end{block}
-    \begin{alertblock}{\small Mylar absorption dominates}
-      \small $\approx98\%$ absorbed by Mylar over many bounces
-      ($R=\MylarR$ per reflection).
-      ``Reflector panel crossings'' counts every bounce,
-      not unique photons.
+    \begin{alertblock}{\small Mylar loss dominates}
+      \small
+      Each Mylar bounce: $(1-R)=\MylarR$ absorbed.
+      $\Rightarrow$ Over many bounces in a thin bar,
+      cumulative loss $\gg$ bulk loss.
+      This explains $\lambda_p \approx 21$\,cm $\ll$ \LamBulk\,cm.
     \end{alertblock}
   \end{columns}
 \end{frame}
 
-% ─── FRAME 12: Summary & next steps ──────────────────────────────────────────
-\begin{frame}{Summary \& next steps}
+% ─── FRAME 15: Summary ────────────────────────────────────────────────────────
+\begin{frame}{Summary}
   \begin{columns}[T]
     \column{0.55\textwidth}
-    \begin{block}{Summary}
+    \begin{block}{Key results}
       \begin{itemize}
-        \item End-only + Mylar = clean simulation limit.
-        \item $\lambda_\mathrm{eff} \approx \LamEffC$
-              $\ll \lambda_\mathrm{bulk} = \LamBulk$.
-              Mylar absorption ($1-R$ per bounce) explains reduction.
+        \item \textbf{Two attenuation lengths:}
+              $\lambda_\mathrm{bulk}=\LamBulk$\,cm (ABSLENGTH, material property);
+              $\lambda_p\approx21$\,cm (prompt system component);
+              $\lambda_\mathrm{tail}\approx\LamTailL$ (tail, comparable metric).
+              These are \emph{not} the same quantity.
+        \item \textbf{Single-exp fails:}
+              $\chi^2/\mathrm{ndf}=\ChiSingleL$;
+              $N_0$ inconsistency factor $\approx3.6\times$.
+              Two-component model required.
+        \item \textbf{Reflector $R$ controls tail NPE:}
+              End-only+Mylar ($R=\MylarR$): \NPETailMylar\,PE at center;
+              EndTop ($R=\EndtopR$): \NPETailET\,PE.
+              Ratio $\approx2.5\times$.
+        \item $\lambda_\mathrm{tail}$ is \emph{equal} in both configs ---
+              the NPE amplitude is the distinguishing observable.
         \item $\sigma_t^\mathrm{intr.}$: \SigmaAtZero\ (center)
-              to \SigmaAtMsixnine\ (ends).
-        \item $v_\mathrm{eff}(\Delta t) \approx \VeffSUMfour$.
-        \item Photon yield: Mylar absorbs $\gtrsim 98\%$.
+              to \SigmaAtMsixnine\ (ends) --- intrinsic only.
       \end{itemize}
     \end{block}
     \column{0.43\textwidth}
@@ -375,9 +510,10 @@
               $\sigma_\mathrm{SPTR}=106$\,ps
               $\oplus\,\sigma_\mathrm{FastIC}=10$\,ps.
         \item Leading-edge time-walk correction.
-        \item Compare with April-2026 TB data (different config:
-              top readout + Tyvek).
-        \item Scan Mylar $R\in[0.85,0.95]$ for systematic study.
+        \item Scan Mylar $R\in[0.85,0.95]$ to map
+              NPE yield vs.\ reflector quality.
+        \item Scan with Tyvek for direct comparison
+              to April-2026 TB configuration.
       \end{enumerate}
     \end{block}
   \end{columns}
@@ -388,33 +524,36 @@
 % ════════════════════════════════════════════════════════════════════════════════
 \appendix
 
-\begin{frame}{Appendix: simulation parameters}
-  \small
+\begin{frame}{Appendix A: simulation parameters}
+  \tiny
   \begin{tabular}{llll}\toprule
 Parameter & Value & Unit & Source \\
 \midrule
-Bar material & EJ-204 (OPSC-101) &  & SSLG4 \\
+Bar material & EJ-204 (OPSC-101) &  & SSLG4/Materials.cc \\
 Bar dimensions & 1400\,$\times$\,60\,$\times$\,10 & mm$^3$ & GDML \\
 Readout & End-only ($\pm X$ faces) &  & geometry \\
 Wrapping ($\pm Y,\pm Z$) & Mylar &  & run\_metadata \\
-Mylar reflectivity & 0.90 &  & run\_metadata \\
+Mylar reflectivity $R$ & 0.90 &  & run\_metadata \\
 Mylar specular lobe & 1.0 &  & run\_metadata \\
 Mylar $\sigma_\alpha$ & 0.1 & deg & run\_metadata \\
-Scint.~yield & 10000 & $\gamma$/MeV & SSLG4 (EJ-204) \\
+Scint.~yield & 10,400 & $\gamma$/MeV & Eljen EJ-204 datasheet Aug~2023; Materials.cc:100 \\
+Emission peak & 408 & nm & Eljen EJ-204 datasheet Aug~2023; Materials.cc:86 \\
+Bulk $\lambda$ (ABSLENGTH) & 160 & cm & Eljen EJ-204 datasheet Aug~2023; Materials.cc:99 \\
+Refractive index $n$ & 1.58 &  & Eljen EJ-204 datasheet; Materials.cc:41 \\
+Density & 1.023 & g/cm$^3$ & Eljen EJ-204 datasheet; Materials.cc:24 \\
 Rise time $\tau_r$ & 0.7 & ns & SSLG4 (EJ-204) \\
 Decay time $\tau_d$ & 1.8 & ns & SSLG4 (EJ-204) \\
-Bulk att.~$\lambda$ & 160 & cm & EJ-204 datasheet \\
-SiPM model & AFBR-S4N66P014M &  & hardware \\
+SiPM model (physical) & AFBR-S4N66P014M &  & hardware \\
 SiPM PDE (peak) & 63 & \% @ 420\,nm & datasheet \\
 Beam & $\mu^-$, 1\,GeV &  & macro \\
 Positions & 31 &  & run\_metadata \\
-Events/position & 2000 &  & run\_metadata \\
+Events/position & 2,000 &  & run\_metadata \\
 Geant4 version & 11.4.0 &  & log \\
 \bottomrule\end{tabular}
 
 \end{frame}
 
-\begin{frame}{Appendix: $\sigma_t$ per-position summary}
+\begin{frame}{Appendix B: $\sigma_t$ per-position summary}
   \centering\small
   \begin{tabular}{rrrrl}\toprule
 $x$ (mm) & $N_\mathrm{trig}$ & Trig.~eff. & $\sigma_\mathrm{single}$ (ps) & Err. (ps) \\
@@ -432,23 +571,27 @@ $+690$ & 1911 & 0.956 & 372.1 & 19.1 \\
   core Gaussian fit.
 \end{frame}
 
-\begin{frame}{Appendix: attenuation fit details}
-  \centering\small
-  \begin{tabular}{lrrrrl}\toprule
-Side & $N_0$ (PE) & $\sigma(N_0)$ & $\lambda_\mathrm{eff}$ (cm) & $\sigma(\lambda)$ & $N$ \\
+\begin{frame}{Appendix C: attenuation fit details (three models)}
+  \centering\tiny
+  \begin{tabular}{llllll}\toprule
+Model & Side & $N_0$ or $A$ (PE) & $\lambda$ (cm) & $C$ (PE) & $\chi^2/\mathrm{ndf}$ \\
 \midrule
-Left & 811.5 & $\pm$2.2 & 32.16 & $\pm$0.04 & 31 \\
-Right & 853.1 & $\pm$2.2 & 31.41 & $\pm$0.04 & 31 \\
-Combined & 832.5 & $\pm$1.6 & 31.78 & $\pm$0.03 & 62 \\
+Single-exp & Left & $811\pm106$ & $32.2\pm1.9$ & --- & 2321 \\
+Exp+offset & Left & $1502\pm146$ & $20.6\pm1.1$ & $19.2\pm2.0$ & 954 \\
+$\lambda_\mathrm{tail}$ ($d>40$\,cm) & Left & $429\pm21$ & $41.7\pm0.9$ & --- & 96.5 \\
+Single-exp & Right & $853\pm110$ & $31.4\pm1.8$ & --- & 2475 \\
+Exp+offset & Right & $1501\pm142$ & $20.5\pm1.1$ & $19.5\pm2.1$ & 1023 \\
+$\lambda_\mathrm{tail}$ ($d>40$\,cm) & Right & $423\pm21$ & $42.0\pm0.9$ & --- & 93.6 \\
 \bottomrule\end{tabular}
 
   \par\medskip
-  \small Fit: $N_\mathrm{pe}(d)=N_0\exp(-d/\lambda_\mathrm{eff})$.
-  31 points per side; 62 combined.
-  Errors are $1\sigma$ from covariance matrix.
+  \small
+  All fits weighted by per-point SEM.
+  Errors from covariance matrix, scaled by $\sqrt{\chi^2/\mathrm{ndf}}$ when $>1$.
+  Tail fit: $d>\DTail$\,cm only.
 \end{frame}
 
-\begin{frame}{Appendix: method \& caveats}
+\begin{frame}{Appendix D: method \& caveats}
   \small
   \begin{itemize}
     \item \textbf{Geometry:} Bar $1400\times60\times10$\,mm$^3$; long axis $X$.
@@ -459,12 +602,17 @@ Combined & 832.5 & $\pm$1.6 & 31.78 & $\pm$0.03 & 62 \\
     \item \textbf{$\sigma_t$ is intrinsic only:} optical + estimator;
           SPTR ($\approx106$\,ps) and FastIC ($\approx10$\,ps)
           not folded in.
-    \item \textbf{SiPM naming:} macro string \texttt{\SiPMModelPDE}
+    \item \textbf{SiPM naming:} \texttt{\SiPMModelPDE}
           is used \emph{only} for the PDE curve;
           physical device is the single-element \textbf{\SiPMModel}.
     \item \textbf{No TB counterpart:} April-2026 TB used top readout
           + Tyvek wrapping $\neq$ end-only + Mylar.
     \item \textbf{Longitudinal axis $= X$} (not $Z$ or $Y$).
+    \item \textbf{Yield:} OPSC-101 loaded with \ScintYield\ in
+          \texttt{Materials.cc:100} --- matches Eljen EJ-204 datasheet Aug~2023.
+    \item \textbf{EndTop reference:} EXEC\_07, \NEv\ events/position,
+          same 31 positions. Side reflectors $R=\EndtopR$ (BarSkinReflector),
+          NOT Mylar.
   \end{itemize}
 \end{frame}
 
