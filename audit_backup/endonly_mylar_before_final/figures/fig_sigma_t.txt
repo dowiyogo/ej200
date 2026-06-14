@@ -1,0 +1,1 @@
+Intrinsic σ_single = σ_LR/√2 (SUM4 leading-edge, core Gaussian fit) vs. x. Center (x=0): 142 ps; ends (|x|=690 mm): 389 ps. Intrinsic only — SPTR and FastIC jitter not folded in.

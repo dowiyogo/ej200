@@ -1,0 +1,24 @@
+\begin{tabular}{llll}\toprule
+Parameter & Value & Unit & Source \\
+\midrule
+Bar material & EJ-204 (OPSC-101) &  & SSLG4/Materials.cc \\
+Bar dimensions & 1400\,$\times$\,60\,$\times$\,10 & mm$^3$ & GDML \\
+Readout & End-only ($\pm X$ faces) &  & geometry \\
+Wrapping ($\pm Y,\pm Z$) & Mylar &  & run\_metadata \\
+Mylar reflectivity $R$ & 0.90 &  & run\_metadata \\
+Mylar specular lobe & 1.0 &  & run\_metadata \\
+Mylar $\sigma_\alpha$ & 0.1 & deg & run\_metadata \\
+Scint.~yield & 10,400 & $\gamma$/MeV & Eljen EJ-204 datasheet Aug~2023; Materials.cc:100 \\
+Emission peak & 408 & nm & Eljen EJ-204 datasheet Aug~2023; Materials.cc:86 \\
+Bulk $\lambda$ (ABSLENGTH) & 160 & cm & Eljen EJ-204 datasheet Aug~2023; Materials.cc:99 \\
+Refractive index $n$ & 1.58 &  & Eljen EJ-204 datasheet; Materials.cc:41 \\
+Density & 1.023 & g/cm$^3$ & Eljen EJ-204 datasheet; Materials.cc:24 \\
+Rise time $\tau_r$ & 0.7 & ns & SSLG4 (EJ-204) \\
+Decay time $\tau_d$ & 1.8 & ns & SSLG4 (EJ-204) \\
+SiPM model (physical) & AFBR-S4N66P014M &  & hardware \\
+SiPM PDE (peak) & 63 & \% @ 420\,nm & datasheet \\
+Beam & $\mu^-$, 1\,GeV &  & macro \\
+Positions & 31 &  & run\_metadata \\
+Events/position & 2,000 &  & run\_metadata \\
+Geant4 version & 11.4.0 &  & log \\
+\bottomrule\end{tabular}

@@ -1,0 +1,1 @@
+Photon count vs. distance from respective end. Exp+offset fit (λ_prompt, floor C) and λ_tail (d>40 cm). Bulk ABSLENGTH = 160 cm is a material property (not directly comparable to λ_eff). Mylar R=0.90.

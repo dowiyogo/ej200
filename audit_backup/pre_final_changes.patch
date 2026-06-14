@@ -1,0 +1,30 @@
+diff --git a/presentation/endonly_mylar/main.tex b/presentation/endonly_mylar/main.tex
+index 354cdd7..2707fb2 100644
+--- a/presentation/endonly_mylar/main.tex
++++ b/presentation/endonly_mylar/main.tex
+@@ -259,7 +259,7 @@
+     \includegraphics[width=\textwidth]{figures/fig_attenuation_twocomp.png}
+     \column{0.33\textwidth}
+     \begin{block}{Key diagnostics}
+-      \small
++      \tiny
+       \begin{tabular}{lrr}
+         \toprule
+         Model & $\lambda$ (cm) & $\chi^2/\mathrm{ndf}$ \\
+@@ -325,7 +325,7 @@
+       selection, attenuation models, and tail-fit range.
+     \end{block}
+     \begin{block}{$\lambda_\mathrm{tail}$ comparison ($d>\DTail$\,cm)}
+-      \small
++      \tiny
+       \begin{tabular}{lr}
+         \toprule
+         Config & $\lambda_\mathrm{tail}$ \\
+@@ -335,6 +335,7 @@
+         \bottomrule
+       \end{tabular}
+       \medskip
++      
+       \textbf{Similar slope} --- dominated by geometry, not reflector type.
+     \end{block}
+     \begin{alertblock}{\small Conclusion}

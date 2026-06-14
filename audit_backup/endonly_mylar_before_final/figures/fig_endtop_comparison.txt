@@ -1,0 +1,1 @@
+Apples-to-apples: end-SiPM NPE vs distance for Mylar (R=0.90) and EndTop (R=0.98 side reflectors). Same pipeline applied to both datasets. Tail region (d>40cm) shaded; λ_tail fits shown. NPE amplitude differs (reflector R), but λ_tail is similar.

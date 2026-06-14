@@ -1,0 +1,1 @@
+Comparison of FPT and t50 arrival time distributions. Normalized to peak.

@@ -1,0 +1,1 @@
+Mean FPT and t50 vs. position. v_eff(FPT)=264.1 mm/ns, v_eff(SUM4)=213.7 mm/ns.
