@@ -1,0 +1,24 @@
+gate,passed,detail
+G-MAT,True,TAU_D_NS=1.5 ns (EJ-230 expected 1.5 ns)
+G-TAU,True,"TAU_D_NS=1.5 ns read from common13.py, not a hard literal"
+G3_nevents_-690,True,"n_events=2000, expected=2000"
+G3_nevents_-400,True,"n_events=2000, expected=2000"
+G3_nevents_0,True,"n_events=2000, expected=2000"
+G1_nearest_-690,True,"ID=16 pos=-692 mm, beam x=-690 mm, dist=2 mm COHERENT"
+G1_nearest_-400,True,"ID=31 pos=-392 mm, beam x=-400 mm, dist=8 mm COHERENT"
+G1_nearest_0,True,"ID=50 pos=-12 mm, beam x=0 mm, dist=12 mm COHERENT"
+G2_F1_t4pe_norm,True,"all panels: x(0.0, 1000.0) y(0.0, 90.27499999999999)"
+G2_F1_t20pe_norm,True,"all panels: x(0.0, 1000.0) y(0.0, 11.7875)"
+G4_-690_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_-400_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_0_4pe,True,in=2000+ovfl=0+below≈0=2000
+G4_-690_20pe,True,in=2000+ovfl=0+below≈0=2000
+G4_-400_20pe,True,in=2000+ovfl=0+below≈0=2000
+G4_0_20pe,True,in=2000+ovfl=0+below≈0=2000
+G5_F2_xlabel,True,"F2 x-axis labelled 'Order n', range 1..20"
+G2_F2_cluster,True,"all panels: x(0.5, 20.5) y(308.1372485558416, 1206.597988187904)"
+G2_F3_npe,True,"all panels: x(15.0, 86.0) y(0.0, 507.74466477389285)"
+G2_F4_t4pe,True,"all panels: x(15.0, 86.0) y(287.82985060758955, 5282.790780458069)"
+G2_F4_t20pe,True,"all panels: x(15.0, 86.0) y(536.4831698477141, 4633.922414125985)"
+G2_F5_core,True,"all panels: x(299.5220454285342, 509.5220454285342) y(0.0, 1033.0)"
+G-MACRO,True,no digits in command names
