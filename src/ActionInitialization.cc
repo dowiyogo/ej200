@@ -1,4 +1,5 @@
 #include "ActionInitialization.hh"
+#include "DisplayTrackingAction.hh"
 #include "EventAction.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
@@ -15,5 +16,6 @@ void ActionInitialization::Build() const {
     SetUserAction(new PrimaryGeneratorAction());
     SetUserAction(run);
     SetUserAction(event);
+    SetUserAction(new DisplayTrackingAction());
     SetUserAction(new SteppingAction());
 }

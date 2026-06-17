@@ -1,0 +1,34 @@
+/control/verbose 1
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+/run/numberOfThreads 1
+
+/gun/particle mu-
+/gun/energy 1 GeV
+/gun/position 0 0 0 mm
+/muon/angle 0
+
+/run/initialize
+
+/display/maxOpticalTrajectories 100
+/display/storeMuon true
+/display/storeOtherParticles false
+
+/vis/open OGL 1600x900-0+0
+/vis/viewer/set/background white
+/vis/drawVolume
+/vis/scene/add/axes 0 0 0 100 mm
+/vis/scene/add/eventID
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/vis/modeling/trajectories/drawByParticleID-0/set mu- red
+/vis/scene/endOfEventAction accumulate 1
+/vis/viewer/set/autoRefresh true
+/vis/viewer/flush
+
+/run/beamOn 1
+/vis/viewer/refresh
+/vis/viewer/flush

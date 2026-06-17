@@ -1,11 +1,15 @@
+#include "DisplayTrackingAction.hh"
 #include "SteppingAction.hh"
 #include "RunAction.hh"
 
 #include "G4RunManager.hh"
+#include "G4OpBoundaryProcess.hh"
 #include "G4OpticalPhoton.hh"
 #include "G4Step.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4Track.hh"
+#include "G4ProcessManager.hh"
+#include "G4ProcessVector.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4VProcess.hh"
 
@@ -30,6 +34,28 @@ namespace {
     bool IsReflectorLV(const G4String& name) {
         return name == "ReflectorYMinusLV" || name == "ReflectorXLV" ||
                name == "ReflectorZLV";
+    }
+
+    G4OpBoundaryProcess* GetOpBoundaryProcess() {
+        static thread_local G4OpBoundaryProcess* boundary = nullptr;
+        if (boundary != nullptr) return boundary;
+
+        auto* pm = G4OpticalPhoton::Definition()->GetProcessManager();
+        if (pm == nullptr) return nullptr;
+
+        G4ProcessVector* post = pm->GetPostStepProcessVector(typeDoIt);
+        if (post == nullptr) return nullptr;
+
+        const size_t nProc = post->size();
+        for (size_t i = 0; i < nProc; ++i) {
+            auto* proc = (*post)[i];
+            auto* asBoundary = dynamic_cast<G4OpBoundaryProcess*>(proc);
+            if (asBoundary != nullptr) {
+                boundary = asBoundary;
+                return boundary;
+            }
+        }
+        return nullptr;
     }
 }
 
@@ -69,6 +95,14 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
 
     // ── Diagnóstico de frontera ──────────────────────────────────────────────
     if (step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
+        auto* boundary = GetOpBoundaryProcess();
+        if (boundary != nullptr) {
+            DisplayDiagnostics::RecordBoundaryStatus(
+                track,
+                boundary->GetStatus(),
+                step->GetPostStepPoint()->GetPosition());
+        }
+
         const G4String preVolName =
             (step->GetPreStepPoint()->GetPhysicalVolume())
                 ? step->GetPreStepPoint()->GetPhysicalVolume()
