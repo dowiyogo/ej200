@@ -18,11 +18,57 @@
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4ios.hh"
+#include "G4PhysicalConstants.hh"
 
 #include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <string>
+
+// Print GROUPVEL and RINDEX from a material's MPT.
+// Called once at geometry construction to verify optical velocity at runtime.
+static void PrintGroupVelDiagnostic(const G4Material* mat)
+{
+    G4cout << "\n[GROUPVEL_DIAG] ===== MPT diagnostic for: " << mat->GetName()
+           << " =====" << G4endl;
+
+    auto* mpt = mat->GetMaterialPropertiesTable();
+    if (!mpt) {
+        G4cout << "[GROUPVEL_DIAG] ERROR: no MaterialPropertiesTable — photons use c_light = "
+               << c_light / (cm / ns) << " cm/ns" << G4endl;
+        return;
+    }
+
+    auto* ri = mpt->GetProperty("RINDEX");
+    if (!ri) {
+        G4cout << "[GROUPVEL_DIAG] RINDEX: NOT PRESENT" << G4endl;
+    } else {
+        G4cout << "[GROUPVEL_DIAG] RINDEX: " << ri->GetVectorLength() << " entries:" << G4endl;
+        for (std::size_t i = 0; i < ri->GetVectorLength(); ++i)
+            G4cout << "[GROUPVEL_DIAG]   E=" << ri->Energy(i) / eV
+                   << " eV  n=" << (*ri)[i] << G4endl;
+    }
+
+    auto* gv = mpt->GetProperty("GROUPVEL");
+    if (!gv) {
+        G4cout << "[GROUPVEL_DIAG] GROUPVEL: NOT PRESENT → photons use c_light = "
+               << c_light / (cm / ns) << " cm/ns" << G4endl;
+    } else {
+        G4cout << "[GROUPVEL_DIAG] GROUPVEL: " << gv->GetVectorLength() << " entries:" << G4endl;
+        for (std::size_t i = 0; i < gv->GetVectorLength(); ++i)
+            G4cout << "[GROUPVEL_DIAG]   E=" << gv->Energy(i) / eV
+                   << " eV  vg=" << (*gv)[i] / (cm / ns) << " cm/ns" << G4endl;
+        // Query at 3.17 eV (391 nm EJ-230 emission peak) and endpoints
+        const G4double E_peak = 3.17 * eV;
+        G4cout << "[GROUPVEL_DIAG] GROUPVEL at 3.17 eV (391 nm): "
+               << gv->Value(E_peak) / (cm / ns) << " cm/ns" << G4endl;
+        G4cout << "[GROUPVEL_DIAG] Expected c/n (n=1.58):          "
+               << c_light / 1.58 / (cm / ns) << " cm/ns" << G4endl;
+        G4cout << "[GROUPVEL_DIAG] c_light reference:               "
+               << c_light / (cm / ns) << " cm/ns" << G4endl;
+    }
+    G4cout << "[GROUPVEL_DIAG] ====================================\n" << G4endl;
+}
 
 // ── Geometry constants ────────────────────────────────────────────────────────
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
@@ -198,6 +244,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     }
     G4Material* barMat   = fActiveScintillator;
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
+
+    // Runtime MPT diagnostic: print actual GROUPVEL to diagnose v_phot discrepancy.
+    // Expected: 18.97 cm/ns (c/n for n=1.58). Empirical: ≈27.7 cm/ns (see audit).
+    PrintGroupVelDiagnostic(barMat);
 
     // Air RINDEX required for optical-photon tracking
     {
