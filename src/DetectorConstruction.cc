@@ -5,6 +5,7 @@
 #include "G4Box.hh"
 #include "G4GenericMessenger.hh"
 #include "G4LogicalBorderSurface.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
@@ -88,7 +89,7 @@ DetectorConstruction::DetectorConstruction() {
         "edgeWrap",
         &DetectorConstruction::SetEdgeWrapMode,
         "Legacy no-op. The Mylar wrap volume was removed; reflection is handled\n"
-        "by explicit reflector panels around BarLV.");
+        "by a reflector skin surface on BarLV.");
 }
 
 DetectorConstruction::~DetectorConstruction() {
@@ -149,51 +150,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fBarPhys = new G4PVPlacement(nullptr, {}, barLV, "BarPV",
                                  worldLV, false, 0, true);
 
-    // ── Reflective panels on non-SiPM faces — models Al-foil + black film ────
-    // Explicit sibling volumes avoid global skin surfaces shadowing SiPM faces.
-    // The +Y face is left open for Top SiPMs; end faces are left to End SiPMs.
+    // Apply reflector properties as a skin on the bar logical volume.
     auto* reflector = Materials::CreateBarSkinReflector();
-    const G4double foilHalfT = 0.5 * um;
-    auto* reflYMinusSolid = new G4Box("ReflectorYMinusSolid",
-                                      kBarHalfX, foilHalfT, kBarHalfZ);
-    auto* reflZSolid = new G4Box("ReflectorZSolid",
-                                 kBarHalfX, kBarHalfY, foilHalfT);
-    auto* reflXSolid = new G4Box("ReflectorXSolid",
-                                 foilHalfT, kBarHalfY, kBarHalfZ);
-    auto* reflYMinusLV = new G4LogicalVolume(reflYMinusSolid, worldMat,
-                                             "ReflectorYMinusLV");
-    auto* reflZLV = new G4LogicalVolume(reflZSolid, worldMat, "ReflectorZLV");
-    auto* reflXLV = new G4LogicalVolume(reflXSolid, worldMat, "ReflectorXLV");
-    reflYMinusLV->SetVisAttributes(G4VisAttributes::GetInvisible());
-    reflZLV->SetVisAttributes(G4VisAttributes::GetInvisible());
-    reflXLV->SetVisAttributes(G4VisAttributes::GetInvisible());
-
-    auto* reflYMinusPhys = new G4PVPlacement(
-        nullptr, {0.0, -(kBarHalfY + foilHalfT), 0.0},
-        reflYMinusLV, "ReflectorYMinusPV", worldLV, false, 0, true);
-    auto* reflXMinusPhys = new G4PVPlacement(
-        nullptr, {-(kBarHalfX + foilHalfT), 0.0, 0.0},
-        reflXLV, "ReflectorXMinusPV", worldLV, false, 1, true);
-    auto* reflXPlusPhys = new G4PVPlacement(
-        nullptr, {+(kBarHalfX + foilHalfT), 0.0, 0.0},
-        reflXLV, "ReflectorXPlusPV", worldLV, false, 2, true);
-    auto* reflZMinusPhys = new G4PVPlacement(
-        nullptr, {0.0, 0.0, -(kBarHalfZ + foilHalfT)},
-        reflZLV, "ReflectorZMinusPV", worldLV, false, 3, true);
-    auto* reflZPlusPhys = new G4PVPlacement(
-        nullptr, {0.0, 0.0, +(kBarHalfZ + foilHalfT)},
-        reflZLV, "ReflectorZPlusPV", worldLV, false, 4, true);
-
-    new G4LogicalBorderSurface("BarReflector_YMinus",
-                               fBarPhys, reflYMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_XMinus",
-                               fBarPhys, reflXMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_XPlus",
-                               fBarPhys, reflXPlusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_ZMinus",
-                               fBarPhys, reflZMinusPhys, reflector);
-    new G4LogicalBorderSurface("BarReflector_ZPlus",
-                               fBarPhys, reflZPlusPhys, reflector);
+    auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
+    (void)barSkin;
 
     // ── End SiPMs — 8×1 array on each ±X face ────────────────────────────────
     // Placed as BarLV daughters, flush with the ±X faces of the bar.
