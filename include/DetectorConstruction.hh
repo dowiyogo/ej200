@@ -17,12 +17,20 @@ class G4GenericMessenger;
 //     ├─ BarPV (EJ-200)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
+<<<<<<< HEAD
 //     │   └─ TopSiPMPV       × N   (global IDs 16…15+N)
 //     └─ Reflector*PV panels (optical border surfaces, R=0.98)
 //
 // The Mylar wrap volume was removed in fix/geometry-bar-in-world.
 // Optical reflection is now handled by explicit reflector panels on the
 // non-SiPM faces; SiPMs are BarLV daughters with BarPV→SiPM border surfaces.
+=======
+//     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
+//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
+//
+// Reflector optical properties are applied as a skin on BarLV.
+// SiPM coupling volumes are BarLV daughters with explicit BarPV->SiPM border surfaces.
+>>>>>>> f39b84c (fix(optics): replace reflector volumes with bar skin surface)
 //
 // N (number of top SiPMs) is computed from the configurable pitch so that all
 // SiPMs remain inside the bar footprint.  Default pitch = 70 mm → N = 20.
@@ -31,7 +39,7 @@ class G4GenericMessenger;
 //   /det/topSiPMPitch <value> mm   — triggers ReinitializeGeometry()
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
-// Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
+// Border surfaces: BarPV → each SiPM physical volume.
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
