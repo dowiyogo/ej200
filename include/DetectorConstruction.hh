@@ -1,5 +1,6 @@
 #pragma once
 #include "G4LogicalBorderSurface.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
@@ -20,11 +21,12 @@ class G4GenericMessenger;
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × 70  (global IDs 16–85, sipm mode only)
-//     └─ Reflector*PV panels (optical border surfaces, R=0.98)
+//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
 //
-// In sipm mode, the +Y reflector has 70 exact 6x6 mm2 windows.
-// In default mylar mode, +Y is a solid panel and no Top SiPMs are placed.
-// SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
+// In mylar mode (default), the skin uses Materials::CreateMylarReflector with
+// configurable reflectivity, specular lobe, and sigma_alpha parameters.
+// In sipm mode, the skin uses Materials::CreateBarSkinReflector.
+// SiPM coupling volumes are BarLV daughters with explicit BarPV→SiPM border surfaces.
 //
 // UI commands:
 //   /det/scintillator OPSC-101|OPSC-100
@@ -36,7 +38,8 @@ class G4GenericMessenger;
 //   /ship/geom/mylar/sigmaAlpha <angle>
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
-// Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
+// Border surfaces: BarPV → each SiPM physical volume.
+// Reflector: G4LogicalSkinSurface on BarLV.
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
@@ -50,9 +53,11 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4VPhysicalVolume* Construct()           override;
     void               ConstructSDandField() override;
 
-    // Border-surface map (globalId → surface) — kept for external consumers
+    // Surface accessors
     const std::map<G4int, G4LogicalBorderSurface*>& GetSiPMSurfaces() const
     { return fSiPMSurfaces; }
+    G4LogicalSkinSurface* GetBarSkinSurface() const { return fBarSkinSurface; }
+    // Kept for legacy test compatibility; always empty after skin-surface refactor.
     const std::map<G4String, G4LogicalBorderSurface*>& GetReflectorSurfaces() const
     { return fReflectorSurfaces; }
 
@@ -95,9 +100,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     static G4int LocalId (G4int globalId);  // index within face
 
   private:
-    G4LogicalVolume*   fEndSiPMLV  = nullptr;
-    G4LogicalVolume*   fTopSiPMLV  = nullptr;
-    G4VPhysicalVolume* fBarPhys          = nullptr;
+    G4LogicalVolume*    fEndSiPMLV      = nullptr;
+    G4LogicalVolume*    fTopSiPMLV      = nullptr;
+    G4VPhysicalVolume*  fBarPhys        = nullptr;
+    G4LogicalSkinSurface* fBarSkinSurface = nullptr;
 
     G4String           fScintCode = "OPSC-101";
     G4String           fSiPMModel = "AFBR-S4N66P024M";

@@ -37,14 +37,13 @@ def main() -> int:
     top_photons = value(log, "Top SiPM  photons")
     generated = value(log, "Scint photons generated")
     detected = value(log, "Total photons detected")
-    panel_boundaries = value(log, "Bar -> reflector panel")
     if active_end != 16 or active_top != 0:
         raise SystemExit(f"wrong active channel map: END={active_end}, TOP={active_top}")
     if top_photons != 0:
         raise SystemExit(f"+Y/TOP detection is non-zero: {top_photons}")
-    if generated <= 0 or detected <= 0 or panel_boundaries <= 0:
+    if generated <= 0 or detected <= 0:
         raise SystemExit(
-            f"invalid photon budget: generated={generated}, detected={detected}, panels={panel_boundaries}"
+            f"invalid photon budget: generated={generated}, detected={detected}"
         )
     print(
         "endonly_photon_budget_guard PASSED: "

@@ -1,12 +1,10 @@
 #include "DetectorConstruction.hh"
 
-#include "G4LogicalBorderSurface.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4OpticalSurface.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4VPhysicalVolume.hh"
-#include "G4VSolid.hh"
 
 #include <cmath>
 #include <cstdlib>
@@ -24,18 +22,14 @@ void Require(bool condition, const std::string& message) {
     if (!condition) Fail(message);
 }
 
-void RequireReflector(const DetectorConstruction& detector, const G4String& face,
-                      bool expected, const G4String& expectedName = "BarSkinReflector") {
-    const auto& surfaces = detector.GetReflectorSurfaces();
-    const auto found = surfaces.find(face);
-    Require((found != surfaces.end()) == expected,
-            std::string(face) + (expected ? " is not wrapped" : " is unexpectedly wrapped"));
-    if (!expected) return;
-
-    auto* optical = dynamic_cast<G4OpticalSurface*>(found->second->GetSurfaceProperty());
-    Require(optical != nullptr, std::string(face) + " reflector is not an optical surface");
+void RequireBarSkinSurface(const DetectorConstruction& detector,
+                           const G4String& expectedName) {
+    auto* skin = detector.GetBarSkinSurface();
+    Require(skin != nullptr, "bar logical skin surface is missing");
+    auto* optical = dynamic_cast<G4OpticalSurface*>(skin->GetSurfaceProperty());
+    Require(optical != nullptr, "bar skin surface is not an optical surface");
     Require(optical->GetName() == expectedName,
-            std::string(face) + " does not use " + std::string(expectedName));
+            "bar skin does not use " + std::string(expectedName));
 }
 
 void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
@@ -55,17 +49,6 @@ void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
             "Broadcom PDE is not 63% at 420 nm");
     Require(std::abs(reflectivity->Value(energy420)) < 1.0e-12,
             "SiPM reflectivity is not zero");
-}
-
-void RequireTopWindowedReflector(const DetectorConstruction& detector, bool windowed) {
-    const auto& surfaces = detector.GetReflectorSurfaces();
-    const auto found = surfaces.find("+Y");
-    Require(found != surfaces.end(), "+Y reflector is missing");
-    const G4String entityType =
-        found->second->GetVolume2()->GetLogicalVolume()->GetSolid()->GetEntityType();
-    Require((entityType == "G4SubtractionSolid") == windowed,
-            windowed ? "+Y reflector has no top windows"
-                     : "+Y reflector is unexpectedly perforated");
 }
 
 void RequireEndTopPlacements(const DetectorConstruction& detector) {
@@ -107,14 +90,11 @@ void CheckEnd() {
     Require(detector.GetNActiveEndSiPMs() == 16, "End config does not activate 16 End SiPMs");
     Require(detector.GetNActiveTopSiPMs() == 0, "End config activates Top SiPMs");
     Require(detector.GetSiPMSurfaces().size() == 16, "End config has wrong SiPM surface count");
-    RequireReflector(detector, "+Y", true, "MylarReflector");
-    RequireTopWindowedReflector(detector, false);
-    RequireReflector(detector, "-X", false);
-    RequireReflector(detector, "+X", false);
+    RequireBarSkinSurface(detector, "MylarReflector");
     RequireSiPMSurfaceProperties(detector);
 
-    auto* mylar = dynamic_cast<G4OpticalSurface*>(
-        detector.GetReflectorSurfaces().at("+Y")->GetSurfaceProperty());
+    auto* skin = detector.GetBarSkinSurface();
+    auto* mylar = skin ? dynamic_cast<G4OpticalSurface*>(skin->GetSurfaceProperty()) : nullptr;
     auto* mpt = mylar ? mylar->GetMaterialPropertiesTable() : nullptr;
     Require(mpt != nullptr, "Mylar reflector has no MPT");
     const G4double energy420 = 1239.84193 * eV * nm / (420.0 * nm);
@@ -140,10 +120,7 @@ void CheckTop() {
     Require(detector.GetSiPMSurfaces().size() ==
                 static_cast<std::size_t>(detector.GetNTopSiPMs()),
             "Top config has wrong SiPM surface count");
-    RequireReflector(detector, "+Y", true);
-    RequireTopWindowedReflector(detector, true);
-    RequireReflector(detector, "-X", true);
-    RequireReflector(detector, "+X", true);
+    RequireBarSkinSurface(detector, "BarSkinReflector");
     RequireSiPMSurfaceProperties(detector);
 }
 
@@ -157,10 +134,7 @@ void CheckEndTop() {
             "EndTop does not instrument both readouts");
     Require(detector.GetNActiveEndSiPMs() == 16, "EndTop does not activate 16 End SiPMs");
     Require(detector.GetNActiveTopSiPMs() == 70, "EndTop does not activate 70 Top SiPMs");
-    RequireReflector(detector, "+Y", true);
-    RequireTopWindowedReflector(detector, true);
-    RequireReflector(detector, "-X", false);
-    RequireReflector(detector, "+X", false);
+    RequireBarSkinSurface(detector, "BarSkinReflector");
     RequireEndTopPlacements(detector);
     RequireSiPMSurfaceProperties(detector);
 }

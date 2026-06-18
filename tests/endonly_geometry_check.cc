@@ -1,14 +1,11 @@
 #include "DetectorConstruction.hh"
 
-#include "G4LogicalBorderSurface.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4OpticalSurface.hh"
-#include "G4VPhysicalVolume.hh"
-#include "G4VSolid.hh"
 
 #include <cstdlib>
 #include <iostream>
-#include <set>
 #include <string>
 
 namespace {
@@ -39,21 +36,13 @@ int main() {
         Require(item.first < 16, "TOP channel registered in mylar mode");
     }
 
-    const auto& reflectors = detector.GetReflectorSurfaces();
-    const std::set<G4String> nonEndFaces = {"-Y", "+Y", "-Z", "+Z"};
-    G4SurfaceProperty* shared = nullptr;
-    for (const auto& face : nonEndFaces) {
-        const auto found = reflectors.find(face);
-        Require(found != reflectors.end(), std::string(face) + " is not closed by Mylar");
-        auto* optical = dynamic_cast<G4OpticalSurface*>(found->second->GetSurfaceProperty());
-        Require(optical != nullptr && optical->GetName() == "MylarReflector",
-                std::string(face) + " does not use MylarReflector");
-        if (shared == nullptr) shared = optical;
-        Require(shared == optical, "non-END faces do not share one uniform Mylar surface");
-    }
-    const auto plusY = reflectors.at("+Y")->GetVolume2()->GetLogicalVolume()->GetSolid();
-    Require(plusY->GetEntityType() == "G4Box", "+Y Mylar panel contains TOP windows");
+    auto* skin = detector.GetBarSkinSurface();
+    Require(skin != nullptr, "bar logical skin surface is missing");
+    auto* optical = dynamic_cast<G4OpticalSurface*>(skin->GetSurfaceProperty());
+    Require(optical != nullptr, "bar skin surface is not an optical surface");
+    Require(optical->GetName() == "MylarReflector",
+            "bar skin surface does not use MylarReflector in default mylar mode");
 
-    std::cout << "endonly_geometry_check PASSED: 16 END, 0 TOP, +Y/-Y/+Z/-Z closed\n";
+    std::cout << "endonly_geometry_check PASSED: 16 END, 0 TOP, BarLV skin = MylarReflector\n";
     return EXIT_SUCCESS;
 }
