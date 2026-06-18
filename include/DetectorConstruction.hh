@@ -19,12 +19,20 @@ class G4GenericMessenger;
 //     ├─ BarPV (SSLG4 OPSC-101/EJ-204 by default)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
+<<<<<<< HEAD
 //     │   └─ TopSiPMPV       × 70  (global IDs 16–85, sipm mode only)
 //     └─ Reflector*PV panels (optical border surfaces, R=0.98)
 //
 // In sipm mode, the +Y reflector has 70 exact 6x6 mm2 windows.
 // In default mylar mode, +Y is a solid panel and no Top SiPMs are placed.
 // SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
+=======
+//     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
+//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
+//
+// Reflector optical properties are applied as a skin on BarLV.
+// SiPM coupling volumes are BarLV daughters with explicit BarPV->SiPM border surfaces.
+>>>>>>> f39b84c (fix(optics): replace reflector volumes with bar skin surface)
 //
 // UI commands:
 //   /det/scintillator OPSC-101|OPSC-100
@@ -36,7 +44,7 @@ class G4GenericMessenger;
 //   /ship/geom/mylar/sigmaAlpha <angle>
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
-// Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
+// Border surfaces: BarPV → each SiPM physical volume.
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
