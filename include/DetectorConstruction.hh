@@ -19,10 +19,10 @@ class G4GenericMessenger;
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
-//     └─ Reflector*PV panels (optical border surfaces, R=0.98)
+//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
 //
-// The +Y reflector is a physical panel with 70 exact 6x6 mm2 windows.
-// SiPM coupling volumes are BarLV daughters with BarPV->SiPM border surfaces.
+// Reflector optical properties are applied as a skin on BarLV.
+// SiPM coupling volumes are BarLV daughters with explicit BarPV->SiPM border surfaces.
 //
 // UI commands:
 //   /det/scintillator OPSC-101|OPSC-100
@@ -30,7 +30,7 @@ class G4GenericMessenger;
 //   /sipm/model AFBR-S4N66P024M
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
-// Border surfaces: BarPV → each SiPM physical volume; BarPV → reflector panels.
+// Border surfaces: BarPV → each SiPM physical volume.
 // --------------------------------------------------------------------------
 class DetectorConstruction : public G4VUserDetectorConstruction {
   public:
