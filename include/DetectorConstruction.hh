@@ -18,12 +18,20 @@ class G4GenericMessenger;
 //     ├─ BarPV (selectable EJ-204/EJ-200/EJ-230; default EJ-204)
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
+<<<<<<< HEAD
 //     │   └─ TopSiPMPV       × N   (global IDs 16…15+N)
 //     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
 //
 // The Mylar wrap volume was removed in fix/geometry-bar-in-world.
 // Optical reflection is handled by a reflector skin on BarLV; SiPMs are BarLV
 // daughters with explicit BarPV→SiPM border surfaces.
+=======
+//     │   └─ TopSiPMPV       × 70  (global IDs 16–85)
+//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
+//
+// Reflector optical properties are applied as a skin on BarLV.
+// SiPM coupling volumes are BarLV daughters with explicit BarPV->SiPM border surfaces.
+>>>>>>> f39b84c (fix(optics): replace reflector volumes with bar skin surface)
 //
 // N (number of top SiPMs) is computed from the configurable pitch so that all
 // SiPMs remain inside the bar footprint.  Default pitch = 70 mm → N = 20.
