@@ -1,0 +1,41 @@
+ERROR: Can not open a macro file <sslg4/macros/oscnt/opsc-101.mac>. Set macro path with "/control/macroPath" if needed.
+
+-------- WWWW ------- G4Exception-START -------- WWWW -------
+
+*** ExceptionHandler is not defined ***
+*** G4Exception : mat031
+      issued by : G4Material::FillVectors()
+For material opsc-101 sum of fractional masses 0.996667 is not 1 - results may be wrong
+
+*** This is just a warning message. ***
+-------- WWWW ------- G4Exception-END -------- WWWW -------
+
+[DetectorConstruction] OPSC-101 RINDEX set to 1.58 for optical tracking.
+[DetectorConstruction] OPSC-101 ABSLENGTH overridden to 160 cm.
+[DetectorConstruction] OPSC-101 rise time overridden to 0.7 ns.
+Checking overlaps for volume BarPV:0 (G4Box) ... OK!
+Checking overlaps for volume AirGapYPlusPV:0 (G4Box) ... OK!
+Checking overlaps for volume MylarYPlusPV:0 (G4Box) ... OK!
+Checking overlaps for volume AirGapYMinusPV:1 (G4Box) ... OK!
+Checking overlaps for volume MylarYMinusPV:1 (G4Box) ... OK!
+Checking overlaps for volume AirGapZPlusPV:2 (G4Box) ... OK!
+Checking overlaps for volume MylarZPlusPV:2 (G4Box) ... OK!
+Checking overlaps for volume AirGapZMinusPV:3 (G4Box) ... OK!
+Checking overlaps for volume MylarZMinusPV:3 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:0 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:8 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:1 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:9 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:2 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:10 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:3 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:11 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:4 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:12 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:5 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:13 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:6 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:14 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMLeft_PV:7 (G4Box) ... OK!
+Checking overlaps for volume EndSiPMRight_PV:15 (G4Box) ... OK!
+endonly_geometry_check PASSED: explicit air gap + Mylar panels, 16 END, 0 TOP, no bar skin reflector

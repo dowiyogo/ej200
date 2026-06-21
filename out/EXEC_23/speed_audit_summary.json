@@ -1,0 +1,28 @@
+{
+  "pass": true,
+  "by_material": {
+    "G4_AIR": {
+      "n_steps": 44824618,
+      "max_ratio": 1.0,
+      "superluminal_fraction": 0.0
+    },
+    "opsc-101": {
+      "n_steps": 39427292,
+      "max_ratio": 1.0,
+      "superluminal_fraction": 0.0
+    },
+    "G4_SILICON_DIOXIDE": {
+      "n_steps": 1592,
+      "max_ratio": 1.0,
+      "superluminal_fraction": 0.0
+    },
+    "G4_MYLAR": {
+      "n_steps": 6141620,
+      "max_ratio": 1.0,
+      "superluminal_fraction": 0.0
+    }
+  },
+  "max_ratio_scintillator": 1.0,
+  "superluminal_fraction_scintillator": 0.0,
+  "volumes_without_rindex": []
+}

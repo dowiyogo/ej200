@@ -21,10 +21,11 @@ class G4GenericMessenger;
 //     │   ├─ EndSiPMLeft_PV  × 8   (global IDs  0– 7)
 //     │   ├─ EndSiPMRight_PV × 8   (global IDs  8–15)
 //     │   └─ TopSiPMPV       × 70  (global IDs 16–85, sipm mode only)
-//     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
+//     ├─ AirGap*PV       × 4   (long lateral faces only, END faces open)
+//     └─ Mylar*PV        × 4   (external reflector panels behind air gap)
 //
-// In mylar mode (default), the skin uses Materials::CreateMylarReflector with
-// configurable reflectivity, specular lobe, and sigma_alpha parameters.
+// In mylar mode (default), explicit air-gap and Mylar panels wrap only the four
+// long lateral faces.
 // In sipm mode, the skin uses Materials::CreateBarSkinReflector.
 // SiPM coupling volumes are BarLV daughters with explicit BarPV→SiPM border surfaces.
 //
@@ -57,9 +58,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     const std::map<G4int, G4LogicalBorderSurface*>& GetSiPMSurfaces() const
     { return fSiPMSurfaces; }
     G4LogicalSkinSurface* GetBarSkinSurface() const { return fBarSkinSurface; }
-    // Kept for legacy test compatibility; always empty after skin-surface refactor.
     const std::map<G4String, G4LogicalBorderSurface*>& GetReflectorSurfaces() const
     { return fReflectorSurfaces; }
+    const std::map<G4String, G4LogicalBorderSurface*>& GetScintillatorAirSurfaces() const
+    { return fScintillatorAirSurfaces; }
 
     // X-centre of top SiPM local index 0..69 [G4 units].
     static G4double TopSiPMCenterX(G4int idx);
@@ -109,7 +111,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4String           fSiPMModel = "AFBR-S4N66P024M";
     G4String           fReadoutConfiguration = "End";
     G4String           fTopSurface = "mylar";
-    G4double           fMylarReflectivity = 0.90;
+    G4double           fMylarReflectivity = 0.95;
     G4double           fMylarSpecularLobe = 1.0;
     G4double           fMylarSigmaAlpha = 0.1 * CLHEP::deg;
     G4Material*         fActiveScintillator = nullptr;
@@ -120,5 +122,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4GenericMessenger* fMylarMessenger = nullptr;
 
     std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
+    std::map<G4String, G4LogicalBorderSurface*> fScintillatorAirSurfaces;
     std::map<G4String, G4LogicalBorderSurface*> fReflectorSurfaces;
 };

@@ -11,7 +11,7 @@ threads=""
 host_name=""
 events=2000
 positions_file="$script_dir/endonly_positions.txt"
-mylar_reflectivity="${MYLAR_REFLECTIVITY:-0.90}"
+mylar_reflectivity="${MYLAR_REFLECTIVITY:-0.95}"
 mylar_specular_lobe="${MYLAR_SPECULAR_LOBE:-1.0}"
 mylar_sigma_alpha_deg="${MYLAR_SIGMA_ALPHA_DEG:-0.1}"
 

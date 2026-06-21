@@ -264,11 +264,11 @@ G4Material* CreateMylar() {
     const G4int n = 4;
     G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
     G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
+    G4double abs[n] = {1.0*um, 1.0*um, 1.0*um, 1.0*um};
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("RINDEX", e, r, n);
-    // Mylar is transparent at optical wavelengths; omit ABSLENGTH so G4 does
-    // not apply bulk absorption inside the 25 µm film.
+    mpt->AddProperty("ABSLENGTH", e, abs, n);
     mat->SetMaterialPropertiesTable(mpt);
     return mat;
 }
@@ -337,32 +337,24 @@ G4OpticalSurface* CreateBarSkinReflector() {
 G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
                                        G4double specularLobe,
                                        G4double sigmaAlpha) {
-    // exec22: dielectric_dielectric + REFLECTIVITY (surface-only Mylar model, no air gap).
-    //
-    // Physics: two-tier reflection at the bar surface (n_bar=1.58 → n_world=1.0):
-    //   (1) angle > theta_c = arcsin(1/1.58) = 39.3° → TIR, 100% reflection (automatic
-    //       from Geant4 Fresnel equations; world RINDEX=1.0 set in DetectorConstruction).
-    //   (2) angle < theta_c → non-TIR; REFLECTIVITY in the MPT gives the probability of
-    //       reflection for these photons (Mylar/ESR substrate modelled as reflectivity).
-    //       With REFLECTIVITY=0.95: 95% bounce back, 5% transmitted to world and lost.
-    //
-    // No air volume → no photon transport in air → no superluminal risk.
-    // No Mylar volume → no independent RINDEX/ABSLENGTH to tune per wavelength.
-    // sigmaAlpha: microfacet roughness (0.0 = perfectly flat, specular reflection).
-    (void)specularLobe;           // not used; unified polished is fully specular
-    auto* surf = new G4OpticalSurface("MylarReflector");
-    surf->SetType(dielectric_dielectric);
+    // EXEC_23: this surface is only placed on the AirGap -> Mylar reflector
+    // boundary. The scintillator-air boundary is dielectric_dielectric polished
+    // and has no artificial REFLECTIVITY.
+    auto* surf = new G4OpticalSurface("AirReflectorSurface");
+    surf->SetType(dielectric_metal);
     surf->SetModel(unified);
-    surf->SetFinish(polished);    // specular; sigmaAlpha = 0 → perfect Fresnel + TIR
+    surf->SetFinish(polished);
     surf->SetSigmaAlpha(sigmaAlpha);
 
-    // REFLECTIVITY for non-TIR photons (Mylar/ESR substrate reflectance).
-    // Applied uniformly 1.5–6.5 eV (covers EJ-204 emission 408 nm = 3.03 eV).
     const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
     const std::vector<G4double> refl   = {reflectivity, reflectivity};
+    const std::vector<G4double> eff    = {0.0, 0.0};
+    const std::vector<G4double> lobe   = {specularLobe, specularLobe};
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("REFLECTIVITY", energy, refl);
+    mpt->AddProperty("EFFICIENCY", energy, eff);
+    mpt->AddProperty("SPECULARLOBECONSTANT", energy, lobe);
     surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }

@@ -1,0 +1,12 @@
+volume_name,material_name,has_rindex,rindex_min,rindex_max,mother,role
+WorldLV,G4_AIR,1,1,1,n/a,world
+BarLV,opsc-101,1,1.58,1.58,n/a,scintillator
+AirGapYPlusLV,G4_AIR,1,1,1,n/a,air_gap
+MylarYPlusLV,G4_MYLAR,1,1.65,1.65,n/a,reflector
+AirGapYMinusLV,G4_AIR,1,1,1,n/a,air_gap
+MylarYMinusLV,G4_MYLAR,1,1.65,1.65,n/a,reflector
+AirGapZPlusLV,G4_AIR,1,1,1,n/a,air_gap
+MylarZPlusLV,G4_MYLAR,1,1.65,1.65,n/a,reflector
+AirGapZMinusLV,G4_AIR,1,1,1,n/a,air_gap
+MylarZMinusLV,G4_MYLAR,1,1.65,1.65,n/a,reflector
+EndSiPMLV,G4_SILICON_DIOXIDE,1,1.58,1.58,n/a,sipm
