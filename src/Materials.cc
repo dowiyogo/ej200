@@ -337,23 +337,33 @@ G4OpticalSurface* CreateBarSkinReflector() {
 G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
                                        G4double specularLobe,
                                        G4double sigmaAlpha) {
-    // exec21-optfix: switch from dielectric_metal (no TIR) to dielectric_dielectric
-    // to enable TIR at the bar-air interface (n_bar=1.58, n_air=1.0, theta_c=39.3 deg).
-    // Rationale: real scintillator bars have an air gap between bar and wrapping foil;
-    // photons at angle > theta_c undergo TIR with zero loss, dramatically improving
-    // light collection at the END SiPMs from ~0.37 PE (no TIR) to O(100) PE (with TIR).
-    // The 'reflectivity', 'specularLobe', 'sigmaAlpha' parameters are no longer used
-    // for the skin surface; TIR is determined automatically by RINDEX of bar vs world.
-    // Non-TIR photons (angle < theta_c) are transmitted to worldLV and "escape" the bar.
-    // TODO: add explicit Mylar wrapping volume to recover non-TIR photons.
-    (void)reflectivity; (void)specularLobe; (void)sigmaAlpha;
+    // exec22: dielectric_dielectric + REFLECTIVITY (surface-only Mylar model, no air gap).
+    //
+    // Physics: two-tier reflection at the bar surface (n_bar=1.58 → n_world=1.0):
+    //   (1) angle > theta_c = arcsin(1/1.58) = 39.3° → TIR, 100% reflection (automatic
+    //       from Geant4 Fresnel equations; world RINDEX=1.0 set in DetectorConstruction).
+    //   (2) angle < theta_c → non-TIR; REFLECTIVITY in the MPT gives the probability of
+    //       reflection for these photons (Mylar/ESR substrate modelled as reflectivity).
+    //       With REFLECTIVITY=0.95: 95% bounce back, 5% transmitted to world and lost.
+    //
+    // No air volume → no photon transport in air → no superluminal risk.
+    // No Mylar volume → no independent RINDEX/ABSLENGTH to tune per wavelength.
+    // sigmaAlpha: microfacet roughness (0.0 = perfectly flat, specular reflection).
+    (void)specularLobe;           // not used; unified polished is fully specular
     auto* surf = new G4OpticalSurface("MylarReflector");
     surf->SetType(dielectric_dielectric);
     surf->SetModel(unified);
-    surf->SetFinish(polished);   // polished → specular TIR (Snell's law reflection)
-    surf->SetSigmaAlpha(0.0);   // no microfacet roughness for the TIR test
-    // No MPT needed: Geant4 uses RINDEX of bar (1.58) and world (1.0)
-    // to compute TIR threshold and Fresnel reflection/transmission automatically.
+    surf->SetFinish(polished);    // specular; sigmaAlpha = 0 → perfect Fresnel + TIR
+    surf->SetSigmaAlpha(sigmaAlpha);
+
+    // REFLECTIVITY for non-TIR photons (Mylar/ESR substrate reflectance).
+    // Applied uniformly 1.5–6.5 eV (covers EJ-204 emission 408 nm = 3.03 eV).
+    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+    const std::vector<G4double> refl   = {reflectivity, reflectivity};
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("REFLECTIVITY", energy, refl);
+    surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }
 
