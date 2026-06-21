@@ -139,6 +139,7 @@ RunAction::RunAction() {
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
     BoundaryCensus::Reset();
+    OpticalAudit::Reset();
 
     auto* am = G4AnalysisManager::Instance();
 
@@ -192,6 +193,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         << G4endl;
 
     if (IsMaster()) {
+        OpticalAudit::WriteOutputs();
         G4cout
             << "\n=== Boundary Census (diagnostic) ==="
             << "\n  Bar -> reflector panel   : " << BoundaryCensus::GetBarToMylar()

@@ -27,3 +27,10 @@ namespace BoundaryCensus {
     long long GetKilledWorld();
     void      Reset();
 }
+
+namespace OpticalAudit {
+    void Reset();
+    void RecordDetection(int eventId, int trackId, int globalId,
+                         double timeNs, double gunXmm);
+    void WriteOutputs();
+}
