@@ -137,9 +137,24 @@ DetectorConstruction::DetectorConstruction() {
         "sipmEfficiencyMode", &DetectorConstruction::SetSiPMEfficiencyMode,
         "Set SiPM surface EFFICIENCY mode: nominal, zero, or one.");
     sipmEffCmd.SetParameterName("mode", false);
+
+    fScintAirMessenger =
+        new G4GenericMessenger(this, "/ship/geom/scintAir/",
+                               "Tunable scintillator-air surface");
+    auto& scintAirFinishCmd = fScintAirMessenger->DeclareMethod(
+        "finish", &DetectorConstruction::SetScintAirFinish,
+        "Set scintillator-air finish: polished or ground.");
+    scintAirFinishCmd.SetParameterName("finish", false);
+
+    auto& scintAirSigmaCmd = fScintAirMessenger->DeclareMethodWithUnit(
+        "sigmaAlpha", "rad", &DetectorConstruction::SetScintAirSigmaAlpha,
+        "Set scintillator-air unified-model roughness sigma alpha.");
+    scintAirSigmaCmd.SetParameterName("angle", false);
+    scintAirSigmaCmd.SetRange("angle >= 0.0");
 }
 
 DetectorConstruction::~DetectorConstruction() {
+    delete fScintAirMessenger;
     delete fMylarMessenger;
     delete fGeometryMessenger;
     delete fSiPMMessenger;
@@ -192,6 +207,29 @@ void DetectorConstruction::SetSiPMEfficiencyMode(G4String value) {
     }
     if (value == fSiPMEfficiencyMode) return;
     fSiPMEfficiencyMode = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetScintAirFinish(G4String value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    if (value != "polished" && value != "ground") {
+        G4cerr << "[DetectorConstruction] Unknown /ship/geom/scintAir/finish \""
+               << value << "\". Use polished or ground.\n";
+        return;
+    }
+    if (value == fScintAirFinish) return;
+    fScintAirFinish = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetScintAirSigmaAlpha(G4double value) {
+    if (value == fScintAirSigmaAlpha) return;
+    fScintAirSigmaAlpha = value;
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
@@ -397,7 +435,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fBarSkinSurface = nullptr;
 
     if (fTopSurface == "mylar") {
-        auto* scintAirSurface = Materials::CreateBarSurface();
+        auto* scintAirSurface = Materials::CreateBarSurface(
+            fScintAirFinish, fScintAirSigmaAlpha);
         auto* airReflectorSurface = Materials::CreateMylarReflector(
             fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha, fMylarFinish);
 

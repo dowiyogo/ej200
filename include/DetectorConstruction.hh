@@ -39,6 +39,8 @@ class G4GenericMessenger;
 //   /ship/geom/mylar/sigmaAlpha <angle>
 //   /ship/geom/mylar/finish polished|ground
 //   /ship/geom/mylar/airGap <length>
+//   /ship/geom/scintAir/finish polished|ground
+//   /ship/geom/scintAir/sigmaAlpha <angle>
 //   /ship/geom/sipmEfficiencyMode nominal|zero|one
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
@@ -96,12 +98,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     void     SetMylarFinish(G4String value);
     void     SetMylarAirGap(G4double value);
     void     SetSiPMEfficiencyMode(G4String value);
+    void     SetScintAirFinish(G4String value);
+    void     SetScintAirSigmaAlpha(G4double value);
     G4double GetMylarReflectivity() const { return fMylarReflectivity; }
     G4double GetMylarSpecularLobe() const { return fMylarSpecularLobe; }
     G4double GetMylarSigmaAlpha() const { return fMylarSigmaAlpha; }
     G4String GetMylarFinish() const { return fMylarFinish; }
     G4double GetMylarAirGap() const { return fMylarAirGap; }
     G4String GetSiPMEfficiencyMode() const { return fSiPMEfficiencyMode; }
+    G4String GetScintAirFinish() const { return fScintAirFinish; }
+    G4double GetScintAirSigmaAlpha() const { return fScintAirSigmaAlpha; }
 
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
@@ -121,6 +127,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4String           fReadoutConfiguration = "End";
     G4String           fTopSurface = "mylar";
     G4String           fSiPMEfficiencyMode = "nominal";
+    G4String           fScintAirFinish = "polished";
+    G4double           fScintAirSigmaAlpha = 0.0 * CLHEP::rad;
     G4double           fMylarReflectivity = 0.95;
     G4double           fMylarSpecularLobe = 1.0;
     G4double           fMylarSigmaAlpha = 0.1 * CLHEP::deg;
@@ -132,6 +140,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4GenericMessenger* fSiPMMessenger = nullptr;
     G4GenericMessenger* fGeometryMessenger = nullptr;
     G4GenericMessenger* fMylarMessenger = nullptr;
+    G4GenericMessenger* fScintAirMessenger = nullptr;
 
     std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
     std::map<G4String, G4LogicalBorderSurface*> fScintillatorAirSurfaces;

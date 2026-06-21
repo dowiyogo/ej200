@@ -56,7 +56,8 @@ G4Material* CreateSiPMCoupling();
 // Reflective wrapping surface (Tyvek-like).
 // dielectric_metal | groundfrontpainted | R = 0.95
 // Apply as G4LogicalBorderSurface(bar → world) to model all non-SiPM faces.
-G4OpticalSurface* CreateBarSurface();
+G4OpticalSurface* CreateBarSurface(const G4String& finish = "polished",
+                                   G4double sigmaAlpha = 0.0);
 
 // SiPM optical surface. The selected model's PDE file is installed as
 // EFFICIENCY(lambda), with REFLECTIVITY(lambda)=0.

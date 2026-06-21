@@ -202,7 +202,7 @@ G4Material* CreateSiPMCoupling() {
 }
 
 // ---------------------------------------------------------------------------
-G4OpticalSurface* CreateBarSurface() {
+G4OpticalSurface* CreateBarSurface(const G4String& finish, G4double sigmaAlpha) {
     // NOTE: CreateBarSurface() and CreateMylar() are not used in the current
     // geometry (BarPV directly in WorldLV with explicit reflector panels) but
     // are retained for reference and potential future use.
@@ -214,8 +214,8 @@ G4OpticalSurface* CreateBarSurface() {
     auto* surf = new G4OpticalSurface("BarSurface");
     surf->SetType(dielectric_dielectric);
     surf->SetModel(unified);
-    surf->SetFinish(polished);
-    surf->SetSigmaAlpha(0.0);
+    surf->SetFinish(finish == "ground" ? ground : polished);
+    surf->SetSigmaAlpha(sigmaAlpha);
     return surf;
 }
 

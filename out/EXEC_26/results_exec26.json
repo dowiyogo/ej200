@@ -1,0 +1,36 @@
+{
+  "exec_id": "EXEC_26",
+  "verdict": "COMPLETADO-CON-FLAGS",
+  "exec25_reference": {
+    "npe_exec23": 2035.26,
+    "lowest_exec25_npe": 1781.95,
+    "dominant_driver": "scintillator-air TIR / effective prompt acceptance"
+  },
+  "roughness_bracket": {
+    "ran": true,
+    "lowest_npe": 20.25,
+    "best_sigma_alpha": 0.5
+  },
+  "surface_loss_model": {
+    "used": true,
+    "loss_fraction": 0.1,
+    "npe": 107.55
+  },
+  "candidate": {
+    "exists": true,
+    "name": "loss_R095_0p1",
+    "finish": "ground",
+    "sigma_alpha": 0.2,
+    "reflector_R": 0.95,
+    "surface_loss": 0.1,
+    "npe_center": 107.55,
+    "sigma_center_ps": 83.49485487798414,
+    "paired_fraction": 1.0,
+    "speed_gate_pass": true
+  },
+  "flags": [
+    "surface_loss_model_used",
+    "edge_validation_high_collection"
+  ],
+  "next_step": "Review edge response before scan or add position-dependent coupling/contact model"
+}

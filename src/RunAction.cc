@@ -95,6 +95,8 @@ void LogReadoutConfiguration() {
         << "\n  +Z face               : " << faceState("+Z", false)
         << "\n  Reflector R           : " << reflectivity
         << "\n  SiPM efficiency mode  : " << detector->GetSiPMEfficiencyMode()
+        << "\n  Scint-air finish      : " << detector->GetScintAirFinish()
+        << "\n  Scint-air sigma alpha : " << detector->GetScintAirSigmaAlpha() / rad << " rad"
         << "\n  Mylar specular lobe   : " << detector->GetMylarSpecularLobe()
         << "\n  Mylar sigma alpha     : " << detector->GetMylarSigmaAlpha() / deg << " deg"
         << "\n  Mylar finish          : " << detector->GetMylarFinish()

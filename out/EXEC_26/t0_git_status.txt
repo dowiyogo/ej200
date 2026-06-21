@@ -1,0 +1,27 @@
+branch=exec26-scint-air-surface-realism
+
+ M presentation/endonly_mylar/main.tex
+?? EXEC_22b_REPORT.md
+?? analysis/bootstrap_attenuation
+?? analysis/exec22b_quick.py
+?? out/EXEC_22b/
+?? out/EXEC_23/nominal_500/
+?? out/EXEC_23/nominal_quick50/
+?? out/EXEC_25/raw/
+?? out/EXEC_26/
+?? presentation/endonly_mylar/main.fdb_latexmk
+?? presentation/endonly_mylar/main.fls
+?? presentation/endonly_mylar/main.synctex.gz
+?? presentation/endonly_mylar/main_corrected.synctex.gz
+?? presentation/endonly_mylar/main_corrected.tex
+
+7c55326 EXEC_25: validate PDE surface semantics and bracket optical collection realism
+e20b47d EXEC_24: audit PE budget and SiPM detection after explicit air gap fix
+bd78211 EXEC_23: implement explicit air gap reflector geometry
+9b8361f fix(optics): add REFLECTIVITY=0.95 to dielectric_dielectric surface for Mylar model
+af5ddb7 fix(optics): dielectric_metal->dielectric_dielectric enabling TIR on bar skin surface
+6942ee6 fix(optics): replace reflector volumes with bar skin surface
+7347db6 audit: add FINAL_PHYSICS_AUDIT.md, C++/OpenMP bootstrap skeleton, group-velocity validator
+8b65786 verify: extend checks - range sensitivity, budget closure, 1-R, sigma_eq, no 'same attenuation', M2 bootstrap, v_app
+
+EXEC_26-pre-20260621_185850

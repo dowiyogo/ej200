@@ -17,6 +17,7 @@
 #include "G4Track.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4VProcess.hh"
+#include "Randomize.hh"
 
 #include <atomic>
 #include <cmath>
@@ -38,6 +39,7 @@ std::atomic<long long> gMylarToWorld{0};
 std::atomic<long long> gMylarReflected{0};
 std::atomic<long long> gMylarToSiPM{0};
 std::atomic<long long> gKilledWorld{0};
+std::atomic<long long> gExec26ScintAirSurfaceLossKilled{0};
 
 struct SpeedStats {
     long long nSteps = 0;
@@ -180,6 +182,49 @@ bool FileExists(const std::string& path) {
     std::ifstream in(path);
     return in.good();
 }
+double Exec26ScintAirSurfaceLoss() {
+    static const double value = [] {
+        const char* raw = std::getenv("EXEC26_SCINT_AIR_SURFACE_LOSS");
+        if (raw == nullptr || raw[0] == '\0') return 0.0;
+        char* end = nullptr;
+        const double parsed = std::strtod(raw, &end);
+        if (end == raw || !std::isfinite(parsed)) return 0.0;
+        return std::max(0.0, std::min(1.0, parsed));
+    }();
+    return value;
+}
+bool ApplyExec26ScintAirSurfaceLoss(const G4Step* step) {
+    const double loss = Exec26ScintAirSurfaceLoss();
+    if (loss <= 0.0) return false;
+
+    auto* pre = step->GetPreStepPoint();
+    auto* post = step->GetPostStepPoint();
+    if (post->GetStepStatus() != fGeomBoundary) return false;
+
+    auto* preVol = pre->GetPhysicalVolume();
+    auto* postVol = post->GetPhysicalVolume();
+    if (preVol == nullptr || postVol == nullptr) return false;
+
+    const G4String preName = preVol->GetLogicalVolume()->GetName();
+    const G4String postName = postVol->GetLogicalVolume()->GetName();
+    if (!IsBarLV(preName)) return false;
+
+    auto* boundary = BoundaryProcess();
+    const auto status = boundary ? boundary->GetStatus() : Undefined;
+    const bool scintAirEncounter =
+        IsAirGapLV(postName) ||
+        (IsBarLV(postName) && IsReflectionStatus(status));
+    if (!scintAirEncounter) return false;
+    if (G4UniformRand() >= loss) return false;
+
+    {
+        std::lock_guard<std::mutex> lock(gAuditMutex);
+        gBoundaryStatusCounts["BarLV->ScintAirSurfaceLoss|Killed"] += 1;
+    }
+    ++gExec26ScintAirSurfaceLossKilled;
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    return true;
+}
 void AuditStep(const G4Step* step) {
     auto* pre = step->GetPreStepPoint();
     auto* post = step->GetPostStepPoint();
@@ -263,6 +308,7 @@ void Reset() {
     gMylarReflected = 0;
     gMylarToSiPM = 0;
     gKilledWorld = 0;
+    gExec26ScintAirSurfaceLossKilled = 0;
 }
 } // namespace BoundaryCensus
 
@@ -393,6 +439,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     if (track->GetDefinition() != G4OpticalPhoton::Definition()) return;
 
     AuditStep(step);
+    if (ApplyExec26ScintAirSurfaceLoss(step)) return;
 
     if (track->GetCurrentStepNumber() == 1) {
         const G4VProcess* creator = track->GetCreatorProcess();
