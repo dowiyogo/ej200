@@ -1,0 +1,7 @@
+metric,value
+n_detected,101763
+fraction_visited_air_gap,0.9837956821241512
+fraction_visited_reflector_boundary,0.03748906773581754
+mean_scint_air_reflections,53.22429566738402
+mean_air_reflector_reflections,0.8809390446429449
+mean_total_internal_reflections,52.986615960614365

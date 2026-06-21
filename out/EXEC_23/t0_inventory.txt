@@ -1,0 +1,246 @@
+./build
+./include/DetectorConstruction.hh
+./include/SteppingAction.hh
+./out
+./src/DetectorConstruction.cc
+./src/SiPMSD.cc
+./src/SteppingAction.cc
+
+./README.md:15:| Reflector panels | all faces except End faces and Top windows | Mylar-like `dielectric_metal`, R=0.98 |
+./README.md:53:| `RINDEX` | 1.58 |
+./README.md:95:metadata. `REFLECTIVITY(lambda)=0`.
+./EXEC_22b_REPORT.md:1:# EXEC_22b - polishedbackpainted quick test
+./EXEC_22b_REPORT.md:8:- finish anterior: `polished` (EXEC_22, en `CreateMylarReflector`)
+./EXEC_22b_REPORT.md:9:- finish nuevo: `polishedbackpainted`
+./EXEC_22b_REPORT.md:10:- `REFLECTIVITY`: `src/Materials.cc:366`, valor de corrida `0.95`
+./EXEC_22b_REPORT.md:11:- `RINDEX` de superficie: `src/Materials.cc:367`, valor `1.0`
+./EXEC_22b_REPORT.md:12:- world/mother `RINDEX` intacto: si, `src/DetectorConstruction.cc:292`
+./EXEC_22b_REPORT.md:15:Nota: `RunAction` imprime `Reflector R : 0` porque solo mira el mapa legacy `GetReflectorSurfaces()`, que esta vacio tras la migracion a `G4LogicalSkinSurface`; no inspecciona `GetBarSkinSurface()`.
+./EXEC_22b_REPORT.md:23:- volumenes sin `RINDEX`: ninguno
+./EXEC_22b_REPORT.md:40:Se probo `groundbackpainted` solo en `x=0`, 300 eventos, manteniendo `dielectric_dielectric`, `unified`, `REFLECTIVITY=0.95`, `RINDEX=1.0`.
+./FINAL_PHYSICS_AUDIT.md:16:| RINDEX (flat) | 1.58 (4 energy nodes: 2.0–4.0 eV) | line 41: `rIdx[nOpt] = {1.58, 1.58, 1.58, 1.58}` |
+./FINAL_PHYSICS_AUDIT.md:26:`v_g = c/n` from the flat `RINDEX`, giving **v_g = 189.742 mm/ns**.
+./FINAL_PHYSICS_AUDIT.md:49:| Surface model | `dielectric_metal` | specular |
+./FINAL_PHYSICS_AUDIT.md:50:| REFLECTIVITY | 0.90 (uniform over energy range) | ⟹ loss per bounce **1−R = 0.10** |
+./FINAL_PHYSICS_AUDIT.md:212:flat `RINDEX = 1.58` array, which gives:
+./FINAL_PHYSICS_AUDIT.md:220:a non-flat RINDEX or explicit GROUPVEL property).
+./REPORT_branch_status_2026-06-07.md:212:  'Reflectivity|0\.98|Reflector|WrapLV|Mylar|G4LogicalSkinSurface|G4LogicalBorderSurface|EJ-?200|EJ-?230|Broadcom|AFBR|1400|barLength|barWidth|barThickness|copyNo|GetCopyNumber|top|end' \
+./README_endonly.md:38:La superficie común usa modelo `unified`, tipo `dielectric_metal`, finish
+./README_endonly.md:85:MYLAR_REFLECTIVITY=0.92 MYLAR_SPECULAR_LOBE=0.8 \
+./include/Materials.hh:30:// RINDEX = 1.65 across the optical range.  Used as a thin physical-volume
+./include/Materials.hh:36:// Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
+./include/Materials.hh:51:// RINDEX set to 1.58 to match the bar and eliminate TIR at the bar–SiPM
+./include/Materials.hh:56:// dielectric_metal | groundfrontpainted | R = 0.95
+./include/Materials.hh:57:// Apply as G4LogicalBorderSurface(bar → world) to model all non-SiPM faces.
+./include/Materials.hh:61:// EFFICIENCY(lambda), with REFLECTIVITY(lambda)=0.
+./tests/readout_config_check.cc:3:#include "G4LogicalSkinSurface.hh"
+./tests/readout_config_check.cc:44:    auto* reflectivity = mpt->GetProperty("REFLECTIVITY");
+./tests/readout_config_check.cc:46:    Require(reflectivity != nullptr, "SiPM surface has no REFLECTIVITY");
+./tests/readout_config_check.cc:101:    Require(std::abs(mpt->GetProperty("REFLECTIVITY")->Value(energy420) - 0.90) < 1.0e-12,
+./src/SteppingAction.cc:83:            auto* rindex = mpt ? mpt->GetProperty("RINDEX") : nullptr;
+./scripts/run_scan.sh:14:mylar_reflectivity="${MYLAR_REFLECTIVITY:-0.90}"
+./docs/AUDIT_endonly.md:66:| Ventana epoxy EMC UV | Discrepa: el volumen usa `G4_SILICON_DIOXIDE` con `RINDEX=1.58`, descrito como acoplamiento perfecto (`src/Materials.cc:186-200`). No hay grosor de epoxy DS104. |
+./docs/AUDIT_endonly.md:73:La superficie de detección es `dielectric_metal`, `unified`, `polished`,
+./docs/AUDIT_endonly.md:80:No hay `G4LogicalSkinSurface`. Toda la detección y envoltura activa se hace con
+./docs/AUDIT_endonly.md:81:`G4LogicalBorderSurface` desde `BarPV` hacia SiPMs o paneles hermanos
+./docs/AUDIT_endonly.md:86:`dielectric_metal`, modelo `unified`, finish `polished`, `sigmaAlpha=0`, y
+./docs/AUDIT_endonly.md:87:`REFLECTIVITY=0.98` uniforme entre 350 y 800 nm
+./docs/AUDIT_endonly.md:102:mantendrá el patrón `G4LogicalBorderSurface` con paneles explícitos y el modelo
+./docs/AUDIT_endonly.md:103:`unified/dielectric_metal`, porque evita que una skin surface tape las caras
+./docs/AUDIT_endonly.md:171:  rise `0.7 ns`, decay `1.8 ns`, ABSLENGTH `160 cm`, RINDEX `1.58` y pico
+./docs/AUDIT_endonly.md:174:  y datos de ABSLENGTH/RINDEX
+./docs/AUDIT_endonly.md:213:`unified/dielectric_metal/ground`, con reflectividad, lobe y sigmaAlpha
+./tests/physics_baseline_check.cc:77:    auto* rindex = mpt->GetProperty("RINDEX");
+./tests/physics_baseline_check.cc:78:    if (rindex == nullptr || rindex->GetVectorLength() == 0) Fail("missing RINDEX");
+./tests/physics_baseline_check.cc:80:        RequireNear("RINDEX", (*rindex)[i], 1.58, 1.0e-12);
+./include/DetectorConstruction.hh:2:#include "G4LogicalBorderSurface.hh"
+./include/DetectorConstruction.hh:3:#include "G4LogicalSkinSurface.hh"
+./include/DetectorConstruction.hh:24://     └─ Reflector optical properties on BarLV (G4LogicalSkinSurface)
+./include/DetectorConstruction.hh:42:// Reflector: G4LogicalSkinSurface on BarLV.
+./include/DetectorConstruction.hh:57:    const std::map<G4int, G4LogicalBorderSurface*>& GetSiPMSurfaces() const
+./include/DetectorConstruction.hh:59:    G4LogicalSkinSurface* GetBarSkinSurface() const { return fBarSkinSurface; }
+./include/DetectorConstruction.hh:61:    const std::map<G4String, G4LogicalBorderSurface*>& GetReflectorSurfaces() const
+./include/DetectorConstruction.hh:106:    G4LogicalSkinSurface* fBarSkinSurface = nullptr;
+./include/DetectorConstruction.hh:122:    std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
+./include/DetectorConstruction.hh:123:    std::map<G4String, G4LogicalBorderSurface*> fReflectorSurfaces;
+./presentations/sim_status_hi_2026-06-08/talk.tex:167:        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ ReflectorPV}.
+./presentations/sim_status_hi_2026-06-08/talk.tex:169:          acabado \texttt{polished}, $\sigma_\alpha=0$.
+./presentations/sim_status_hi_2026-06-08/talk.tex:176:      Tyvek Lambertiano. No existe \texttt{G4LogicalSkinSurface}; se usan
+./presentations/sim_status_hi_2026-06-08/talk.tex:243:        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ SiPMPV}.
+./presentations/sim_status_hi_2026-06-08/talk.tex:245:          \texttt{polished}, $\sigma_\alpha=0$.
+./presentations/sim_status_hi_2026-06-08/talk.tex:253:      La superficie no define \texttt{EFFICIENCY} ni \texttt{REFLECTIVITY}.
+./src/RunAction.cc:71:        auto* property = mpt ? mpt->GetProperty("REFLECTIVITY") : nullptr;
+./src/Materials.cc:53:    mpt->AddProperty("RINDEX", eOpt, rIdx, nOpt);
+./src/Materials.cc:188:    // Use SiO2 as the base material and override RINDEX to match the bar.
+./src/Materials.cc:199:    mpt->AddProperty("RINDEX", e, r, n);
+./src/Materials.cc:210:    // Interfaz barra-aire: dielectric_dielectric polished.
+./src/Materials.cc:213:    // No se necesita MPT: el RINDEX de los materiales lo define todo.
+./src/Materials.cc:215:    surf->SetType(dielectric_dielectric);
+./src/Materials.cc:217:    surf->SetFinish(polished);
+./src/Materials.cc:224:    // A dielectric_metal surface with zero reflectivity lets Geant4 apply the
+./src/Materials.cc:227:    surf->SetType(dielectric_metal);
+./src/Materials.cc:229:    surf->SetFinish(polished);
+./src/Materials.cc:248:    mpt->AddProperty("REFLECTIVITY", energy, reflectivity);
+./src/Materials.cc:256:    // With RINDEX = 1.65, the critical angle for total internal reflection at
+./src/Materials.cc:266:    G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
+./src/Materials.cc:269:    mpt->AddProperty("RINDEX", e, r, n);
+./src/Materials.cc:287:    mpt->AddProperty("RINDEX",    e, r,   n);
+./src/Materials.cc:299:    // through G4LogicalBorderSurface(BarPV -> Reflector*PV).
+./src/Materials.cc:313:    surf->SetType(dielectric_metal);
+./src/Materials.cc:315:    surf->SetFinish(polished);
+./src/Materials.cc:331:    mpt->AddProperty("REFLECTIVITY", energy, reflectivity, n);
+./src/Materials.cc:340:    // exec22b: dielectric_dielectric + backpainted finish (surface-only Mylar model, no air gap).
+./src/Materials.cc:344:    //       from Geant4 Fresnel equations; world RINDEX=1.0 set in DetectorConstruction).
+./src/Materials.cc:345:    //   (2) angle < theta_c → non-TIR; REFLECTIVITY in the MPT gives the probability of
+./src/Materials.cc:347:    //       With REFLECTIVITY=0.95: 95% bounce back, 5% transmitted to world and lost.
+./src/Materials.cc:352:    (void)specularLobe;           // not used; unified polished is fully specular
+./src/Materials.cc:354:    surf->SetType(dielectric_dielectric);
+./src/Materials.cc:356:    surf->SetFinish(polishedbackpainted);
+./src/Materials.cc:359:    // REFLECTIVITY for non-TIR photons (Mylar/ESR substrate reflectance).
+./src/Materials.cc:366:    mpt->AddProperty("REFLECTIVITY", energy, refl);
+./src/Materials.cc:367:    mpt->AddProperty("RINDEX", energy, rindex);
+./tests/endonly_geometry_check.cc:3:#include "G4LogicalSkinSurface.hh"
+./src/DetectorConstruction.cc:9:#include "G4LogicalBorderSurface.hh"
+./src/DetectorConstruction.cc:10:#include "G4LogicalSkinSurface.hh"
+./src/DetectorConstruction.cc:289:    // Air RINDEX required for optical-photon tracking
+./src/DetectorConstruction.cc:292:        mpt->AddProperty("RINDEX", {2.0*eV, 4.0*eV}, {1.0, 1.0});
+./src/DetectorConstruction.cc:327:    fBarSkinSurface = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
+./src/DetectorConstruction.cc:342:            fSiPMSurfaces[leftId] = new G4LogicalBorderSurface(
+./src/DetectorConstruction.cc:349:            fSiPMSurfaces[rightId] = new G4LogicalBorderSurface(
+./src/DetectorConstruction.cc:369:            fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
+./audit/sslg4_properties_check.md:26:| `RINDEX` | `rIndex.txt:1-2` | 1.58 | 1.58 | pass |
+./presentation/endonly_mylar/main_corrected.tex:455:      All exceed $c/n = \VGroup$\ ($n=\RefrIdx$, flat RINDEX).
+./analysis/validate_group_velocity.py:7:RINDEX with no explicit GROUPVEL property set.
+./analysis/validate_group_velocity.py:45:N_EJ204 = 1.58            # RINDEX from Materials.cc line 41
+./analysis/validate_group_velocity.py:68:    print(f"  RINDEX           = {N_EJ204} (flat, no dispersion)")
+./audit/sipm_model_check.md:20:`EFFICIENCY(lambda)`. `REFLECTIVITY(lambda)` is zero. Geant4's optical boundary
+./analysis/exec22b_quick.py:376:        "finish_tested": "polishedbackpainted",
+./presentation/endonly_mylar/main.tex:449:      All exceed $c/n = \VGroup$\ ($n=\RefrIdx$, flat RINDEX).
+./presentation/endonly_mylar/build_deck.py:542:      All exceed $c/n = \VGroup$\ ($n=\RefrIdx$, flat RINDEX).
+./presentation/endonly_mylar/analysis_endonly_mylar.py:1468:        # Theoretical group velocity from flat RINDEX (no GROUPVEL property set in Materials.cc)
+./presentation/endonly_mylar/analysis_endonly_mylar.py:1470:        "group_velocity_note": "Geant4 computes v_g from d(omega)/dk on flat RINDEX=1.58; equals c/n=189.7 mm/ns",
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:113:    if(newValue == "polished")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:115:      fOptSurface->SetFinish(polished);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:117:    else if(newValue == "polishedfrontpainted")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:119:      fOptSurface->SetFinish(polishedfrontpainted);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:121:    else if(newValue == "polishedbackpainted")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:123:      fOptSurface->SetFinish(polishedbackpainted);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:133:    else if(newValue == "groundbackpainted")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:135:      fOptSurface->SetFinish(groundbackpainted);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:137:    else if(newValue == "polishedlumirrorair")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:139:      fOptSurface->SetFinish(polishedlumirrorair);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:141:    else if(newValue == "polishedlumirrorglue")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:143:      fOptSurface->SetFinish(polishedlumirrorglue);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:145:    else if(newValue == "polishedair")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:147:      fOptSurface->SetFinish(polishedair);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:149:    else if(newValue == "polishedteflonair")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:151:      fOptSurface->SetFinish(polishedteflonair);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:153:    else if(newValue == "polishedtioair")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:155:      fOptSurface->SetFinish(polishedtioair);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:157:    else if(newValue == "polishedtyvekair")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:159:      fOptSurface->SetFinish(polishedtyvekair);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:161:    else if(newValue == "polishedvm2000air")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:163:      fOptSurface->SetFinish(polishedvm2000air);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:165:    else if(newValue == "polishedvm2000glue")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:167:      fOptSurface->SetFinish(polishedvm2000glue);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:316:    if(newValue == "dielectric_metal")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:318:      fOptSurface->SetType(dielectric_metal);
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:320:    else if(newValue == "dielectric_dielectric")
+./src/external/OPSimTool/src/OpticalSurfaceMessenger.cc:322:      fOptSurface->SetType(dielectric_dielectric);
+./audit/exec10_veff_diagnosis.md:15:Alternative hypotheses to test in a future dedicated audit (not changed here): record optical-photon creation time and path length; inspect Geant4's effective GROUPVEL generated from the SSLG4 RINDEX table; and fit local distance ranges instead of forcing one line over 1--139 cm.
+./audit/exec10_veff_diagnosis.md:16:The source RINDEX table is constant at 1.58 from 200--800 nm, so the apparent FPT value above c/n is not explained by the documented phase index alone.
+./presentation/endonly_mylar/deck_values.json:325:  "group_velocity_note": "Geant4 computes v_g from d(omega)/dk on flat RINDEX=1.58; equals c/n=189.7 mm/ns",
+./src/external/OPSimTool/include/OpticalSurface.hh:17:                   G4OpticalSurfaceFinish finish = polished,
+./src/external/OPSimTool/include/OpticalSurface.hh:18:                   G4SurfaceType type            = dielectric_dielectric,
+./audit/exec08b_window_dip.md:78:  surface is `dielectric_metal`, with PDE as `EFFICIENCY` and zero
+./audit/exec08b_window_dip.md:79:  `REFLECTIVITY` (`src/Materials.cc:222-248`); a photon at that interface is
+./src/external/SSLG4/macros/oscnt/opsc-400.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./audit/exec07_phase1_report.md:43:| `RINDEX` | 1.58 |
+./src/external/SSLG4/macros/oscnt/opsc-300.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-201.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./audit/05_remediation_plan.md:209:  - `RINDEX == 1.58`
+./audit/05_remediation_plan.md:235://   RINDEX                     = 1.58
+./audit/05_remediation_plan.md:247://   RINDEX                     = 1.58
+./audit/02_physics_per_branch.md:10:  light yield 10000 ph/MeV, RINDEX 1.58.
+./audit/02_physics_per_branch.md:28:| `RINDEX` | 1.58 | `{1.58, 1.58, 1.58, 1.58}` | yes |
+./audit/02_physics_per_branch.md:66:| `G4LogicalSkinSurface` | absent | absent | yes |
+./audit/02_physics_per_branch.md:100:| `RINDEX` | 1.58 | `{1.58, 1.58, 1.58, 1.58}` | yes |
+./audit/02_physics_per_branch.md:155:| `RINDEX` | 1.58 | `{1.58, 1.58, 1.58, 1.58}` | yes |
+./src/external/SSLG4/macros/oscnt/opsc-200.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./audit/03_cross_branch_coherence.md:12:| EJ-200 RINDEX | 1.58 (`EJ200.pdf`) | yes | yes | yes |
+./src/external/SSLG4/macros/oscnt/opsc-133.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./audit/00_executive_summary.md:25:| EJ-200 RINDEX | 1.58 | OK | OK | OK |
+./src/external/SSLG4/macros/oscnt/opsc-132.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-131.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/make_beamer.py:891: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./analysis/exec07/make_beamer.py:1217: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-130.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-129.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-128.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec12_report_key.tex:1609: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-127.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec12_report_full.tex:1609: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-126.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-125.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-124.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec11_report_key.tex:433: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-123.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec10_veff_diagnosis.py:182:        "Alternative hypotheses to test in a future dedicated audit (not changed here): record optical-photon creation time and path length; inspect Geant4's effective GROUPVEL generated from the SSLG4 RINDEX table; and fit local distance ranges instead of forcing one line over 1--139 cm.",
+./analysis/exec07/exec10_veff_diagnosis.py:183:        "The source RINDEX table is constant at 1.58 from 200--800 nm, so the apparent FPT value above c/n is not explained by the documented phase index alone.",
+./src/external/SSLG4/macros/oscnt/opsc-122.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-121.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec10_report_key.tex:412: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-120.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec10_report_full.tex:940: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/opsc-119.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-118.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-117.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-116.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-106.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-202.mac:9:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-107.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-102.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-101.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-114.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-111.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec09_report_key.tex:369: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/olsc-112.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-115.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-113.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-105.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-201.mac:10:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-106.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-101.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-100.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-103.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-110.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-111.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-114.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./analysis/exec07/exec09_report_full.tex:897: \item MPT checks pass: RINDEX 1.58, yield 10400/MeV, decay 1.8 ns, rise 0.7 ns,
+./src/external/SSLG4/macros/oscnt/olsc-200.mac:9:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-104.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-203.mac:9:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-105.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-100.mac:14:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/oscnt/olsc-204.mac:8:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-102.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-109.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-110.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-113.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-107.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-108.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/opsc-112.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-104.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-109.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-3002.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/oscnt/olsc-103.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-2002.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/oscnt/olsc-108.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-2004.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-1001.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/iscnt/isc-2003.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-1000.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/iscnt/isc-3001.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/iscnt/isc-2000.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
+./src/external/SSLG4/macros/iscnt/isc-2001.mac:6:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt nm unitless
+./src/external/SSLG4/macros/iscnt/isc-3000.mac:7:/mpt/{scnt}/addProperty RINDEX {pathToDataDir}/rIndex.txt eV unitless
