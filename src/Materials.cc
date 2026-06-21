@@ -220,7 +220,8 @@ G4OpticalSurface* CreateBarSurface() {
 }
 
 // ---------------------------------------------------------------------------
-G4OpticalSurface* CreateSiPMSurface(const G4String& model) {
+G4OpticalSurface* CreateSiPMSurface(const G4String& model,
+                                    const G4String& efficiencyMode) {
     // A dielectric_metal surface with zero reflectivity lets Geant4 apply the
     // PDE exactly once through EFFICIENCY and invoke the attached SiPM SD.
     auto* surf = new G4OpticalSurface("SiPMSurface");
@@ -239,7 +240,13 @@ G4OpticalSurface* CreateSiPMSurface(const G4String& model) {
     reflectivity.reserve(curve.size());
     for (auto it = curve.rbegin(); it != curve.rend(); ++it) {
         energy.push_back(hc / (it->wavelengthNm * nm));
-        efficiency.push_back(it->efficiency);
+        if (efficiencyMode == "zero") {
+            efficiency.push_back(0.0);
+        } else if (efficiencyMode == "one") {
+            efficiency.push_back(1.0);
+        } else {
+            efficiency.push_back(it->efficiency);
+        }
         reflectivity.push_back(0.0);
     }
 
@@ -336,14 +343,15 @@ G4OpticalSurface* CreateBarSkinReflector() {
 // ---------------------------------------------------------------------------
 G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
                                        G4double specularLobe,
-                                       G4double sigmaAlpha) {
+                                       G4double sigmaAlpha,
+                                       const G4String& finish) {
     // EXEC_23: this surface is only placed on the AirGap -> Mylar reflector
     // boundary. The scintillator-air boundary is dielectric_dielectric polished
     // and has no artificial REFLECTIVITY.
     auto* surf = new G4OpticalSurface("AirReflectorSurface");
     surf->SetType(dielectric_metal);
     surf->SetModel(unified);
-    surf->SetFinish(polished);
+    surf->SetFinish(finish == "ground" ? ground : polished);
     surf->SetSigmaAlpha(sigmaAlpha);
 
     const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};

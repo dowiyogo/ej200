@@ -1,0 +1,4 @@
+config,total_npe,npe_5ns,npe_10ns,npe_20ns,npe_50ns,t0_reference
+R050_polished,1782.4,1455.85,1741.45,1781.1,1782.4,first END PE per event
+R095_polished,1931.25,1561.4,1885.65,1930.2,1931.25,first END PE per event
+rough_polished_s0p1,1799.6,1457.95,1757.1,1798.6,1799.6,first END PE per event

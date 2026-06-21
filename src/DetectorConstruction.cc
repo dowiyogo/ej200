@@ -29,7 +29,6 @@
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
 static constexpr G4double kBarHalfY   =  30.0 * mm;  // 60 mm width
 static constexpr G4double kBarHalfZ   =   5.0 * mm;  // 10 mm height
-static constexpr G4double kAirGapThickness = 0.10 * mm;
 static constexpr G4double kReflectorThickness = 0.05 * mm;
 
 // End SiPM (on ±X face): thin slab, 6×6 mm² active area
@@ -122,6 +121,22 @@ DetectorConstruction::DetectorConstruction() {
         "Set unified-model microfacet roughness sigma alpha.");
     sigmaCmd.SetParameterName("angle", false);
     sigmaCmd.SetRange("angle >= 0.0");
+
+    auto& finishCmd = fMylarMessenger->DeclareMethod(
+        "finish", &DetectorConstruction::SetMylarFinish,
+        "Set reflector finish: polished or ground.");
+    finishCmd.SetParameterName("finish", false);
+
+    auto& gapCmd = fMylarMessenger->DeclareMethodWithUnit(
+        "airGap", "mm", &DetectorConstruction::SetMylarAirGap,
+        "Set explicit air-gap thickness around the long faces.");
+    gapCmd.SetParameterName("length", false);
+    gapCmd.SetRange("length > 0.0");
+
+    auto& sipmEffCmd = fGeometryMessenger->DeclareMethod(
+        "sipmEfficiencyMode", &DetectorConstruction::SetSiPMEfficiencyMode,
+        "Set SiPM surface EFFICIENCY mode: nominal, zero, or one.");
+    sipmEffCmd.SetParameterName("mode", false);
 }
 
 DetectorConstruction::~DetectorConstruction() {
@@ -162,6 +177,21 @@ void DetectorConstruction::SetSiPMModel(G4String model) {
     }
     if (canonical == fSiPMModel) return;
     fSiPMModel = canonical;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetSiPMEfficiencyMode(G4String value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    if (value != "nominal" && value != "zero" && value != "one") {
+        G4cerr << "[DetectorConstruction] Unknown /ship/geom/sipmEfficiencyMode \""
+               << value << "\". Use nominal, zero, or one.\n";
+        return;
+    }
+    if (value == fSiPMEfficiencyMode) return;
+    fSiPMEfficiencyMode = value;
     if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
         G4RunManager::GetRunManager()->ReinitializeGeometry();
     }
@@ -240,6 +270,33 @@ void DetectorConstruction::SetMylarSigmaAlpha(G4double value) {
     }
 }
 
+void DetectorConstruction::SetMylarFinish(G4String value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    if (value != "polished" && value != "ground") {
+        G4cerr << "[DetectorConstruction] Unknown /ship/geom/mylar/finish \""
+               << value << "\". Use polished or ground.\n";
+        return;
+    }
+    if (value == fMylarFinish) return;
+    fMylarFinish = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
+void DetectorConstruction::SetMylarAirGap(G4double value) {
+    if (value <= 0.0) {
+        G4cerr << "[DetectorConstruction] /ship/geom/mylar/airGap must be > 0.\n";
+        return;
+    }
+    if (value == fMylarAirGap) return;
+    fMylarAirGap = value;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit) {
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
+    }
+}
+
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
 void DetectorConstruction::SetEdgeWrapMode(G4String mode) {
     G4cout << "[DetectorConstruction] /det/edgeWrap " << mode
@@ -312,7 +369,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     }
 
     // SiPM detection surface: selected PDE as EFFICIENCY and zero reflectivity.
-    auto* sipmSurface = Materials::CreateSiPMSurface(fSiPMModel);
+    auto* sipmSurface = Materials::CreateSiPMSurface(fSiPMModel, fSiPMEfficiencyMode);
 
     // ── World volume ─────────────────────────────────────────────────────────
     auto* worldSolid = new G4Box("WorldSolid", 1.6*m, 0.25*m, 0.25*m);
@@ -342,7 +399,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     if (fTopSurface == "mylar") {
         auto* scintAirSurface = Materials::CreateBarSurface();
         auto* airReflectorSurface = Materials::CreateMylarReflector(
-            fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha);
+            fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha, fMylarFinish);
 
         struct PanelSpec {
             G4String key;
@@ -353,7 +410,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
             G4ThreeVector reflectorCenter;
         };
 
-        const G4double g = kAirGapThickness;
+        const G4double g = fMylarAirGap;
         const G4double m = kReflectorThickness;
         const PanelSpec panels[] = {
             {"+Y", "YPlus",

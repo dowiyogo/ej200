@@ -37,6 +37,9 @@ class G4GenericMessenger;
 //   /ship/geom/mylar/reflectivity <0..1>
 //   /ship/geom/mylar/specularLobe <0..1>
 //   /ship/geom/mylar/sigmaAlpha <angle>
+//   /ship/geom/mylar/finish polished|ground
+//   /ship/geom/mylar/airGap <length>
+//   /ship/geom/sipmEfficiencyMode nominal|zero|one
 //   /det/edgeWrap mylar|air|black  — accepted for legacy macros; no-op
 //
 // Border surfaces: BarPV → each SiPM physical volume.
@@ -90,9 +93,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     void     SetMylarReflectivity(G4double value);
     void     SetMylarSpecularLobe(G4double value);
     void     SetMylarSigmaAlpha(G4double value);
+    void     SetMylarFinish(G4String value);
+    void     SetMylarAirGap(G4double value);
+    void     SetSiPMEfficiencyMode(G4String value);
     G4double GetMylarReflectivity() const { return fMylarReflectivity; }
     G4double GetMylarSpecularLobe() const { return fMylarSpecularLobe; }
     G4double GetMylarSigmaAlpha() const { return fMylarSigmaAlpha; }
+    G4String GetMylarFinish() const { return fMylarFinish; }
+    G4double GetMylarAirGap() const { return fMylarAirGap; }
+    G4String GetSiPMEfficiencyMode() const { return fSiPMEfficiencyMode; }
 
     // Legacy edge-wrap command — retained as a no-op for old macros
     void SetEdgeWrapMode(G4String mode);
@@ -111,9 +120,12 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4String           fSiPMModel = "AFBR-S4N66P024M";
     G4String           fReadoutConfiguration = "End";
     G4String           fTopSurface = "mylar";
+    G4String           fSiPMEfficiencyMode = "nominal";
     G4double           fMylarReflectivity = 0.95;
     G4double           fMylarSpecularLobe = 1.0;
     G4double           fMylarSigmaAlpha = 0.1 * CLHEP::deg;
+    G4String           fMylarFinish = "polished";
+    G4double           fMylarAirGap = 0.10 * CLHEP::mm;
     G4Material*         fActiveScintillator = nullptr;
 
     G4GenericMessenger* fMessenger = nullptr;

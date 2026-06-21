@@ -1,0 +1,38 @@
+{
+  "exec_id": "EXEC_25",
+  "verdict": "COMPLETADO-CON-FLAGS",
+  "pde_semantics": {
+    "pass": true,
+    "zero_recorded_over_entering": 0.0,
+    "one_recorded_over_entering": 1.0184481823114486,
+    "nominal_recorded_over_entering": 0.625833467547109,
+    "nominal_mean_pde_branch": 0.616417760038989,
+    "zero_recorded_hits": 0,
+    "one_recorded_hits": 33786,
+    "nominal_recorded_hits": 19429
+  },
+  "exec23_reference": {
+    "npe_end_center": 2035.26,
+    "collection_eff_raw": 0.097205
+  },
+  "best_candidate": {
+    "exists": false,
+    "name": null,
+    "reflectivity": null,
+    "finish": null,
+    "sigma_alpha": null,
+    "air_gap_mm": null,
+    "npe_end_center": null,
+    "sigma_end_center_ps": null,
+    "runtime_100ev_s": null
+  },
+  "n_configs_run": 18,
+  "flags": [
+    "no_candidate_in_20_to_300_pe_range",
+    "high_collection_configs_remain",
+    "prompt_collection_excess",
+    "reflectivity_not_primary_driver",
+    "gap_thickness_not_primary_driver"
+  ],
+  "next_step": "Implement partial-contact or non-ideal wrapping model before scan."
+}

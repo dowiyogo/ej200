@@ -40,7 +40,8 @@ G4OpticalSurface* CreateBarSkinReflector();
 // The unified-model remainder after specularLobe is Lambertian.
 G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
                                        G4double specularLobe,
-                                       G4double sigmaAlpha);
+                                       G4double sigmaAlpha,
+                                       const G4String& finish);
 
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"
@@ -59,6 +60,7 @@ G4OpticalSurface* CreateBarSurface();
 
 // SiPM optical surface. The selected model's PDE file is installed as
 // EFFICIENCY(lambda), with REFLECTIVITY(lambda)=0.
-G4OpticalSurface* CreateSiPMSurface(const G4String& model);
+G4OpticalSurface* CreateSiPMSurface(const G4String& model,
+                                    const G4String& efficiencyMode = "nominal");
 
 } // namespace Materials
