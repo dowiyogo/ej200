@@ -1,0 +1,8 @@
+{
+  "bar": {"length_mm": 1400.0, "width_mm": 60.0, "thickness_mm": 10.0},
+  "air_gap": {"thickness_mm": 0.10},
+  "reflector": {"thickness_mm": 0.05},
+  "implementation": "four long lateral panels; END faces open",
+  "air_shell_outer_mm": {"length": 1400.0, "width": 60.2, "thickness": 10.2},
+  "reflector_outer_mm": {"length": 1400.0, "width": 60.3, "thickness": 10.3}
+}

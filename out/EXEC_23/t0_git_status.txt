@@ -1,0 +1,25 @@
+branch=exec23-explicit-airgap
+
+ M presentation/endonly_mylar/main.tex
+ M src/Materials.cc
+ M src/SteppingAction.cc
+?? EXEC_22b_REPORT.md
+?? analysis/bootstrap_attenuation
+?? analysis/exec22b_quick.py
+?? out/
+?? presentation/endonly_mylar/main.fdb_latexmk
+?? presentation/endonly_mylar/main.fls
+?? presentation/endonly_mylar/main.synctex.gz
+?? presentation/endonly_mylar/main_corrected.synctex.gz
+?? presentation/endonly_mylar/main_corrected.tex
+
+9b8361f fix(optics): add REFLECTIVITY=0.95 to dielectric_dielectric surface for Mylar model
+af5ddb7 fix(optics): dielectric_metal→dielectric_dielectric enabling TIR on bar skin surface
+6942ee6 fix(optics): replace reflector volumes with bar skin surface
+7347db6 audit: add FINAL_PHYSICS_AUDIT.md, C++/OpenMP bootstrap skeleton, group-velocity validator
+8b65786 verify: extend checks — range sensitivity, budget closure, 1-R, σ_eq, no 'same attenuation', M2 bootstrap, v_app
+20653d8 regen: regenerate End-only Mylar deck from corrected pipeline; all verify_deck checks pass
+1ef8ddf deck: fix physics framework, NPE display, photon budget, velocity/timing interpretation
+6e128af analysis: constrained M2 fit, AIC/BIC, bootstrap, photon-budget and group-velocity corrections
+
+EXEC_23-pre-20260621_132508

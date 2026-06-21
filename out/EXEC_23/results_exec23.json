@@ -1,0 +1,90 @@
+{
+  "exec_id": "EXEC_23",
+  "verdict": "COMPLETED_WITH_FLAGS",
+  "mini_validation_strength": "strong",
+  "geometry": {
+    "air_gap_mm": 0.1,
+    "reflector_thickness_mm": 0.05,
+    "scintillator_air_surface": "dielectric_dielectric/unified/polished/no_REFLECTIVITY",
+    "air_reflector_surface": "dielectric_metal/unified/polished/REFLECTIVITY=0.95"
+  },
+  "speed_gate": {
+    "pass": true,
+    "by_material": {
+      "G4_AIR": {
+        "n_steps": 44824618,
+        "max_ratio": 1.0,
+        "superluminal_fraction": 0.0
+      },
+      "opsc-101": {
+        "n_steps": 39427292,
+        "max_ratio": 1.0,
+        "superluminal_fraction": 0.0
+      },
+      "G4_SILICON_DIOXIDE": {
+        "n_steps": 1592,
+        "max_ratio": 1.0,
+        "superluminal_fraction": 0.0
+      },
+      "G4_MYLAR": {
+        "n_steps": 6141620,
+        "max_ratio": 1.0,
+        "superluminal_fraction": 0.0
+      }
+    },
+    "max_ratio_scintillator": 1.0,
+    "superluminal_fraction_scintillator": 0.0,
+    "volumes_without_rindex": []
+  },
+  "center_result": {
+    "npe_exec21": 0.37,
+    "npe_exec22b": 0.763,
+    "npe_exec23": 2035.26,
+    "sigma_exec23_ps": 60.12037334711076,
+    "paired_fraction_exec23": 1.0,
+    "n_events_exec23": 50,
+    "note": "50-event diagnostic sample after 500-event center run exceeded practical wall-clock; not promoted to baseline."
+  },
+  "points": [
+    {
+      "x_mm": 0.0,
+      "n_events": 50,
+      "npe_end": 2035.26,
+      "npe_l": 1014.48,
+      "npe_r": 1020.78,
+      "paired_fraction": 1.0,
+      "n_paired": 50,
+      "sigma_end_ps": 60.12037334711076,
+      "sigma_boot_ps": 10338.410154890804,
+      "fit_used": true
+    }
+  ],
+  "history_summary": {
+    "n_detected": 101763,
+    "fraction_visited_air_gap": 0.9837956821241512,
+    "fraction_visited_reflector_boundary": 0.03748906773581754,
+    "mean_scint_air_reflections": 53.22429566738402,
+    "mean_air_reflector_reflections": 0.8809390446429449,
+    "mean_total_internal_reflections": 52.986615960614365
+  },
+  "boundary_categories": 78,
+  "scan11": {
+    "ran": false,
+    "n_positions": 0,
+    "sigma_end_ps_max": null,
+    "sigma_end_ps_center": null,
+    "v_eff_cm_per_ns": null,
+    "sigma_x_cm_center": null
+  },
+  "endtop_mini": {
+    "ran": false,
+    "pass": null,
+    "npe_end_center": null,
+    "speed_gate_pass": null
+  },
+  "flags": [
+    "npe_high_concern",
+    "formal_500_event_center_run_interrupted_after_10min",
+    "scan11_not_run_due_flags"
+  ]
+}
