@@ -1,0 +1,14 @@
+{
+  "detected_photons": 101763,
+  "generated_photons": 1046886,
+  "detected_fraction_raw": 0.09720542637880342,
+  "total_optical_steps": 90395122,
+  "steps_per_generated_photon_mean": 86.34667193944708,
+  "detected_time_ns_mean": 6.116994982195667,
+  "detected_time_ns_p95": 10.858942469729998,
+  "detected_time_ns_max": 42.0582481868,
+  "detected_tir_mean": 52.986615960614365,
+  "detected_scint_air_reflection_mean": 53.22429566738402,
+  "long_lived_photon_concern": false,
+  "note": "Per-track lifetime is available for detected photons; total steps are aggregate over all generated optical photons."
+}

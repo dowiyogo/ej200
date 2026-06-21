@@ -1,0 +1,2 @@
+trial,applied,reason,npe_raw,npe_unique,npe_pde_reweighted_diagnostic,paired_fraction,sigma_END_ps,speed_gate
+diagnostic_only,no,"No duplicate hits; PDE appears already applied by Geant4 SiPM surface EFFICIENCY, so no simulation fix was applied in EXEC_24.",2035.26,2035.26,1254.2245658179143,1.0,60.12,PASS

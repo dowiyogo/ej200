@@ -1,0 +1,7 @@
+{
+  "bar_end_face_area_mm2": 600.0,
+  "active_sipm_area_per_end_mm2": 288.0,
+  "coverage_per_end": 0.48,
+  "n_sipm_per_end": 8,
+  "note": "Geometry uses 8 independent 6x6 mm EndSiPMLV volumes per end, not a full-face detector."
+}

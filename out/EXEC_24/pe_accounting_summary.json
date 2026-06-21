@@ -1,0 +1,19 @@
+{
+  "events": 50,
+  "raw_rows_total": 101763,
+  "raw_rows_per_event_mean": 2035.26,
+  "unique_tracks_per_event_mean": 2035.26,
+  "sum_pde_per_event_mean": 1254.2245658179143,
+  "sum_pde_left_per_event_mean": 625.2792241047703,
+  "sum_pde_right_per_event_mean": 628.9453417131261,
+  "duplicates_per_track_mean": 1.0,
+  "duplicates_per_track_max": 1.0,
+  "n_multihit_event_track_gid_total": 0,
+  "max_hits_same_event_track_gid": 1,
+  "bar_to_sipm_entering_total": 163638,
+  "bar_to_sipm_entering_per_event": 3272.76,
+  "detected_rows_per_bar_to_sipm_entering": 0.6218787812121879,
+  "mean_pde_on_recorded_rows": 0.616247833602537,
+  "pde_application_assessment": "SiPMSD does not do an explicit Bernoulli draw; the SiPM optical surface defines EFFICIENCY=PDE. The Bar->SiPM census versus rows is compatible with Geant4 surface-level PDE gating.",
+  "sum_pde_interpretation": "sum_pde is kept as a diagnostic reweighting of already recorded rows; it is not used as a second PE estimator when surface EFFICIENCY is active."
+}

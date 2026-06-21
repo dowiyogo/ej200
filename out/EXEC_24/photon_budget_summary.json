@@ -1,0 +1,10 @@
+{
+  "light_yield_per_mev": 10400.0,
+  "generated_total": 1046886,
+  "generated_per_event": 20937.72,
+  "edep_mev_estimated_per_event": 2.0132423076923076,
+  "collection_eff_raw_mean": 0.09720542637880342,
+  "collection_eff_unique_mean": 0.09720542637880342,
+  "collection_eff_pde_mean": 0.05990263342034922,
+  "gate": "collection_eff_moderate_concern"
+}

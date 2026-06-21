@@ -1,0 +1,68 @@
+{
+  "exec_id": "EXEC_24",
+  "verdict": "COMPLETADO-CON-FLAGS",
+  "pe_accounting": {
+    "events": 50,
+    "raw_rows_total": 101763,
+    "raw_rows_per_event_mean": 2035.26,
+    "unique_tracks_per_event_mean": 2035.26,
+    "sum_pde_per_event_mean": 1254.2245658179143,
+    "sum_pde_left_per_event_mean": 625.2792241047703,
+    "sum_pde_right_per_event_mean": 628.9453417131261,
+    "duplicates_per_track_mean": 1.0,
+    "duplicates_per_track_max": 1.0,
+    "n_multihit_event_track_gid_total": 0,
+    "max_hits_same_event_track_gid": 1,
+    "bar_to_sipm_entering_total": 163638,
+    "bar_to_sipm_entering_per_event": 3272.76,
+    "detected_rows_per_bar_to_sipm_entering": 0.6218787812121879,
+    "mean_pde_on_recorded_rows": 0.616247833602537,
+    "pde_application_assessment": "SiPMSD does not do an explicit Bernoulli draw; the SiPM optical surface defines EFFICIENCY=PDE. The Bar->SiPM census versus rows is compatible with Geant4 surface-level PDE gating.",
+    "sum_pde_interpretation": "sum_pde is kept as a diagnostic reweighting of already recorded rows; it is not used as a second PE estimator when surface EFFICIENCY is active."
+  },
+  "photon_budget": {
+    "light_yield_per_mev": 10400.0,
+    "generated_total": 1046886,
+    "generated_per_event": 20937.72,
+    "edep_mev_estimated_per_event": 2.0132423076923076,
+    "collection_eff_raw_mean": 0.09720542637880342,
+    "collection_eff_unique_mean": 0.09720542637880342,
+    "collection_eff_pde_mean": 0.05990263342034922,
+    "gate": "collection_eff_moderate_concern"
+  },
+  "sipm_geometry": {
+    "bar_end_face_area_mm2": 600.0,
+    "active_sipm_area_per_end_mm2": 288.0,
+    "coverage_per_end": 0.48,
+    "n_sipm_per_end": 8,
+    "note": "Geometry uses 8 independent 6x6 mm EndSiPMLV volumes per end, not a full-face detector."
+  },
+  "optical_lifetime": {
+    "detected_photons": 101763,
+    "generated_photons": 1046886,
+    "detected_fraction_raw": 0.09720542637880342,
+    "total_optical_steps": 90395122,
+    "steps_per_generated_photon_mean": 86.34667193944708,
+    "detected_time_ns_mean": 6.116994982195667,
+    "detected_time_ns_p95": 10.858942469729998,
+    "detected_time_ns_max": 42.0582481868,
+    "detected_tir_mean": 52.986615960614365,
+    "detected_scint_air_reflection_mean": 53.22429566738402,
+    "long_lived_photon_concern": false,
+    "note": "Per-track lifetime is available for detected photons; total steps are aggregate over all generated optical photons."
+  },
+  "corrections_applied": [],
+  "final_quick_result": {
+    "x_mm": 0,
+    "events": 50,
+    "npe_raw": 2035.26,
+    "npe_unique": 2035.26,
+    "npe_pde_reweighted_diagnostic": 1254.2245658179143,
+    "npe_pde_expected": 2035.26
+  },
+  "flags": [
+    "npe_raw_high_concern",
+    "sum_pde_reweight_high_concern",
+    "collection_eff_moderate_concern"
+  ]
+}
