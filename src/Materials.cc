@@ -291,43 +291,39 @@ G4Material* CreateBlackTape() {
 
 // ---------------------------------------------------------------------------
 G4OpticalSurface* CreateBarSkinReflector() {
-    // Reflective surface applied to explicit foil panels around the EJ-200 bar.
+    // exec22-endtop-optfix: ported from exec21-optfix (ej200_endonly/src/Materials.cc).
+    // Root cause (EXEC_21): dielectric_metal surface eliminates TIR, causing
+    // ~300x photon deficit at END SiPMs (0.37 PE/event vs ~40 PE in real detector).
     //
-    // BarPV is a direct WorldLV daughter in fix/geometry-bar-in-world. SiPMs
-    // are BarLV daughters, while non-SiPM faces see separate reflector panels
-    // through G4LogicalBorderSurface(BarPV -> Reflector*PV).
+    // Fix: dielectric_dielectric + REFLECTIVITY for two-tier reflection model:
+    //   (1) angle > theta_c = arcsin(1/1.58) = 39.3° → TIR, 100% reflection
+    //       (automatic from Geant4 Fresnel equations with RINDEX bar=1.58, world=1.0).
+    //   (2) angle < theta_c → non-TIR; REFLECTIVITY=0.95 models Mylar/ESR substrate.
     //
-    // Spectral reflectivity tuning points: wavelength descending -> energy ascending.
-    // Source: Hecht, "Optics", 5th ed.; typical values for Al mirror at visible.
-    // Central value at EJ-200 emission peak (425 nm): R = 0.88.
-    // Betancourt 2020 (NIM A 979) uses Al foil + black plastic film.
-    // Tuning: R=0.85 (aged/imperfect), R=0.90 (standard),
-    // R=0.95 (aluminized Mylar / high-quality reflector).
-    // R=0.98 (Tyvek-like high-reflectivity fallback).
-    // The explicit-panel geometry requires R=0.98 to keep combined end-SiPM
-    // yield above the acceptance threshold; the conservative Al-foil curve
-    // gives ~6 ph/evt per end side in this geometry.
+    // No air-gap volume → no photon transport in vacuum → no superluminal risk
+    // (verified by T2 velocity audit in EXEC_22: zero photons with v > c/n).
+    //
+    // Note: the "surface-only" approach (no explicit Mylar volume) provides
+    // partial recovery of non-TIR photons. Full fix may require explicit geometry.
+    // This port is the minimal change to unblock END-timing analysis.
+    //
+    // IMPORTANT: the EndTop campaign data (EXEC_16-20) was simulated with the OLD
+    // dielectric_metal surface. Those datasets need re-simulation to be fully valid.
+    // Use this build only for new campaigns. Command to re-simulate (DO NOT run now):
+    //   [see EXEC_22_REPORT.md §T4 for the full command]
 
     auto* surf = new G4OpticalSurface("BarSkinReflector");
-    surf->SetType(dielectric_metal);
+    surf->SetType(dielectric_dielectric);
     surf->SetModel(unified);
     surf->SetFinish(polished);
     surf->SetSigmaAlpha(0.0);
 
-    const G4double hc = 1239.84193 * eV * nm;
-
-    const G4int n = 6;
-    G4double wl_nm[n] = {800.0, 600.0, 500.0, 425.0, 400.0, 350.0};
-    G4double refl[n]  = {0.98,  0.98,  0.98,  0.98,  0.98,  0.98};
-
-    G4double energy[n], reflectivity[n];
-    for (G4int i = 0; i < n; ++i) {
-        energy[i]       = hc / (wl_nm[i] * nm);  // ascending energy
-        reflectivity[i] = refl[i];
-    }
+    // REFLECTIVITY for non-TIR photons. Applied over [1.5, 6.5] eV (covers EJ-204 emission).
+    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+    const std::vector<G4double> refl   = {0.95, 0.95};
 
     auto* mpt = new G4MaterialPropertiesTable();
-    mpt->AddProperty("REFLECTIVITY", energy, reflectivity, n);
+    mpt->AddProperty("REFLECTIVITY", energy, refl);
     surf->SetMaterialPropertiesTable(mpt);
     return surf;
 }
