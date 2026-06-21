@@ -1,0 +1,36 @@
+{
+  "exec_id": "EXEC_27",
+  "verdict": "COMPLETADO-CON-FLAGS",
+  "estimator_diagnosis": {
+    "tavg_edge_fails": true,
+    "wmean_edge_passes": true,
+    "gls_edge_passes": true,
+    "main_issue": "t_avg estimator at asymmetric edge light sharing"
+  },
+  "sipm_angle_audit": {
+    "ran": false,
+    "edge_oblique_fraction": null,
+    "center_oblique_fraction": null,
+    "reason_not_run": "T1 gate showed weighted/GLS estimators rescue all edge points; no SiPM coupling change justified."
+  },
+  "coupling_model": {
+    "used": false,
+    "candidate_exists": false,
+    "model": null,
+    "parameters": null
+  },
+  "candidate": {
+    "exists": true,
+    "npe_center": 112.41,
+    "npe_edge_near": 2888.82,
+    "sigma_center_ps": 91.85085615713345,
+    "sigma_edge_ps": 2.4327401315558697,
+    "estimator": "wmean_static"
+  },
+  "flags": [
+    "tavg_edge_failure",
+    "weighted_estimators_rescue_edges",
+    "gls_residual_rescues_edges"
+  ],
+  "next_step": "EXEC_28 scan11 END-only with calibrated weighted/GLS estimators; do not add SiPM coupling yet."
+}
