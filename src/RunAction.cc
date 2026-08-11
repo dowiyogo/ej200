@@ -10,6 +10,7 @@
 #include "G4AnalysisManager.hh"
 #include "G4Material.hh"
 #include "G4MaterialPropertiesTable.hh"
+#include "G4LogicalSkinSurface.hh"
 #include "G4OpticalParameters.hh"
 #include "G4OpticalSurface.hh"
 #include "G4PhysicsVector.hh"
@@ -62,23 +63,26 @@ void LogReadoutConfiguration() {
         G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     if (detector == nullptr) return;
 
-    const auto& reflectorSurfaces = detector->GetReflectorSurfaces();
+    // --- Resolve BarSkin reflector (replaces old per-face border surfaces) ---
     G4double reflectivity = 0.0;
-    if (!reflectorSurfaces.empty()) {
-        auto* optical = dynamic_cast<G4OpticalSurface*>(
-            reflectorSurfaces.begin()->second->GetSurfaceProperty());
-        auto* mpt = optical ? optical->GetMaterialPropertiesTable() : nullptr;
-        auto* property = mpt ? mpt->GetProperty("REFLECTIVITY") : nullptr;
-        if (property != nullptr && property->GetVectorLength() > 0) {
-            reflectivity = (*property)[0];
+    G4String skinLabel = "OPEN/UNDEFINED";
+    const auto& sipmSurfaces = detector->GetSiPMSurfaces();
+    if (!sipmSurfaces.empty()) {
+        auto* barPV = sipmSurfaces.begin()->second->GetVolume1();
+        auto* barLV = barPV ? barPV->GetLogicalVolume() : nullptr;
+        auto* skin  = barLV ? G4LogicalSkinSurface::GetSurface(barLV) : nullptr;
+        if (skin != nullptr) {
+            skinLabel = "reflective/BarSkin";
+            auto* optical = dynamic_cast<G4OpticalSurface*>(skin->GetSurfaceProperty());
+            auto* mpt  = optical ? optical->GetMaterialPropertiesTable() : nullptr;
+            auto* prop = mpt ? mpt->GetProperty("REFLECTIVITY") : nullptr;
+            if (prop != nullptr && prop->GetVectorLength() > 0)
+                reflectivity = (*prop)[0];
         }
     }
 
-    const auto faceState = [&reflectorSurfaces](const G4String& face,
-                                                G4bool instrumented) {
-        if (instrumented) return G4String("instrumented");
-        if (reflectorSurfaces.count(face) != 0) return G4String("wrapped");
-        return G4String("OPEN/UNDEFINED");
+    const auto faceState = [&skinLabel](G4bool instrumented) -> G4String {
+        return instrumented ? G4String("instrumented") : skinLabel;
     };
 
     G4cout
@@ -86,12 +90,12 @@ void LogReadoutConfiguration() {
         << "\n  Readout configuration : " << detector->GetReadoutConfiguration()
         << "\n  SiPM model            : " << detector->GetSiPMModel()
         << "\n  SiPM PDE file         : " << SiPMModel::DataFilePath(detector->GetSiPMModel())
-        << "\n  -X face               : " << faceState("-X", detector->IsEndInstrumented())
-        << "\n  +X face               : " << faceState("+X", detector->IsEndInstrumented())
-        << "\n  -Y face               : " << faceState("-Y", false)
-        << "\n  +Y face               : " << faceState("+Y", detector->IsTopInstrumented())
-        << "\n  -Z face               : " << faceState("-Z", false)
-        << "\n  +Z face               : " << faceState("+Z", false)
+        << "\n  -X face               : " << faceState(detector->IsEndInstrumented())
+        << "\n  +X face               : " << faceState(detector->IsEndInstrumented())
+        << "\n  -Y face               : " << faceState(false)
+        << "\n  +Y face               : " << faceState(detector->IsTopInstrumented())
+        << "\n  -Z face               : " << faceState(false)
+        << "\n  +Z face               : " << faceState(false)
         << "\n  Reflector R           : " << reflectivity
         << "\n  Active End SiPMs      : " << detector->GetNActiveEndSiPMs()
         << " (L=" << detector->GetNActiveEndSiPMs() / 2

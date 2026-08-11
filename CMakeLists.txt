@@ -4,8 +4,14 @@ project(ej200_bar_sim VERSION 2.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(Geant4 REQUIRED ui_all vis_all OPTIONAL_COMPONENTS gdml)
 include(${Geant4_USE_FILE})
+
+if(Geant4_gdml_FOUND)
+    message(STATUS "Geant4 GDML encontrado: export_endtop_gdml habilitado.")
+else()
+    message(STATUS "Geant4 GDML no disponible en esta instalacion: export_endtop_gdml desactivado.")
+endif()
 
 add_subdirectory(src/external/OPSimTool)
 add_subdirectory(src/external/SSLG4)
@@ -46,17 +52,18 @@ configure_ej200_target(readout_config_check)
 
 add_test(NAME readout_config_check COMMAND readout_config_check)
 
-add_executable(export_endtop_gdml tests/export_endtop_gdml.cc ${sources} ${headers})
-configure_ej200_target(export_endtop_gdml)
-
-add_test(NAME export_endtop_gdml
-         COMMAND export_endtop_gdml ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
-
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
-add_test(NAME endtop_gdml_check
-         COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_gdml.py
-                 ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
-set_tests_properties(endtop_gdml_check PROPERTIES DEPENDS export_endtop_gdml)
+
+if(Geant4_gdml_FOUND)
+    add_executable(export_endtop_gdml tests/export_endtop_gdml.cc ${sources} ${headers})
+    configure_ej200_target(export_endtop_gdml)
+    add_test(NAME export_endtop_gdml
+             COMMAND export_endtop_gdml ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
+    add_test(NAME endtop_gdml_check
+             COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_gdml.py
+                     ${CMAKE_CURRENT_BINARY_DIR}/endtop_geometry.gdml)
+    set_tests_properties(endtop_gdml_check PROPERTIES DEPENDS export_endtop_gdml)
+endif()
 
 add_test(NAME endtop_balance_smoke
          COMMAND ${Python3_EXECUTABLE} ${PROJECT_SOURCE_DIR}/tests/check_endtop_balance.py

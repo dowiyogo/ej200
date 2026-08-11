@@ -44,6 +44,11 @@ ej200_bar_sim
 *.bak
 results/
 
+# Simulation run outputs (large ROOT data)
+runs/
+output/
+out/
+
 # Diagnostic script outputs
 diag/yield_audit_report.txt
 diag/sim_output.log
@@ -99,3 +104,4 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
+build_t0minidaq/
