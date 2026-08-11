@@ -130,7 +130,8 @@ EOF
     (
         cd "$work"
         "$sim" -t "$threads" -m run.mac
-    ) > "$log" 2>&1
+    ) 2>&1 | tee "$log"
+    status=${PIPESTATUS[0]}
 
     candidate="$work/photon_hits_run000.root"
     [[ -s "$candidate" ]] || { echo "missing ROOT output for x=$x; retained in $work" >&2; exit 1; }
