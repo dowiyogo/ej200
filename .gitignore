@@ -99,3 +99,9 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# t0minidaq build and output directories
+build_t0minidaq/
+output/
+runs/
+*.root

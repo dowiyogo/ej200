@@ -35,7 +35,7 @@ EVENTS=3000
 # ── Pre-flight checks ─────────────────────────────────────────────────────────
 if [[ ! -x "$SIM" ]]; then
     echo "[ERROR] Simulator not found: $SIM" >&2
-    echo "        Build with: mkdir build && cd build && cmake .. && make -j 16" >&2
+    echo "        Build with: mkdir build && cd build && cmake .. && make -j 24" >&2
     exit 1
 fi
 
@@ -124,7 +124,7 @@ for mac in "${sorted_macros[@]}"; do
 
     (
         cd "$work"
-        "$SIM" -m "$mac" > "$pos_log.tmp" 2>&1
+        "$SIM" -m "$mac" 2>&1 | tee "$pos_log.tmp"
     )
     mv "$pos_log.tmp" "$pos_log"
 
