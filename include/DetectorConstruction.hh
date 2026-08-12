@@ -94,4 +94,5 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
 
     std::map<G4int, G4LogicalBorderSurface*> fSiPMSurfaces;
     std::map<G4String, G4LogicalBorderSurface*> fReflectorSurfaces;
+    std::map<G4String, G4LogicalBorderSurface*> fScintillatorAirSurfaces;
 };

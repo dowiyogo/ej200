@@ -264,12 +264,43 @@ G4Material* CreateMylar() {
     G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
     G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
 
+    // EXEC_23 port: ABSLENGTH = 1 µm makes the Mylar volume effectively opaque,
+    // so photons that enter the Mylar volume are absorbed there rather than
+    // transmitted; the air→Mylar surface with dielectric_metal + REFLECTIVITY=0.95
+    // handles the reflective bounce before photons enter the bulk.
+    G4double abs[n] = {1.0*um, 1.0*um, 1.0*um, 1.0*um};
+
     auto* mpt = new G4MaterialPropertiesTable();
-    mpt->AddProperty("RINDEX", e, r, n);
-    // Mylar is transparent at optical wavelengths; omit ABSLENGTH so G4 does
-    // not apply bulk absorption inside the 25 µm film.
+    mpt->AddProperty("RINDEX",    e, r,   n);
+    mpt->AddProperty("ABSLENGTH", e, abs, n);
     mat->SetMaterialPropertiesTable(mpt);
     return mat;
+}
+
+// ---------------------------------------------------------------------------
+G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
+                                       G4double specularLobe,
+                                       G4double sigmaAlpha) {
+    // EXEC_23 port: placed on the AirGap → Mylar reflector boundary.
+    // dielectric_metal surface: photons are not transmitted, REFLECTIVITY
+    // controls the fraction bounced back into the air gap.
+    auto* surf = new G4OpticalSurface("AirReflectorSurface");
+    surf->SetType(dielectric_metal);
+    surf->SetModel(unified);
+    surf->SetFinish(polished);
+    surf->SetSigmaAlpha(sigmaAlpha);
+
+    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+    const std::vector<G4double> refl   = {reflectivity, reflectivity};
+    const std::vector<G4double> eff    = {0.0, 0.0};
+    const std::vector<G4double> lobe   = {specularLobe, specularLobe};
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("REFLECTIVITY",        energy, refl);
+    mpt->AddProperty("EFFICIENCY",          energy, eff);
+    mpt->AddProperty("SPECULARLOBECONSTANT", energy, lobe);
+    surf->SetMaterialPropertiesTable(mpt);
+    return surf;
 }
 
 // ---------------------------------------------------------------------------

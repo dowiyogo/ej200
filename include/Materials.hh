@@ -32,9 +32,14 @@ G4Material* CreateEJ230();
 // Fresnel equations without requiring a G4OpticalSurface at the air boundary.
 G4Material* CreateMylar();
 
-// Reflective wrapping surface for explicit reflector panels.
-// Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
+// Reflective wrapping surface for explicit reflector panels (skin surface).
 G4OpticalSurface* CreateBarSkinReflector();
+
+// Air-gap → Mylar reflector surface for explicit air-gap geometry (EXEC_23 port).
+// dielectric_metal with R=0.95 to model Mylar substrate reflectance.
+G4OpticalSurface* CreateMylarReflector(G4double reflectivity = 0.95,
+                                       G4double specularLobe = 0.0,
+                                       G4double sigmaAlpha   = 0.0);
 
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"
