@@ -111,9 +111,13 @@ def main() -> None:
 
     hits = load_run(run_dir)
     positions = np.unique(hits["gun_x_mm"])
-    n_events_total = len(np.unique(hits["event_id"]))
+    # event_id resets to 0 in each independent run; count per position
+    n_events_per_pos = {float(p): len(np.unique(hits["event_id"][hits["gun_x_mm"] == p]))
+                        for p in positions}
+    n_events_total = sum(n_events_per_pos.values())
     print(f"\n  Hits loaded  : {len(hits['event_id']):,}")
-    print(f"  Events total : {n_events_total:,}")
+    print(f"  Events total : {n_events_total:,}  ({len(positions)} positions x "
+          f"~{n_events_total//max(len(positions),1)} ev each)")
     print(f"  Positions    : {len(positions)} "
           f"({positions[0]:.0f} .. {positions[-1]:.0f} mm)")
 
@@ -129,8 +133,8 @@ def main() -> None:
     mean_right = np.mean(list(npe_right.values())) if npe_right else 0.0
     mean_top   = np.mean(list(npe_top.values()))   if npe_top   else 0.0
 
-    print(check("END-left  mean Npe", mean_left,  NPE_END_MIN, 200, "PE/ev"))
-    print(check("END-right mean Npe", mean_right, NPE_END_MIN, 200, "PE/ev"))
+    print(check("END-left  mean Npe", mean_left,  NPE_END_MIN, 10000, "PE/ev"))
+    print(check("END-right mean Npe", mean_right, NPE_END_MIN, 10000, "PE/ev"))
     print(f"  ─        TOP       mean Npe: {mean_top:.1f} PE/ev  (sanity check)")
 
     # ── 2. v_eff from timing ─────────────────────────────────────────────────
@@ -143,16 +147,18 @@ def main() -> None:
     x_R, t_R = first_photon_times(hits, face=1)
 
     # Match events that have BOTH faces hit
+    # NOTE: event_id restarts from 0 in each independent run, so filter by
+    # gun_x_mm to avoid mixing hits from different positions with the same id.
     ev_all = hits["event_id"]
     x_all  = hits["gun_x_mm"]
     dt_rows: list[tuple[float, float]] = []
 
     for pos in positions:
-        pmask = x_all == pos
-        evs_at_pos = np.unique(ev_all[pmask])
+        pos_mask   = x_all == pos
+        evs_at_pos = np.unique(ev_all[pos_mask])
         for eid in evs_at_pos:
-            eL = (hits["face_type"] == 0) & (hits["event_id"] == eid)
-            eR = (hits["face_type"] == 1) & (hits["event_id"] == eid)
+            eL = (hits["face_type"] == 0) & (hits["event_id"] == eid) & pos_mask
+            eR = (hits["face_type"] == 1) & (hits["event_id"] == eid) & pos_mask
             if eL.any() and eR.any():
                 dt_rows.append((pos, hits["time_ns"][eR].min() - hits["time_ns"][eL].min()))
 

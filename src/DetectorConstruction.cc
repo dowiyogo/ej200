@@ -219,14 +219,23 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
         }
     }
     G4Material* barMat      = fActiveScintillator;
-    G4Material* airGapMat   = worldMat;
+    G4Material* airGapMat    = worldMat;
     G4Material* reflectorMat = Materials::CreateMylar();
-    G4Material* sipmMat     = Materials::CreateSiPMCoupling();
+    G4Material* sipmMat      = Materials::CreateSiPMCoupling();
 
-    // Air RINDEX required for optical-photon tracking
+    // Air RINDEX + GROUPVEL for optical-photon tracking.
+    // GROUPVEL is set to c/n_bar (18.97 cm/ns) instead of c to eliminate the
+    // G4Transportation velocity-aliasing bug: after each TIR bounce at the
+    // bar/air-gap interface, G4Step::InitializeStep picks up the air-touchable
+    // velocity for the first post-bounce bar step. Forcing GROUPVEL_air = GROUPVEL_bar
+    // makes the aliased value correct. Photons that escape to WorldLV are killed
+    // immediately by SteppingAction, so this is physically transparent.
+    // See GROUP_VELOCITY_AUDIT.md, §12 "Alternative fix".
     {
         auto* mpt = new G4MaterialPropertiesTable();
-        mpt->AddProperty("RINDEX", {2.0*eV, 4.0*eV}, {1.0, 1.0});
+        mpt->AddProperty("RINDEX",    {2.0*eV, 4.0*eV}, {1.0,  1.0});
+        const G4double vBarGroup = CLHEP::c_light / 1.58;
+        mpt->AddProperty("GROUPVEL", {2.0*eV, 4.0*eV}, {vBarGroup, vBarGroup});
         worldMat->SetMaterialPropertiesTable(mpt);
     }
 
@@ -269,6 +278,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     // Two-tier reflection model per panel:
     //   bar→air : dielectric_dielectric polished (CreateBarSurface) → TIR for θ>39.3°
     //   air→Mylar: dielectric_metal R=0.95 (CreateMylarReflector) → absorbs or reflects
+    //
+    // Note: GROUPVEL_air is set = GROUPVEL_bar above to prevent the G4Transportation
+    // velocity-aliasing bug. See GROUP_VELOCITY_AUDIT.md §12.
     {
         auto* scintAirSurface     = Materials::CreateBarSurface();
         auto* airReflectorSurface = Materials::CreateMylarReflector();
