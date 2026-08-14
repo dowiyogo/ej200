@@ -29,17 +29,18 @@ def main() -> int:
     )
     log = completed.stdout
     generated = value(log, "Scint photons generated")
-    sipm_entering = value(log, "Bar -> SiPM (entering)")
+    escaped = value(log, "Bar -> World (escaped)")
     detected = value(log, "Total photons detected")
     if generated <= 0 or detected <= 0:
         raise SystemExit("smoke run generated no scintillation light or detected no photons")
-    if sipm_entering <= 0:
+    escape_fraction = escaped / generated
+    if escape_fraction >= 0.95:
         raise SystemExit(
-            f"no photons entered any SiPM ({sipm_entering}) — reflective skin surface may not be active"
+            f"wrapped-face escape fraction {escape_fraction:.3f} is compatible with an open face"
         )
     print(
         "endtop_balance_smoke PASSED: "
-        f"sipm_entering={sipm_entering}, detected={detected}"
+        f"escaped/generated={escape_fraction:.4f}, detected={detected}"
     )
     return 0
 
