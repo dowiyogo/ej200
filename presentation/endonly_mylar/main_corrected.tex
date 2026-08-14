@@ -54,6 +54,10 @@
 % Attenuation -- M2 (constrained double-exp)
 \newcommand{\LamShortL}{\ensuremath{9.5\pm0.4}\,cm}
 \newcommand{\LamLongL}{\ensuremath{43.0\pm0.9}\,cm}
+% Bootstrap intervals for M2 (median with 16--84% range)
+\newcommand{\LamShortBoot}{\ensuremath{9.5^{+1.4}_{-0.7}}\,cm}
+\newcommand{\LamLongBoot}{\ensuremath{43.3^{+2.1}_{-1.6}}\,cm}
+\newcommand{\LamTailBoot}{\ensuremath{41.8^{+1.5}_{-1.3}}\,cm}
 \newcommand{\ChiMtwo}{95}
 % Attenuation -- M4 (tail slope)
 \newcommand{\LamTailL}{\ensuremath{41.7\pm0.9}\,cm}
@@ -127,8 +131,8 @@
     \column{0.43\textwidth}
     \begin{block}{This study}
       \textbf{End-only + Mylar} = extreme limit.
-      Photons either exit to an end SiPM or are absorbed
-      (surface or bulk) after multiple reflections.
+      Photons may reach an end SiPM, escape the instrumented optical system,
+      or be absorbed in the scintillator bulk or at optical boundaries.
     \end{block}
     \begin{alertblock}{\small No TB counterpart}
       \small This configuration has \alert{no direct test-beam counterpart}
@@ -243,8 +247,8 @@
       Items (2) and (3) disagree by $\approx3.6\times$.\\
       $\chi^2/\mathrm{ndf}=\ChiSingleL$: catastrophic.
       \medskip
-      \textbf{Cause:} superposition of a prompt component
-      and a long-range recirculated contribution.
+      \textbf{Consistent with:} a rapidly varying near-end contribution
+      plus a more slowly varying long-distance photon population.
     \end{alertblock}
   \end{columns}
 \end{frame}
@@ -261,7 +265,7 @@
       \medskip
 
       $\lambda_p = \LamPromptL$ (prompt scale)\\
-      $C = \CFloorL$ (recirculated floor)\\
+      $C = \CFloorL$ (finite-range offset)\\
       $\chi^2/\mathrm{ndf} = \ChiExpoffL$
     \end{block}
     \begin{block}{M4 (empirical tail slope)}
@@ -308,16 +312,16 @@
 \end{frame}
 
 % ---- FRAME 8: Far-end light yield -------------------------------------------
-\begin{frame}{Far-end light yield: where reflector quality matters}
+\begin{frame}{Far-end light yield: where optical boundaries matter}
   \begin{columns}[T]
     \column{0.55\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_far_end_yield.png}
     \column{0.43\textwidth}
-    \begin{block}{Center-of-bar NPE ($|x|\leq100$\,mm, $d\geq60$\,cm)}
+    \begin{block}{Central light-yield metric (see source CSV definition)}
       \small
       \begin{tabular}{lrr}
         \toprule
-        Config & $R$ & NPE \\
+        Config & $R$ & NPE metric \\
         \midrule
         End-only+Mylar & \MylarR & \NPETailMylar\,PE \\
         EndTop & \EndtopR & \NPETailET\,PE \\
@@ -332,16 +336,17 @@
       and many reflections.
       At Mylar $R=\MylarR$: loss per interaction
       $1-R=\MylarLoss$ (10\%).
-      Accumulated over many bounces, this strongly suppresses
+      Cumulative surface losses are expected to become important
+      after many interactions and are consistent with the suppressed
       long-distance light collection.
       \medskip
-      \textbf{Reflector quality controls far-end yield amplitude.}
+      \textbf{The observed ratio is a configuration-level optical-boundary result.}
     \end{alertblock}
   \end{columns}
 \end{frame}
 
 % ---- FRAME 9: Apples-to-apples EndTop (manual \tiny preserved) ---------------
-\begin{frame}{Apples-to-apples: End-only+Mylar vs.\ EndTop (end SiPMs only)}
+\begin{frame}{End-only+Mylar vs.\ EndTop (end SiPMs only)}
   \begin{columns}[T]
     \column{0.65\textwidth}
     \includegraphics[width=\textwidth]{figures/fig_endtop_comparison.png}
@@ -367,10 +372,11 @@
       or exclude model error.
     \end{block}
     \begin{alertblock}{\small Key conclusion}
-      \small
+      \tiny
       NPE amplitude at center differs $2.5\times$.
-      The tail slope is not the discriminating observable;
-      the \textbf{absolute light yield} is.
+      Within this selected range, the empirical tail slope provides little
+      discrimination; the \textbf{absolute end-SiPM yield} shows the larger
+      configuration-level difference.
     \end{alertblock}
   \end{columns}
 \end{frame}
@@ -411,13 +417,13 @@
       $t_{50}$ is systematically later than FPT;
       offset grows with distance.
     \end{block}
-    \begin{alertblock}{\small Population-size effect}
+    \begin{alertblock}{\small Population dependence}
       \small
-      Near-end positions have more photons; the statistical
-      minimum of a larger sample tends to be earlier,
-      steepening the FPT slope beyond $c/n$.
-      The reverse is true far from the SiPM.
-      This is a sampling effect, not superluminal transport.
+      FPT and $t_{50}$ sample different parts of a position-dependent
+      arrival-time distribution. Their slopes combine photon-path
+      selection, photon-population size, thresholding, and estimator
+      definition. Neither slope is a direct measurement of photon
+      group velocity.
     \end{alertblock}
   \end{columns}
 \end{frame}
@@ -447,9 +453,9 @@
       These are \textbf{estimator-dependent apparent responses},
       not direct measurements of photon group velocity.
       All exceed $c/n = \VGroup$\ ($n=\RefrIdx$, flat RINDEX).
-      Reflects position-dependent photon-population and
-      estimator biases (reflections, path-length distributions,
-      threshold selection).
+      The present inclusive distributions do not isolate a unique
+      mechanism for this difference; candidate effects include photon-path
+      selection, reflections, thresholding, and estimator definition.
     \end{alertblock}
   \end{columns}
 \end{frame}
@@ -515,15 +521,16 @@
     \end{block}
     \begin{alertblock}{\small Loss note}
       \small Mylar loss \emph{per interaction}: $1-R=\MylarLoss$.
-      Cumulative over many bounces dominates far-end yield.
-      Surface absorption and bulk ABSLENGTH absorption are
-      \textbf{not} separately resolved in this census.
+      Cumulative surface losses are expected to become important
+      after many interactions. Surface absorption and bulk ABSLENGTH
+      absorption are \textbf{not} separately resolved in this census.
     \end{alertblock}
   \end{columns}
 \end{frame}
 
 % ---- FRAME 15: Summary -------------------------------------------------------
 \begin{frame}{Summary}
+\small
   \begin{columns}[T]
     \column{0.55\textwidth}
     \begin{block}{Key findings}
@@ -535,14 +542,16 @@
               system-dependent empirical parameters.
         \item \textbf{Single-exp fails:} $\chi^2/\mathrm{ndf}=\ChiSingleL$,
               $N_0$ off by $\approx3.6\times$.
-              M2 bootstrap-stable: $\lambda_s\approx\LamShortL$,
-              $\lambda_l\approx\LamLongL$.
+              M2 is numerically bootstrap-stable but not exact
+              ($\chi^2/\mathrm{ndf}\approx\ChiMtwo$):
+              $\lambda_s=\LamShortBoot$,
+              $\lambda_l=\LamLongBoot$.
         \item \textbf{Far-end NPE ($d\geq60$\,cm):}
               Mylar ($R=\MylarR$): $\NPETailMylar$\,PE;
               EndTop ($R=\EndtopR$): $\NPETailET$\,PE
-              ($\approx2.5\times$ more due to better reflector).
+              ($\approx2.5\times$ configuration-level difference).
         \item \textbf{Estimator velocities} all exceed $c/n=\VGroup$:
-              estimator-population biases, not photon speed.
+              estimator-dependent apparent responses, not photon speed.
         \item $\sigma_{\rm eq}=\SigEqAtZero$ (center), intrinsic only.
               \textbf{Not a 50\,ps performance claim.}
       \end{itemize}
@@ -601,7 +610,7 @@ Geant4 version & 11.4.0 &  & log \\
 \begin{frame}{Appendix B: $\sigma_{\rm eq}$ per-position summary}
   \centering\small
   \begin{tabular}{rrrrl}\toprule
-$x$ (mm) & $N_\mathrm{trig}$ & Trig.~eff. & $\sigma_\mathrm{single}$ (ps) & Err. (ps) \\
+$x$ (mm) & $N_\mathrm{trig}$ & Trig.~eff. & $\sigma_\mathrm{eq}$ (ps) & Err. (ps) \\
 \midrule
 $-690$ & 1911 & 0.956 & 406.2 & 26.6 \\
 $-400$ & 2000 & 1.000 & 210.6 & 11.2 \\
@@ -625,6 +634,8 @@ Model & Side & $N_0$ or $A$ (PE) & $\lambda$ (cm) & $C$ (PE) & $\chi^2/\mathrm{n
 \midrule
 Single-exp & Left & $811\pm106$ & $32.2\pm1.9$ & --- & 2321 \\
 Exp+offset & Left & $1502\pm146$ & $20.6\pm1.1$ & $19.2\pm2.0$ & 954 \\
+Double-exp short & Left & --- & $9.5\pm0.4$ & --- & 95 \\
+Double-exp long & Left & --- & $43.0\pm0.9$ & --- & 95 \\
 $\lambda_\mathrm{tail}$ ($d>40$\,cm) & Left & $429\pm21$ & $41.7\pm0.9$ & --- & 96.5 \\
 Single-exp & Right & $853\pm110$ & $31.4\pm1.8$ & --- & 2475 \\
 Exp+offset & Right & $1501\pm142$ & $20.5\pm1.1$ & $19.5\pm2.1$ & 1023 \\
@@ -636,6 +647,7 @@ $\lambda_\mathrm{tail}$ ($d>40$\,cm) & Right & $423\pm21$ & $42.0\pm0.9$ & --- &
   Weighted fits (per-point SEM).
   Errors scaled by $\sqrt{\chi^2/\mathrm{ndf}}$ when $>1$.
   M4 tail: $d>\DTail$\,cm.
+  M2 amplitudes are not shown in this compact deck table.
   All $\chi^2/\mathrm{ndf}\gg1$: empirical approximations only.
 \end{frame}
 
@@ -670,8 +682,10 @@ $\lambda_\mathrm{tail}$ ($d>40$\,cm) & Right & $423\pm21$ & $42.0\pm0.9$ & --- &
   \end{tabular}
   \par\medskip
   \small
-  200 pairs-bootstrap replicas, seed 42.
-  M2 failure rate: 0\%.
+  200 bootstrap replicas, seed 42. The resampling unit should be
+  checked in the analysis audit before interpreting these as event-level
+  uncertainties. M2 failure rate: 0\%. Numerical stability does not imply
+  model adequacy ($\chi^2/\mathrm{ndf}\approx\ChiMtwo$).
   $\lambda_l^{\rm M2}$ is consistent with $\lambda_{\rm tail}^{\rm M4}$.
 \end{frame}
 
@@ -699,20 +713,19 @@ $\lambda_\mathrm{tail}$ ($d>40$\,cm) & Right & $423\pm21$ & $42.0\pm0.9$ & --- &
       \end{tabular}
     \end{block}
     \column{0.48\textwidth}
-    \begin{exampleblock}{Why all exceed $c/n$}
+    \begin{exampleblock}{Why these are apparent responses}
       \small
       Slope-derived velocities are estimator-dependent.
       \medskip
       SUM4 $\Delta t$: $v_{\rm app}=2/|d\Delta t/dx|$.
-      Photons travel longer actual paths via reflections,
-      delaying both SUM4 times; net $\Delta t$ slope
-      is shallower than a direct-path signal would give.
-      \medskip
-      FPT: More photons at near-end make the statistical
-      minimum earlier; the slope steepens, inflating $v_{\rm app}$.
+      FPT, $t_{50}$, and SUM4 sample different parts of a
+      position-dependent photon ensemble. Their slopes combine
+      photon-path selection, reflections, thresholding, and estimator
+      definition. The present inclusive distributions do not isolate a
+      unique mechanism for $v_{\rm app}>c/n$.
       \medskip
       An axial single-photon injection test (no reflections,
-      known $d$) is needed to validate Geant4's $v_g$.
+      known $d$) is needed to validate Geant4's $v_g$ independently.
     \end{exampleblock}
   \end{columns}
 \end{frame}
@@ -732,7 +745,8 @@ $\lambda_\mathrm{tail}$ ($d>40$\,cm) & Right & $423\pm21$ & $42.0\pm0.9$ & --- &
     \item \textbf{SiPM naming:} \texttt{\SiPMModelPDE} used only for the
           PDE curve; physical device is \textbf{\SiPMModel}.
     \item \textbf{Photon budget:} surface+bulk absorption not separately
-          resolved in the boundary census.
+          resolved in the boundary census; individual Mylar and bulk
+          contributions are therefore not quantified here.
     \item \textbf{Rayleigh:} active ($\lambda_{\rm Rayl}\approx150$\,cm
           at 408\,nm, $\propto\lambda^4$); constitutes an additional
           scattering mechanism beyond ABSLENGTH.
