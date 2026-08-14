@@ -58,7 +58,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     auto* pv = post->GetPhysicalVolume();
     if (pv == nullptr ||
         (pv->GetLogicalVolume()->GetName() != "EndSiPMLV" &&
-         pv->GetLogicalVolume()->GetName() != "TopSiPMLV")) {
+         pv->GetLogicalVolume()->GetName() != "TopSiPMLV" &&
+         pv->GetLogicalVolume()->GetName() != "SiPMLV")) {
         pv = track->GetVolume();
     }
     if (pv == nullptr) {

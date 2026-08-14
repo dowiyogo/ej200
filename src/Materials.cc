@@ -183,6 +183,53 @@ G4Material* CreateEJ230() {
 }
 
 // ---------------------------------------------------------------------------
+G4Material* CreateEJ228() {
+    auto* mat = FindOrBuildPVT("EJ-228");
+
+    // Same emission spectrum as EJ-230 (both peak at 391 nm, PVT base).
+    // Differs in decay time: 1.4 ns vs 1.5 ns for EJ-230 — fastest PVT.
+    const G4int nEm = 29;
+    G4double wl_nm[nEm] = {
+        500, 490, 480, 470, 460, 450, 440, 430, 425, 420,
+        415, 410, 405, 400, 395, 391, 388, 385, 382, 380,
+        378, 375, 372, 370, 365, 360, 355, 350, 345
+    };
+    G4double relOut[nEm] = {
+        0.005, 0.010, 0.020, 0.040, 0.070, 0.115, 0.180, 0.280, 0.350, 0.420,
+        0.500, 0.620, 0.750, 0.900, 0.980, 1.000, 0.985, 0.960, 0.900, 0.830,
+        0.720, 0.560, 0.380, 0.260, 0.120, 0.050, 0.020, 0.006, 0.000
+    };
+    G4double photonE[nEm], spectrum[nEm];
+    BuildSpectrum(wl_nm, relOut, nEm, photonE, spectrum);
+    AddScintillatorProperties(
+        mat, photonE, spectrum, nEm, 110.0 * cm, 391.0 * nm,
+        9700.0 / MeV, 0.5 * ns, 1.4 * ns);
+    return mat;
+}
+
+// ---------------------------------------------------------------------------
+G4OpticalSurface* CreateVikuitiSurface() {
+    // Vikuiti 3M ESR (Enhanced Specular Reflector): R ≥ 0.98, specular.
+    // dielectric_metal + polished gives perfect specular reflection for
+    // all photons that survive the R=0.98 absorption probability.
+    auto* surf = new G4OpticalSurface("VikuitiSurface");
+    surf->SetType(dielectric_metal);
+    surf->SetModel(unified);
+    surf->SetFinish(polished);
+    surf->SetSigmaAlpha(0.0);
+
+    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+    const std::vector<G4double> refl   = {0.98, 0.98};
+    const std::vector<G4double> eff    = {0.0,  0.0};
+
+    auto* mpt = new G4MaterialPropertiesTable();
+    mpt->AddProperty("REFLECTIVITY", energy, refl);
+    mpt->AddProperty("EFFICIENCY",   energy, eff);
+    surf->SetMaterialPropertiesTable(mpt);
+    return surf;
+}
+
+// ---------------------------------------------------------------------------
 G4Material* CreateSiPMCoupling() {
     // Use SiO2 as the base material and override RINDEX to match the bar.
     // This models a perfect optical-coupling compound between bar and SiPM,

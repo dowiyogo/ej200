@@ -7,31 +7,21 @@ class G4Event;
 class G4GenericMessenger;
 
 // --------------------------------------------------------------------------
-// PrimaryGeneratorAction
+// PrimaryGeneratorAction — muon gun for EJ-228 cylinder
 //
-// Default: vertical mu- through the bar centre (X=0, angle=0°).
-//   Position : (0, 0, +60 mm) — 55 mm above the +Z bar face
-//   Direction: (0, 0, -1)     — straight down
-//   Energy   : 1 GeV
+// Default: horizontal mu- through the cylinder centre from +X.
+//   Position : (+80 mm, 0, 0)
+//   Direction: (−1, 0, 0)        — along −X through the mantle
+//   Energy   : 1 GeV             — minimum-ionizing muon
 //
-// ── New UI commands (available after /run/initialize) ──────────────────────
+// ── UI commands ────────────────────────────────────────────────────────────
+//  /muon/gunY <y> mm    Transverse Y position scan (default 0 mm).
+//  /muon/gunZ <z> mm    Axial Z position scan along cylinder axis (default 0 mm).
+//                       Range: within ±kCylHalfH = ±12.5 mm.
+//  /muon/angle <deg>    Tilt from −X direction in the XZ plane.
+//                       0° = horizontal; positive = tilts toward +Z.
 //
-//  /muon/angle <deg>
-//      Incidence angle θ from the -Z vertical axis, in the XZ plane.
-//      Direction becomes (sinθ, 0, -cosθ).
-//      Positive θ tilts toward +X.  Example: /muon/angle 30 deg
-//
-//  /muon/midpointSiPMs <i> <j>
-//      Place the gun X at the geometric midpoint between top SiPMs i and j
-//      (0-based indices, e.g. "34 35" for the central 24 mm gap).
-//      Reads the fixed EXEC_07 top positions from DetectorConstruction.
-//
-//  /muon/gunX <x> mm
-//      Set gun X position directly in mm. This clears midpoint mode.
-//
-// The standard /gun/* commands still work for particle type, energy, and
-// position. If no /muon/gunX or /muon/midpointSiPMs override is active, the
-// current /gun/position X coordinate is preserved.
+// The standard /gun/particle and /gun/energy commands also work.
 // --------------------------------------------------------------------------
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
   public:
@@ -40,18 +30,15 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction {
 
     void GeneratePrimaries(G4Event*) override;
 
-    // Called by messenger commands
-    void SetAngleDeg      (G4double deg);
-    void SetMidpointSiPMs (G4String indices);  // format: "i j"
-    void SetGunXmm        (G4double xMm);
+    void SetGunYmm   (G4double y);
+    void SetGunZmm   (G4double z);
+    void SetAngleDeg (G4double deg);
 
   private:
     G4ParticleGun       fGun;
-    G4GenericMessenger* fMessenger   = nullptr;
+    G4GenericMessenger* fMessenger = nullptr;
 
-    G4double fAngleDeg      = 0.0;    // incidence angle [degrees]
-    G4double fGunX          = 0.0;    // direct X override [G4 internal = mm]
-    G4bool   fUseDirectGunX = false;  // true after /muon/gunX
-    G4int    fMidSiPM1      = -1;     // >= 0 → use midpoint mode
-    G4int    fMidSiPM2   = -1;
+    G4double fGunYmm   = 0.0;
+    G4double fGunZmm   = 0.0;
+    G4double fAngleDeg = 0.0;
 };

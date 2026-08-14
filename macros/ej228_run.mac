@@ -1,0 +1,25 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# EJ-228 cylinder run macro
+# Geometry: 25 mm diameter × 25 mm height, Vikuiti 3M ESR mantle (R=0.98)
+# Muon: 1 GeV mu- entering from +X through the cylinder centre
+# ─────────────────────────────────────────────────────────────────────────────
+
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+/run/initialize
+
+# ── Physics ──────────────────────────────────────────────────────────────────
+/process/optical/verbose 0
+/process/optical/scintillation/setFiniteRiseTime true
+
+# ── Gun: horizontal muon through cylinder centre ──────────────────────────────
+/gun/particle mu-
+/gun/energy 1.0 GeV
+/muon/gunY 0 mm
+/muon/gunZ 0 mm
+/muon/angle 0
+
+# ── Run ──────────────────────────────────────────────────────────────────────
+/run/beamOn 1000

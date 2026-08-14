@@ -26,6 +26,17 @@ G4Material* CreateEJ200();
 // rise=0.5 ns, decay=1.5 ns, bulk attenuation length=120 cm.
 G4Material* CreateEJ230();
 
+// EJ-228 ultra-fast plastic scintillator (PVT base).
+// Emission peak 391 nm, n=1.58, yield=9700 ph/MeV,
+// rise=0.5 ns, decay=1.4 ns, bulk attenuation length=110 cm.
+// Fastest commercially available PVT scintillator.
+G4Material* CreateEJ228();
+
+// Vikuiti 3M ESR reflector surface (specular, R=0.98).
+// dielectric_metal | polished | no sigma_alpha.
+// Use as G4LogicalBorderSurface(airGapPV → vikuitiPV).
+G4OpticalSurface* CreateVikuitiSurface();
+
 // Mylar wrapping film (G4_MYLAR base).
 // RINDEX = 1.65 across the optical range.  Used as a thin physical-volume
 // wrapper around the scintillator bar to provide reflection via TIR and
