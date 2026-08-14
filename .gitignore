@@ -106,3 +106,15 @@ build_t0minidaq/
 output/
 runs/
 *.root
+
+# Simulation output directory (large ROOT data, EXEC_22b-28)
+out/
+
+# LaTeX build artifacts
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.aux
+*.nav
+*.snm
+*.toc
