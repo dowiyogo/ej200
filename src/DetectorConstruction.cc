@@ -69,7 +69,7 @@ DetectorConstruction::DetectorConstruction() {
     auto& matCmd = fMessenger->DeclareMethod(
         "scintillator",
         &DetectorConstruction::SetScintillatorCode,
-        "Set SSLG4 organic scintillator: OPSC-101 (EJ-204, default) or OPSC-100 (EJ-200).");
+        "Set SSLG4 organic scintillator: OPSC-106 (EJ-230, default), OPSC-101 (EJ-204), or OPSC-100 (EJ-200).");
     matCmd.SetParameterName("code", false);
 
     auto& legacyMatCmd = fMessenger->DeclareMethod(
@@ -110,10 +110,11 @@ void DetectorConstruction::SetScintillatorCode(G4String code) {
                code.end());
     if (code == "EJ204") code = "OPSC-101";
     if (code == "EJ200") code = "OPSC-100";
+    if (code == "EJ230") code = "OPSC-106";
 
-    if (code != "OPSC-101" && code != "OPSC-100") {
+    if (code != "OPSC-101" && code != "OPSC-100" && code != "OPSC-106") {
         G4cerr << "[DetectorConstruction] Unknown /det/scintillator \""
-               << code << "\". Use OPSC-101 or OPSC-100.\n";
+               << code << "\". Use OPSC-106 (EJ-230), OPSC-101 (EJ-204), or OPSC-100 (EJ-200).\n";
         return;
     }
     if (code == fScintCode) return;
@@ -212,6 +213,37 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                 mpt->RemoveConstProperty("SCINTILLATIONRISETIME1");
                 mpt->AddConstProperty("SCINTILLATIONRISETIME1", 0.7 * ns);
                 G4cout << "[DetectorConstruction] OPSC-101 rise time overridden to 0.7 ns."
+                       << G4endl;
+            }
+        }
+    }
+    if (fScintCode == "OPSC-106") {
+        // EJ-230 datasheet (Rev. Aug 2023): attenuation=120 cm, rise time=0.5 ns.
+        auto* mpt = fActiveScintillator->GetMaterialPropertiesTable();
+        if (mpt != nullptr) {
+            auto* attenuation = mpt->GetProperty("ABSLENGTH");
+            G4bool overrideAttenuation =
+                attenuation == nullptr || attenuation->GetVectorLength() == 0;
+            if (!overrideAttenuation) {
+                for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
+                    if (std::abs((*attenuation)[i] - 120.0 * cm) > 1.0e-9 * cm)
+                        overrideAttenuation = true;
+                }
+            }
+            if (overrideAttenuation) {
+                mpt->RemoveProperty("ABSLENGTH");
+                mpt->AddProperty("ABSLENGTH",
+                                 {1.5 * eV, 6.5 * eV},
+                                 {120.0 * cm, 120.0 * cm});
+                G4cout << "[DetectorConstruction] OPSC-106 ABSLENGTH overridden to 120 cm."
+                       << G4endl;
+            }
+            if (!mpt->ConstPropertyExists("SCINTILLATIONRISETIME1") ||
+                std::abs(mpt->GetConstProperty("SCINTILLATIONRISETIME1") -
+                         0.5 * ns) > 1.0e-12 * ns) {
+                mpt->RemoveConstProperty("SCINTILLATIONRISETIME1");
+                mpt->AddConstProperty("SCINTILLATIONRISETIME1", 0.5 * ns);
+                G4cout << "[DetectorConstruction] OPSC-106 rise time overridden to 0.5 ns."
                        << G4endl;
             }
         }

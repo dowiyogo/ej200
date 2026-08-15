@@ -84,7 +84,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction {
     G4LogicalVolume*   fTopSiPMLV  = nullptr;
     G4VPhysicalVolume* fBarPhys          = nullptr;
 
-    G4String           fScintCode = "OPSC-101";
+    G4String           fScintCode = "OPSC-106";  // EJ-230 default for this branch
     G4String           fSiPMModel = "AFBR-S4N66P024M";
     G4String           fReadoutConfiguration = "End";
     G4Material*         fActiveScintillator = nullptr;
