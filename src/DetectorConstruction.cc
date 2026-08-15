@@ -288,12 +288,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fSiPMSurfaces.clear();
     fReflectorSurfaces.clear();
 
-    // TIR-only: polished dielectric-dielectric surface on all bar faces.
-    // Geant4 Fresnel equations give 100% TIR for theta > arcsin(1/1.58) = 39.3 deg.
-    // Photons escaping TIR (theta < 39.3 deg) transmit into WorldLV air and are lost.
-    // No reflective coating — lateral faces are bare air.
+    // Vikuiti 3M ESR reflector: dielectric_metal + R=0.98, covers all bar faces.
+    // Reflects 98% of photons at all angles (no TIR threshold).
     auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV,
-                                              Materials::CreateBarSurface());
+                                              Materials::CreateBarSkinReflector());
     (void)barSkin;
 
     if (IsEndInstrumented()) {
