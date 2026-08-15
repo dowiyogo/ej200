@@ -61,6 +61,7 @@ analysis/*.svg
 
 # Si también generas figuras en la raíz
 *.pdf
+!beamer/*.pdf
 *.png
 *.jpg
 *.jpeg
