@@ -76,28 +76,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto* airPV    = new G4PVPlacement(nullptr, {}, airLV, "AirGapPV",
                                        worldLV, false, 0, true);
 
-    // ── Vikuiti 3M ESR wrap (annular shell, mantle only) ────────────────────
-    const G4double rWrapIn  = rAirOut;
-    const G4double rWrapOut = rWrapIn + kWrapThick;
-    auto* wrapMat  = Materials::CreateMylar();   // structural host; reflectance via surface
-    auto* wrapSolid = new G4Tubs("WrapSolid", rWrapIn, rWrapOut, kCylHalfH,
-                                  0., CLHEP::twopi);
-    auto* wrapLV   = new G4LogicalVolume(wrapSolid, wrapMat, "VikuitiLV");
-    auto* visWrap  = new G4VisAttributes(G4Colour(0.85, 0.85, 0.85, 0.6));
-    visWrap->SetForceSolid(true);
-    wrapLV->SetVisAttributes(visWrap);
-    auto* wrapPV   = new G4PVPlacement(nullptr, {}, wrapLV, "VikuitiPV",
-                                       worldLV, false, 0, true);
-
-    // ── Optical surface: scintillator ↔ air gap (polished → TIR) ────────────
-    // Geant4 applies Fresnel equations automatically with RINDEX(EJ-228)=1.58
-    // and RINDEX(air)=1.0, giving θ_c = arcsin(1/1.58) = 39.3°.
+    // ── Optical surface: scintillator ↔ air gap (polished → TIR only) ─────────
+    // No Vikuiti wrap — photons escaping TIR are lost to the world.
+    // Geant4 applies Fresnel equations with RINDEX(EJ-228)=1.58 / RINDEX(air)=1.0,
+    // giving θ_c = arcsin(1/1.58) = 39.3°.
     new G4LogicalBorderSurface("CylAirSurf", cylPV, airPV,
                                Materials::CreateBarSurface());
-
-    // ── Optical surface: air gap ↔ Vikuiti (specular metal R=0.98) ──────────
-    new G4LogicalBorderSurface("AirVikuitiSurf", airPV, wrapPV,
-                               Materials::CreateVikuitiSurface());
 
     // ── SiPMs (shared logical volume, distinct physical placements) ──────────
     auto* sipmMat   = Materials::CreateSiPMCoupling();  // n=1.58, eliminates TIR at cap face
@@ -143,8 +127,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                << pos.x()/mm << ", " << pos.y()/mm << ", " << pos.z()/mm << ") mm\n";
     }
 
-    G4cout << "  Vikuiti R=0.98, air gap " << kAirGapThick/mm << " mm, wrap "
-           << kWrapThick/mm << " mm\n"
+    G4cout << "  TIR-only mantle (no Vikuiti), air gap " << kAirGapThick/mm << " mm\n"
            << "  TIR angle θ_c = arcsin(1/1.58) = 39.3° on mantle\n\n";
 
     return worldPV;

@@ -1,0 +1,12 @@
+CXX      := $(shell root-config --cxx)
+CXXFLAGS := -O2 -std=c++17 $(shell root-config --cflags)
+LDFLAGS  := $(shell root-config --libs) -lROOTDataFrame
+
+analyze_scan: analyze_scan.cxx
+	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+	@echo "Built: ./analyze_scan"
+
+clean:
+	rm -f analyze_scan
+
+.PHONY: clean
