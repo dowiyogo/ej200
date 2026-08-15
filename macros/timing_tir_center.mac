@@ -1,0 +1,27 @@
+# ============================================================
+# timing_tir_center.mac
+# TIR-only bar — timing resolution study at bar center
+# Muon: vertical 1 GeV mu- at x=0 (bar centre)
+# 5000 events, no electronics jitter (intrinsic photon limit)
+# ============================================================
+
+/control/verbose 0
+/run/verbose     0
+/event/verbose   0
+/tracking/verbose 0
+
+# ── Detector ────────────────────────────────────────────────
+/det/readout EndTop
+
+/run/initialize
+
+# ── SiPM: zero electronics jitter (intrinsic limit) ─────────
+/sipm/jitterSigma 0.000 ns
+
+# ── Muon gun ─────────────────────────────────────────────────
+/gun/particle  mu-
+/gun/energy    1 GeV
+/muon/angle    0
+/muon/gunX     0 mm
+
+/run/beamOn 5000
