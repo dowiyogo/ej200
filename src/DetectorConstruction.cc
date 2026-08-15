@@ -19,6 +19,7 @@
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
 #include "G4ios.hh"
+#include "CLHEP/Units/PhysicalConstants.h"
 
 #include <algorithm>
 #include <cctype>
@@ -218,10 +219,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     G4Material* barMat   = fActiveScintillator;
     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
 
-    // Air RINDEX required for optical-photon tracking
+    // Air RINDEX + GROUPVEL fix: photons escaping TIR enter WorldLV (air).
+    // Without GROUPVEL, G4Transportation picks up c (n=1 air) instead of c/1.58,
+    // producing superluminal steps that corrupt timing. Set GROUPVEL = c/n_bar.
     {
         auto* mpt = new G4MaterialPropertiesTable();
-        mpt->AddProperty("RINDEX", {2.0*eV, 4.0*eV}, {1.0, 1.0});
+        mpt->AddProperty("RINDEX",   {2.0*eV, 4.0*eV}, {1.0, 1.0});
+        const G4double vg = CLHEP::c_light / 1.58;
+        mpt->AddProperty("GROUPVEL", {2.0*eV, 4.0*eV}, {vg, vg});
         worldMat->SetMaterialPropertiesTable(mpt);
     }
 
@@ -251,9 +256,12 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fSiPMSurfaces.clear();
     fReflectorSurfaces.clear();
 
-    // Apply branch-specific reflector properties directly to the bar.
-    auto* reflector = Materials::CreateBarSkinReflector();
-    auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
+    // TIR-only: polished dielectric-dielectric surface on all bar faces.
+    // Geant4 Fresnel equations give 100% TIR for theta > arcsin(1/1.58) = 39.3 deg.
+    // Photons escaping TIR (theta < 39.3 deg) transmit into WorldLV air and are lost.
+    // No reflective coating — lateral faces are bare air.
+    auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV,
+                                              Materials::CreateBarSurface());
     (void)barSkin;
 
     if (IsEndInstrumented()) {
