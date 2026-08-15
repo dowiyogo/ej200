@@ -83,7 +83,7 @@ PosResult analyse_file(const std::string& path, int x_mm) {
     }
 
     TTree* tree = nullptr;
-    f->GetObject("photon_hits", tree);
+    f->GetObject("sipm_hits", tree);
     if (!tree) {
         std::cerr << "  No tree in: " << path << "\n";
         f->Close(); delete f;
