@@ -1,0 +1,337 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme{default}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{siunitx}
+
+\definecolor{shipblue}{RGB}{20,74,130}
+\definecolor{warningorange}{RGB}{210,105,30}
+\definecolor{darkgreen}{RGB}{0,130,70}
+\setbeamercolor{structure}{fg=shipblue}
+\setbeamercolor{alerted text}{fg=warningorange}
+\setbeamertemplate{navigation symbols}{}
+
+% Paths
+\newcommand{\plots}{../../build_end_vikuiti}
+
+\title{SHiP Timing Bar\\Lectura End-only con Vikuiti 3M + Air Gap}
+\subtitle{EJ-200 vs.\ EJ-204 vs.\ EJ-230 \quad --- \quad Geant4 11.4.0}
+\author{René Ríos (ULS)}
+\institute{Análisis de simulación interna}
+\date{Agosto 2026}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Motivación del experimento}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \textbf{Objetivo}
+    \begin{itemize}
+      \item Estudiar la resolución temporal y de posición de la barra
+            usando \textit{únicamente} los SiPM de extremo (End).
+      \item Eliminar la lectura superior (Top) para aislar el comportamiento
+            longitudinal de la barra.
+      \item Comparar tres centelleadores con distintas propiedades cinéticas.
+    \end{itemize}
+    \vspace{0.4em}
+    \textbf{Reflexión óptica}
+    \begin{itemize}
+      \item Vikuiti 3M ESR: $R = 0.98$, superficie pulida.
+      \item \alert{Air gap de \SI{0.10}{mm}} entre barra y reflector.
+      \item La interfaz barra--aire genera reflexión interna total (TIR)
+            para ángulos $\theta > \theta_c = 39.3°$ ($n_{\rm bar} = 1.58$).
+      \item El reflector Vikuiti captura los fotones que escapan la TIR.
+    \end{itemize}
+
+    \column{0.43\textwidth}
+    \begin{block}{Geometría de la barra}
+      \centering
+      $1400 \times 60 \times 10\ \text{mm}^3$\\[0.4em]
+      \begin{tabular}{ll}
+        End-left  & 8 SiPM (cara $-X$)\\
+        End-right & 8 SiPM (cara $+X$)\\
+        Top       & \textbf{sin leer}   \\[0.2em]
+        Muón      & $\mu^-$, \SI{1}{GeV}, vertical\\
+        Jitter    & \SI{0}{ns}\\
+        Eventos   & 5000 por posición\\
+        Posiciones & 13 ($-600$ a $+600$ mm)\\
+      \end{tabular}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Modelo óptico: Vikuiti con Air Gap}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \textbf{Implementación en Geant4}
+    \begin{itemize}
+      \item Cuatro paneles explícitos alrededor de la barra:
+            $-Y$, $+Y$, $+Z$, $-Z$.
+      \item Cada panel: capa de \textbf{aire} (\SI{0.10}{mm}) +
+            capa de \textbf{reflector} (\SI{0.05}{mm}).
+      \item La interfaz aire--reflector usa \texttt{G4LogicalBorderSurface}\\
+            con $R(\lambda) = 0.98$, \texttt{dielectric\_metal}.
+      \item La interfaz barra--aire mantiene \texttt{dielectric\_dielectric}
+            (TIR activada naturalmente).
+    \end{itemize}
+    \vspace{0.4em}
+    \textbf{Comparación con Vikuiti skin surface}
+    \begin{itemize}
+      \item El modelo de ``skin surface'' (\texttt{dielectric\_metal}
+            directamente sobre la barra) \textbf{elimina la TIR}.
+      \item El modelo air-gap preserva la TIR \textit{y} recupera los fotones
+            que la escapan: física correcta.
+    \end{itemize}
+
+    \column{0.43\textwidth}
+    \begin{block}{GROUPVEL fix}
+      El mundo (aire) recibe:
+      \begin{equation*}
+        v_g = \frac{c}{n_{\rm bar}} = \frac{c}{1.58}
+      \end{equation*}
+      para evitar velocidades de grupo supralumínicas que corrompían
+      los tiempos de llegada en Geant4.
+    \end{block}
+    \vspace{0.3em}
+    \begin{alertblock}{Validación previa}
+      100 eventos: EJ-200 $\to$ 2651 ph/ev,
+      EJ-204 $\to$ 1896 ph/ev, EJ-230 $\to$ 1361 ph/ev.\\
+      Sin SiPMs top (face\_type=2: 0 hits). ✓
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Propiedades de los centelleadores}
+  \centering
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Material & Yield        & $\tau_r$ & $\tau_d$ & Aten. & $\lambda_{\max}$ \\
+             & (ph/MeV)     & (ns)     & (ns)     & (cm)  & (nm) \\
+    \midrule
+    EJ-200   & 10\,000      & 0.9      & 2.1      & 380   & 425  \\
+    EJ-204   & 10\,400      & 0.7      & 1.8      & 160   & 408  \\
+    EJ-230   & \phantom{0}9\,700 & 0.5 & 1.5     & 120   & 391  \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.5cm}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{EJ-200: referencia}
+      Mayor atenuación (\SI{380}{cm}) $\to$ más fotones llegan a los extremos
+      desde posiciones centrales. Tiempo de decaimiento más largo.
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{EJ-230: más rápido}
+      $\tau_d = \SI{1.5}{ns}$, menor dispersión temporal intrínseca.
+      Menor atenuación (\SI{120}{cm}) $\to$ los fotones se absorben antes
+      en posiciones alejadas del extremo.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Definición de las observables}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \textbf{Tiempo de llegada} al extremo $L$ ($R$):
+    \begin{equation*}
+      t_{L,R}^{(k)} = k\text{-ésimo fotón más temprano en cara }-X\ (+X)
+    \end{equation*}
+    Con $k=1$ (primer fotón). Alta sensibilidad al tiempo de tránsito óptico.
+
+    \vspace{0.6em}
+    \textbf{Tiempo de vertice (T0):}
+    \begin{equation*}
+      T_0 = \frac{t_L^{(1)} + t_R^{(1)}}{2}
+      \quad \Rightarrow \quad \sigma(T_0):\ \text{resolución temporal}
+    \end{equation*}
+    $T_0$ es independiente de la posición $x$ a primer orden.
+
+    \vspace{0.4em}
+    \textbf{Diferencia de tiempos:}
+    \begin{equation*}
+      \Delta t = t_R^{(1)} - t_L^{(1)}
+      = \frac{-2x}{v_{\rm eff}} + \text{const}
+    \end{equation*}
+    $\sigma(\Delta t) \to$ resolución de posición;
+    slope $\to v_{\rm eff}$.
+
+    \column{0.43\textwidth}
+    \begin{block}{Análisis estadístico}
+      Por posición y centelleador:
+      \begin{enumerate}
+        \item Colectar $t_L^{(1)}, t_R^{(1)}$ por evento.
+        \item Ajuste gaussiano via IQR sobre distribuciones de
+              $T_0$ y $\Delta t$.
+        \item Ajuste lineal de $\langle\Delta t\rangle$ vs.\ $x$
+              para extraer $v_{\rm eff}$.
+      \end{enumerate}
+    \end{block}
+    \vspace{0.3em}
+    \begin{alertblock}{Nota}
+      Sin jitter electrónico ($\sigma_j = \SI{0}{ns}$):
+      los resultados son un límite inferior del hardware real.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Resolución temporal $\sigma(T_0)$ vs.\ posición}
+  \begin{columns}[T]
+    \column{0.64\textwidth}
+    \includegraphics[width=\textwidth]{\plots/end_vik_sigma_T0_vs_x.pdf}
+    \column{0.34\textwidth}
+    \begin{itemize}
+      \item $T_0 = (t_L + t_R)/2$ cancela la dependencia en $x$
+            a primer orden.
+      \item La ligera variación con $x$ refleja asimetría en la
+            atenuación y dispersión de caminos.
+      \item \textbf{EJ-230} ($\tau_d = \SI{1.5}{ns}$):
+            mejor $\sigma(T_0)$ esperado por menor dispersión
+            temporal intrínseca.
+      \item \textbf{EJ-200}: mayor yield óptico en extremos
+            (atenuación larga), puede compensar el $\tau_d$ mayor.
+      \item Comparar los tres colores para identificar el óptimo.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Resolución de posición $\sigma(\Delta t)$ vs.\ posición}
+  \begin{columns}[T]
+    \column{0.64\textwidth}
+    \includegraphics[width=\textwidth]{\plots/end_vik_sigma_dt_vs_x.pdf}
+    \column{0.34\textwidth}
+    \begin{itemize}
+      \item $\Delta t = t_R - t_L$ mide la posición longitudinal $x$.
+      \item $\sigma(\Delta t) \to$ resolución de posición vía:
+            \begin{equation*}
+              \sigma_x = \frac{v_{\rm eff}}{2}\,\sigma(\Delta t)
+            \end{equation*}
+      \item Esperamos $\sigma(\Delta t)$ uniforme en $x$ (salvo
+            efecto de atenuación en los extremos).
+      \item Mayor $\sigma(\Delta t)$ cerca de los extremos si la
+            atenuación reduce el número de fotones disponibles.
+      \item El centelleador más rápido minimiza la dispersión
+            temporal $\to$ menor $\sigma(\Delta t)$.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Velocidad de grupo efectiva $v_{\rm eff}$}
+  \begin{columns}[T]
+    \column{0.64\textwidth}
+    \includegraphics[width=\textwidth]{\plots/end_vik_groupvel.pdf}
+    \column{0.34\textwidth}
+    \begin{itemize}
+      \item Relación lineal: $\langle\Delta t\rangle = -2x/v_{\rm eff} + \text{cte}$.
+      \item $v_{\rm eff} < c/n_{\rm bar} = \SI{190}{mm/ns}$
+            porque los fotones zigzaguean por TIR:
+            \begin{equation*}
+              v_x = v_g\,\sin\theta < v_g
+            \end{equation*}
+      \item Resultado del scan anterior (Top readout):
+            $v_{\rm eff} \approx \SI{145}{mm/ns}$,
+            $n_{\rm eff} \approx 2.07$.
+      \item Se espera valor similar en End-only
+            (misma óptica de TIR).
+      \item Todos los centelleadores deben dar el mismo $v_{\rm eff}$
+            (es una propiedad geométrica, no del material).
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Yield óptico en extremos: $N_{\rm pe}$ vs.\ posición}
+  \begin{columns}[T]
+    \column{0.64\textwidth}
+    \includegraphics[width=\textwidth]{\plots/end_vik_npe_vs_x.pdf}
+    \column{0.34\textwidth}
+    \begin{itemize}
+      \item El yield decrece exponencialmente con la distancia
+            $d$ al extremo: $N_{\rm pe} \propto e^{-d/\lambda_{\rm att}}$.
+      \item \textbf{EJ-200} ($\lambda_{\rm att} = \SI{380}{cm}$):
+            la caída es más lenta --- mayor yield uniforme.
+      \item \textbf{EJ-230} ($\lambda_{\rm att} = \SI{120}{cm}$):
+            caída rápida cerca de los extremos opuestos.
+      \item El yield en End-only es una fracción del total
+            (comparar con $\sim$2651 ph/ev de EJ-200 en validación).
+      \item La asimetría L vs.\ R en posiciones fuera del centro
+            valida el modelo de atenuación.
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Resumen comparativo}
+  \centering
+  \begin{tabular}{lccc}
+    \toprule
+    Observable & EJ-200 & EJ-204 & EJ-230 \\
+    \midrule
+    $\sigma(T_0)$ en $x=0$ (ps) & --- & --- & --- \\
+    $\sigma(T_0)$ en $x=\pm600$ (ps) & --- & --- & --- \\
+    $\sigma(\Delta t)$ en $x=0$ (ps) & --- & --- & --- \\
+    $\sigma_x = v_{\rm eff}\sigma(\Delta t)/2$ (mm) & --- & --- & --- \\
+    $v_{\rm eff}$ (mm/ns) & --- & --- & --- \\
+    $N_{\rm pe}$ (L+R) en $x=0$ & --- & --- & --- \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.5cm}
+  \small{\textit{Valores a completar con resultados del scan.
+  5000 ev/posición, 13 posiciones, sin jitter electrónico ($\sigma_j=0$).}}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Conclusiones}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \textbf{Resultados esperados / hipótesis}
+    \begin{itemize}
+      \item \textbf{EJ-230}: mejor resolución temporal por $\tau_d$ menor.
+            Penalización en yield a grandes distancias del extremo.
+      \item \textbf{EJ-200}: mayor uniformidad de yield por $\lambda_{\rm att}$
+            larga. Puede ser competitivo en posiciones centrales.
+      \item \textbf{EJ-204}: intermedio entre ambos.
+      \item $v_{\rm eff}$ idéntico para los tres (propiedad geométrica de TIR).
+    \end{itemize}
+    \vspace{0.4em}
+    \textbf{Próximos pasos}
+    \begin{itemize}
+      \item Incluir jitter electrónico ($\sigma_j \approx \SI{100}{ps}$).
+      \item Comparar con lectura Top + End combinada.
+      \item Optimizar $k$-ésimo fotón para minimizar $\sigma(T_0)$.
+    \end{itemize}
+
+    \column{0.43\textwidth}
+    \begin{block}{Setup}
+      Branch: \texttt{feat/bar-end-vikuiti}\\
+      Geant4 11.4.0, MT\\
+      SSLG4 (Saint-Gobain optical model)\\
+      \SI{5000}{ev/punto}, 13 posiciones\\
+      Air-gap \SI{0.10}{mm} + Vikuiti \SI{0.05}{mm}\\
+      GROUPVEL fix aplicado
+    \end{block}
+    \begin{alertblock}{Pendiente}
+      Rellenar tabla comparativa con los valores reales del scan.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\end{document}
