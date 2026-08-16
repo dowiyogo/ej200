@@ -18,6 +18,7 @@
 #include "G4VSolid.hh"
 #include "G4VisAttributes.hh"
 #include "G4MaterialPropertiesTable.hh"
+#include "G4PhysicalConstants.hh"
 #include "G4ios.hh"
 
 #include <algorithm>
@@ -25,6 +26,7 @@
 #include <cmath>
 #include <iterator>
 #include <string>
+#include <vector>
 
 // ── Geometry constants ────────────────────────────────────────────────────────
 static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
@@ -112,10 +114,11 @@ void DetectorConstruction::SetScintillatorCode(G4String code) {
                code.end());
     if (code == "EJ204") code = "OPSC-101";
     if (code == "EJ200") code = "OPSC-100";
+    if (code == "EJ230") code = "OPSC-106";
 
-    if (code != "OPSC-101" && code != "OPSC-100") {
+    if (code != "OPSC-101" && code != "OPSC-100" && code != "OPSC-106") {
         G4cerr << "[DetectorConstruction] Unknown /det/scintillator \""
-               << code << "\". Use OPSC-101 or OPSC-100.\n";
+               << code << "\". Use OPSC-101 (EJ-204), OPSC-100 (EJ-200), or OPSC-106 (EJ-230).\n";
         return;
     }
     if (code == fScintCode) return;
@@ -218,15 +221,50 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
             }
         }
     }
+    if (fScintCode == "OPSC-106") {
+        auto* mpt = fActiveScintillator->GetMaterialPropertiesTable();
+        if (mpt != nullptr) {
+            auto* attenuation = mpt->GetProperty("ABSLENGTH");
+            G4bool overrideAttenuation =
+                attenuation == nullptr || attenuation->GetVectorLength() == 0;
+            if (!overrideAttenuation) {
+                for (std::size_t i = 0; i < attenuation->GetVectorLength(); ++i) {
+                    if (std::abs((*attenuation)[i] - 120.0 * cm) > 1.0e-9 * cm) {
+                        overrideAttenuation = true;
+                    }
+                }
+            }
+            if (overrideAttenuation) {
+                mpt->RemoveProperty("ABSLENGTH");
+                mpt->AddProperty("ABSLENGTH",
+                                 {1.5 * eV, 6.5 * eV},
+                                 {120.0 * cm, 120.0 * cm});
+                G4cout << "[DetectorConstruction] OPSC-106 ABSLENGTH overridden to 120 cm."
+                       << G4endl;
+            }
+            if (!mpt->ConstPropertyExists("SCINTILLATIONRISETIME1") ||
+                std::abs(mpt->GetConstProperty("SCINTILLATIONRISETIME1") -
+                         0.5 * ns) > 1.0e-12 * ns) {
+                mpt->RemoveConstProperty("SCINTILLATIONRISETIME1");
+                mpt->AddConstProperty("SCINTILLATIONRISETIME1", 0.5 * ns);
+                G4cout << "[DetectorConstruction] OPSC-106 rise time overridden to 0.5 ns."
+                       << G4endl;
+            }
+        }
+    }
     G4Material* barMat      = fActiveScintillator;
     G4Material* airGapMat   = worldMat;
     G4Material* reflectorMat = Materials::CreateMylar();
     G4Material* sipmMat     = Materials::CreateSiPMCoupling();
 
-    // Air RINDEX required for optical-photon tracking
+    // Air RINDEX + GROUPVEL fix: photons that escape TIR enter WorldLV (air).
+    // Without GROUPVEL, Geant4 uses c instead of c/n, causing superluminal steps
+    // that corrupt timing. Set GROUPVEL = c/n_bar to avoid this.
     {
+        const G4double vg = CLHEP::c_light / 1.58;
         auto* mpt = new G4MaterialPropertiesTable();
-        mpt->AddProperty("RINDEX", {2.0*eV, 4.0*eV}, {1.0, 1.0});
+        mpt->AddProperty("RINDEX",    {2.0*eV, 4.0*eV}, {1.0, 1.0});
+        mpt->AddProperty("GROUPVEL",  {2.0*eV, 4.0*eV}, {vg,  vg });
         worldMat->SetMaterialPropertiesTable(mpt);
     }
 
@@ -257,21 +295,22 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     fReflectorSurfaces.clear();
     fScintillatorAirSurfaces.clear();
 
-    // EXEC_23 port: explicit air-gap + Mylar panel geometry for lateral faces.
+    // Air-gap + Vikuiti 3M ESR panel geometry for lateral faces.
     //
-    // EndTop instrumented faces (no panels here):
-    //   ±X → END SiPMs (border surface BarPV↔EndSiPMPV)
-    //   +Y → TOP SiPMs inside barLV, flush with +Y face (BarPV↔TopSiPMPV)
+    // Instrumented (no panels):
+    //   ±X → End SiPMs (border surface BarPV↔EndSiPMPV)
+    //   +Y → Top SiPMs when IsTopInstrumented (BarPV↔TopSiPMPV)
     //
-    // Lateral faces with panels (reflect photons back into the bar):
-    //   -Y, ±Z → 3 panels (air gap 0.10 mm + Mylar 0.05 mm each)
+    // Lateral faces with panels:
+    //   -Y, ±Z always; +Y when NOT IsTopInstrumented (End-only mode)
+    //   Each panel: air gap 0.10 mm + Vikuiti 0.05 mm
     //
-    // Two-tier reflection model per panel:
-    //   bar→air : dielectric_dielectric polished (CreateBarSurface) → TIR for θ>39.3°
-    //   air→Mylar: dielectric_metal R=0.95 (CreateMylarReflector) → absorbs or reflects
+    // Two-tier reflection model:
+    //   bar→air : dielectric_dielectric polished → TIR for θ > 39.3°
+    //   air→Vik : dielectric_metal R=0.98 (Vikuiti 3M ESR)
     {
         auto* scintAirSurface     = Materials::CreateBarSurface();
-        auto* airReflectorSurface = Materials::CreateMylarReflector();
+        auto* airReflectorSurface = Materials::CreateBarSkinReflector();
 
         const G4double g = kAirGapThickness;
         const G4double m = kReflectorThickness;
@@ -285,7 +324,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
             G4ThreeVector reflectorCenter;
         };
 
-        const PanelSpec panels[] = {
+        std::vector<PanelSpec> panels = {
             {"-Y", "YMinus",
              {kBarHalfX, 0.5*g, kBarHalfZ + g},
              {0.0, -(kBarHalfY + 0.5*g), 0.0},
@@ -302,8 +341,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
              {kBarHalfX, kBarHalfY + g, 0.5*m},
              {0.0, 0.0, -(kBarHalfZ + g + 0.5*m)}},
         };
+        if (!IsTopInstrumented()) {
+            panels.push_back({"+Y", "YPlus",
+                {kBarHalfX, 0.5*g, kBarHalfZ + g},
+                {0.0, +(kBarHalfY + 0.5*g), 0.0},
+                {kBarHalfX, 0.5*m, kBarHalfZ + g + m},
+                {0.0, +(kBarHalfY + g + 0.5*m), 0.0}});
+        }
 
-        for (std::size_t i = 0; i < std::size(panels); ++i) {
+        for (std::size_t i = 0; i < panels.size(); ++i) {
             const auto& panel = panels[i];
 
             auto* airSolid = new G4Box(
@@ -320,16 +366,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                 worldLV, false, static_cast<G4int>(i), true);
 
             auto* reflSolid = new G4Box(
-                G4String("Mylar") + panel.stem + "Solid",
+                G4String("Vikuiti") + panel.stem + "Solid",
                 panel.reflectorHalf.x(), panel.reflectorHalf.y(), panel.reflectorHalf.z());
             auto* reflLV = new G4LogicalVolume(
-                reflSolid, reflectorMat, G4String("Mylar") + panel.stem + "LV");
+                reflSolid, reflectorMat, G4String("Vikuiti") + panel.stem + "LV");
             auto* reflVA = new G4VisAttributes(G4Colour(0.85, 0.85, 0.85, 0.35));
             reflVA->SetForceSolid(true);
             reflLV->SetVisAttributes(reflVA);
             auto* reflPV = new G4PVPlacement(
                 nullptr, panel.reflectorCenter, reflLV,
-                G4String("Mylar") + panel.stem + "PV",
+                G4String("Vikuiti") + panel.stem + "PV",
                 worldLV, false, static_cast<G4int>(i), true);
 
             fScintillatorAirSurfaces[panel.key] = new G4LogicalBorderSurface(
@@ -340,10 +386,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
                 airPV, fBarPhys, scintAirSurface);
 
             fReflectorSurfaces[panel.key] = new G4LogicalBorderSurface(
-                G4String("AirGapToMylar_") + panel.stem,
+                G4String("AirGapToVikuiti_") + panel.stem,
                 airPV, reflPV, airReflectorSurface);
             new G4LogicalBorderSurface(
-                G4String("MylarToAirGap_") + panel.stem,
+                G4String("VikuitiToAirGap_") + panel.stem,
                 reflPV, airPV, airReflectorSurface);
         }
     }
