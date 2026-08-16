@@ -1,0 +1,353 @@
+\documentclass[aspectratio=169,9pt]{beamer}
+
+\usetheme{default}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{colortbl}
+
+\definecolor{shipblue}{RGB}{20,74,130}
+\definecolor{warningorange}{RGB}{210,105,30}
+\definecolor{bestgreen}{RGB}{0,140,70}
+\definecolor{rowbest}{RGB}{220,255,220}
+\definecolor{rowbad}{RGB}{255,235,220}
+\setbeamercolor{structure}{fg=shipblue}
+\setbeamercolor{alerted text}{fg=warningorange}
+\setbeamertemplate{navigation symbols}{}
+
+\newcommand{\T}[2]{\build_t0minidaq}
+\newcommand{\plotsT}{../../build_t0minidaq}
+\newcommand{\plotsE}{../../build_end_vikuiti}
+
+\title{SHiP Timing Bar\\S\'intesis de simulaciones Geant4}
+\subtitle{TOP vs.\ END readout $\,\cdot\,$ TIR vs.\ Vikuiti $\,\cdot\,$ EJ-200/204/230}
+\author{Ren\'e R\'ios (ULS)}
+\institute{Resumen interno de simulaci\'on}
+\date{Agosto 2026}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Mapa de experimentos}
+  \centering
+  \begin{tabular}{llllr}
+    \toprule
+    Readout & Reflexi\'on & Centelleador(es) & Posiciones & Eventos \\
+    \midrule
+    TOP  & TIR only      & EJ-204, EJ-230        & 13 & 5\,000 \\
+    TOP  & Vikuiti skin  & EJ-204, EJ-230        & 13 & 5\,000 \\
+    END  & TIR only      & EJ-204, EJ-230        & 13 & 5\,000 \\
+    END  & Vikuiti + air gap & EJ-200, EJ-204, EJ-230 & 13 & 5\,000 \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.5em}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{block}{Geometr\'ia}
+      Barra $1400\times60\times10$ mm$^3$, $\mu^-$ \SI{1}{GeV} vertical.\\
+      End-left: 8 SiPM (cara $-X$) $\cdot$ End-right: 8 SiPM (cara $+X$)\\
+      Top: 70 SiPM (cara $+Y$) $\cdot$ sin jitter electr\'onico
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Centelleadores}
+      \begin{tabular}{lccc}
+        & $\tau_d$ & $\lambda_{\rm att}$ & Yield \\
+        EJ-200 & 2.1\,ns & 380\,cm & 10\,000\,ph/MeV \\
+        EJ-204 & 1.8\,ns & 160\,cm & 10\,400\,ph/MeV \\
+        EJ-230 & 1.5\,ns & 120\,cm &  9\,700\,ph/MeV \\
+      \end{tabular}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Modelo \'optico: TIR vs.\ Vikuiti}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+    \textbf{TIR only}
+    \begin{itemize}
+      \item Interfaz barra--aire: \texttt{dielectric\_dielectric}, pulida.
+      \item TIR para $\theta > \theta_c = 39.3^\circ$ ($n=1.58$).
+      \item Fotones que no superan $\theta_c$ \alert{escapan} por la cara.
+      \item Sin paneles reflectores: cara $+Y$ libre (o con SiPMs).
+    \end{itemize}
+
+    \vspace{0.5em}
+    \textbf{Vikuiti 3M ESR (air gap)}
+    \begin{itemize}
+      \item Air gap \SI{0.10}{mm} entre barra y panel Vikuiti.
+      \item TIR preservada en interfaz barra--aire.
+      \item Fotones que escapan la TIR son reflejados: $R = 0.98$.
+      \item Paneles en las 4 caras laterales ($\pm Y$, $\pm Z$).
+      \item \textbf{Solo los extremos $\pm X$ quedan abiertos.}
+    \end{itemize}
+
+    \column{0.47\textwidth}
+    \begin{alertblock}{Vikuiti skin (sin air gap)}
+      Modelo alternativo: \texttt{dielectric\_metal} directamente
+      sobre la barra. \textbf{Elimina la TIR.} Estudiado para TOP readout.
+      Resultado: id\'entico a TIR (SiPMs top ya capturan todo).
+    \end{alertblock}
+    \vspace{0.4em}
+    \begin{block}{GROUPVEL fix}
+      Aire del mundo: $v_g = c/1.58$ para evitar
+      velocidades de grupo supralum\'inicas en Geant4.
+    \end{block}
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{TOP readout: Vikuiti no aporta nada}
+  \begin{columns}[T]
+    \column{0.62\textwidth}
+    \includegraphics[width=\textwidth]{\plotsT/bar_scan_sigma_vs_x.pdf}
+    \column{0.36\textwidth}
+    {\footnotesize
+    \textbf{Resultado ($k=2$, top SiPMs)}
+
+    \vspace{0.4em}
+    \begin{tabular}{lcc}
+      \toprule
+      Config & $N_{\rm pe}$ & $\sigma$ \\
+      \midrule
+      EJ-204 TIR  & 117 & 81\,ps \\
+      EJ-204 Vik  & 116 & 84\,ps \\
+      EJ-230 TIR  & 106 & 73\,ps \\
+      EJ-230 Vik  & 107 & 73\,ps \\
+      \bottomrule
+    \end{tabular}
+
+    \vspace{0.6em}
+    \textbf{Explicaci\'on:}
+    \begin{itemize}
+      \item Los 70 SiPMs del top ya capturan todos los fotones que llegan a esa cara.
+      \item El reflector no puede agregar fotones que ya est\'an siendo detectados.
+      \item Vikuiti skin vs.\ TIR: \textbf{sin diferencia}.
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{END readout: Vikuiti es \emph{esencial}}
+  \begin{columns}[T]
+    \column{0.62\textwidth}
+    \includegraphics[width=\textwidth]{\plotsT/comp_npe_vs_x.pdf}
+    \column{0.36\textwidth}
+    {\footnotesize
+    \textbf{Fotones por evento (escala log)}
+
+    \vspace{0.4em}
+    \begin{tabular}{lcc}
+      \toprule
+      Config & $N_{\rm pe}$ & $\sigma(T_0)$ \\
+      \midrule
+      EJ-204 END+TIR & $\sim$1 & $\sim$1200\,ps \\
+      EJ-230 END+TIR & $\sim$1 & $\sim$970\,ps  \\[2pt]
+      EJ-204 END+Vik & 1882    & 63\,ps \\
+      EJ-230 END+Vik & 1403    & 59\,ps \\
+      \bottomrule
+    \end{tabular}
+
+    \vspace{0.5em}
+    \textbf{Por qu\'e END+TIR falla:}
+    \begin{itemize}
+      \item Sin reflector, los fotones que no superan $\theta_c$ escapan por las 4 caras.
+      \item Solo $\sim$1 fot\'on/evento llega a cada extremo.
+      \item Timing dom. por estad\'istica de Poisson, no por la f\'isica del centelleador.
+    \end{itemize}
+
+    \textbf{Con Vikuiti:}
+    \begin{itemize}
+      \item $\times$\,1000 m\'as fotones en los extremos.
+      \item $\sigma(T_0)$ compite con TOP readout.
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Comparaci\'on global: $\sigma(T_0)$ vs.\ posici\'on}
+  \begin{columns}[T]
+    \column{0.64\textwidth}
+    \includegraphics[width=\textwidth]{\plotsT/comp_sigma_T0_vs_x.pdf}
+    \column{0.34\textwidth}
+    {\footnotesize
+    \textbf{Resultado central}
+
+    \vspace{0.3em}
+    Paneles izq./der.: EJ-204 / EJ-230.\\
+    L\'inea s\'olida = con Vikuiti.\\
+    L\'inea discontinua = TIR only.
+
+    \vspace{0.5em}
+    A $x=0$:
+    \begin{itemize}
+      \item \textbf{TOP+TIR}: 81\,ps (EJ-204), 73\,ps (EJ-230)
+      \item \textbf{TOP+Vik}: id\'entico ($\sim$0\,ps de mejora)
+      \item \textbf{END+TIR}: $\sim$1000\,ps (inutilizable)
+      \item \textcolor{bestgreen}{\textbf{END+Vik: 63\,ps (EJ-204), 59\,ps (EJ-230)}}
+    \end{itemize}
+
+    \vspace{0.4em}
+    END+Vikuiti mejora $\sim$\textbf{19\%} sobre TOP+TIR en EJ-230.
+    }
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{END+Vikuiti: comparaci\'on de centelleadores}
+  \begin{columns}[T]
+    \column{0.62\textwidth}
+    \includegraphics[width=\textwidth]{\plotsE/end_vik_sigma_T0_vs_x.pdf}
+    \column{0.36\textwidth}
+    {\footnotesize
+    \textbf{Tres centelleadores, END+Vikuiti}
+
+    \vspace{0.4em}
+    \begin{tabular}{lccc}
+      \toprule
+            & EJ-200 & EJ-204 & EJ-230 \\
+      \midrule
+      $\sigma(T_0)$ x=0  & 65\,ps & 63\,ps & \textbf{59\,ps} \\
+      $N_{\rm pe}$ x=0   & \textbf{2621} & 1882 & 1403 \\
+      \bottomrule
+    \end{tabular}
+
+    \vspace{0.5em}
+    \begin{itemize}
+      \item \textbf{EJ-230 gana en timing}: $\tau_d=\SI{1.5}{ns}$ reduce la dispersi\'on temporal intr\'inseca.
+      \item \textbf{EJ-200 gana en yield}: $\lambda_{\rm att}=\SI{380}{cm}$ mantiene m\'as fotones en el recorrido.
+      \item \textbf{EJ-204}: intermedio en ambas.
+      \item $\sigma(T_0)$ muy plano en $x$ ($<5$\,ps de variaci\'on): $T_0$ es estimador robusto.
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Resoluci\'on de posici\'on y velocidad efectiva}
+  \begin{columns}[T]
+    \column{0.49\textwidth}
+    \includegraphics[width=\textwidth]{\plotsE/end_vik_groupvel.pdf}
+    \column{0.49\textwidth}
+    \includegraphics[width=\textwidth]{\plotsE/end_vik_sigma_dt_vs_x.pdf}
+  \end{columns}
+
+  \vspace{0.4em}
+  \begin{columns}[T]
+    \column{0.49\textwidth}
+    {\footnotesize
+    $\Delta t = t_R - t_L = -2x/v_{\rm eff} + \text{cte}$
+    \begin{itemize}
+      \item $v_{\rm eff} = \SI{184.6}{mm/ns}$, $n_{\rm eff} = 1.62$ (END).
+      \item Vs.\ TOP readout: $v_{\rm eff}^{\rm top} = \SI{145}{mm/ns}$, $n_{\rm eff}=2.07$.
+      \item Primeros fotones en End viajan casi horizontalmente.
+      \item Id\'entico para los tres centelleadores. ✓
+    \end{itemize}
+    }
+    \column{0.49\textwidth}
+    {\footnotesize
+    $\sigma_x = \frac{v_{\rm eff}}{2}\,\sigma(\Delta t)$
+    \begin{itemize}
+      \item EJ-230: $\sigma(\Delta t)\approx\SI{111}{ps}$ $\Rightarrow$ $\sigma_x\approx\SI{10.3}{mm}$
+      \item EJ-204: $\sigma(\Delta t)\approx\SI{120}{ps}$ $\Rightarrow$ $\sigma_x\approx\SI{11.0}{mm}$
+      \item EJ-200: $\sigma(\Delta t)\approx\SI{124}{ps}$ $\Rightarrow$ $\sigma_x\approx\SI{11.5}{mm}$
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Tabla resumen: todas las configuraciones a $x=0$}
+  \centering
+  \footnotesize
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{llccc}
+    \toprule
+    Readout & Reflexi\'on & Centelleador & $N_{\rm pe}$ & $\sigma(T_0)$ \\
+    \midrule
+    \multirow{4}{*}{TOP ($k=2$)}
+      & TIR only   & EJ-204 & 117  & 81\,ps \\
+      & TIR only   & EJ-230 & 106  & 73\,ps \\
+      & Vikuiti (skin) & EJ-204 & 116  & 84\,ps \\
+      & Vikuiti (skin) & EJ-230 & 107  & 73\,ps \\
+    \midrule
+    \multirow{2}{*}{END ($k=1$)}
+      & TIR only   & EJ-204 & $\sim$1 & $\sim$1200\,ps \\
+      & TIR only   & EJ-230 & $\sim$1 & $\sim$970\,ps  \\
+    \midrule
+    \multirow{3}{*}{END ($k=1$)}
+      & Vikuiti + air gap & EJ-200 & 2621 & 65\,ps \\
+      & Vikuiti + air gap & EJ-204 & 1882 & 63\,ps \\
+      \rowcolor{rowbest}
+      & Vikuiti + air gap & \textbf{EJ-230} & \textbf{1403} & \textbf{59\,ps} \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.4em}
+  \small Sin jitter electr\'onico ($\sigma_j=0$), \SI{5000}{ev/posici\'on}, barra $1400\times60\times10$\,mm$^3$, $\mu^-$ \SI{1}{GeV}.
+\end{frame}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{frame}{Conclusiones}
+  \begin{columns}[T]
+    \column{0.56\textwidth}
+    \textbf{Hallazgos principales}
+    \begin{enumerate}
+      \item \textbf{Vikuiti no mejora el TOP readout.}
+            Los SiPMs superiores ya capturan todos los fotones incidentes;
+            el reflector no puede agregar m\'as.
+
+      \item \textbf{END+TIR es inviable.}
+            Sin reflector, los fotones escapan por las 4 caras laterales:
+            $N_{\rm pe}\sim 1$, $\sigma(T_0)\sim 1$\,ns.
+
+      \item \textbf{END+Vikuiti (air gap) es la mejor configuraci\'on.}
+            Combina TIR nativa con reflexi\'on Vikuiti ($R=0.98$) en las caras laterales:
+            todos los fotones se guian hacia los extremos.
+
+      \item \textbf{EJ-230 es el mejor centelleador} para END+Vikuiti:
+            $\sigma(T_0) = \mathbf{59}$\,\textbf{ps}, mejora $\sim$\textbf{19\%}
+            sobre el mejor TOP readout (73\,ps con EJ-230+TIR).
+
+      \item \textbf{Resoluci\'on de posici\'on}: $\sigma_x = \SI{10.3}{mm}$
+            (EJ-230, END+Vikuiti), con $v_{\rm eff} = \SI{184.6}{mm/ns}$.
+    \end{enumerate}
+
+    \column{0.42\textwidth}
+    \begin{block}{\textcolor{bestgreen}{Configuraci\'on \'optima}}
+      \centering
+      \textbf{EJ-230 + END + Vikuiti air-gap}\\[0.5em]
+      \begin{tabular}{ll}
+        $\sigma(T_0)$     & \textbf{59 ps} \\
+        $\sigma_x$        & \textbf{10.3 mm} \\
+        $N_{\rm pe}$      & 1403 (en $x=0$) \\
+        $v_{\rm eff}$     & 184.6 mm/ns \\
+        $n_{\rm eff}$     & 1.62 \\
+      \end{tabular}
+    \end{block}
+    \vspace{0.3em}
+    \begin{alertblock}{Pr\'oximos pasos}
+      \begin{itemize}
+        \item Jitter electr\'onico: $\sigma_j \approx \SI{100}{ps}$
+              $\Rightarrow$ $\sigma_{\rm total} = \sqrt{59^2 + 100^2} \approx 117$\,ps.
+        \item Combinar END + TOP para mejorar a\'un m\'as.
+        \item Optimizar $k$-\'esimo fot\'on en END readout.
+      \end{itemize}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\end{document}
