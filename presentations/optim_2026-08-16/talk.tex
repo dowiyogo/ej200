@@ -1,0 +1,293 @@
+\documentclass[aspectratio=169,9pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{beaver}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{inputenc}
+
+\definecolor{rowbest}{rgb}{0.85,0.95,0.85}
+\definecolor{rowgood}{rgb}{0.95,0.95,0.85}
+
+\newcommand{\plots}{../../analysis/optim}
+
+\title[Bar Timing Optimisation]{EJ-200/204/230 Bar: Timing Optimisation\\Offline Analysis of Existing Geant4 Data}
+\author{Simulation analysis}
+\date{2026-08-16}
+
+\begin{document}
+
+% ── 1. Title ──────────────────────────────────────────────────────────────────
+\begin{frame}
+\titlepage
+\end{frame}
+
+% ── 2. Datasets and strategy ──────────────────────────────────────────────────
+\begin{frame}{Datasets and analysis strategy}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\textbf{Available ROOT files} (all 12 branches)\\
+\footnotesize
+\begin{tabular}{lrcc}
+\toprule
+Dataset & Files & Readout & ph/ev/end\\
+\midrule
+\texttt{scan\_end\_vikuiti} & 39 & END & 350--1750\\
+\texttt{scan\_resolution} & 52 & END+TOP & 1--2 / 107\\
+\texttt{scan\_end\_tir} & 26 & END & $\approx$1\\
+\bottomrule
+\end{tabular}\\[0.4em]
+\normalsize
+Key branches: \texttt{event\_id}, \texttt{face\_type}, \texttt{global\_id},\\
+\texttt{local\_id}, \texttt{time\_ns}, \texttt{gun\_x\_mm}\\[0.4em]
+\textbf{What is computable offline:}
+\begin{itemize}\footnotesize
+  \item $k$-th order statistic: any $k \le N_\mathrm{pe}$
+  \item Mean of first $m$ photons per end
+  \item Software SiPM ablation via \texttt{local\_id} mask
+  \item MC-truth bias via \texttt{gun\_x\_mm}
+\end{itemize}
+\end{column}
+\begin{column}{0.48\textwidth}
+\textbf{Analysis phases:}\\[0.3em]
+\begin{description}\footnotesize
+  \item[Phase A] $k$-scan: $T_0^{(k)}=\tfrac{1}{2}[t_L^{(k)}+t_R^{(k)}]$, $k=1\ldots200$
+  \item[Phase B] $m$-average: $T_0^{(m)}=\tfrac{1}{2}[\bar{t}_L^{(1:m)}+\bar{t}_R^{(1:m)}]$
+  \item[Phase C] TOP ablation: $N_\mathrm{top}$ from 70 to 1 (8 random seeds)
+  \item[Phase D] END ablation: $N_\mathrm{end}$ from 8 to 1 per face (8 random seeds)
+  \item[Phase E] Pareto frontier: $\sigma(T_0)$ vs SiPM count
+\end{description}
+\vspace{0.5em}
+\textbf{No new Geant4 runs required for these.}\\[0.3em]
+All results use IQR-based $\sigma$ (robust to non-Gaussian tails).\\[0.2em]
+EJ-230: 13 positions $\times$ 5000 ev; $N_\mathrm{pe}/\mathrm{end}$: 350--1540.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 3. Phase A: k-scan result ─────────────────────────────────────────────────
+\begin{frame}{Phase A+B: optimal photon estimator at $x=0$}
+\begin{center}
+  \includegraphics[width=0.88\textwidth]{\plots/figA_km_curves_x0.png}
+\end{center}
+\vspace{-0.3em}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\footnotesize
+\textbf{Key finding}: $m$-average is \textbf{systematically better} than $k$-th single photon ($\approx$8--11\% gain in $\sigma$).\\
+Optimal $m^*$ is small (5--12): \textit{use mean of first few photons, not all.}
+\end{column}
+\begin{column}{0.44\textwidth}
+\footnotesize
+\begin{tabular}{lccc}
+\toprule
+Scint. & $k^*$ & $\sigma(k^*)$ & $\sigma(m^*)$\\
+\midrule
+EJ-200 & 58 & 59.9 ps & 54.9 ps\\
+EJ-204 & 3  & 59.7 ps & 53.4 ps\\
+\rowcolor{rowbest}
+EJ-230 & 2  & 56.0 ps & 50.5 ps\\
+\bottomrule
+\end{tabular}\\[0.2em]
+\footnotesize EJ-200's large $k^*=58$ reflects slow $\tau=2.1\,\mathrm{ns}$: early photons are noisy. $m$-average sidesteps this efficiently.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 4. Phase A: position scan ─────────────────────────────────────────────────
+\begin{frame}{Phase A+B: position dependence}
+\begin{center}
+  \includegraphics[width=0.88\textwidth]{\plots/figB_sigma_vs_x.png}
+\end{center}
+\vspace{-0.4em}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\footnotesize
+\textbf{EJ-230} best at centre ($x\approx 0$): shorter $\tau$ helps when $N_\mathrm{pe}$ is high.\\[0.3em]
+\textbf{EJ-200} recovers at extremes ($|x|\sim600\,\mathrm{mm}$): longer attenuation ($L_\mathrm{att}=380\,\mathrm{cm}$) keeps photon count high at distant end.
+\end{column}
+\begin{column}{0.44\textwidth}
+\footnotesize
+$N_\mathrm{pe}$ at left end (x=$-600$ mm):\\
+EJ-200: 1765,\quad EJ-204: 1750,\quad EJ-230: 1543.\\[0.2em]
+$N_\mathrm{pe}$ at left end (x=$0$ mm):\\
+EJ-200: 1311,\quad EJ-204: 941,\quad EJ-230: 701.\\[0.2em]
+EJ-230's shorter $L_\mathrm{att}=120\,\mathrm{cm}$ reduces yield strongly toward centre.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 5. Phase D: END SiPM ablation ─────────────────────────────────────────────
+\begin{frame}{Phase D: END SiPM ablation}
+\begin{columns}[T]
+\begin{column}{0.54\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figC_end_ablation.png}
+\end{column}
+\begin{column}{0.42\textwidth}
+\vspace{0.5em}
+\textbf{Method}: mask \texttt{local\_id} $\subset\{0\ldots7\}$\\
+(same subset for both ends; 8 random seeds).\\[0.5em]
+\footnotesize
+\begin{tabular}{ccrr}
+\toprule
+N/end & $N_\mathrm{tot}$ & EJ-204 & EJ-230\\
+\midrule
+8 & 16 & 59.7 ps & 56.0 ps\\
+6 & 12 & 66.9 ps & 63.2 ps\\
+4 &  8 & 78.6 ps & 73.4 ps\\
+2 &  4 & 101.9 ps& 97.9 ps\\
+1 &  2 & 136.3 ps& 131.2 ps\\
+\bottomrule
+\end{tabular}\\[0.5em]
+\normalsize
+\textbf{4 SiPMs total (2/end)} already gives\\$<100\,\mathrm{ps}$ for both scintillators.\\[0.3em]
+Scaling: $\sigma \propto N_\mathrm{pe}^{-0.55}$ (slower than $1/\sqrt{N}$ due to order-stat structure).
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 6. Phase C: TOP SiPM ablation ─────────────────────────────────────────────
+\begin{frame}{Phase C: TOP SiPM ablation}
+\begin{columns}[T]
+\begin{column}{0.54\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figD_top_ablation.png}
+\end{column}
+\begin{column}{0.42\textwidth}
+\vspace{0.5em}
+\textbf{Method}: random subset of \texttt{local\_id}\\
+from the 70 TOP SiPMs; 8 seeds.\\[0.5em]
+\footnotesize
+\begin{tabular}{crr}
+\toprule
+$N_\mathrm{top}$ & EJ-204 Vik & EJ-230 Vik\\
+\midrule
+70 & 83.7 ps & 70.4 ps\\
+50 & 111 ps & 82.5 ps\\
+35 & 123 ps & 104 ps\\
+25 & 211 ps & 107 ps\\
+$<$20 & $>$150 ps & $>$230 ps\\
+\bottomrule
+\end{tabular}\\[0.5em]
+\normalsize
+\textbf{Large uncertainty below N=25}:\\[0.2em]
+resolution depends critically on \textit{which} SiPMs are selected relative to the muon track.\\[0.3em]
+Dotted lines: END+Vik reference (56/60 ps).\\[0.2em]
+\textbf{TOP needs $\gtrsim 50$ SiPMs} to match END+Vik resolution.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 7. Phase E: Pareto frontier ───────────────────────────────────────────────
+\begin{frame}{Phase E: Pareto frontier}
+\begin{columns}[T]
+\begin{column}{0.56\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figE_pareto.png}
+\end{column}
+\begin{column}{0.40\textwidth}
+\vspace{0.5em}
+\footnotesize
+\textbf{END+Vikuiti dominates the Pareto frontier} at every SiPM count.\\[0.5em]
+At the same total SiPM budget:\\
+\begin{itemize}
+  \item 4 END SiPMs $\to$ 98 ps\\
+        vs.\ 4 TOP SiPMs $\to$ $>$1000 ps
+  \item 8 END SiPMs $\to$ 73 ps\\
+        vs.\ 70 TOP SiPMs $\to$ 70 ps
+  \item 16 END SiPMs $\to$ 56 ps\\
+        vs.\ 70 TOP SiPMs $\to$ 70 ps
+\end{itemize}
+\vspace{0.4em}
+\textbf{END+Vik with 16 SiPMs beats TOP with 70 SiPMs} by 20\%.\\[0.3em]
+\normalsize
+$\Rightarrow$ Reflector on end faces is the most cost-effective improvement per SiPM.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 8. What requires new Geant4 ───────────────────────────────────────────────
+\begin{frame}{What genuinely requires new Geant4 simulation}
+\begin{columns}[T]
+\begin{column}{0.50\textwidth}
+\textbf{Computable from existing data:}\\[0.3em]
+\begin{itemize}\footnotesize
+  \item $k$-scan and $m$-average, any $k,m \le N_\mathrm{pe}$
+  \item END software ablation (8 to 1 SiPM/face)
+  \item TOP software ablation (70 to 1 SiPMs)
+  \item Position dependence of all above
+  \item MC-truth bias $\langle T_0 - T_0^\mathrm{true}\rangle$ vs.\ $x$
+\end{itemize}
+\vspace{0.5em}
+\textbf{NOT computable from existing data:}\\[0.3em]
+\begin{enumerate}\footnotesize
+  \item \textbf{END+Vik + sparse TOP simultaneously}\\
+        In \texttt{scan\_resolution}: top SiPMs absorb photons $\Rightarrow$ end hits $\approx$1/ev.\\
+        Need combined geometry: Vikuiti at ends + $\mathcal{O}$(few) top SiPMs.
+  \item \textbf{Physical SiPM reduction} ($< 8$/end):\\
+        Software masking changes information, not optical boundaries.\\
+        True optical effect of removing SiPMs from face requires new sim.
+  \item \textbf{EJ-200 position scan with reflector}:\\
+        Only \texttt{scan\_end\_vikuiti} has EJ-200; additional systematic checks possible.
+\end{enumerate}
+\end{column}
+\begin{column}{0.46\textwidth}
+\textbf{Proposed minimal new campaign:}\\[0.5em]
+\footnotesize
+\begin{tabular}{lll}
+\toprule
+Geometry & Scint. & Goal\\
+\midrule
+END+Vik + 4 TOP & EJ-230 & Combined $T_0$\\
+END+Vik + 8 TOP & EJ-230 & Combined $T_0$\\
+4 SiPMs/end (phys.) & EJ-230 & True ablation\\
+2 SiPMs/end (phys.) & EJ-230 & Minimum config\\
+\bottomrule
+\end{tabular}\\[0.4em]
+\normalsize
+$\approx 4$ new geometries $\times$ 13 positions $\times$ 5000 ev\\
+$\approx$ 4 hours total runtime on t0minidaq.\\[0.3em]
+Can reuse run-script infrastructure.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 9. Conclusions ────────────────────────────────────────────────────────────
+\begin{frame}{Conclusions}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\textbf{Best configuration from existing data:}\\[0.3em]
+\rowcolors{2}{rowbest}{white}
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+\textbf{Configuration} & \textbf{SiPMs} & $\boldsymbol{\sigma(T_0)}$\\
+\midrule
+\rowcolor{rowbest}
+EJ-230 + END + Vikuiti + $m^*{=}7$ & 16 & \textbf{50.5 ps}\\
+EJ-230 + END + Vikuiti + $k^*{=}2$ & 16 & 56.0 ps\\
+EJ-204 + END + Vikuiti + $m^*{=}10$& 16 & 53.4 ps\\
+EJ-230 + TOP + TIR, $k{=}1$        & 70 & 70.2 ps\\
+EJ-204 + TOP + TIR, $k{=}1$        & 70 & 82.1 ps\\
+EJ-230 + END + Vik, 2/end, $k^*$   & 4  & 97.9 ps\\
+\bottomrule
+\end{tabular}
+\end{column}
+\begin{column}{0.44\textwidth}
+\textbf{Main results:}\\[0.3em]
+\begin{enumerate}\footnotesize
+  \item \textbf{END+Vikuiti beats TOP at equal SiPM cost} by a factor of $\approx$2--5.
+  \item \textbf{$m$-average $\sim$10\% better} than single $k$-th photon; optimal $m^*=5$--12.
+  \item \textbf{EJ-230 best at centre}; EJ-200 competes at extremes (longer $L_\mathrm{att}$).
+  \item \textbf{4 END SiPMs total $\to$ $<100$ ps} (software ablation).
+  \item \textbf{TOP needs $\gtrsim50$ SiPMs} for comparable timing.
+  \item \textbf{Combination} END+Vik + sparse TOP requires new simulation.
+\end{enumerate}
+\vspace{0.3em}
+\normalsize
+\textbf{Recommendation}: run EJ-230 + END+Vik with $m^*=7$ as baseline; explore physical 4-SiPM/end geometry with new Geant4 campaign.
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,30 @@
+{
+  "npe_unit": "detected_pe_per_end",
+  "explanation": "Each TTree hit = 1 detected PE (Geant4 applies PDE as Bernoulli filter). pde branch records the PDE value at detection wavelength (metadata only). Convention: Npe_per_end = mean hits with face_type=0 (END_LEFT) per event; END_LEFT ≈ END_RIGHT by symmetry.",
+  "face_type_map": {
+    "0": "END_LEFT",
+    "1": "END_RIGHT",
+    "2": "TOP"
+  },
+  "npe_vikuiti_x0": {
+    "ej200": {"per_end": 1310.8, "combined_LR": 2621.5},
+    "ej204": {"per_end": 941.0,  "combined_LR": 1882.0},
+    "ej230": {"per_end": 701.3,  "combined_LR": 1402.6}
+  },
+  "npe_tir_x0": {
+    "note": "scan_end_tir run used dielectric_metal surface (EXEC_21 bug), which eliminates TIR. Data are INVALID for physics comparison.",
+    "ej204": {"per_end": 0.361, "combined_LR": 0.723},
+    "ej230": {"per_end": 0.299, "combined_LR": 0.597}
+  },
+  "vikuiti_tir_ratio_x0": {
+    "ej204": 2608,
+    "ej230": 2367,
+    "origin": "bug (dielectric_metal killed TIR), not physics"
+  },
+  "sigma_convention": "sigma_IQR = (Q75 - Q25) / 1.349 ps (robust estimator)",
+  "t0_estimator": {
+    "end": "m-average: T0_END(m) = 0.5*(mean(t_L^{1..m}) + mean(t_R^{1..m}))",
+    "top": "k-th order stat: T0_TOP(k) = t_TOP^(k)",
+    "blue": "T0_BLUE = w_END*T0_END + w_TOP*T0_TOP"
+  }
+}
