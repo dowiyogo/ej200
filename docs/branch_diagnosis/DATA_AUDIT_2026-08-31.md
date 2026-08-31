@@ -287,6 +287,63 @@ Dataset E puede ser recreado desde `3ae135f` en `feat/endonly-mylar`, pero los 4
 
 ---
 
+## Dataset G — `validation_skinfix_msi_300ev_31pos/raw/` (EXEC_16)
+
+**Identificado en:** segunda pasada de auditoría (verificación de procedencia EXEC_16)  
+**Fuente:** `analysis_core/config/exec16_config.yaml` + `outputs/ej204_endtop_top_sum4_metadata.json` + `outputs/ej230_endtop_top_sum4_metadata.json`  
+**Archivos:** 31 ROOT por material (`ej204_endtop_x{pos}mm_300ev_a0368c4.root` y `ej230_endtop_x{pos}mm_300ev_ca2f1c3.root`); las SHA-256 de cada archivo están verificadas en los JSON de metadata.
+
+| Lado | Material | Rama | Hash commit | Fase | Método |
+|------|----------|------|-------------|------|--------|
+| EJ-204 | OPSC-101 | `feat/endtop-sslg4` | **`a0368c4`** | **Fase 4 (GEN-1)** | hash en nombre de archivo + `sha_runtime` en metadata JSON |
+| EJ-230 | OPSC-106 | `feat/ej230-sslg4` | **`ca2f1c3`** | **Fase 4-equiv (GEN-1)** | hash en nombre de archivo + `sha_runtime` en metadata JSON |
+
+**Confirmación geométrica para EJ-230 (`ca2f1c3`):** `src/DetectorConstruction.cc:289-290` en ese commit muestra `auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV, reflector)` con `CreateBarSkinReflector()` → `dielectric_metal`. El comentario en línea 90 del mismo archivo: "by a reflector skin surface on BarLV." La arquitectura GEN-1 (skin sobre barLV, dielectric_metal, sin TIR) está activa en ambas ramas simultáneamente el 2026-06-18 — el mismo día que el commit GEN-1 `f39b84c` en `feat/endtop-sslg4`.
+
+**Parámetros:** 300 ev/pos × 31 posiciones × 2 materiales = 62 archivos ROOT. Ejecutado en el host MSI (no t0minidaq), fechado 2026-06-18 14:39–14:47. Analizado por `analysis_core/exec16_endtop_ej204.py`.
+
+**Confianza: ALTA** (hash en nombre de archivo, verificado en runtime con `git rev-parse` según el config, SHA-256 por archivo en metadata JSON).
+
+---
+
+## Comparaciones cruzadas de fase
+
+### 1. Comparación EXEC_16 CP3/CP4: EJ-230 TOP_SUM4 x=0 N=4 vs EJ-204 TOP_SUM4 x=0 N=4
+
+**Valores citados:** EJ-230 → 80.6 ps, EJ-204 → 93.8 ps (los valores ≈ 81 ± 5 ps y ≈ 94 ± 7 ps con incertidumbres bootstrap de N_BOOTSTRAP=300).
+
+**Fuente de datos de cada lado:**
+
+| Lado | Directorio de datos | Commit | Fase óptica |
+|------|---------------------|--------|-------------|
+| EJ-230 | `validation_skinfix_msi_300ev_31pos/raw/ej230_*` (Dataset G) | `ca2f1c3` en `feat/ej230-sslg4` | **Fase 4-equiv (GEN-1)** |
+| EJ-204 | `validation_skinfix_msi_300ev_31pos/raw/ej204_*` (Dataset G) | `a0368c4` en `feat/endtop-sslg4` | **Fase 4 (GEN-1)** |
+
+**Veredicto: INTRA-FASE.** Ambos lados usan el modelo GEN-1 (`G4LogicalSkinSurface` sobre `barLV`, `dielectric_metal`, sin TIR). La comparación no mezcla fases distintas entre los dos lados.
+
+**Caveat que persiste:** aunque la comparación es internamente consistente (misma fase en EJ-230 y EJ-204), **ninguno de los dos lados corresponde al modelo óptico correcto (Fase 7)**. La ausencia de TIR reduce la estadística de fotones en el TOP readout de forma diferente según la geometría, por lo que los valores absolutos (80.6 ps y 93.8 ps) y la diferencia relativa entre materiales (Δ = 13 ps, 14%) son resultados del modelo GEN-1, no predicciones físicamente válidas. La afirmación "EJ-230 es 14% mejor en timing TOP" no puede extrapolarse al modelo correcto sin nueva simulación.
+
+---
+
+### 2. Dos conjuntos de datos EJ-230 en fases distintas coexisten en el historial
+
+**Riesgo de cross-phase si se combinan en una figura:**
+
+| Dataset | Directorio | Fase | Commit | Usado en |
+|---------|-----------|------|--------|---------|
+| D | `t0minidaq/results_ej230/` | Fase 3-equiv en `feat/ej230-sslg4` (reflector volumes, dielectric_metal border) | desconocido | EXEC_13-230, EXEC_14 |
+| G | `validation_skinfix_msi_300ev_31pos/raw/ej230_*` | Fase 4-equiv en `feat/ej230-sslg4` (GEN-1, skin sobre barLV) | `ca2f1c3` | EXEC_16 |
+
+Los dos datasets usan la misma rama (`feat/ej230-sslg4`) pero en momentos temporales distintos que corresponden a modelos ópticos opuestos: Dataset D tiene volúmenes reflectores (Phase 3-equiv, TIR intacta); Dataset G tiene skin surface sobre barLV (Phase 4-equiv, sin TIR).
+
+**Figura contaminada si existe:** cualquier figura que cite un resultado de EJ-230 de EXEC_13/14 (Dataset D, Phase 3-equiv) junto a un resultado de EJ-204 de EXEC_16 (Dataset G, Phase 4), o viceversa, mezclaría dos modelos ópticos distintos bajo la etiqueta "EJ-230 vs EJ-204". No se ha podido confirmar en esta auditoría si tal figura existe en forma comprometida — requiere revisión manual de cada figura publicada que combine valores numéricos de EJ-230 y EJ-204 de EXECs distintos.
+
+**Estado en el beamer comprometido (`EXEC_16_endtop_ej204.tex`):** La única referencia a EJ-230 en ese beamer es narrativa (línea 192: "Contraste con EJ-230: inversion dependiente de posicion (OPSC-106/EXEC series)" — sin valores numéricos citados) y una nota de cierre (línea 288: "Cierre 2×2: EJ-230 EndTop pendiente"). El beamer NO cita valores numéricos de EJ-230 de EXEC_13/14. El riesgo cross-phase es estructural (los dos datasets EJ-230 coexisten en t0minidaq a fases distintas) pero no está actuali­zado en el beamer comprometido.
+
+**Riesgo activo:** si análisis futuros citan σ_END EJ-230 de EXEC_13/14 (Phase 3, TIR intacta) junto a σ_END EJ-204 de EXEC_16 (Phase 4, sin TIR), la diferencia reflejaría el modelo óptico, no el material.
+
+---
+
 ## Notas de auditoría
 
 - **t0minidaq como buffer temporal:** ninguno de los 6 datasets tiene resultados comprometidos en git bajo Fases 4–7. `t0minidaq` actúa como buffer de simulación; los resultados solo son recuperables mientras no se sobrescriban.
