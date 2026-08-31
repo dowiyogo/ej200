@@ -307,7 +307,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     //
     // Two-tier reflection model:
     //   bar→air : dielectric_dielectric polished → TIR for θ > 39.3°
-    //   air→Vik : dielectric_metal R=0.98 (Vikuiti 3M ESR)
+    //   air→Vik : dielectric_dielectric R=0.95 (CreateBarSkinReflector, Materials.cc:354)
     {
         auto* scintAirSurface     = Materials::CreateBarSurface();
         auto* airReflectorSurface = Materials::CreateBarSkinReflector();
