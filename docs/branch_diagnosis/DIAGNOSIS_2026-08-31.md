@@ -53,12 +53,16 @@ Each cell is extracted from code; see §8 for evidence references.
 - **NEAR-GEN-1**: `G4LogicalBorderSurface` on bar→panel boundary, `dielectric_metal`, no air gap → TIR still eliminated
 - **TIR-ONLY**: `G4LogicalSkinSurface` on `barLV` with `dielectric_dielectric` polished → TIR works, no secondary reflector (photons that fail TIR lost to world)
 - **2T-MYLAR**: two-tier; bar→air `dielectric_dielectric` + air→Mylar panel `dielectric_metal` R=0.95; air gap 0.10 mm, Mylar 0.05 mm
-- **2T-VIK**: two-tier; bar→air `dielectric_dielectric` + air→Vikuiti panel `dielectric_metal` R=0.98; air gap 0.10 mm, Vikuiti 0.05 mm ← CURRENT BASELINE
+- **2T-VIK**: two-tier; bar→air `dielectric_dielectric` polished (TIR θ>39.3°) + air→Vikuiti panel `dielectric_dielectric` REFLECTIVITY=0.95 (exec22 fix); air gap 0.10 mm, Vikuiti 0.05 mm ← CURRENT BASELINE (feat/bar-end-vikuiti). Nota: feat/ej228-cylinder usa `dielectric_metal` R=0.98 para la misma capa — mismo código de celda, distinta implementación.
 - **3T-MYLAR**: three-tier; bar→Mylar wrap `dielectric_dielectric` (Fresnel) + Mylar→air TIR at 37.3°; no air gap; Mylar thickness 0.025 mm
+
+**Autoría del modelo óptico:**
+- **APORTA (óptica)**: la rama introduce el modelo óptico en sus propios commits
+- **HEREDA (óptica)**: el modelo óptico viene íntegramente del commit base; los commits propios de la rama no incluyen ningún cambio óptico
 
 | Branch | Geometry | Scint (default) | Readout modes | Surface | Air gap | Reflector | Gun default |
 |--------|----------|-----------------|---------------|---------|---------|-----------|-------------|
-| **feat/bar-end-vikuiti** (REF) | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | **2T-VIK** | 0.10 mm | Vikuiti 3M ESR R=0.98 | Through 10 mm (Z) |
+| **feat/bar-end-vikuiti** (REF) | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | **2T-VIK** | 0.10 mm | Vikuiti 3M ESR `dielectric_dielectric` R=0.95 | Through 10 mm (Z) |
 | main | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | **GEN-1** | — | Vikuiti skin on barLV | Through 10 mm (Z) |
 | feat/bar-vikuiti | Bar 1400×60×10 mm | OPSC-106 (EJ-230) | End / Top / EndTop | **GEN-1** | — | Vikuiti skin on barLV | Through 10 mm (Z) |
 | feat/ej230-bar-tir-only | Bar 1400×60×10 mm | OPSC-106 (EJ-230) | End / Top / EndTop | TIR-ONLY | — | None | Through 10 mm (Z) |
@@ -73,7 +77,7 @@ Each cell is extracted from code; see §8 for evidence references.
 | feat/ej204-event-display-tracks | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | **GEN-1** | — | Vikuiti skin on barLV | Through 10 mm (Z) |
 | feature/sipm-electronics-response | Bar 1400×60×10 mm | EJ-200/204 (cfg) | INDETERMINADO (pitch-cfg) | **3T-MYLAR** | — | Mylar wrap 25 µm | Through 10 mm (Z) |
 | wip/host-uncommitted-2026-08-31 | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop / **EndSparseTop** | **2T-VIK** | 0.10 mm | Vikuiti R=0.98 | Through 10 mm (Z) |
-| wip/host-stash-endtop-junio | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | NEAR-GEN-1 | — | Vikuiti panels (direct contact) | Through 10 mm (Z) |
+| wip/host-stash-endtop-junio | Bar 1400×60×10 mm | OPSC-101 (EJ-204) | End / Top / EndTop | NEAR-GEN-1 (**HEREDA** de `1f6aca1`) | — | Vikuiti panels 0.5 µm (direct contact, base heredado) | Through 10 mm (Z) |
 
 ---
 
@@ -197,7 +201,29 @@ Commits:
 - `5576687 fix(optics): eliminate group-velocity aliasing bug in EXEC_23 air-gap geometry`  
 - `610b189 feat(validation): physics validation scan — 7 pos × 500 events`  
 **Surface:** 2T-MYLAR (correct; uses `CreateMylarReflector()` R=0.95 on air→Mylar boundary; air gap 0.10 mm)  
-**Default scint:** OPSC-101 (EJ-204)  
+**Default scint:** OPSC-101 (EJ-204)
+
+**Comparación de reflectores: feat/endtop-sslg4 vs REF_BASE (V2)**
+
+| Parámetro | feat/endtop-sslg4 (2T-MYLAR) | feat/bar-end-vikuiti (2T-VIK) |
+|-----------|-------------------------------|-------------------------------|
+| bar→air boundary | `dielectric_dielectric`, polished | `dielectric_dielectric`, polished |
+| air→reflector TIPO | **`dielectric_metal`** | **`dielectric_dielectric`** (exec22 fix) |
+| REFLECTIVITY | 0.95 (default arg) | 0.95 (vector [1.5–6.5] eV) |
+| SPECULARLOBECONSTANT | 0.0 (default arg) | no establecido (polished, Geant4 default) |
+| SigmaAlpha | 0.0 (default arg) | 0.0 (`SetSigmaAlpha(0.0)`) |
+| Material reflector | Mylar 0.05 mm (n=1.65) | Vikuiti 3M ESR 0.05 mm |
+| Air gap | 0.10 mm | 0.10 mm |
+
+Fuentes:
+- `src/DetectorConstruction.cc:285-286` (feat/endtop-sslg4): `CreateBarSurface()` + `CreateMylarReflector()` sin argumentos
+- `include/Materials.hh:40-42` (feat/endtop-sslg4): `CreateMylarReflector(G4double reflectivity = 0.95, G4double specularLobe = 0.0, G4double sigmaAlpha = 0.0)` — defaults explícitos en la declaración
+- `src/Materials.cc:288` (feat/endtop-sslg4): `CreateMylarReflector` → `surf->SetType(dielectric_metal)`
+- `src/Materials.cc:347` (REF_BASE): `CreateBarSkinReflector` → `surf->SetType(dielectric_dielectric)`, `SetSigmaAlpha(0.0)`, REFLECTIVITY=0.95
+
+> **⚠ σ_t de feat/endtop-sslg4 y de feat/bar-end-vikuiti NO son directamente comparables: distinto reflector.**  
+> El tipo de superficie air→reflector difiere (`dielectric_metal` vs `dielectric_dielectric`): con `dielectric_metal` no hay refracción ni ecuaciones de Fresnel; con `dielectric_dielectric` se aplican ecuaciones de Fresnel completas. El material del reflector también difiere (Mylar n=1.65 vs Vikuiti ESR). Las distribuciones σ_t de ambas ramas no son intercambiables sin corrección de modelo.
+
 **Key scripts:** `scripts/run_t0minidaq_endtop_scan_5000.sh`, 31 t0minidaq macros, `scripts/analyze_t0minidaq_endtop_*.py`  
 **Unique artifacts:** Group-velocity fix commit (historical reference), 7-position validation scan  
 **Destination:** MANTENER VIVA (as archive reference) or ARCHIVAR — predecessor to REF_BASE; two unique commits that were NOT cherry-picked into REF_BASE (group-velocity fix and validation scan). Check if group-velocity fix is already absorbed; if not, cherry-pick candidate.
@@ -254,11 +280,25 @@ Commits:
 
 ### wip/host-stash-endtop-junio @ 9710f34
 
-**Unique commits vs REF_BASE:** 1  
-Commit: `9710f34 wip: recover June stash (CMakeLists + exec07 scan script)`  
-**Base commit:** `1f6aca1 feat(exec07): add SSLG4 EndTop 86-channel geometry` (on old `feat/endtop-sslg4` from June 2026, NOT on REF_BASE's ancestry)  
-**Surface:** NEAR-GEN-1 — `CreateBarSkinReflector()` (dielectric_metal R=0.98) applied as border surfaces on explicit reflector panels with NO air gap between bar and panel  
-**Destination:** ARCHIVAR — Near-GEN-1 bug, single WIP commit on stale base; content (CMakeLists + run_exec07_scan.sh) already exists in REF_BASE
+**Aporte óptico propio de la rama: ninguno.**
+
+**Único commit propio:** `9710f34 wip: recover June stash (CMakeLists + exec07 scan script)` — añade únicamente `CMakeLists.txt` y `scripts/run_exec07_scan.sh`; no modifica `src/` ni `include/`. Verificación:
+
+```bash
+git diff --stat \
+  $(git merge-base origin/feat/bar-end-vikuiti origin/wip/host-stash-endtop-junio) \
+  ..origin/wip/host-stash-endtop-junio
+# → solo CMakeLists.txt y scripts/run_exec07_scan.sh
+```
+
+**Base commit:** `1f6aca1 feat(exec07): add SSLG4 EndTop 86-channel geometry` (2026-06-10) — **no está en la ascendencia de REF_BASE**.
+
+**Surface: HEREDA Near-GEN-1 de `1f6aca1`.**  
+El modelo Near-GEN-1 es propiedad de `1f6aca1`, no de esta rama. En `1f6aca1:src/DetectorConstruction.cc` existen border surfaces sobre panels de lámina (`foilHalfT = 0.5 µm`) aplicados directamente contra la barra (sin air gap). En `1f6aca1:src/Materials.cc`, `CreateBarSkinReflector()` devuelve `dielectric_metal` — mismo Al-mirror model que `origin/main`. El commit `9710f34` no altera ninguno de esos archivos.
+
+**Nota sobre cherry-count vs REF_BASE:** el recuento "+N commits vs REF_BASE" es un artefacto de que el merge-base entre esta rama y REF_BASE es un commit muy anterior al árbol SSLG4; no mide contenido óptico propio de la rama.
+
+**Destination:** ARCHIVAR — sin contenido óptico propio; base `1f6aca1` tiene Near-GEN-1 heredado; los dos archivos propios (CMakeLists + run script) ya existen en REF_BASE.
 
 ---
 
@@ -281,14 +321,14 @@ All results from this group are affected by GEN-1 (Npe ÷1500 vs CORRECT)
 Members: `feat/ej204-bar-tir-only`  
 No GEN-1 bug; TIR-only interpretation
 
-### Group D — Bar, EJ-230, 2T-MYLAR
+### Group D — Bar, EJ-204, 2T-MYLAR
 
-Members: `feat/endtop-sslg4` (Mylar R=0.95 air-gap model)  
+Members: `feat/endtop-sslg4` (Mylar R=0.95 air-gap model; default scint OPSC-101 EJ-204, not EJ-230)  
 2 unique commits vs REF_BASE; predecessor to REF_BASE
 
 ### Group E — Bar, EJ-230, GEN-1/Near-GEN-1 (buggy)
 
-Members: `feat/bar-vikuiti` (GEN-1 skin), `feat/ej230-sslg4` (GEN-1 skin), `feat/ej230-endonly-mylar` (Near-GEN-1 panels), `wip/host-stash-endtop-junio` (Near-GEN-1 panels)  
+Members: `feat/bar-vikuiti` (GEN-1 skin, APORTA), `feat/ej230-sslg4` (GEN-1 skin, APORTA), `feat/ej230-endonly-mylar` (Near-GEN-1 panels, APORTA), `wip/host-stash-endtop-junio` (Near-GEN-1 panels, **HEREDA** de `1f6aca1` — sin aporte óptico propio)  
 Most analysis content: `feat/ej230-endonly-mylar` (41 unique commits, End-only)
 
 ### Group F — Bar, EJ-230, TIR-only (no reflector)
@@ -390,6 +430,35 @@ All defects documented only; none fixed. Evidence from `git show HEAD:src/...` a
 
 ---
 
+## §8b — Impacto de GEN-1/Near-GEN-1 sobre artefactos versionados (V3)
+
+Inventario de artefactos producidos bajo código defectuoso, extraído de `git ls-tree`. No se abrió ningún archivo de datos ni se recorrió `/home/reriosto/SHiP/t0minidaq/`. Solo se reporta lo versionado en git.
+
+### Artefactos comunes a todas las ramas GEN-1 (en `analysis/exec07/`)
+
+Presentes en `feat/bar-vikuiti`, `feat/ej230-sslg4`, `exp/pair-scan-2026-06-11`, `feat/ej204-event-display-tracks`, `feat/endonly-mylar` (compartidos desde la ascendencia común anterior a las ramas):
+
+**PDFs:** `exec07_photon_budget_report.pdf`, `exec09_report_full.pdf`, `exec09_report_key.pdf`, `exec10_report_full.pdf`, `exec10_report_key.pdf`, `exec11_report_key.pdf`, `exec12_report_full.pdf`  
+**CSVs:** `exec08b_timing_gate.csv`, `exec08b_timing_gate_raw.csv`, `exec08b_window_dip_profiles.csv`, `exec09_tail_comparison.csv`, `exec09_tail_metrics.csv`, `exec10_fano_by_channel.csv`, `exec10_fano_fit.csv`, `exec10_landau_mpv.csv`, `exec10_late_fraction_representative.csv`, `exec10_velocity_fits.csv`, `exec10_velocity_metrics.csv`, `exec11_arrival_metrics.csv`, `exec12_tN_summary.csv`, `fit_results_exec07.csv`, `per_position_exec07.csv`, `summary_exec07.csv`, y otros  
+**Figuras:** ~90 PNGs en `analysis/exec07/figs/`
+
+### Inventario por rama GEN-1 y Near-GEN-1
+
+| Rama | Bug | Óptica defectuosa desde | Artefactos únicos (además de exec07/ común) |
+|------|-----|-------------------------|----------------------------------------------|
+| **main** @ 84e902c | GEN-1 | 2026-06-18 (commit `84e902c`) | Ningún artefacto de resultados versionado en main |
+| **feat/bar-vikuiti** | GEN-1 (APORTA) | 2026-06-08 (primeros commits de la rama) | `beamer/bar_scan_comparative.pdf`, `beamer/ej204_vs_ej230_bar_tir.pdf`; `results/exec11_20260612_*/` (9 CSVs, 12 figuras); `results/exec12_20260612_*/` (9 CSVs, 12 figuras); `results/exec12t_20260612_*/` (Beamer `exec12t_timing_position_beamer.pdf`, report, 14 figuras, 13 CSVs); `results/exec12tb_20260612_*/` (Beamer `exec12tb_beamer.pdf`, 18 figuras, 1 CSV); `results/analysis_sigma_vs_x_2026-06-10/` (5 CSVs, 9 PNGs) |
+| **feat/ej230-sslg4** | GEN-1 (APORTA) | 2026-06-08 (primeros commits de la rama) | `analysis/exec13/exec13_230_report.pdf`, 6 CSVs exec13\_230\_\*.csv, 11 figuras; `results_ej230_analysis/report/exec13_ej230_report_full.pdf`; `results_ej230_analysis/csv/` (9 CSVs exec08b–exec14e); `results_ej230_analysis/*.csv` (7 CSVs exec10–summary) |
+| **exp/pair-scan-2026-06-11** | GEN-1 (APORTA) | 2026-06-18 (commit `c7a627e`, mismo mensaje que `84e902c`) | `results/exec11_*`, `results/exec12_*`, `results/exec12t_*`, `results/exec12tb_*` (compartidos con feat/bar-vikuiti); `results/analysis_sigma_vs_x_2026-06-10/` |
+| **feat/ej204-event-display-tracks** | GEN-1 (heredado de main `84e902c`) | 2026-06-18 | `analysis/exec13/exec13_report.pdf`, 6 CSVs, 11 figuras |
+| **feat/endonly-mylar** | GEN-1 (APORTA, desde desarrollo temprano) | ~2026-03-19 (rama más antigua; skin surface desde primeros commits) | `analysis/exec13/exec13_report.pdf`, 6 CSVs, 11 figuras |
+| **feat/ej230-endonly-mylar** | Near-GEN-1 (APORTA) | desde primeros commits de la rama | `analysis/exec13/` EJ-230 end-only (report + 6 CSVs + 11 figs); `results_ej230_analysis/` exec13–14 (CSVs y report PDF) |
+| **wip/host-stash-endtop-junio** | Near-GEN-1 (**HEREDA** de `1f6aca1`) | base 2026-06-10 | Commit propio no añade ningún artefacto; artefactos heredados del base `1f6aca1` (exec07 content al 2026-06-10) |
+
+**Interpretación para la tesis:** cualquier figura o tabla de σ_t, Npe, o resolución de posición proveniente de ramas GEN-1 o Near-GEN-1 se obtuvo bajo un modelo óptico sin TIR. Los valores absolutos de Npe y σ_t son inválidos vs el modelo correcto. Las tendencias relativas *dentro de una misma rama* son autorreferentes y pueden citarse solo si se declara explícitamente el modelo defectuoso.
+
+---
+
 ## §9 — Evidence references
 
 All commands are read-only; no files modified, no branches altered.
@@ -425,3 +494,50 @@ ssh -p 9022 reriosto@127.0.0.1 bash --noprofile --norc -c 'git -C /home/reriosto
 | Every destination proposal cites evidence | ✓ DONE |
 | Zero tags created, zero branches deleted, zero merges | ✓ DONE (verifiable) |
 | Code defects documented (not fixed) | ✓ DONE |
+| V1: APORTA/HEREDA distinction applied to wip/host-stash-endtop-junio | ✓ DONE |
+| V2: surface parameter comparison feat/endtop-sslg4 vs REF_BASE with file:line evidence | ✓ DONE |
+| V3: versioned artifact inventory per GEN-1/Near-GEN-1 branch | ✓ DONE |
+| §11: Recomendación sobre main documented (not executed) | ✓ DONE |
+
+---
+
+## §11 — Recomendación sobre main
+
+### Estado actual
+
+`main` @ `84e902c` ("fix(optics): replace reflector volumes with bar skin surface", 2026-06-18) contiene el bug **GEN-1**:
+
+```cpp
+// src/DetectorConstruction.cc (origin/main)
+auto* reflector = Materials::CreateBarSkinReflector();   // dielectric_metal, Al-mirror spectral R≈0.88 @ 425 nm
+auto* barSkin   = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
+```
+
+`CreateBarSkinReflector()` en main devuelve `dielectric_metal` — elimina el TIR en la interfaz barra-aire (θ_c = 39.3°). En REF_BASE la misma función devuelve `dielectric_dielectric` + REFLECTIVITY=0.95 (exec22 fix, `src/Materials.cc:347`).
+
+**Seis ramas ya heredaron o desarrollaron este defecto** — ver §3 (columna Surface = GEN-1) y §8 Defecto #4.
+
+### Consecuencia de no actuar
+
+Cualquier rama creada desde `main` en este estado hereda GEN-1 automáticamente. La denominación "main" implica línea base de referencia; un colaborador que clone el repo y trabaje desde main obtendrá resultados físicamente incorrectos sin advertencia.
+
+### Opción documentada: promover el modelo 2T-VIK de feat/bar-end-vikuiti a main
+
+**Acción propuesta:** crear un PR desde `feat/bar-end-vikuiti` hacia `main`. No se ejecuta aquí.
+
+**Cambio central del PR:**
+
+| Archivo | Cambio |
+|---------|--------|
+| `src/Materials.cc` | `CreateBarSkinReflector()` pasa de `dielectric_metal` (Al-mirror) a `dielectric_dielectric` + REFLECTIVITY=0.95 (exec22 fix; línea 347 en REF_BASE) |
+| `src/DetectorConstruction.cc` | Geometría de dos capas (air gap 0.10 mm + panel reflector 0.05 mm) reemplaza piel directa sobre barLV |
+| `include/DetectorConstruction.hh` | Constantes `kAirGapThickness`, `kReflectorThickness` añadidas |
+| Commits adicionales de REF_BASE | EndSparseTop (con defectos #1 y #2 pendientes), correcciones de análisis, macros EndTop — revisar si se desea merge completo o cherry-picks selectivos |
+
+**Lo que este documento NO hace:** no crea el PR, no hace merge, no modifica main. La decisión corresponde al responsable del repo.
+
+**Ramas que seguirían afectadas tras el PR** (tienen GEN-1 en su propia historia, independiente de main):  
+`feat/bar-vikuiti`, `feat/ej230-sslg4` (ambas desarrollaron GEN-1 desde 2026-06-08, anterior a `84e902c`). Sus resultados históricos requerirían re-simulación o declaración explícita del modelo defectuoso.
+
+**Ramas que quedarían correctas** tras el PR:  
+Cualquier rama nueva creada a partir del main corregido heredará 2T-VIK automáticamente.
