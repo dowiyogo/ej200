@@ -202,9 +202,9 @@ G4Material* CreateSiPMCoupling() {
 
 // ---------------------------------------------------------------------------
 G4OpticalSurface* CreateBarSurface() {
-    // NOTE: CreateBarSurface() and CreateMylar() are not used in the current
-    // geometry (BarPV directly in WorldLV with explicit reflector panels) but
-    // are retained for reference and potential future use.
+    // Both CreateBarSurface() and CreateMylar() are used by DetectorConstruction.cc:
+    //   CreateBarSurface() → bar→air border surface (DC.cc:312)
+    //   CreateMylar()      → reflector panel material (DC.cc:257)
     //
     // Interfaz barra-aire: dielectric_dielectric polished.
     // Geant4 aplica las ecuaciones de Fresnel automaticamente.
