@@ -1,0 +1,37 @@
+# Material properties from src/Materials.cc (authoritative Geant4 source)
+# n = 1.58 (PVT base, all three scintillators)
+# Vikuiti reflectivity: R_TIR=1.00 (physics), R_nonTIR=0.95 (Geant4 surface)
+# Bar geometry: 1400 x 60 x 10 mm^3 (L x W x H)
+
+common:
+  n_refractive: 1.58
+  theta_c_deg: 39.26       # arcsin(1/1.58) in degrees
+  R_vikuiti_nonTIR: 0.95   # reflectivity for non-TIR photons
+  bar_L_mm: 1400
+  bar_W_mm: 60
+  bar_H_mm: 10
+
+materials:
+  EJ-200:
+    opsc_code: OPSC-100
+    yield_per_MeV: 10000
+    tau_rise_ns:   0.9
+    tau_decay_ns:  2.1
+    lambda_att_cm: 380
+    peak_wl_nm:    425
+
+  EJ-204:
+    opsc_code: OPSC-101
+    yield_per_MeV: 10400
+    tau_rise_ns:   0.7
+    tau_decay_ns:  1.8
+    lambda_att_cm: 160
+    peak_wl_nm:    408
+
+  EJ-230:
+    opsc_code: OPSC-106
+    yield_per_MeV: 9700
+    tau_rise_ns:   0.5
+    tau_decay_ns:  1.5
+    lambda_att_cm: 120
+    peak_wl_nm:    391

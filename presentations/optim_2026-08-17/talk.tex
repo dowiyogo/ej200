@@ -1,0 +1,301 @@
+\documentclass[aspectratio=169,9pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{beaver}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{inputenc}
+
+\definecolor{rowbest}{rgb}{0.85,0.95,0.85}
+\definecolor{rowgood}{rgb}{0.95,0.95,0.85}
+\definecolor{rownew} {rgb}{0.80,0.90,1.00}
+
+\newcommand{\plots}{../../analysis/optim}
+
+\title[Bar Timing Optimisation]{EJ-200/204/230 Bar: Timing Optimisation\\Phase II — EndSparseTop Combined Readout}
+\author{Simulation analysis}
+\date{2026-08-17}
+
+\begin{document}
+
+% ── 1. Title ──────────────────────────────────────────────────────────────────
+\begin{frame}
+\titlepage
+\end{frame}
+
+% ── 2. Summary of Phase I results ─────────────────────────────────────────────
+\begin{frame}{Phase I recap: END+Vikuiti baseline}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\textbf{Best estimator}: $m$-average — mean of first $m$ photons per end.\\[0.4em]
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+Config & SiPMs & $\sigma(T_0)$ at $x{=}0$\\
+\midrule
+\rowcolor{rowbest}
+EJ-230 + END+Vik + $m^*{=}7$ & 16 & \textbf{50.5 ps}\\
+EJ-204 + END+Vik + $m^*{=}10$ & 16 & 53.4 ps\\
+EJ-230 + END+Vik, 2/end       &  4 & 97.9 ps\\
+EJ-230 + TOP+TIR, $k{=}1$     & 70 & 70.2 ps\\
+\bottomrule
+\end{tabular}\\[0.5em]
+\normalsize
+\textbf{Key findings}:
+\begin{itemize}\footnotesize
+  \item $m$-average $\sim$10\% better than $k$-th order stat
+  \item END+Vik dominates Pareto frontier at every SiPM count
+  \item 4 total END SiPMs already $<100$ ps
+  \item TOP needs $\gtrsim 50$ SiPMs to match END+Vik
+\end{itemize}
+\end{column}
+\begin{column}{0.44\textwidth}
+\textbf{Open question after Phase I}:\\[0.3em]
+\textit{Can adding a few TOP SiPMs on top of the END+Vik configuration improve resolution beyond what either readout alone achieves?}\\[0.6em]
+\footnotesize
+This requires new Geant4 simulation: \textbf{EndSparseTop} mode:
+\begin{itemize}
+  \item 16 END SiPMs (8 per face) + Vikuiti on $\pm Y$, $\pm Z$
+  \item $N$ uniformly-spaced TOP SiPMs inside bar
+  \item Vikuiti fills gaps between top SiPMs ($R{=}0.98$)
+\end{itemize}
+\vspace{0.3em}
+Scans: EJ-230 + EJ-204, $N\in\{4,8,14,20\}$,\\
+13 positions $\times$ 5000 ev — 104 ROOT files.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 3. EndSparseTop geometry ──────────────────────────────────────────────────
+\begin{frame}{EndSparseTop geometry}
+\begin{columns}[T]
+\begin{column}{0.54\textwidth}
+\textbf{Volume layout (bar cross-section, $Y$--$Z$ view):}\\[0.5em]
+\footnotesize
+\begin{tabular}{ll}
+\toprule
+Face & Optical element\\
+\midrule
+$\pm X$ ends & 8 END SiPMs/face ($6\times6$ mm$^2$, 0.5 mm deep)\\
+$+Y$ top & $N$ sparse TOP SiPMs, Vikuiti in gaps\\
+$-Y$ bottom & Air gap + Vikuiti, $R{=}0.98$\\
+$\pm Z$ sides & Air gap + Vikuiti, $R{=}0.98$\\
+\bottomrule
+\end{tabular}\\[0.6em]
+\normalsize
+\textbf{TOP SiPM placement}: uniformly spaced, step $= 1400/N$ mm.\\
+Centre at $y = kBarHalfY - kTopHalfY\cdot 2 = 29.5$ mm\\
+(0.25 mm inset below bar's $+Y$ face, so all SiPM faces\\
+border bar material — avoids undefined AirGap$\to$SiPM optical boundary).\\[0.4em]
+\textbf{Photon physics}:
+\begin{itemize}\footnotesize
+  \item Photon traveling $+Y$ hits SiPM at $y{=}29.25$ mm: absorbed/detected
+  \item Photon missing a SiPM reaches bar face $y{=}30$ mm: Vikuiti reflects (98\%)
+  \item Reflected photons get further chances at sparse SiPMs on each bounce
+\end{itemize}
+\end{column}
+\begin{column}{0.42\textwidth}
+\vspace{0.5em}
+\textbf{Why top SiPMs outperform end SiPMs for timing:}\\[0.4em]
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+ & END SiPMs & TOP SiPMs\\
+\midrule
+Distance to track & $\sim$700 mm & $\sim$30 mm\\
+Min.\ photon path & $\sim$700 mm & $\sim$30 mm\\
+Path time (EJ-230) & $\sim$3.5 ns & $\sim$150 ps\\
+Timing limited by & attenuation & scintillation $\tau$\\
+\bottomrule
+\end{tabular}\\[0.5em]
+\normalsize
+Top SiPMs capture near-field photons\\
+with very short, nearly uniform paths.\\[0.3em]
+With many photons and $k{=}1$ estimator:\\[0.2em]
+$\sigma \approx \tau_\mathrm{rise}/\sqrt{N_\mathrm{pe,top}}$\\[0.2em]
+\footnotesize
+EJ-230 $\tau_\mathrm{rise}{=}0.5$ ns; $N_\mathrm{pe,top}{\sim}1000$ for $N{=}20$\\
+$\Rightarrow \sigma \approx 16$ ps (matches simulation!)
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 4. EST results at x=0 ─────────────────────────────────────────────────────
+\begin{frame}{EndSparseTop: timing resolution at $x=0$}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figF_est_vs_ntop.png}
+\end{column}
+\begin{column}{0.44\textwidth}
+\vspace{0.5em}
+\textbf{Method}: BLUE combination of $T_0^\mathrm{end}$ ($m$-average) and $T_0^\mathrm{top}$ ($k$-th order stat).\\[0.4em]
+\footnotesize
+\begin{tabular}{ccrrrr}
+\toprule
+$N$ & Tot & $\sigma_\mathrm{end}$ & $\sigma_\mathrm{top}$ & $\sigma_\mathrm{BLUE}$ & $N_\mathrm{pe,top}$\\
+\midrule
+\multicolumn{6}{l}{\textit{EJ-230, $x{=}0$:}}\\
+ref & 16 & 50.5 & — & — & —\\
+4  & 20 & 51.0 & 78.2 & 45.5 & 287\\
+8  & 24 & 50.2 & 32.0 & 28.9 & 565\\
+14 & 30 & 51.0 & 18.7 & \cellcolor{rowgood}18.2 & 962\\
+\rowcolor{rowbest}
+20 & 36 & 53.7 & 15.2 & 15.2 & 1341\\
+\midrule
+\multicolumn{6}{l}{\textit{EJ-204, $x{=}0$:}}\\
+ref & 16 & 53.4 & — & — & —\\
+8  & 24 & 54.1 & 32.0 & 29.3 & 691\\
+\rowcolor{rowbest}
+20 & 36 & 54.1 & 15.1 & 15.1 & 1615\\
+\bottomrule
+\end{tabular}\\[0.4em]
+\normalsize
+\textbf{Top SiPMs dominate BLUE}: $w_\mathrm{top}{\approx}1$\\
+for $N{\geq}8$. Combined $\sigma\approx\sigma_\mathrm{top}$.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 5. EST position scan ──────────────────────────────────────────────────────
+\begin{frame}{EndSparseTop: position dependence}
+\begin{center}
+  \includegraphics[width=0.86\textwidth]{\plots/figG_est_vs_x.png}
+\end{center}
+\vspace{-0.4em}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\footnotesize
+\textbf{N=8 (24 SiPMs)}: $\sigma_\mathrm{BLUE}$ varies 15--29 ps.\\
+Minimum at $|x|\approx 600$ mm: nearest top SiPM only $\sim$45 mm away.\\
+Maximum at $x{=}0$: nearest top SiPM is 87.5 mm away.
+\end{column}
+\begin{column}{0.44\textwidth}
+\footnotesize
+\textbf{N=20 (36 SiPMs)}: $\sigma_\mathrm{BLUE}{\approx}15$ ps, \textbf{flat across all positions}!\\
+Step $=70$ mm $\Rightarrow$ nearest SiPM always within 35 mm\\
+$\Rightarrow$ position-independent near-field timing.\\[0.2em]
+\textit{(Dotted lines: End+Vik-only reference, 50--55 ps)}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 6. Updated Pareto frontier ────────────────────────────────────────────────
+\begin{frame}{Updated Pareto frontier}
+\begin{columns}[T]
+\begin{column}{0.56\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figH_pareto_updated.png}
+\end{column}
+\begin{column}{0.40\textwidth}
+\vspace{0.5em}
+\footnotesize
+\textbf{Diamonds (open) = EndSparseTop BLUE}\\
+dominate the Pareto frontier at every count $\geq 20$.\\[0.5em]
+\begin{tabular}{lrr}
+\toprule
+Config & SiPMs & $\sigma$\\
+\midrule
+END+Vik (full) & 16 & 50.5 ps\\
+EST $N{=}4$ & 20 & 45.5 ps\\
+EST $N{=}8$ & 24 & 28.9 ps\\
+EST $N{=}14$ & 30 & 18.2 ps\\
+\rowcolor{rowbest}
+EST $N{=}20$ & 36 & \textbf{15.2 ps}\\
+TOP+Vik 70 SiPMs & 70 & 70.4 ps\\
+\bottomrule
+\end{tabular}\\[0.4em]
+\normalsize
+\textbf{Factor $\sim$3.3$\times$ better than}\\
+\textbf{END+Vik with only 20 extra SiPMs.}\\[0.3em]
+\footnotesize
+TOP-alone needs 70 SiPMs for 70 ps.\\
+EST $N{=}8$ beats TOP-70 with 24 SiPMs.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 7. Phase A+B: k-scan and m-average ────────────────────────────────────────
+\begin{frame}{Appendix A: Phase I estimator curves ($x=0$)}
+\begin{center}
+  \includegraphics[width=0.87\textwidth]{\plots/figA_km_curves_x0.png}
+\end{center}
+\vspace{-0.4em}
+\footnotesize
+$m$-average systematically $\sim$10\% better than single $k$-th photon.
+EJ-230 best: $m^*{=}7$, $\sigma{=}50.5$ ps.
+\end{frame}
+
+% ── 8. Phase A+B: position scan ───────────────────────────────────────────────
+\begin{frame}{Appendix B: END+Vik position scan}
+\begin{center}
+  \includegraphics[width=0.87\textwidth]{\plots/figB_sigma_vs_x.png}
+\end{center}
+\vspace{-0.4em}
+\footnotesize
+EJ-230 best at centre; EJ-200 recovers at extremes (longer $L_\mathrm{att}{=}380$ cm).
+\end{frame}
+
+% ── 9. Phase D+C: ablation ────────────────────────────────────────────────────
+\begin{frame}{Appendix C: SiPM ablation (software masking)}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figC_end_ablation.png}\\
+  \centering\footnotesize END ablation: 4 SiPMs total $<100$ ps.
+\end{column}
+\begin{column}{0.48\textwidth}
+  \includegraphics[width=\textwidth]{\plots/figD_top_ablation.png}\\
+  \centering\footnotesize TOP ablation: needs $\gtrsim 50$ to match END+Vik.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ── 10. Conclusions ───────────────────────────────────────────────────────────
+\begin{frame}{Conclusions}
+\begin{columns}[T]
+\begin{column}{0.52\textwidth}
+\textbf{Best configurations:}\\[0.3em]
+\footnotesize
+\begin{tabular}{lcc}
+\toprule
+\textbf{Config} & \textbf{SiPMs} & $\boldsymbol{\sigma(T_0)}$\\
+\midrule
+\rowcolor{rownew}
+EJ-230 EST $N{=}20$, BLUE & 36 & \textbf{15.2 ps}\\
+\rowcolor{rownew}
+EJ-204 EST $N{=}20$, BLUE & 36 & \textbf{15.1 ps}\\
+\rowcolor{rownew}
+EJ-230 EST $N{=}14$, BLUE & 30 & 18.2 ps\\
+\rowcolor{rownew}
+EJ-230 EST $N{=}8$,  BLUE & 24 & 28.9 ps\\
+EJ-230 END+Vik, $m^*{=}7$ & 16 & 50.5 ps\\
+EJ-204 END+Vik, $m^*{=}10$& 16 & 53.4 ps\\
+EJ-230 TOP+Vik, 70 SiPMs  & 70 & 70.4 ps\\
+\bottomrule
+\end{tabular}\\[0.3em]
+\footnotesize Blue rows: new EndSparseTop results.
+\end{column}
+\begin{column}{0.44\textwidth}
+\textbf{Main results:}\\[0.3em]
+\begin{enumerate}\footnotesize
+  \item \textbf{EST $N{=}20$: 15 ps, position-independent}\\
+        Top SiPMs with Vikuiti in gaps $\Rightarrow$ near-field timing\\
+        ($\sigma \approx \tau_\mathrm{rise}/\sqrt{N_\mathrm{pe,top}} \approx 16$ ps theoretical).
+  \item \textbf{Factor 3.3$\times$ gain over END+Vik alone}\\
+        with 20 extra SiPMs over 1.4 m bar.
+  \item \textbf{EST beats TOP-70 with 24 SiPMs} ($N{=}8$):
+        28.9 ps vs 70.4 ps.
+  \item \textbf{EJ-230 $\approx$ EJ-204} for EST: top SiPMs\\
+        are fast enough that decay-time difference vanishes.
+  \item \textbf{END contribution negligible} in BLUE for $N{\geq}8$:\\
+        top SiPMs alone determine combined $\sigma$.
+\end{enumerate}
+\vspace{0.2em}
+\normalsize
+\textbf{Recommendation}: EJ-230 (or EJ-204) + EST $N{=}20$\\
+as target geometry; $N{=}8$ if cost/coverage is critical.
+\end{column}
+\end{columns}
+\end{frame}
+
+\end{document}
