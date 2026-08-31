@@ -368,6 +368,9 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
             auto* reflSolid = new G4Box(
                 G4String("Vikuiti") + panel.stem + "Solid",
                 panel.reflectorHalf.x(), panel.reflectorHalf.y(), panel.reflectorHalf.z());
+            // Volume name is historical ("Vikuiti ESR" as physical candidate);
+            // actual material is G4_MYLAR (CreateMylar, DC.cc:257) with
+            // border surface R=0.95 dielectric_dielectric (CreateBarSkinReflector).
             auto* reflLV = new G4LogicalVolume(
                 reflSolid, reflectorMat, G4String("Vikuiti") + panel.stem + "LV");
             auto* reflVA = new G4VisAttributes(G4Colour(0.85, 0.85, 0.85, 0.35));
