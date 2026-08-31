@@ -53,6 +53,14 @@ G4double DetectorConstruction::TopSiPMCenterX(G4int idx) {
     return (12.0 + 20.0 * (idx - 35)) * mm;
 }
 
+G4double DetectorConstruction::SparseTopSiPMCenterX(G4int idx, G4int nTotal) {
+    // Uniformly distribute nTotal SiPMs along the bar length.
+    // Step = 1400/nTotal mm; centre of i-th tile = -700 + step*(i+0.5) mm.
+    if (nTotal <= 0) return 0.0;
+    const G4double step = 1400.0 / nTotal;
+    return (-700.0 + step * (idx + 0.5)) * mm;
+}
+
 G4int DetectorConstruction::FaceType(G4int globalId) {
     if (globalId < kNEndSiPMs)       return 0;  // end left
     if (globalId < 2 * kNEndSiPMs)   return 1;  // end right
@@ -85,8 +93,14 @@ DetectorConstruction::DetectorConstruction() {
     auto& readoutCmd = fMessenger->DeclareMethod(
         "readout",
         &DetectorConstruction::SetReadoutConfiguration,
-        "Set readout/wrapping configuration: End (default), Top, or EndTop.");
+        "Set readout/wrapping configuration: End (default), Top, EndTop, or EndSparseTop.");
     readoutCmd.SetParameterName("configuration", false);
+
+    auto& nSparseCmd = fMessenger->DeclareMethod(
+        "nSparseTopSiPMs",
+        &DetectorConstruction::SetNSparseTopSiPMs,
+        "Number of uniformly-spaced top SiPMs in EndSparseTop mode (default 0).");
+    nSparseCmd.SetParameterName("n", false);
 
     fMessenger->DeclareMethod(
         "edgeWrap",
@@ -152,12 +166,16 @@ void DetectorConstruction::SetReadoutConfiguration(G4String configuration) {
         configuration.end());
 
     G4String canonical;
-    if (configuration == "END") canonical = "End";
-    else if (configuration == "TOP") canonical = "Top";
-    else if (configuration == "ENDTOP") canonical = "EndTop";
+    if      (configuration == "END")           canonical = "End";
+    else if (configuration == "TOP")           canonical = "Top";
+    else if (configuration == "ENDTOP")        canonical = "EndTop";
+    else if (configuration == "ENDTOPSPARSE"
+          || configuration == "ENDSPARSEFOP"
+          || configuration == "ENDSPARSETTOP"
+          || configuration == "ENDSPARSETOP")  canonical = "EndSparseTop";
     else {
         G4cerr << "[DetectorConstruction] Unknown /det/readout \"" << configuration
-               << "\". Use End, Top, or EndTop.\n";
+               << "\". Use End, Top, EndTop, or EndSparseTop.\n";
         return;
     }
     if (canonical == fReadoutConfiguration) return;
@@ -169,11 +187,28 @@ void DetectorConstruction::SetReadoutConfiguration(G4String configuration) {
 }
 
 G4bool DetectorConstruction::IsEndInstrumented() const {
-    return fReadoutConfiguration == "End" || fReadoutConfiguration == "EndTop";
+    return fReadoutConfiguration == "End"
+        || fReadoutConfiguration == "EndTop"
+        || fReadoutConfiguration == "EndSparseTop";
 }
 
 G4bool DetectorConstruction::IsTopInstrumented() const {
     return fReadoutConfiguration == "Top" || fReadoutConfiguration == "EndTop";
+}
+
+G4bool DetectorConstruction::IsSparseTopActive() const {
+    return fReadoutConfiguration == "EndSparseTop" && fNSparseTopSiPMs > 0;
+}
+
+void DetectorConstruction::SetNSparseTopSiPMs(G4int n) {
+    if (n < 0 || n > 200) {
+        G4cerr << "[DetectorConstruction] /det/nSparseTopSiPMs must be 0..200.\n";
+        return;
+    }
+    if (n == fNSparseTopSiPMs) return;
+    fNSparseTopSiPMs = n;
+    if (G4StateManager::GetStateManager()->GetCurrentState() != G4State_PreInit)
+        G4RunManager::GetRunManager()->ReinitializeGeometry();
 }
 
 // ── SetEdgeWrapMode ──────────────────────────────────────────────────────────
@@ -436,6 +471,31 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
             fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
                 "SiPMSurf_" + std::to_string(globalId), fBarPhys, topPhys, sipmSurface);
+        }
+    }
+
+    // EndSparseTop: N uniformly-spaced top SiPMs inside barLV.
+    // The +Y Vikuiti panel (placed above via !IsTopInstrumented) covers the gaps between them.
+    if (IsSparseTopActive()) {
+        auto* spSolid = new G4Box("SparseTopSiPMSolid", kTopHalfX, kTopHalfY, kTopHalfZ);
+        fTopSiPMLV = new G4LogicalVolume(spSolid, sipmMat, "SparseTopSiPMLV");
+        auto* va = new G4VisAttributes(G4Colour(1.0, 0.6, 0.0, 0.7));
+        va->SetForceSolid(true);
+        fTopSiPMLV->SetVisAttributes(va);
+
+        const G4int N = fNSparseTopSiPMs;
+        G4cout << "[DetectorConstruction] EndSparseTop: " << N
+               << " top SiPMs + Vikuiti on +Y gaps.\n";
+        for (G4int i = 0; i < N; ++i) {
+            const G4int globalId = 2 * kNEndSiPMs + i;
+            const G4double cx = SparseTopSiPMCenterX(i, N);
+
+            auto* spPhys = new G4PVPlacement(
+                nullptr, G4ThreeVector(cx, kBarHalfY - 2.0 * kTopHalfY, 0.0),
+                fTopSiPMLV, "SparseTopSiPMPV", barLV, false, globalId, true);
+
+            fSiPMSurfaces[globalId] = new G4LogicalBorderSurface(
+                "SiPMSurf_" + std::to_string(globalId), fBarPhys, spPhys, sipmSurface);
         }
     }
 
