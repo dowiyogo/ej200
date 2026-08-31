@@ -3,11 +3,11 @@
 set -euo pipefail
 
 repo="$(cd "$(dirname "$0")/.." && pwd)"
-build_dir="${BUILD_DIR:-$repo/build-exec07}"
+build_dir="${BUILD_DIR:-$repo/build}"
 sim="$build_dir/ej200_bar_sim"
 output_dir="${OUTPUT_DIR:-$repo/results/exec07_endtop_2000}"
 events="${EVENTS_PER_POINT:-2000}"
-workers="${WORKERS:-16}"
+workers="${WORKERS:-24}"
 positions=(-690 -670 -650 -600 -550 -500 -450 -400 -350 -300 -250 -200 -150 -100 -50 0 50 100 150 200 250 300 350 400 450 500 550 600 650 670 690)
 
 mkdir -p "$output_dir"
@@ -71,7 +71,7 @@ EOF
     echo "START: x=${x} mm events=${events} workers=${workers}"
     (
         cd "$work"
-        "$sim" -m run.mac > "$log.tmp" 2>&1
+        "$sim" -m run.mac 2>&1 | tee "$log.tmp"
     )
     mv "$log.tmp" "$log"
 
