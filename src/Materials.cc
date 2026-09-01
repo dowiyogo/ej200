@@ -329,7 +329,7 @@ G4OpticalSurface* CreateBarSkinReflector() {
     // Fix: dielectric_dielectric + REFLECTIVITY for two-tier reflection model:
     //   (1) angle > theta_c = arcsin(1/1.58) = 39.3° → TIR, 100% reflection
     //       (automatic from Geant4 Fresnel equations with RINDEX bar=1.58, world=1.0).
-    //   (2) angle < theta_c → non-TIR; REFLECTIVITY=0.95 models Mylar/ESR substrate.
+    //   (2) angle < theta_c → non-TIR; REFLECTIVITY=0.98 (Vikuiti 3M ESR spec) models the reflective wrap.
     //
     // No air-gap volume → no photon transport in vacuum → no superluminal risk
     // (verified by T2 velocity audit in EXEC_22: zero photons with v > c/n).
@@ -351,7 +351,7 @@ G4OpticalSurface* CreateBarSkinReflector() {
 
     // REFLECTIVITY for non-TIR photons. Applied over [1.5, 6.5] eV (covers EJ-204 emission).
     const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
-    const std::vector<G4double> refl   = {0.95, 0.95};
+    const std::vector<G4double> refl   = {0.98, 0.98};  // Vikuiti 3M ESR spec (R≈0.98, 3M product sheet)
 
     auto* mpt = new G4MaterialPropertiesTable();
     mpt->AddProperty("REFLECTIVITY", energy, refl);
