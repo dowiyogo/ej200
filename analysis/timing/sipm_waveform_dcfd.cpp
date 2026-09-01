@@ -28,6 +28,40 @@ namespace fs = std::filesystem;
 
 namespace {
 
+// ── Constantes SPTR (Lee et al., IEEE TRPMS 9(4) 2025, DOI 10.1109/TRPMS.2024.3518479) ──
+// AFBR-S4N66P014M (6×6 mm² NUV-MT), V_OV ≈ 15.5 V
+// ADVERTENCIA: este banco opera a V_OV = 10 V; valores de Lee son cotas optimistas.
+static constexpr double FWHM_TO_SIGMA = 1.0 / 2.355;
+static constexpr double SPTR_LEE_INTRINSIC_FWHM_PS = 137.0;
+static constexpr double SPTR_LEE_DETECTOR_FWHM_PS  = 172.0;
+static const double SPTR_LEE_INTRINSIC_SIGMA_PS = SPTR_LEE_INTRINSIC_FWHM_PS * FWHM_TO_SIGMA;
+static const double SPTR_LEE_DETECTOR_SIGMA_PS  = SPTR_LEE_DETECTOR_FWHM_PS  * FWHM_TO_SIGMA;
+
+// ── Modelos de pulso SPE ──────────────────────────────────────────────────────────────────
+// PROHIBIDO combinar tau_r de un modelo con tau_f de otro: describen sistemas distintos.
+// NaN indica valor no publicado — requiere override explícito por CLI.
+struct PulseModelSpec {
+    double tauRNs;   // NaN = no publicado/medido
+    double tauFNs;
+    const char* source;
+    const char* note;
+};
+
+static const std::map<std::string, PulseModelSpec> PULSE_MODELS = {
+    {"penarodriguez_shortened",
+        {2.0, 3.0,
+         "arXiv:2411.16710 §4 — circuito de acortamiento con cancelacion polo-cero",
+         "NO es la respuesta intrinseca del SiPM; es la del montaje de lectura de ese trabajo."}},
+    {"broadcom_intrinsic",
+        {std::numeric_limits<double>::quiet_NaN(), 55.0,
+         "DS105 tabla 'Optical and Electrical Features' (tau_fall = R_Q*C_J). tau_r no publicado.",
+         "Requiere --tau-r-ns."}},
+    {"fastic_measured",
+        {std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(),
+         "PENDIENTE — medida en banco de laser con FastIC+",
+         "Requiere --tau-r-ns y --tau-f-ns."}},
+};
+
 struct Config {
     std::vector<std::string> inputs;
     std::string treeName = "sipm_hits";
@@ -35,13 +69,14 @@ struct Config {
     std::string face = "0";
     std::string histOut = "sipm_dcfd_resolution.png";
     std::string csvOut = "sipm_dcfd_times.csv";
+    std::string pulseModel;   // requerido; sin default
     double fraction = 0.14;
     double dtPs = 10.0;
-    double transitSigmaPs = 200.0;
-    double tauRNs = 2.0;
-    double tauFNs = 55.0;
+    double transitSigmaPs = std::numeric_limits<double>::quiet_NaN();  // requerido
+    double tauRNs = std::numeric_limits<double>::quiet_NaN();           // requerido según modelo
+    double tauFNs = std::numeric_limits<double>::quiet_NaN();           // requerido según modelo
     double pulseSigmaPe = 0.1;
-    double electronicsSigmaPs = 0.0;
+    double electronicsSigmaPs = std::numeric_limits<double>::quiet_NaN();  // requerido
     double tailWindowFactor = 8.0;
     long long maxEvents = -1;
     unsigned int seed = 12345;
@@ -95,18 +130,26 @@ std::string HistOutForFace(const std::string& histOut, int faceType) {
 void PrintUsage(const char* prog) {
     std::cout
         << "Uso:\n"
-        << "  " << prog << " build/Data/*.root [opciones]\n\n"
+        << "  " << prog << " build/Data/*.root --pulse-model MODEL --transit-sigma-ps X --electronics-sigma-ps X [opciones]\n\n"
+        << "Opciones requeridas:\n"
+        << "  --pulse-model MODEL        Modelo de pulso SPE. Opciones:\n"
+        << "                               penarodriguez_shortened  (tau_r=2.0/tau_f=3.0 ns, arXiv:2411.16710 §4)\n"
+        << "                               broadcom_intrinsic       (tau_r=NO MEDIDO/tau_f=55.0 ns, DS105; requiere --tau-r-ns)\n"
+        << "                               fastic_measured          (PENDIENTE; requiere --tau-r-ns y --tau-f-ns)\n"
+        << "  --transit-sigma-ps X       Sigma del SPTR en ps. Lee et al. IEEE TRPMS 2025:\n"
+        << "                               sigma_intrinsico=" << SPTR_LEE_INTRINSIC_SIGMA_PS << " ps, sigma_detector=" << SPTR_LEE_DETECTOR_SIGMA_PS << " ps\n"
+        << "                               (medidos a OV~15.5 V; banco opera a OV=10 V: valores son cotas optimistas)\n"
+        << "  --electronics-sigma-ps X   Jitter gaussiano de electronica en ps. JITTER TOTAL DEL FASTIC+ NO MEDIDO.\n"
+        << "                               TDC de 25 ps contribuye >=25/sqrt(12)~=7.2 ps. Usar 0 para deshabilitar.\n\n"
         << "Opciones:\n"
         << "  --tree NAME                Nombre del TTree (default: sipm_hits)\n"
         << "  --time-branch NAME         Branch con t0 base (default: time_raw_ns)\n"
         << "  --face {0|1|2|all}         Cara a analizar (default: 0)\n"
-        << "  --fraction X               Fraccion dCFD (default: 0.14)\n"
+        << "  --fraction X               Fraccion dCFD (default: 0.14, OPTIMO NO VERIFICADO)\n"
         << "  --dt-ps X                  Paso temporal del waveform en ps (default: 10)\n"
-        << "  --transit-sigma-ps X       Sigma del transit time en ps (default: 200)\n"
-        << "  --tau-r-ns X               Tau de subida en ns (default: 2)\n"
-        << "  --tau-f-ns X               Tau de bajada en ns (default: 55)\n"
+        << "  --tau-r-ns X               Override de tau_r en ns (aviso si anula valor del modelo)\n"
+        << "  --tau-f-ns X               Override de tau_f en ns (aviso si anula valor del modelo)\n"
         << "  --pulse-sigma-pe X         Sigma de amplitud SPE en pe (default: 0.1)\n"
-        << "  --electronics-sigma-ps X   Jitter electronico extra en ps (default: 0)\n"
         << "  --tail-window-factor X     Longitud del kernel en multiplos de tauF (default: 8)\n"
         << "  --max-events N             Limite de eventos reconstruidos\n"
         << "  --seed N                   Semilla RNG (default: 12345)\n"
@@ -147,7 +190,9 @@ std::optional<Config> ParseArgs(int argc, char** argv) {
             PrintUsage(argv[0]);
             return std::nullopt;
         }
-        if (arg == "--tree") {
+        if (arg == "--pulse-model") {
+            if (!ParseStringArg(i, argc, argv, cfg.pulseModel)) return std::nullopt;
+        } else if (arg == "--tree") {
             if (!ParseStringArg(i, argc, argv, cfg.treeName)) return std::nullopt;
         } else if (arg == "--time-branch") {
             if (!ParseStringArg(i, argc, argv, cfg.timeBranch)) return std::nullopt;
@@ -397,6 +442,85 @@ FitResult FitResolution(
     return fit;
 }
 
+bool ValidateAndResolvePulse(Config& cfg) {
+    if (cfg.pulseModel.empty()) {
+        std::cerr << "ERROR: --pulse-model es requerido. Opciones: "
+                  << "penarodriguez_shortened, broadcom_intrinsic, fastic_measured\n"
+                  << "Ver --help para descripcion de cada configuracion.\n";
+        return false;
+    }
+    auto it = PULSE_MODELS.find(cfg.pulseModel);
+    if (it == PULSE_MODELS.end()) {
+        std::cerr << "ERROR: Modelo de pulso no reconocido: '" << cfg.pulseModel << "'\n"
+                  << "Opciones validas: penarodriguez_shortened, broadcom_intrinsic, fastic_measured\n";
+        return false;
+    }
+    const PulseModelSpec& spec = it->second;
+    double resolvedTauR = spec.tauRNs;
+    double resolvedTauF = spec.tauFNs;
+
+    if (!std::isnan(cfg.tauRNs)) {
+        if (!std::isnan(resolvedTauR)) {
+            std::cerr << "AVISO: --tau-r-ns=" << cfg.tauRNs
+                      << " ns anula el tau_r del modelo '" << cfg.pulseModel
+                      << "' (tau_r=" << resolvedTauR << " ns). Se sale de configuracion validada.\n";
+        }
+        resolvedTauR = cfg.tauRNs;
+    }
+    if (!std::isnan(cfg.tauFNs)) {
+        if (!std::isnan(resolvedTauF)) {
+            std::cerr << "AVISO: --tau-f-ns=" << cfg.tauFNs
+                      << " ns anula el tau_f del modelo '" << cfg.pulseModel
+                      << "' (tau_f=" << resolvedTauF << " ns). Se sale de configuracion validada.\n";
+        }
+        resolvedTauF = cfg.tauFNs;
+    }
+
+    if (std::isnan(resolvedTauR)) {
+        std::cerr << "ERROR: El modelo '" << cfg.pulseModel << "' tiene tau_r no medido. Pasa --tau-r-ns.\n"
+                  << "  Fuente: " << spec.source << "\n"
+                  << "  Nota: " << spec.note << "\n";
+        return false;
+    }
+    if (std::isnan(resolvedTauF)) {
+        std::cerr << "ERROR: El modelo '" << cfg.pulseModel << "' tiene tau_f no medido. Pasa --tau-f-ns.\n"
+                  << "  Fuente: " << spec.source << "\n"
+                  << "  Nota: " << spec.note << "\n";
+        return false;
+    }
+    if (std::isnan(cfg.transitSigmaPs)) {
+        std::cerr << "ERROR: --transit-sigma-ps es requerido. Ver --help para valores documentados.\n"
+                  << "  Lee et al. (IEEE TRPMS 2025): sigma_intrinsico=" << SPTR_LEE_INTRINSIC_SIGMA_PS
+                  << " ps (a OV~15.5 V; este banco opera a OV=10 V).\n";
+        return false;
+    }
+    if (std::isnan(cfg.electronicsSigmaPs)) {
+        std::cerr << "ERROR: --electronics-sigma-ps es requerido. Ver --help.\n"
+                  << "  JITTER TOTAL DEL FASTIC+ NO MEDIDO.\n"
+                  << "  TDC de 25 ps contribuye >=25/sqrt(12)~=7.2 ps. Usar 0 para deshabilitar.\n";
+        return false;
+    }
+
+    // Almacenar valores resueltos
+    cfg.tauRNs = resolvedTauR;
+    cfg.tauFNs = resolvedTauF;
+
+    // Aviso de sobrevoltaje (obligatorio)
+    std::cerr << "ADVERTENCIA SPTR: Lee et al. (IEEE TRPMS 2025) midio a V_OV~=15.5 V. "
+              << "Este banco opera a V_OV=10 V (W4 Weekly meeting). "
+              << "El SPTR empeora al bajar el sobrevoltaje: los valores de Lee "
+              << "(sigma_intrinsico~=" << SPTR_LEE_INTRINSIC_SIGMA_PS << " ps, "
+              << "sigma_detector~=" << SPTR_LEE_DETECTOR_SIGMA_PS << " ps) "
+              << "son cotas optimistas para el punto de operacion real.\n";
+
+    // Nota fraccion dCFD
+    std::cerr << "FRACCION dCFD=" << cfg.fraction * 100.0 << "%. OPTIMO NO VERIFICADO. "
+              << "Cattaneo et al. (arXiv:1402.1404) reporta 3-6% para 3x3 mm^2. "
+              << "No se encontro salida de analyze_dCFD_fraction.C que valide 14%.\n";
+
+    return true;
+}
+
 std::vector<EventResult> AnalyzeChain(TChain& chain, const Config& cfg) {
     int eventId = 0;
     int faceType = 0;
@@ -471,7 +595,10 @@ int main(int argc, char** argv) {
     if (!cfgOpt.has_value()) {
         return (argc > 1 && (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h")) ? 0 : 1;
     }
-    const Config cfg = *cfgOpt;
+    Config cfg = *cfgOpt;
+    if (!ValidateAndResolvePulse(cfg)) {
+        return 1;
+    }
 
     TChain chain(cfg.treeName.c_str());
     int addedFiles = 0;
@@ -506,8 +633,14 @@ int main(int argc, char** argv) {
     std::cout << "Entradas leidas: " << chain.GetEntries() << "\n";
     std::cout << "Seleccion de cara: " << cfg.face << "\n";
     std::cout << "Eventos reconstruidos: " << results.size() << "\n";
-    std::cout << "Pulso Broadcom: tau_r = " << cfg.tauRNs << " ns, tau_f = " << cfg.tauFNs << " ns\n";
-    std::cout << "dCFD: " << cfg.fraction * 100.0 << "%\n";
+    std::cout << "Modelo de pulso: " << cfg.pulseModel << "\n";
+    {
+        auto it = PULSE_MODELS.find(cfg.pulseModel);
+        if (it != PULSE_MODELS.end())
+            std::cout << "  Fuente: " << it->second.source << "\n";
+    }
+    std::cout << "  tau_r = " << cfg.tauRNs << " ns, tau_f = " << cfg.tauFNs << " ns\n";
+    std::cout << "dCFD: " << cfg.fraction * 100.0 << "% (OPTIMO NO VERIFICADO)\n";
     std::cout << "Paso temporal: " << cfg.dtPs << " ps\n";
     std::cout << "Sigma transit-time: " << cfg.transitSigmaPs << " ps\n";
     std::cout << "Jitter electronica: " << cfg.electronicsSigmaPs << " ps\n";

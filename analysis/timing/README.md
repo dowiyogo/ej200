@@ -10,27 +10,39 @@ Todos leen el TTree `sipm_hits` de los archivos ROOT de Fase 7 (ver §2.1 de
 
 | Estimador | Script(s) | Modelo de pulso τ_r / τ_f | σ SPTR incluido | Dispositivo de referencia | Fuente |
 |-----------|-----------|--------------------------|-----------------|--------------------------|--------|
-| Waveform + dCFD 14% | `sipm_waveform_dcfd.py`, `sipm_waveform_dcfd.cpp` | 2.0 ns / 55.0 ns (NUV-MT Broadcom) | Sí — σ = 200 ps por fotón (`--transit-sigma-ps`) | **SiPM de Lv et al. (2026)**, no del AFBR-S4N66P024M | Lv et al., *Nucl. Eng. Technol.* **58** (2026) 104080; τ_fall = 55 ns en DS105 |
-| dCFD directo sobre hits | `analyze_dCFD.py`, `analyze_dCFD_fraction.C` | Sin modelo de pulso (opera sobre timestamps de fotones) | No (aplica jitter de electrónica fijo 30 ps FastIC+) | — | FastIC+ ASIC (sin cita formal) |
+| Waveform + dCFD 14% | `sipm_waveform_dcfd.py`, `sipm_waveform_dcfd.cpp` | Elegido por `--pulse-model` (ver tabla de modelos abajo; ningún par mezcla τ de fuentes distintas) | Sí — σ = `--transit-sigma-ps` por fotón (sin default; ver Lee 2025) | Varía según modelo | `pulse_models.py` (única fuente de verdad) |
+| dCFD directo sobre hits | `analyze_dCFD.py`, `analyze_dCFD_fraction.C` | Sin modelo de pulso (opera sobre timestamps de fotones) | No (aplica jitter de electrónica fijo 30 ps; **ver nota**) | — | FastIC+ ASIC (sin cita formal; 30 ps no es jitter del ASIC) |
 | FPT (primer fotón) | `resolution_vs_x_FPT.py`, `analyze_basic.py` | Sin modelo de pulso | No | — | Estadístico de orden puro (mínimo de hit times) |
 | k-ésimo fotón | `analyze_dCFD_5thPhoton.C` | Sin modelo de pulso | No | — | 5.º hit time ordenado |
-| SUM4 leading-edge | `analysis/exec14/engine.py` (en main, fuera de este directorio) | 0.5 ns / 5.0 ns (SPR de ej200_endonly) | No | SiPM de ej200_endonly (no identificado) | `common.py` vía `/home/reriosto/SHiP/ej200_endonly/analysis/exec07` |
+| SUM4 leading-edge | `analysis/exec14/engine.py` (en main, fuera de este directorio) | 0.5 ns / 5.0 ns (SPR de ej200_endonly) | No | SiPM de ej200_endonly (no identificado); **incomparable con sipm_waveform_dcfd** | `common.py` vía `/home/reriosto/SHiP/ej200_endonly/analysis/exec07` |
 | FPT por SiPM individual | `fpt_vs_n_profile.C`, `fpt_vs_n_profile_batch.C` | Sin modelo de pulso | No | — | Perfil ⟨t_n⟩ vs n promediado sobre eventos |
 | Múltiples estimadores (barrido) | `TimeMarkScan.C` | Sin modelo de pulso | No | — | FPT, media de k primeros, media pesada |
 | Ranking de SiPMs | `SiPMRankingScan_v2.C`, `SiPMRankingScan_RMS.C`, `SiPMRankingScan_coreSigma.C` | Sin modelo de pulso | No | — | FPT por canal individual |
 
-**Incompatibilidad de parámetros de pulso (decisión pendiente):**  
-El par τ_r / τ_f de `sipm_waveform_dcfd.py` (2.0 / 55.0 ns, Broadcom NUV-MT) y el de
-`engine.py` (0.5 / 5.0 ns, SPR ej200_endonly) describen dispositivos distintos. Para el
-detector de este proyecto (AFBR-S4N66P024M), exactamente uno de los dos conjuntos de
-parámetros es incorrecto. No se resuelve aquí; se registra como decisión pendiente.
+### Modelos de pulso disponibles en `sipm_waveform_dcfd.py`
 
-**σ SPTR en `sipm_waveform_dcfd.py`:**  
-`--transit-sigma-ps = 200 ps` (default) es el SPTR del SiPM de Lv et al., no del
-Broadcom 6×6 mm². Lee et al. (2025) mide 137±4 ps FWHM (σ ≈ 58 ps) para el
-AFBR-S4N66P014M en las mismas condiciones de operación. El default sobreestima el
-jitter de tránsito en un factor ≈ 3.4. Ver
-`docs/branch_diagnosis/SPTR_PROVENANCE.md`.
+`--pulse-model` es requerido; sin él el script aborta. Fuente de verdad: `pulse_models.py`.
+
+| `--pulse-model` | τ_r | τ_f | Sistema que describe | Fuente | Estado |
+|----------------|-----|-----|----------------------|--------|--------|
+| `penarodriguez_shortened` | 2.0 ns | 3.0 ns | Montaje con circuito de acortamiento (cancelación polo-cero) | arXiv:2411.16710 §4 | PUBLICADO (otro montaje) |
+| `broadcom_intrinsic` | NO MEDIDO | 55.0 ns | SiPM intrínseco AFBR-S4N66P024M | DS105 + arXiv:2411.16710 §2 | DATASHEET (τ_r NO MEDIDO) |
+| `fastic_measured` | NO MEDIDO | NO MEDIDO | Montaje real FastIC+ de este banco | PENDIENTE | **NO MEDIDO** |
+
+El par `(engine.py: 0.5/5.0 ns)` y el par `(sipm_waveform_dcfd.py: elegido por modelo)` **no
+son comparables entre sí**: describen montajes distintos y posiblemente dispositivos distintos.
+Los resultados de σ_t de estos dos estimadores no deben combinarse ni compararse directamente.
+
+**σ SPTR (para `--transit-sigma-ps`):**  
+Sin default desde 2026-09-01. Lee et al. (IEEE TRPMS 2025) mide σ_intrínseco ≈ 58.2 ps
+(137 FWHM / 2.355) y σ_detector ≈ 73.0 ps (172 FWHM / 2.355) para AFBR-S4N66P014M a
+OV ≈ 15.5 V. Este banco opera a OV = 10 V: **valores de Lee son cotas optimistas**.
+El script imprime esta advertencia en cada ejecución.
+
+**Nota sobre 30 ps en `analyze_dCFD.py`:**  
+El valor de 30 ps era la resolución temporal esperada de un detector completo diferente
+(teja EJ-228 con SiPM FBK de 2 mm²), no el jitter del FastIC+. Ver
+`docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md`.
 
 ---
 

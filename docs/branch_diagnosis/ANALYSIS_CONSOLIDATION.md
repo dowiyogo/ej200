@@ -130,17 +130,79 @@ simulación nueva con la geometría completa de 70 canales.
 
 ---
 
-## 6. SPTR — parámetros de sipm_waveform_dcfd
+## 6. Parámetros de pulso y electrónica — correcciones aplicadas (2026-09-01)
 
-| Parámetro | Valor default | Procedencia | Estado |
-|-----------|--------------|-------------|--------|
-| `--transit-sigma-ps` | 200 ps | Lv et al. (2026) — SPTR de su SiPM, no del AFBR-S4N66P024M | **Dispositivo equivocado**; Lee 2025: σ ≈ 58 ps intrínseco para 6×6 mm² NUV-MT |
-| `--tau-f-ns` | 55.0 ns | DS105 tabla Optical and Electrical Features | Correcto para AFBR-S4N66P024M |
-| `--tau-r-ns` | 2.0 ns | Atribuido a "Broadcom"; no en DS105 | Sin cita formal |
-| `--fraction` (dCFD) | 0.14 | Sin cita | Sin origen documentado |
-| `--electronics-sigma-ps` | 0 ps | Sin cita | Contrasta con 30 ps (FastIC+) de `analyze_dCFD.py` |
+### 6.1 El error de (2 ns, 55 ns): mezcla de configuraciones
 
-Ver `docs/branch_diagnosis/SPTR_PROVENANCE.md` para la fuente Lee 2025.
+El código original de `sipm_waveform_dcfd.py` usaba `τ_r = 2.0 ns` y `τ_f = 55.0 ns`.
+Este par **no describe ninguna configuración física real**. Peña-Rodríguez
+(arXiv:2411.16710) caracteriza el AFBR-S4N66P024M y documenta **dos** configuraciones:
+
+| Configuración | τ_r | τ_f | Qué describe |
+|---|---|---|---|
+| SiPM intrínseco | No medido | 55 ns | Recarga de microcelda (τ_F = R_Q·C_J); DS105 |
+| Montaje acortado (§4) | 2 ns | 3 ns | Amplificador RF clase A con cancelación polo-cero |
+| Código anterior | 2 ns | 55 ns | **Ninguna de las dos** |
+
+**Origen del error:** el Apéndice A de arXiv:2411.16710 contiene un ejemplo de código con
+`Rt = 2e-9` y `Ft = 50e-9`. Alguien tomó el `Rt` del ejemplo (que corresponde al montaje
+acortado de §4) y lo combinó con el `τ_f = 55 ns` del datasheet DS105 (valor intrínseco),
+sin advertir que los dos nanosegundos están físicamente atados al circuito de acortamiento.
+
+### 6.2 Configuraciones de pulso ahora disponibles
+
+Definidas en `analysis/timing/pulse_models.py` (única fuente de verdad):
+
+| Nombre | τ_r | τ_f | Fuente | Estado |
+|--------|-----|-----|--------|--------|
+| `penarodriguez_shortened` | 2.0 ns | 3.0 ns | arXiv:2411.16710 §4 | PUBLICADO (otro montaje) |
+| `broadcom_intrinsic` | No medido | 55.0 ns | DS105 | DATASHEET (τ_r NO MEDIDO) |
+| `fastic_measured` | No medido | No medido | PENDIENTE | NO MEDIDO |
+
+`sipm_waveform_dcfd.py` requiere ahora `--pulse-model` explícito y aborta si no se da.
+Los overrides `--tau-r-ns` y `--tau-f-ns` siguen existiendo pero emiten aviso de
+salida de configuración validada. Combinar τ de modelos distintos es físicamente incorrecto.
+
+### 6.3 SPTR — parámetros actualizados
+
+| Parámetro CLI | Antes | Ahora | Fuente | Estado |
+|--------------|-------|-------|--------|--------|
+| `--transit-sigma-ps` | 200 ps (default) | Sin default; requerido | — | — |
+| σ recomendado (intrínseco) | — | 137/2.355 ≈ 58.2 ps | Lee et al. IEEE TRPMS 2025 | PUBLICADO (otro OV) |
+| σ recomendado (detector) | — | 172/2.355 ≈ 73.0 ps | Lee et al. IEEE TRPMS 2025 | PUBLICADO (otro OV) |
+
+**Aviso de sobrevoltaje (impreso en cada ejecución):** Lee et al. midieron a V_OV ≈ 15.5 V.
+Este banco opera a V_OV = 10 V (W4 Weekly meeting). El SPTR empeora al bajar el OV:
+los 58.2/73.0 ps son cotas optimistas para el punto de operación real.
+
+La conversión FWHM → σ está explícita en el código: `FWHM_TO_SIGMA = 1/2.355` en
+`pulse_models.py`. Ningún σ derivado de un FWHM aparece precalculado.
+
+### 6.4 Jitter electrónico — corrección del valor de 30 ps
+
+`analyze_dCFD.py` usaba `electronics_sigma_ns = 30 ps`. Este valor proviene de
+W4_Weekly_meeting_Timinig_Detector_Status.pdf, donde aparece como la **resolución temporal
+esperada de un detector completo** (teja de EJ-228 de 1×1×0.3 cm con 4 SiPM FBK de 2 mm²),
+no como el jitter del ASIC FastIC+. Es incorrecto usarlo como jitter de electrónica.
+
+Lo único documentado del FastIC+ es el TDC de 25 ps (TD_34th_SHIP_Gvasquez.pdf), cuya
+cuantización contribuye ≥ 25/√12 ≈ 7.2 ps. Eso es cota inferior, no jitter total.
+
+`--electronics-sigma-ps` no tiene default en el código actualizado. El usuario debe
+especificarlo explícitamente; usar 0 para deshabilitar.
+
+### 6.5 Fracción dCFD
+
+El 14% se conserva como default pero se documenta como ÓPTIMO NO VERIFICADO. No existe
+salida de `analyze_dCFD_fraction.C` en este repositorio que lo justifique. Cattaneo et al.
+(arXiv:1402.1404) reporta 3–6% para SiPMs de 3×3 mm²; Derenzo et al. (PMC nihms596188)
+predice óptimos mayores con mayor jitter (plausible para 6×6 mm², no verificado).
+
+### 6.6 Discrepancia V_br
+
+Peña-Rodríguez (arXiv:2411.16710 Tabla 1) lista V_br = 45 V para el AFBR-S4N66P024M.
+DS105 especifica V_BD = 32.5 V. La discrepancia (≈12.5 V) puede deberse a convención de
+medida distinta. No se resuelve aquí; se registra. Ver `ELECTRONICS_PARAMETERS.md`.
 
 ---
 

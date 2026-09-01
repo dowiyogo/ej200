@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import math
 import pathlib
+import sys
 from dataclasses import dataclass
 from typing import Iterable
 
@@ -35,6 +36,18 @@ FACE_LABELS = {
     1: "End Right",
     2: "Top",
 }
+
+# Pulse model registry — imported from pulse_models.py (única fuente de verdad).
+_here = pathlib.Path(__file__).parent
+if str(_here) not in sys.path:
+    sys.path.insert(0, str(_here))
+from pulse_models import (  # noqa: E402
+    PULSE_MODELS,
+    FWHM_TO_SIGMA,
+    SPTR_LEE_INTRINSIC_SIGMA_PS,
+    SPTR_LEE_DETECTOR_SIGMA_PS,
+    SPTR_OV_WARNING,
+)
 
 
 def gauss(x: np.ndarray, mu: float, sigma: float, amplitude: float) -> np.ndarray:
@@ -80,6 +93,19 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--tree", default="sipm_hits", help="Nombre del TTree.")
     parser.add_argument(
+        "--pulse-model",
+        required=True,
+        choices=list(PULSE_MODELS.keys()),
+        metavar="MODEL",
+        help=(
+            "Modelo de pulso SPE (requerido). Pares (tau_r, tau_f) coherentes: "
+            "penarodriguez_shortened (2.0/3.0 ns, arXiv:2411.16710 §4, circuito acortado), "
+            "broadcom_intrinsic (tau_r=NO MEDIDO / 55.0 ns, DS105; requiere --tau-r-ns), "
+            "fastic_measured (PENDIENTE; requiere --tau-r-ns y --tau-f-ns). "
+            "PROHIBIDO combinar tau_r y tau_f de modelos distintos: describe un sistema inexistente."
+        ),
+    )
+    parser.add_argument(
         "--face",
         default="0",
         help="Cara a analizar: 0, 1, 2 o 'all'. Default: 0.",
@@ -104,20 +130,36 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--transit-sigma-ps",
         type=float,
-        default=200.0,
-        help="Sigma del tiempo de transito de Lv et al. en ps. Default: 200 ps.",
+        default=None,
+        help=(
+            "Sigma del SPTR en ps (requerido). "
+            "Lee et al. IEEE TRPMS 9(4) 2025, DOI 10.1109/TRPMS.2024.3518479: "
+            f"sigma_intrinsico = 137 FWHM / 2.355 = {SPTR_LEE_INTRINSIC_SIGMA_PS:.1f} ps, "
+            f"sigma_detector = 172 FWHM / 2.355 = {SPTR_LEE_DETECTOR_SIGMA_PS:.1f} ps, "
+            "medidos a OV ~15.5 V (AFBR-S4N66P014M). "
+            "Este banco opera a OV = 10 V: valores de Lee son cotas optimistas. "
+            "NO usar 200 ps: era el SPTR del SiPM de Lv et al., no del AFBR-S4N66P024M."
+        ),
     )
     parser.add_argument(
         "--tau-r-ns",
         type=float,
-        default=2.0,
-        help="Constante de subida Broadcom en ns. Default: 2 ns.",
+        default=None,
+        help=(
+            "Override de tau_r en ns para el modelo elegido. "
+            "Requerido cuando el modelo tiene tau_r=None (broadcom_intrinsic, fastic_measured). "
+            "AVISO: anula la configuracion del modelo y sale de valores validados."
+        ),
     )
     parser.add_argument(
         "--tau-f-ns",
         type=float,
-        default=55.0,
-        help="Constante de bajada Broadcom en ns. Default: 55 ns.",
+        default=None,
+        help=(
+            "Override de tau_f en ns para el modelo elegido. "
+            "Requerido cuando el modelo tiene tau_f=None (fastic_measured). "
+            "AVISO: anula la configuracion del modelo y sale de valores validados."
+        ),
     )
     parser.add_argument(
         "--pulse-sigma-pe",
@@ -128,8 +170,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--electronics-sigma-ps",
         type=float,
-        default=0.0,
-        help="Jitter extra gaussiano de electronica en ps. Default: 0 ps.",
+        default=None,
+        help=(
+            "Jitter gaussiano de electronica en ps (requerido). "
+            "JITTER TOTAL DEL FASTIC+ NO MEDIDO. "
+            "El TDC embebido de 25 ps contribuye >= 25/sqrt(12) ~= 7.2 ps (cota inferior de cuantizacion). "
+            "Usar 0 para deshabilitar (sin jitter electronico modelado)."
+        ),
     )
     parser.add_argument(
         "--tail-window-factor",
@@ -514,11 +561,81 @@ def plot_time_histogram(
     plt.close(fig)
 
 
+_DCFD_FRACTION_NOTE = (
+    "FRACCION dCFD = {frac:.0f}%. OPTIMO NO VERIFICADO. "
+    "Cattaneo et al. (arXiv:1402.1404) reporta 3-6% para SiPMs de 3x3 mm^2. "
+    "Derenzo et al. (PMC nihms596188) predice optimos mayores con mayor jitter "
+    "(plausible para 6x6 mm^2, no verificado). "
+    "No se encontro salida de analyze_dCFD_fraction.C en este repositorio que valide 14%."
+)
+
+
+def validate_and_resolve_pulse_params(args: argparse.Namespace) -> tuple[float, float]:
+    """Resolve tau_r and tau_f from pulse model + optional overrides. Aborts on invalid combos."""
+    model = PULSE_MODELS[args.pulse_model]
+    tau_r = model["tau_r_ns"]
+    tau_f = model["tau_f_ns"]
+
+    if args.tau_r_ns is not None:
+        if tau_r is not None:
+            print(
+                f"AVISO: --tau-r-ns={args.tau_r_ns} ns anula el tau_r del modelo "
+                f"'{args.pulse_model}' (tau_r={tau_r} ns). Se sale de configuracion validada.",
+                file=sys.stderr,
+            )
+        tau_r = args.tau_r_ns
+
+    if args.tau_f_ns is not None:
+        if tau_f is not None:
+            print(
+                f"AVISO: --tau-f-ns={args.tau_f_ns} ns anula el tau_f del modelo "
+                f"'{args.pulse_model}' (tau_f={tau_f} ns). Se sale de configuracion validada.",
+                file=sys.stderr,
+            )
+        tau_f = args.tau_f_ns
+
+    if tau_r is None:
+        raise SystemExit(
+            f"ERROR: El modelo '{args.pulse_model}' tiene tau_r=None. Pasa --tau-r-ns.\n"
+            f"  Fuente: {model['source']}\n"
+            f"  Nota: {model['note']}"
+        )
+    if tau_f is None:
+        raise SystemExit(
+            f"ERROR: El modelo '{args.pulse_model}' tiene tau_f=None. Pasa --tau-f-ns.\n"
+            f"  Fuente: {model['source']}\n"
+            f"  Nota: {model['note']}"
+        )
+    return float(tau_r), float(tau_f)
+
+
 def main() -> int:
     args = parse_args()
+
+    # Validate parameters before file resolution (fails fast with actionable messages)
+    args.tau_r_ns, args.tau_f_ns = validate_and_resolve_pulse_params(args)
+
+    if args.transit_sigma_ps is None:
+        raise SystemExit(
+            "ERROR: --transit-sigma-ps es requerido. Ver --help para valores documentados.\n"
+            f"  Lee et al. (IEEE TRPMS 2025): sigma_intrinsico = "
+            f"{SPTR_LEE_INTRINSIC_SIGMA_PS:.1f} ps (a OV ~15.5 V; este banco opera a OV = 10 V)."
+        )
+    if args.electronics_sigma_ps is None:
+        raise SystemExit(
+            "ERROR: --electronics-sigma-ps es requerido. Ver --help.\n"
+            "  JITTER TOTAL DEL FASTIC+ NO MEDIDO.\n"
+            "  TDC de 25 ps contribuye >= 25/sqrt(12) ~= 7.2 ps. Usar 0 para deshabilitar."
+        )
+
     files = resolve_inputs(args.inputs)
     if not files:
         raise SystemExit("No se encontraron archivos ROOT de entrada.")
+
+    # Aviso de sobrevoltaje SPTR (obligatorio cada vez que corre)
+    print(SPTR_OV_WARNING, file=sys.stderr)
+    # Nota sobre fracción dCFD
+    print(_DCFD_FRACTION_NOTE.format(frac=args.fraction * 100.0), file=sys.stderr)
 
     rng = np.random.default_rng(args.seed)
     kernel_t_ns, kernel = build_spe_kernel(
@@ -563,12 +680,14 @@ def main() -> int:
     if args.plot_waveform:
         plot_example_waveform(files[0], args, rng, kernel_t_ns, kernel)
 
-    face_label = args.face
+    face_selection = args.face
     print(f"Archivos procesados: {len(files)}")
-    print(f"Seleccion de cara: {face_label}")
+    print(f"Seleccion de cara: {face_selection}")
     print(f"Eventos reconstruidos: {len(df)}")
-    print(f"Pulso Broadcom: tau_r = {args.tau_r_ns:.3f} ns, tau_f = {args.tau_f_ns:.3f} ns")
-    print(f"dCFD: {args.fraction * 100.0:.1f}%")
+    print(f"Modelo de pulso: {args.pulse_model}")
+    print(f"  Fuente: {PULSE_MODELS[args.pulse_model]['source']}")
+    print(f"  tau_r = {args.tau_r_ns:.3f} ns, tau_f = {args.tau_f_ns:.3f} ns")
+    print(f"dCFD: {args.fraction * 100.0:.1f}% (OPTIMO NO VERIFICADO)")
     print(f"Paso temporal: {args.dt_ps:.1f} ps")
     print(f"Sigma transit-time: {args.transit_sigma_ps:.1f} ps")
     print(f"Jitter electronica: {args.electronics_sigma_ps:.1f} ps")
