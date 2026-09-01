@@ -1,5 +1,11 @@
 # REFLECTOR_LABEL.md — Propuesta de etiquetas para el reflector en talk_v6
 
+> **SUPERADO** — Commit `c7acb7a` (2026-09-01) corrigió `REFLECTIVITY` a 0.98 (Vikuiti 3M ESR spec).
+> La discrepancia R=0.95 (código) vs R≈0.98 (spec) que motivó este documento ya no existe.
+> El deck puede mantener "Vikuiti ESR (R=0.98)" sin discrepancia con el código.
+> Ver `REFLECTIVITY_CHANGE.md §6` para las ocurrencias en `talk_v6.tex` pendientes de actualización.
+> El inventario de ocurrencias (secciones A–C) permanece como referencia histórica.
+
 Contexto del problema:
 - Volumen simulado: `VikuitiXXXLV`, material `G4_MYLAR`, superficie `dielectric_dielectric`, R=0.95
 - Nombre de producto de referencia: Vikuiti 3M ESR (spec R≈0.98)
