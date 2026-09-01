@@ -8,11 +8,10 @@
 /event/verbose   0
 /tracking/verbose 0
 
-# ── Detector geometry ────────────────────────────────────────
-# Uncomment and set the desired top-SiPM pitch before initializing.
-# The number of active top SiPMs is computed automatically.
-#/det/topSiPMPitch 50 mm   # 5 cm pitch
-#/det/topSiPMPitch 80 mm   # 8 cm pitch
+# ── Detector geometry/material/sensor ────────────────────────
+# /det/readout EndTop
+# /det/scintillator OPSC-101
+# /sipm/model AFBR-S4N66P024M
 
 /run/initialize
 

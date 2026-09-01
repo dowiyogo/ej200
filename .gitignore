@@ -3,6 +3,7 @@
 # =========================
 build/
 build-*/
+build_*/
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
@@ -42,6 +43,12 @@ ej200_bar_sim
 *.log
 *.tmp
 *.bak
+results/
+
+# Simulation run outputs (large ROOT data)
+runs/
+output/
+out/
 
 # Diagnostic script outputs
 diag/yield_audit_report.txt
@@ -64,6 +71,13 @@ analysis/*.svg
 *.jpg
 *.jpeg
 *.svg
+*.aux
+*.nav
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # =========================
 # Python cache
@@ -94,3 +108,4 @@ env/
 .DS_Store
 Thumbs.db
 desktop.ini
+build_t0minidaq/

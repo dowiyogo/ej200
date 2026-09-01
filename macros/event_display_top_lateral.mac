@@ -33,7 +33,7 @@
 
 /gun/particle  mu-
 /gun/energy    1 GeV
-/muon/midpointSiPMs 9 10
+/muon/midpointSiPMs 34 35
 /muon/angle    0
 
 /run/beamOn 1

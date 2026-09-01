@@ -1,0 +1,595 @@
+\documentclass[aspectratio=169]{beamer}
+
+\IfFileExists{beamerthememetropolis.sty}{\usetheme{metropolis}}{\usetheme{default}}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\definecolor{shipblue}{RGB}{20,74,130}
+\definecolor{warningorange}{RGB}{210,105,30}
+\setbeamercolor{structure}{fg=shipblue}
+\setbeamercolor{alerted text}{fg=warningorange}
+\setbeamertemplate{navigation symbols}{}
+
+\newcommand{\scanresults}{../../results/scan_hi_2026-06-08}
+\newcommand{\timingresults}{../../results/congruent_metric_2026-06-08}
+\newcommand{\mirrorresults}{../../results/analysis_sigma_vs_x_2026-06-10}
+\newcommand{\deepresults}{\mirrorresults/deep_dive}
+\input{\deepresults/fit_summary.tex}
+\newcommand{\deepcaveat}{\tiny Simulación Geant4 --- End readout. Sin SPTR/jitter,
+sin calibración ToT(NPE); posición TB por confirmar.}
+
+\title{SHiP Timing Detector\\Estado de la simulación Geant4}
+\author{René Ríos (ULS)}
+\institute{Revisión de supervisor / SHiP Collaboration Meeting}
+\date{Junio 2026 \quad Geant4 11.4.0}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Alcance: dato End, predicción Top}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Test beam de abril de 2026}
+      \begin{itemize}
+        \item Barra EJ-204, $1400\times60\times10$ mm$^3$.
+        \item Solo lectura End: 8 SiPM por extremo.
+        \item FastIC+, 8 canales/ASIC, self-trigger.
+        \item Gerardo: $\sigma(t_L-t_R)=125$ ps en SUM,
+          $\sigma_{\rm single}=125/\sqrt{2}\simeq88$ ps.
+      \end{itemize}
+    \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{Separación necesaria}
+      El Top readout \textbf{no estuvo en el test beam}. Todo resultado Top de
+      esta simulación es una \textbf{predicción sin dato}, no una validación.
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Detector simulado y scan reutilizado}
+  \begin{itemize}
+    \item End-left: IDs 0--7; End-right: IDs 8--15; Top: IDs 16--35.
+    \item 31 posiciones: paso de 50 mm entre $-650$ y $+650$ mm, más
+      $\pm670$ y $\pm690$ mm; 10\,000 eventos/posición.
+    \item Run intrínseco: $\mu^-$ de 1 GeV, EJ-204, rise time finito,
+      jitter de sensor/electrónica = 0.
+    \item Se reutilizan los ROOT del scan de alta estadística; no se cambia
+      física, geometría, PDE ni reflector.
+  \end{itemize}
+  \begin{block}{Objetivo de esta etapa}
+    Aplicar al End la estructura del observable de test beam:
+    SUM4 + leading-edge, $\Delta T_{LR}=t_L-t_R$ y
+    $\sigma_{\rm single}=\sigma(\Delta T_{LR})/\sqrt{2}$.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Baseline física aplicada}
+  \centering
+  \begin{tabular}{lrrrrr}
+    \toprule
+    Material & Yield & $\tau_r$ & $\tau_d$ & Aten. & $\lambda_{\max}$\\
+             & ph/MeV & ns & ns & cm & nm\\
+    \midrule
+    EJ-204 & 10400 & 0.7 & 1.8 & 160 & 408\\
+    EJ-200 & 10000 & 0.9 & 2.1 & 380 & 425\\
+    EJ-230 & 9700  & 0.5 & 1.5 & 120 & 391\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.5cm}
+  \begin{itemize}
+    \item EJ-204 activo; perfil de centelleo biexponencial con rise time finito.
+    \item Modelo actual de reflector: panel explícito pulido, $R(\lambda)=0.98$.
+    \item La decisión Tyvek difuso frente a Mylar especular sigue abierta.
+  \end{itemize}
+\end{frame}
+
+\section{Geometría implementada}
+
+\begin{frame}{Coordenadas, barra y placement}
+  \small
+  \begin{columns}[T]
+    \column{0.53\textwidth}
+    \begin{block}{Sistema de coordenadas del código}
+      \begin{itemize}
+        \item Barra centrada en $(0,0,0)$, sin rotación, como hija directa de
+          \texttt{WorldLV}.
+        \item Eje largo: $X\in[-700,+700]$ mm; el scan usa posiciones sobre $X$.
+        \item $+Y$ es la cara superior (top); $Z$ es el espesor de 10 mm.
+        \item Barra: $1400\times60\times10$ mm$^3$.
+        \item Mundo de aire: $3200\times500\times500$ mm$^3$.
+      \end{itemize}
+    \end{block}
+    \column{0.44\textwidth}
+    \begin{block}{Material activo por default}
+      EJ-204: PVT, $n=1.58$, atenuación 160 cm, yield 10400 ph/MeV,
+      $\tau_r=0.7$ ns y $\tau_d=1.8$ ns.
+    \end{block}
+    \begin{alertblock}{Fuentes en código}
+      \scriptsize
+      \texttt{DetectorConstruction.cc:24--26, 184--225}\\
+      \texttt{DetectorConstruction.hh:93--96}\\
+      \texttt{Materials.cc:37--59, 81--99}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Geometría a escala: End frente a Top}
+  \centering
+  \includegraphics[height=0.76\textheight]{geometry_layout.pdf}
+
+  \scriptsize Figura generada directamente con las constantes y fórmulas de
+  \texttt{DetectorConstruction.cc:24--58, 267--329}. Cada vista conserva la
+  escala real dentro de sus ejes.
+\end{frame}
+
+\begin{frame}{Estado de las seis caras por configuración}
+  \scriptsize
+  \begin{tabular}{llll}
+    \toprule
+    Cara y dimensión & Config End & Config Top & Implementación\\
+    \midrule
+    $-X$, $60\times10$ mm$^2$ & instrumentada & wrapped & End SiPM / panel X\\
+    $+X$, $60\times10$ mm$^2$ & instrumentada & wrapped & End SiPM / panel X\\
+    $-Y$, $1400\times10$ mm$^2$ & wrapped & wrapped & panel Y\\
+    $+Y$, $1400\times10$ mm$^2$ & wrapped & instrumentada & panel Y / Top SiPM\\
+    $-Z$, $1400\times60$ mm$^2$ & wrapped & wrapped & panel Z\\
+    $+Z$, $1400\times60$ mm$^2$ & wrapped & wrapped & panel Z\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.35cm}
+  \begin{block}{Regla operativa real}
+    \texttt{/det/readout End|Top|EndTop}; default = \texttt{End}. Una cara
+    instrumentada recibe únicamente los volúmenes SiPM y sus border surfaces;
+    \textbf{el área restante de esa cara queda abierta}. Una cara wrapped
+    recibe un panel explícito completo.
+  \end{block}
+  \begin{alertblock}{Fuentes en código}
+    \texttt{DetectorConstruction.cc:95--99, 144--175, 232--285, 287--329};
+    dimensiones desde \texttt{DetectorConstruction.cc:24--37}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Wrapping y superficies ópticas}
+  \small
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Reflector real del modelo}
+      \begin{itemize}
+        \item Paneles físicos de aire de 1 $\mu$m de espesor, colocados fuera
+          de la barra.
+        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ ReflectorPV}.
+        \item \texttt{dielectric\_metal}, modelo \texttt{unified},
+          acabado \texttt{polished}, $\sigma_\alpha=0$.
+        \item $R(\lambda)=0.98$ constante entre 350 y 800 nm.
+      \end{itemize}
+    \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{Lectura física}
+      El código implementa un reflector \textbf{especular idealizado}, no
+      Tyvek Lambertiano. No existe \texttt{G4LogicalSkinSurface}; se usan
+      paneles y border surfaces explícitas.
+    \end{alertblock}
+    \begin{block}{Fuentes}
+      \scriptsize
+      \texttt{DetectorConstruction.cc:232--285}\\
+      \texttt{Materials.cc:306--345}\\
+      \texttt{DetectorConstruction.hh:24--37}
+    \end{block}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{SiPM End: 16 sensores sobre las caras $\pm X$}
+  \small
+  \begin{itemize}
+    \item Cada volumen activo mide $0.5\times6\times6$ mm$^3$:
+      espesor en $X$, área activa $36$ mm$^2$ en $Y$--$Z$.
+    \item Centros: $x=-699.75$ mm para IDs 0--7 y $x=+699.75$ mm para
+      IDs 8--15; $z=0$.
+    \item Para índice local $i=0,\ldots,7$:
+      $y=(i-3.5)\,7.5$ mm.
+    \item Coordenadas $y$: $-26.25,-18.75,-11.25,-3.75,
+      3.75,11.25,18.75,26.25$ mm.
+    \item Sensores embebidos en \texttt{BarLV} y flush con la cara externa:
+      no hay guía de luz ni volumen de grasa separado.
+  \end{itemize}
+  \begin{alertblock}{Fuentes en código}
+    \scriptsize
+    \texttt{DetectorConstruction.cc:28--32, 61--70, 287--309};
+    número por extremo en \texttt{DetectorConstruction.hh:41}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{SiPM Top: 20 sensores sobre la cara $+Y$}
+  \small
+  \begin{itemize}
+    \item Cada volumen mide $6\times0.5\times6$ mm$^3$:
+      área activa $36$ mm$^2$ en $X$--$Z$.
+    \item Default hardcoded: pitch $70$ mm, $N=20$; configurable mediante
+      \texttt{/det/topSiPMPitch}.
+    \item Centros: $y=29.75$ mm, $z=0$,
+      $x=(i-9.5)\,70$ mm para $i=0,\ldots,19$.
+    \item Coordenadas $x$ [mm]:
+      \[
+      \begin{aligned}
+      &-665,-595,-525,-455,-385,-315,-245,-175,-105,-35,\\
+      &\phantom{-}35,\phantom{-}105,\phantom{-}175,\phantom{-}245,
+       \phantom{-}315,\phantom{-}385,\phantom{-}455,\phantom{-}525,
+       \phantom{-}595,\phantom{-}665.
+      \end{aligned}
+      \]
+    \item IDs globales 16--35; solo existen en configuración \texttt{Top} o
+      \texttt{EndTop}.
+  \end{itemize}
+  \begin{alertblock}{Fuentes en código}
+    \scriptsize
+    \texttt{DetectorConstruction.cc:34--58, 312--329}.\\
+    Defaults: \texttt{DetectorConstruction.hh:28--29, 93--96}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Superficie y detección del fotodetector}
+  \small
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{block}{Interfaz óptica}
+      \begin{itemize}
+        \item \texttt{G4LogicalBorderSurface}: \texttt{BarPV $\to$ SiPMPV}.
+        \item \texttt{dielectric\_dielectric}, \texttt{unified},
+          \texttt{polished}, $\sigma_\alpha=0$.
+        \item Volumen SiPM modelado como SiO$_2$ con $n=1.58$, igual a la
+          barra: acoplamiento óptico perfecto.
+        \item No hay gap de aire, guía de luz ni capa de grasa explícita.
+      \end{itemize}
+    \end{block}
+    \column{0.42\textwidth}
+    \begin{alertblock}{PDE y reflectividad}
+      La superficie no define \texttt{EFFICIENCY} ni \texttt{REFLECTIVITY}.
+      El fotón entra y \texttt{SiPMSD} aplica manualmente una Bernoulli PDE;
+      luego siempre mata el fotón. PDE máxima = 0.405 a 460 nm.
+    \end{alertblock}
+    \begin{block}{Sensor asumido}
+      \scriptsize Tabla rotulada Hamamatsu \textbf{S13360-6025}, 6 mm,
+      celda 25 $\mu$m. La posible identidad S14160 no está resuelta en código.
+    \end{block}
+  \end{columns}
+  \scriptsize Fuentes: \texttt{Materials.cc:185--199, 221--262};
+  \texttt{SiPMSD.cc:17--32, 66--101, 133--139};
+  \texttt{DetectorConstruction.cc:300--308, 327--328}.
+\end{frame}
+
+\begin{frame}{Definición de timing congruente con el test beam}
+  \small
+  \begin{block}{End: SUM4 + self-trigger}
+    Se forman clusters provisionales $\{0..3\}$, $\{4..7\}$,
+    $\{8..11\}$ y $\{12..15\}$. Para cada cluster se suman respuestas 1-PE
+    desplazadas por los tiempos de arribo y se toma el primer cruce
+    \textbf{leading-edge}. En cada extremo, $t_L$ o $t_R$ es el primer cluster
+    que cruza el umbral.
+  \end{block}
+  \[
+    \Delta T_{LR}=t_L-t_R,\qquad
+    \sigma_{\rm single,End}=\frac{\sigma_{\rm core}(\Delta T_{LR})}{\sqrt{2}}.
+  \]
+  \begin{itemize}
+    \item $\sigma_{\rm core}$: fit gaussiano iterativo en $\pm2\sigma$;
+      se reporta $\sigma\pm\delta\sigma$, $\chi^2/\mathrm{ndf}$ y $N_{\rm eff}$.
+    \item Constanza observa leading-edge + walk; en etapa 1 no hay corrección
+      de walk ni corte ToT.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Hooks provisionales de electrónica}
+  \scriptsize
+  \begin{tabular}{p{0.18\textwidth}p{0.75\textwidth}}
+    \toprule
+    Hook & Default usado en etapa 1\\
+    \midrule
+    HOOK\_MAP & End SUM4 $\{0..3\},\{4..7\},\{8..11\},\{12..15\}$; confirmar cableado físico.\\
+    HOOK\_SPR & Respuesta 1-PE biexponencial normalizada: $\tau_r=0.5$ ns,
+      $\tau_f=5$ ns, pico = 1 PE.\\
+    HOOK\_THR & Umbral leading-edge absoluto = 4 PE equivalentes.\\
+    HOOK\_ENDRED & Primer cluster SUM4 que cruza en cada extremo.\\
+    HOOK\_WALK & Sin corrección de time-walk.\\
+    HOOK\_TOTCUT & Sin corte ToT; LSB de ToT aún desconocido.\\
+    HOOK\_FIT & 100 bins, mediana $\pm8(1.4826\,\mathrm{MAD})$, 4 fits core en $\pm2\sigma$.\\
+    HOOK\_LSB & $\simeq24$ ps/LSB de tiempo, solo metadata; sin cuantización.\\
+    \bottomrule
+  \end{tabular}
+  \begin{alertblock}{No son parámetros validados}
+    Deben reemplazarse desde el repo/análisis de Constanza antes de comparar
+    valores absolutos con el test beam.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Yield: simetría geométrica}
+  \centering
+  \includegraphics[width=0.86\textwidth]{\scanresults/yield_vs_position.pdf}
+
+  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ valida la simetría
+  longitudinal. El yield End lejano es bajo cerca de los extremos.
+\end{frame}
+
+\begin{frame}{Resultado End: $\sigma(t_L-t_R)/\sqrt{2}$}
+  \centering
+  \includegraphics[width=0.76\textwidth]{\timingresults/sigma_single_vs_position.pdf}
+  \begin{alertblock}{Resultado de etapa 1}
+    \scriptsize En $x=0$: $\sigma_{LR}=661.1\pm8.2$ ps y
+    $\sigma_{\rm single,End}=467.5\pm5.8$ ps, $N_{\rm eff}=9732$.
+    Es intrínseco, pero \textbf{no} queda por debajo del dato single de 88 ps.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Chequeo clave: la paradoja persiste}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+    \begin{tabular}{lrr}
+      \toprule
+      $x$ [mm] & $N_{\rm eff,End}$ & $\sigma_{\rm single}$ [ps]\\
+      \midrule
+      -200 & 6715 & $614.2\pm10.8$\\
+      -100 & 8861 & $502.5\pm6.8$\\
+         0 & 9732 & $467.5\pm5.8$\\
+       100 & 8882 & $496.7\pm6.6$\\
+       200 & 6733 & $599.8\pm10.3$\\
+      \bottomrule
+    \end{tabular}
+    \column{0.44\textwidth}
+    \begin{alertblock}{Interpretación}
+      SUM4 + leading-edge provisional \textbf{no elimina} ``intrínseco $>$ total''.
+      El umbral absoluto, el primer-cluster self-trigger y la ausencia de
+      corrección de walk dominan el resultado.
+    \end{alertblock}
+  \end{columns}
+  \vspace{0.4cm}
+  \begin{block}{Consecuencia}
+    No se puede afirmar acuerdo/desacuerdo físico con 88 ps hasta reproducir
+    mapa, SPR, umbral, walk, corte ToT y fit exactos del dato.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Eficiencia del observable $\Delta T$}
+  \centering
+  \includegraphics[width=0.84\textwidth]{\timingresults/trigger_efficiency_vs_position.pdf}
+
+  \scriptsize End requiere que ambos extremos disparen. Con umbral provisional
+  de 4 PE, $N_{\rm eff}$ cae fuertemente cuando el extremo lejano queda
+  hambriento; esta selección también condiciona el core ajustado.
+\end{frame}
+
+\begin{frame}{Top: predicción de simulación sin dato}
+  \begin{itemize}
+    \item El array superior se divide provisionalmente en
+      A = IDs 16--25 y B = IDs 26--35.
+    \item Cada mitad agrega sus arribos, aplica la misma respuesta 1-PE y
+      leading-edge; se reporta
+      $\sigma_{\rm single,Top}=\sigma(t_A-t_B)/\sqrt{2}$.
+    \item En el centro: $\sigma_{\rm single,Top}=93.2\pm1.1$ ps,
+      $N_{\rm eff}=10000$.
+    \item La degradación lejos del centro refleja la división espacial A/B y
+      el umbral provisional.
+  \end{itemize}
+  \begin{alertblock}{Alcance}
+    Top \textbf{no estuvo en el test beam de abril}: estos números son una
+    predicción del modelo, sin validación experimental.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Caveat duro: etapa 1 intrínseca}
+  \[
+    \sigma_{\rm total} =
+    \sqrt{\sigma_{\rm intr}^2+\sigma_{\rm SPTR}^2+\sigma_{\rm elec}^2}
+  \]
+  \begin{itemize}
+    \item Aquí $\sigma_{\rm intr}$ incluye centelleo biexponencial, dispersión
+      óptica, estadística de fotones, SPR provisional, leading-edge y selección.
+    \item No incluye SPTR ni jitter electrónico; tampoco walk corregido ni
+      cortes ToT del dato.
+    \item El blanco de 88 ps se muestra solo como referencia cualitativa.
+      No se afirma igualdad ni comparabilidad absoluta en esta etapa.
+    \item El LSB temporal indicado por las slides de Constanza es
+      aproximadamente \textbf{24 ps}; debe confirmarse desde su repo.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Próximos pasos}
+  \begin{enumerate}
+    \item Importar desde Constanza HOOK\_MAP, HOOK\_SPR, HOOK\_THR,
+      HOOK\_WALK, HOOK\_TOTCUT, HOOK\_FIT y HOOK\_LSB.
+    \item Reproducir exactamente leading-edge, self-trigger, walk y selección
+      del test beam; validar primero $\Delta T_{LR}$ End.
+    \item Añadir SPTR $\oplus$ jitter electrónico al ToA en EXEC\_02b.
+    \item Solo después contrastar $\sigma(t_L-t_R)$ y
+      $\sigma_{\rm single}$ con 125 ps / 88 ps.
+    \item Mantener Top como predicción separada hasta disponer de dato.
+  \end{enumerate}
+\end{frame}
+
+\section{Resultados --- Longitudinal Scan (End readout)}
+
+\begin{frame}{Simulación Geant4 --- End readout: $\sigma_{\rm single}(x)$}
+  \centering
+  \includegraphics[height=0.70\textheight]{\mirrorresults/sigma_vs_x_End.png}
+
+  \scriptsize Ajuste gaussiano sembrado en el pico y restringido a una ventana
+  local, siguiendo la estrategia estadística de \texttt{process\_sum4.C}.
+  La línea de 88 ps es el valor SUM4 reportado del test beam.
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: NPE vs posición}
+  \centering
+  \includegraphics[height=0.70\textheight]{\mirrorresults/npe_vs_x_End.png}
+
+  \scriptsize El intercambio End-L/End-R bajo $x\to-x$ confirma la simetría.
+  NPE es un proxy de energía; no equivale a pulse width sin calibración
+  \texttt{ToT(NPE)}.
+\end{frame}
+
+\begin{frame}{Metodología espejo del pipeline de test beam}
+  \small
+  \begin{itemize}
+    \item SUM4 provisionales por extremo + pulso agregado + leading-edge;
+      $\Delta T_{LR}=t_L-t_R$ y
+      $\sigma_{\rm single}=\sigma(\Delta T_{LR})/\sqrt{2}$.
+    \item Fit gaussiano sembrado en el pico del histograma y rango local,
+      siguiendo el análisis SUM4 de C. Valdivieso.
+    \item FWHM por cruces del half-maximum; fit Landau del NPE total.
+    \item Cortes proxy de energía: NPE $\geq$p25 y NPE $\geq$p50 por posición.
+  \end{itemize}
+  \begin{alertblock}{Discrepancia explícita}
+    La cadena disponible incluye el walk inherente al leading-edge, pero
+    \textbf{no implementa corrección de time-walk}. Tampoco existe calibración
+    \texttt{ToT(NPE)}; los cortes NPE no son equivalentes a 400/500/550 LSB.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Comparación End: simulación frente a valor reportado}
+  \small
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Observable & Simulación, $x=0$ & Test beam\\
+    \midrule
+    $\sigma_{LR}$ & $138.48\pm1.04$ ps & 125 ps\\
+    $\sigma_{\rm single}$ & $97.92\pm0.73$ ps & $\simeq88$ ps\\
+    $\sigma_{\rm single}$, NPE$\geq$p25 & 94.64 ps & no reportado\\
+    $\sigma_{\rm single}$, NPE$\geq$p50 & 93.05 ps & no reportado\\
+    MPV NPE / MPV ToT & 360.58 NPE & PENDIENTE\\
+    \bottomrule
+  \end{tabular}
+  \vspace{0.35cm}
+  \begin{alertblock}{Posición TB por confirmar}
+    El punto longitudinal de la medición de Gerardo no está confirmado.
+    NPE y ToT se mantienen en filas separadas: requieren calibración
+    \texttt{ToT(NPE)} para ser comparables.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: evidencia de fit $\Delta T_{LR}$}
+  \begin{columns}[T]
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x0_End.png}\\[-1mm]
+      \scriptsize $x=0$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x350_End.png}\\[-1mm]
+      \scriptsize $x=+350$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/deltaT_fit_x690_End.png}\\[-1mm]
+      \scriptsize $x=+690$ mm
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: evidencia NPE/Landau}
+  \begin{columns}[T]
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x0_End.png}\\[-1mm]
+      \scriptsize $x=0$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x350_End.png}\\[-1mm]
+      \scriptsize $x=+350$ mm
+    \column{0.33\textwidth}\centering
+      \includegraphics[width=\textwidth]{\deepresults/npe_landau_fit_x690_End.png}\\[-1mm]
+      \scriptsize $x=+690$ mm
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: atenuación efectiva}
+  \begin{columns}[T]
+    \column{0.67\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/attenuation_effective.png}
+    \column{0.31\textwidth}
+      \small
+      \begin{block}{Fit simultáneo, $|x|\leq500$ mm}
+        $\lambda_{\rm eff}=\LambdaEffCm\pm\LambdaEffErrCm$ cm\\
+        $\lambda_{\rm bulk}=\LambdaBulkCm$ cm\\
+        $\chi^2/\mathrm{ndf}=\AttenChi$
+      \end{block}
+      \scriptsize $\lambda_{\rm eff}<\lambda_{\rm bulk}$ es consistente con
+      caminos no axiales y pérdidas por reflexión; el gran $\chi^2/\mathrm{ndf}$
+      muestra que una sola exponencial no captura toda la geometría.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: escalamiento fotoestadístico}
+  \begin{columns}[T]
+    \column{0.70\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/photo_scaling.png}
+    \column{0.28\textwidth}
+      \small
+      \[
+        \sigma=\sqrt{p_0^2+p_1^2/NPE_{\rm far}}
+      \]
+      \scriptsize
+      $p_0=\PhotoPzero\pm\PhotoPzeroErr$ ps; $p_1=\PhotoPone$ ps$\sqrt{\rm NPE}$;
+      $\chi^2/\mathrm{ndf}=\PhotoChi$. El piso $p_0$ queda
+      \textbf{no identificado}: compatible con cero y error no acotado.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: velocidad efectiva y posición}
+  \begin{columns}[T]
+    \column{0.68\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/velocity_effective.png}
+    \column{0.30\textwidth}
+      \small
+      \begin{block}{Fit $\mu(\Delta T)=2x/v_{\rm eff}+b$}
+        $v_{\rm eff}=\VelocityEff\pm\VelocityEffErr$ mm/ns\\
+        $c/n\simeq\LightSpeedOverN$ mm/ns\\
+        $\chi^2/\mathrm{ndf}=\VelocityChi$
+      \end{block}
+      \scriptsize La relación casi lineal habilita reconstrucción de posición,
+      pero $v_{\rm eff}>c/n$ y el gran $\chi^2$ prueban que esta pendiente del
+      leading-edge es un estimador efectivo, no una velocidad física.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: calidad de los fits}
+  \centering
+  \includegraphics[height=0.25\textheight]{\deepresults/gaussianity_qa.png}\\[-3mm]
+  \resizebox{0.84\textwidth}{!}{\input{\deepresults/qa_table.tex}}
+
+  \tiny La mayoría de los puntos queda fuera de la banda gaussiana
+  $\pm5\%$: el FWHM revela colas/núcleos no descritos por una gaussiana única.
+  CSV completo: \texttt{deep\_dive/qa\_metrics.csv}. \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: de Etapa 1 al espejo}
+  \scriptsize
+  \resizebox{\textwidth}{!}{\input{\deepresults/traceability_table.tex}}
+  \vspace{2mm}
+
+  Fuentes: \texttt{congruent\_sum4\_timing.C:1--10,45--51,110--153,170--232,305--319};
+  \texttt{tb\_mirror\_sigma\_vs\_x.C:105--137,257--310};
+  \texttt{process\_sum4.C:1294--1321,1931--1978}.\\[1mm]
+  \deepcaveat
+\end{frame}
+
+\begin{frame}{Simulación Geant4 --- End readout: ablación, origen de la mejora}
+  \begin{columns}[T]
+    \column{0.58\textwidth}
+      \includegraphics[width=\textwidth]{\deepresults/ablation_x0.png}
+    \column{0.40\textwidth}
+      \scriptsize
+      \resizebox{\textwidth}{!}{\input{\deepresults/ablation_table.tex}}
+      \vspace{2mm}
+
+      La caída $\AblationOldStage\to\AblationWrappedStage$ ps aparece al cambiar de la geometría Top abierta
+      a End wrapped manteniendo el fit Etapa 1. Cambiar solo el fit mueve
+      $\AblationWrappedStage\to\AblationWrappedMirror$ ps; los cortes NPE aportan
+      la reducción restante.
+  \end{columns}
+  \deepcaveat
+\end{frame}
+
+\end{document}

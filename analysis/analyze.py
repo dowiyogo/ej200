@@ -18,9 +18,11 @@ import pandas as pd
 
 # ── Constantes de geometría (deben coincidir con DetectorConstruction) ────────
 N_END_SIPMS  = 8    # por lado
-N_TOP_SIPMS  = 20
+N_TOP_SIPMS  = 70
 BAR_HALF_X   = 700  # mm
-TOP_POSITIONS_MM = np.linspace(-665, 665, N_TOP_SIPMS)  # centros x de top SiPMs
+TOP_POSITIONS_MM = np.array(
+    [-692 + 20*i for i in range(35)] + [12 + 20*i for i in range(35)]
+)
 
 FACE_NAMES = {0: "End left (−X)", 1: "End right (+X)", 2: "Top (+Y face)"}
 COLORS     = {0: "#2166ac",        1: "#d6604d",        2: "#4dac26"}
@@ -89,7 +91,7 @@ def plot_top_sipm_profile(df: pd.DataFrame, out: str = "top_sipm_profile.pdf"):
     pps["x_mm"]     = TOP_POSITIONS_MM[pps["local_id"].values]
 
     fig, ax = plt.subplots(figsize=(12, 4))
-    ax.bar(pps["x_mm"], pps["n_photons"], width=60, color=COLORS[2], alpha=0.85)
+    ax.bar(pps["x_mm"], pps["n_photons"], width=6, color=COLORS[2], alpha=0.85)
     ax.set_xlabel("SiPM x position [mm]", fontsize=12)
     ax.set_ylabel("Detected photons", fontsize=12)
     ax.set_title("Top SiPM longitudinal profile (full bar length)", fontsize=13)

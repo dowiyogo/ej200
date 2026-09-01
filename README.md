@@ -1,174 +1,145 @@
-# ej200_v2 — EJ-200 Scintillating Bar + SiPM Simulation (v2)
+# ej200_v2 - EXEC_07 EndTop optical simulation
 
-Improved version of `scintillator_geant4` (Repo1), incorporating the best
-practices from `simple_g4sim_scint_sipm` (Repo2).
-
----
+Geant4 simulation of the SHiP timing-detector scintillator bar. The EXEC_07
+configuration combines End and Top readout, uses SSLG4/OPSim for the active
+scintillator, and uses the Broadcom AFBR-S4N66P024M PDE curve.
 
 ## Geometry
 
-| Volume | Dimensions | Material |
-|---|---|---|
-| EJ-200 bar | 1400 × 60 × 10 mm | `G4_PLASTIC_SC_VINYLTOLUENE` + EJ-200 optical props |
-| Reflector panels | non-SiPM faces | `dielectric_metal` high-quality reflector, R(λ) = 0.98 |
-| End SiPMs (×16) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
-| Top SiPMs (×20) | 6 × 6 × 0.5 mm | Optical coupling (n=1.58) |
+| Volume/readout | Dimensions/count | Material/model |
+|---|---:|---|
+| Scintillator bar | 1400 x 60 x 10 mm | SSLG4 `OPSC-101` (EJ-204) |
+| End SiPM elements | 16, IDs 0-15 | 6 x 6 mm2, unchanged EXEC_06 placement |
+| Top SiPM elements | 70, IDs 16-85 | 6 x 6 mm2, Broadcom AFBR-S4N66P024M |
+| Coupling volumes | one per SiPM | SiO2 approximation, n=1.58 |
+| Reflector panels | all faces except End faces and Top windows | Mylar-like `dielectric_metal`, R=0.98 |
 
-### SiPM layout
+The Top centers are fixed and symmetric:
 
+```text
+IDs 16-50: x = -692, -672, ..., -12 mm
+IDs 51-85: x =  +12,  +32, ..., +692 mm
 ```
-Global IDs   Face         Count   Description
-  0 –  7     End left     8       8×1 array on −X face
-  8 – 15     End right    8       8×1 array on +X face
- 16 – 35     Top          20      uniform, −665 → +665 mm (step 70 mm)
+
+All regular Top pitches are 20 mm. The central pair at -12/+12 mm has a
+deliberate 24 mm pitch so the first elements remain 5 mm from both bar ends.
+The `+Y` physical reflector panel is a chained `G4SubtractionSolid` with 70
+exact 6 x 6 mm2 windows at those positions. Each Bar-to-coupling border surface
+therefore has priority at the active interface, while the rest of `+Y` remains
+wrapped.
+
+The hardware's exterior black Tedlar light-tight layer is deliberately not
+modeled. It does not contribute internal reflection; absorption of the
+non-reflected fraction `(1-R)` is already implicit in the Mylar optical surface,
+and its material budget is negligible for the muon.
+
+## Runtime selectors
+
+Set selectors before `/run/initialize`:
+
+```text
+/det/readout EndTop
+/det/scintillator OPSC-101
+/sipm/model AFBR-S4N66P024M
 ```
 
----
+`OPSC-101` is EJ-204 and is the default. `OPSC-100` selects EJ-200. The
+historical `/det/scintillatorMaterial EJ204|EJ200` command remains as an alias.
 
-## Key improvements vs Repo1
+For OPSC-101, the effective MPT is guarded by CTest:
 
-| Feature | Repo1 | **v2** |
-|---|---|---|
-| SiPM surface | `LogicalSkinSurface` (global) | `LogicalBorderSurface` per SiPM |
-| Optical coupling | Air (n=1.0) → TIR at ~39° | Coupling material n=1.58 (no TIR) |
-| PDE | Not applied | Manual Bernoulli trial in `SiPMSD::ProcessHits()` via `GetPDE()` |
-| Wrapping | None / default | `dielectric_dielectric polished` (TIR-based, bar–air interface) |
-| Wrapping reflector | Mylar dielectric (TIR-only, inefectivo) | BarPV hijo directo de WorldLV + paneles reflectores explícitos, R(λ)=0.98 |
-| Top SiPMs | Only 2nd half of bar (bug) | Full bar length (−665 to +665 mm) |
-| EventAction | Bug (AddEndLeftHit unconditional) | SiPMSD → EventAction → RunAction |
-| Materials class | Inline in DetectorConstruction | Separate `Materials` namespace |
+| Property | Effective value |
+|---|---:|
+| `RINDEX` | 1.58 |
+| `SCINTILLATIONYIELD` | 10,400 photons/MeV |
+| `SCINTILLATIONRISETIME1` | 0.7 ns |
+| `SCINTILLATIONTIMECONSTANT1` | 1.8 ns |
+| `ABSLENGTH` | 160 cm |
+| emission maximum | 408.8 nm |
 
-### Why the old top SiPMs didn't collect photons
+The finite-rise-time sampler is enabled globally. The vendored SSLG4 OPSC-101
+data already contains 160 cm and 0.7 ns; runtime guards enforce those values if
+a future data update drifts.
 
-In Repo1, the `LogicalSkinSurface` was applied to the **bar** logical volume,
-meaning **all** surfaces of the bar (including those facing the top SiPMs) were
-treated as the same surface type. The SiPM volumes were in air (n=1.0), causing
-total internal reflection (TIR) at the bar–SiPM interface for photons hitting at
-angles > arcsin(1.0/1.58) ≈ 39°. Additionally, the `SkinSurface` effectively
-competed with the `BorderSurface` used for end SiPMs, with unpredictable
-priority results.
+## SSLG4 and OPSim
 
-In v2:
-1. **Per-SiPM `BorderSurface`** (bar→sipmPhys) takes priority over the wrapping
-   surface (bar→world) by G4 convention.
-2. **Coupling material** (n=1.58) eliminates TIR: the critical angle is 90°,
-   so all photons that reach the SiPM face can enter.
-3. **20 top SiPMs** span the full bar length (not just one half).
+Vendored code and data live in:
 
----
+```text
+src/external/OPSimTool/
+src/external/SSLG4/
+```
 
-## Build
+Both upstream projects are GPL-3. Their upstream license/copying files and
+README files are included in each vendored directory.
+
+References:
+
+- M. Kandemir et al., "OPSim: A simulation toolkit for optical photon
+  processes in Geant4", Computer Physics Communications 292 (2023) 108873.
+- M. Kandemir et al., "SSLG4: A novel scintillator simulation library for
+  Geant4", Computer Physics Communications 306 (2025) 109385.
+
+SSLG4 resolves `sslg4/macros/...` and `sslg4/data/...` relative to the process
+working directory. CMake copies that complete runtime tree into the build
+directory, so execute the simulator from the build directory. All supplied
+CTest and batch scripts do this. The SiPM data loader uses the source `data/`
+directory by default and can be overridden with `EJ200_DATA_DIR`.
+
+## Broadcom PDE
+
+`data/sipm/AFBR-S4N66P024M_pde.txt` is digitized from Broadcom
+AFBR-S4N66P024M-DS105, Figure 6, at the datasheet's typical 12 V overvoltage.
+It spans 250-900 nm and peaks at 63% at 420 nm. The same file is loaded into the
+SiPM optical surface as `EFFICIENCY(lambda)` and read back by the SD for ntuple
+metadata. `REFLECTIVITY(lambda)=0`.
+
+Optical crosstalk (~23%) and afterpulsing (<1%) are intentionally not modeled
+and are not folded into PDE. The product uses a clear epoxy mold compound; the
+datasheet does not specify its refractive index, so the current SiO2 n=1.58
+coupling remains an explicit approximation.
+
+The physical AFBR-S4N66P024M package is a 2 x 1 array with 7 mm element pitch.
+Each simulated placement represents one 6 x 6 mm2 element, so the package pitch
+does not alter the EndTop placement defined above.
+
+## Build and validation
 
 ```bash
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
+cmake -S . -B build-exec07 -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build-exec07 -j8
+ctest --test-dir build-exec07 --output-on-failure
 ```
 
----
+Important guardrails:
 
-## Run
+- `sslg4_properties_check`: dumps and validates the effective OPSC-101 MPT.
+- `readout_config_check`: validates 86 unique global IDs, exact Top positions,
+  Broadcom PDE, zero reflectivity, and the perforated `+Y` reflector.
+- `export_endtop_gdml` + `endtop_gdml_check`: exports and parses EndTop GDML.
+- `endtop_balance_smoke`: 50 events at x=0 and rejects open-face-level leakage.
 
-The muon (1 GeV μ⁻) starts 60 mm above the bar centre on the wide face (+Z),
-travels in the **−Z direction**, and traverses the full 10 mm thickness of the bar.
-Scans step along the **X axis** (longitudinal direction).
+Manual Phase-1 smoke macros:
 
 ```bash
-# Standard production (1000 events, mu- at bar centre x=0)
-./ej200_bar_sim -m macros/run.mac
-
-# Full longitudinal scan (21 x positions × 200 events each, −650 → +650 mm)
-./ej200_bar_sim -m macros/scan.mac
-
-# Edge scan: 11 positions × 500 events from x=+600 to +700 mm
-./ej200_bar_sim -m macros/scan_edge.mac
-python analysis/edge_resolution.py
-
-# Compare edge wrapping modes in the last 5 cm of the bar
-./ej200_bar_sim -m macros/scan_edge_air.mac
-./ej200_bar_sim -m macros/scan_edge_black.mac
-python analysis/compare_edge_wraps.py mylar air black
-
-# Interactive visualisation
-./ej200_bar_sim
-
-# Top-readout event displays for a muon between top SiPMs 9 and 10
-./ej200_bar_sim -m macros/event_display_top_midpoint.mac
-./ej200_bar_sim -m macros/event_display_top_lateral.mac
-./ej200_bar_sim -m macros/event_display_top_3d.mac
-
-# Batch HepRep export for later HepRApp inspection
-./ej200_bar_sim -m macros/event_display_top_batch.mac
+(cd build-exec07 && ./ej200_bar_sim -m macros/endtop_smoke_center.mac)
+(cd build-exec07 && ./ej200_bar_sim -m macros/endtop_smoke_edge.mac)
 ```
 
-For longitudinal scans, prefer `/muon/gunX` over `/gun/position` in macros so
-the event-level `gun_x_mm` written to the ntuple tracks the intended scan
-coordinate unambiguously.
+## Phase 2 artifacts
 
----
+The re-entrant 31-position, 2000-event-per-point campaign is prepared in
+`scripts/run_exec07_scan.sh`. It writes `photon_hits_x{pos}mm.root`, validates
+completed positions with uproot, and resumes without accepting interrupted ROOT
+files. Do not launch it until Phase 2 is explicitly approved.
 
-## Analysis
+After the campaign:
 
 ```bash
-pip install uproot numpy matplotlib pandas scipy
-
-# General plots (single-position or scan data)
-python analysis/analyze.py photon_hits.root
-
-# Temporal resolution vs longitudinal position (requires scan data)
-python analysis/resolution_vs_x.py photon_hits.root
-
-# Edge timing/light-yield study
-python analysis/edge_resolution.py photon_hits_run*.root --label mylar
-
-# Edge-wrap comparison from three directories containing edge_summary.csv
-python analysis/compare_edge_wraps.py mylar air black
-
-# Top-readout cross-talk for /muon/midpointSiPMs 9 10 data
-python analysis/topreadout_crosstalk.py photon_hits_run*.root
-
-# Sum-of-N electronics emulation (FastIC+ threshold in p.e.)
-python analysis/grouped_resolution.py photon_hits_merged.root --threshold 4
-root -l -q 'analysis/grouped_resolution.C("photon_hits_merged.root",4)'
+python analysis/exec07_photon_budget.py results/exec07_endtop_2000 \
+  --output-dir results/exec07_analysis
 ```
 
-### `analyze.py` outputs
-
-- `photons_per_sipm.pdf` — total hits per SiPM
-- `top_sipm_profile.pdf` — top SiPM hits vs x-position (validates full coverage)
-- `arrival_time.pdf` — timing spectrum per face type
-- `wavelength.pdf` — detected photon wavelength spectrum
-- `end_asymmetry.pdf` — (L−R)/(L+R) asymmetry distribution
-
-### `resolution_vs_x.py` outputs (scan data required)
-
-- `resolution_vs_x.pdf` — **key thesis plot**: σ_t [ps] vs x for end and top SiPMs
-- `fpt_dist_end.pdf` — first-photon-time distributions at 3 representative positions (end SiPMs)
-- `fpt_dist_top.pdf` — first-photon-time distributions at 3 representative positions (top SiPMs)
-- `asymmetry_vs_x.pdf` — end-SiPM charge asymmetry ⟨(N_L−N_R)/(N_L+N_R)⟩ vs x (position reconstruction)
-- `n_photons_vs_x.pdf` — mean detected photons per event vs x, by face type
-
----
-
-## PDE table
-
-Hamamatsu S13360-6025 (33 points, 300–940 nm). Peak PDE ≈ 40.5% at 460 nm.
-Stored as a `G4MaterialPropertyVector` in `SiPMSD` and evaluated per photon via
-`SiPMSD::GetPDE()` using linear interpolation. Applied as a Bernoulli trial in
-`SiPMSD::ProcessHits()`.
-
----
-
-## Extending
-
-- **Change SiPM count/positions**: edit `kNTopSiPMs` and `TopSiPMCenterX()` in
-  `DetectorConstruction.hh/.cc`.
-- **Change particle/energy**: edit `macros/run.mac` or use interactive `/gun/` commands.
-- **Tune wrapping reflectivity**: edit `CreateBarSkinReflector()` in
-  `src/Materials.cc`. Change `refl[]` values:
-  - `0.98`: high-reflectivity fallback used by the current explicit-panel
-    geometry to keep end-SiPM yield above threshold
-  - `0.95`: high-quality foil / aluminized Mylar compromise
-  - `0.85–0.92`: Al foil range (Betancourt 2020 SHiP prototype baseline)
-  - `0.98` + `groundfrontpainted`: Tyvek diffuse reflector variant
-- **Add 2D SiPM array on top**: extend the top SiPM placement loop to use both X and Z.
+The analysis produces per-channel and grouped N_pe/Poisson and arrival-time/FPT
+PDFs, central N_pe and time trends versus beam position, End-cluster DeltaT,
+and `summary_exec07.csv`.

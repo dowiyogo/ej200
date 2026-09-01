@@ -1,0 +1,42 @@
+# Broadcom AFBR-S4N66P024M PDE versus wavelength.
+# Source: AFBR-S4N66P024M-DS105, Figure 6 "PDE vs. Wavelength",
+# typical operation at 12 V above breakdown, digitized from the datasheet plot.
+# Datasheet cross-check: spectral range 250-900 nm; peak PDE 0.63 at 420 nm.
+# PDE excludes optical crosstalk (~23%) and afterpulsing (<1%).
+# wavelength_nm  pde_fraction
+250 0.055
+260 0.065
+270 0.100
+280 0.200
+290 0.320
+300 0.420
+320 0.430
+340 0.500
+360 0.520
+380 0.600
+400 0.630
+420 0.630
+440 0.610
+460 0.580
+480 0.550
+500 0.520
+520 0.480
+540 0.440
+560 0.410
+580 0.380
+600 0.340
+620 0.310
+640 0.290
+660 0.270
+680 0.250
+700 0.230
+720 0.205
+740 0.180
+760 0.155
+780 0.135
+800 0.115
+820 0.095
+840 0.080
+860 0.065
+880 0.055
+900 0.050

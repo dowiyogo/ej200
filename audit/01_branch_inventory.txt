@@ -1,0 +1,96 @@
+$ git fetch --all --prune
+$ git branch -a
+  feature/edge-scan-and-readout-grouping
++ feature/sipm-electronics-response
+* main
+  remotes/origin/feature/edge-scan-and-readout-grouping
+  remotes/origin/feature/sipm-electronics-response
+  remotes/origin/main
+
+=== Branch: feature/edge-scan-and-readout-grouping ===
+--- Commits not in main ---
+--- Files changed vs main ---
+.gitignore
+README.md
+diag/run_audit.sh
+diag/yield_audit.C
+include/DetectorConstruction.hh
+include/Materials.hh
+include/RunAction.hh
+include/SteppingAction.hh
+macros/diag_optical.mac
+macros/diag_scan5.mac
+src/DetectorConstruction.cc
+src/Materials.cc
+src/RunAction.cc
+src/SteppingAction.cc
+
+=== Branch: feature/sipm-electronics-response ===
+--- Commits not in main ---
+d870974 fix(analysis): handle sparse black edge scans
+a373b37 docs(slides): add EJ230 timing detector presentation source
+26eaf07 fix(analysis): keep fully dead edge-scan positions in summaries
+0c95a68 fix(analysis): support current pandas plotting semantics
+3164be5 feat(analysis): emulate FastIC+ Sum-of-N channel grouping for timing resolution
+974df48 feat(vis): event displays for top-readout midpoint and cross-talk analysis
+af32e07 feat(geom): segmented Mylar wrap with configurable edge caps (mylar|air|black)
+c53ea53 feat(scan): add 10mm edge scan and dedicated edge analysis
+9683346 feat(sipm): checkpoint electronics response and EJ230 analysis updates
+e720244 Agregando generador beamer
+9f54f7d Add SiPM electronics response analysis
+--- Files changed vs main ---
+.claude/settings.json
+.codex
+.gitignore
+CMakeLists.txt
+README.md
+analysis/ResolutionScan_v2.C
+analysis/SiPMRankingScan_RMS.C
+analysis/SiPMRankingScan_coreSigma.C
+analysis/SiPMRankingScan_v2.C
+analysis/TimeMarkScan.C
+analysis/analyze_basic.py
+analysis/analyze_dCFD.py
+analysis/analyze_dCFD_5thPhoton.C
+analysis/analyze_dCFD_fraction.C
+analysis/compare_edge_wraps.py
+analysis/convert_vis_exports.py
+analysis/edge_resolution.py
+analysis/fpt_vs_n_profile.C
+analysis/fpt_vs_n_profile_batch.C
+analysis/grouped_resolution.py
+analysis/merge_runs.py
+analysis/resolution_vs_x_FPT.py
+analysis/resolution_vs_x_dCFD.py
+analysis/sipm_waveform_dcfd
+analysis/sipm_waveform_dcfd.cpp
+analysis/sipm_waveform_dcfd.py
+analysis/topreadout_crosstalk.py
+diag/run_audit.sh
+diag/yield_audit.C
+fpt_manifest_to_beamer.py
+fpt_vs_n_profile.C
+fpt_vs_n_profile_batch.C
+fpt_vs_n_profile_batch_slides.C
+include/DetectorConstruction.hh
+include/Materials.hh
+include/RunAction.hh
+include/SiPMSD.hh
+include/SteppingAction.hh
+macros/diag_optical.mac
+macros/diag_scan5.mac
+macros/run.mac
+macros/scan.mac
+macros/scan_step.mac
+macros/vis_scan_png.mac
+macros/vis_scan_png_lite.mac
+macros/vis_scan_png_step.mac
+main.cc
+png_to_beamer.py
+presentacion_timing_detector_scan_ej-230.tex
+src/DetectorConstruction.cc
+src/Materials.cc
+src/RunAction.cc
+src/SiPMSD.cc
+src/SteppingAction.cc
+

@@ -7,10 +7,24 @@
 // --------------------------------------------------------------------------
 namespace Materials {
 
-// EJ-200 plastic scintillator (G4_PLASTIC_SC_VINYLTOLUENE base).
-// Full 20-point emission spectrum (peak 425 nm), n=1.58,
-// yield=10 000 ph/MeV, tau1=2.1 ns, bulk att. length=3.8 m.
+// Enable Geant4's biexponential scintillation timing sampler so each
+// material's SCINTILLATIONRISETIME1 property is honored.
+void EnableFiniteScintillationRiseTime();
+
+// EJ-204 fast-timing plastic scintillator (PVT base).
+// Emission peak 408 nm, n=1.58, yield=10 400 ph/MeV,
+// rise=0.7 ns, decay=1.8 ns, bulk attenuation length=160 cm.
+G4Material* CreateEJ204();
+
+// EJ-200 plastic scintillator (PVT base).
+// Full emission spectrum (peak 425 nm), n=1.58,
+// yield=10 000 ph/MeV, rise=0.9 ns, decay=2.1 ns, bulk att. length=3.8 m.
 G4Material* CreateEJ200();
+
+// EJ-230 fast-timing plastic scintillator (PVT base).
+// Emission peak 391 nm, n=1.58, yield=9700 ph/MeV,
+// rise=0.5 ns, decay=1.5 ns, bulk attenuation length=120 cm.
+G4Material* CreateEJ230();
 
 // Mylar wrapping film (G4_MYLAR base).
 // RINDEX = 1.65 across the optical range.  Used as a thin physical-volume
@@ -18,9 +32,14 @@ G4Material* CreateEJ200();
 // Fresnel equations without requiring a G4OpticalSurface at the air boundary.
 G4Material* CreateMylar();
 
-// Reflective wrapping surface for explicit reflector panels.
-// Uses dielectric_metal with idealized high reflectivity R(λ) = 0.99.
+// Reflective wrapping surface for explicit reflector panels (skin surface).
 G4OpticalSurface* CreateBarSkinReflector();
+
+// Air-gap → Mylar reflector surface for explicit air-gap geometry (EXEC_23 port).
+// dielectric_metal with R=0.95 to model Mylar substrate reflectance.
+G4OpticalSurface* CreateMylarReflector(G4double reflectivity = 0.95,
+                                       G4double specularLobe = 0.0,
+                                       G4double sigmaAlpha   = 0.0);
 
 // Black absorbing tape — high-density polymer with extremely short absorption
 // length and low refractive index, used to simulate "black tape" / "vinyl"
@@ -37,10 +56,8 @@ G4Material* CreateSiPMCoupling();
 // Apply as G4LogicalBorderSurface(bar → world) to model all non-SiPM faces.
 G4OpticalSurface* CreateBarSurface();
 
-// SiPM optical surface.
-// dielectric_dielectric | polished | DETECTIONEFFICIENCY = PDE(λ)
-// PDE table from Hamamatsu S13360 series (33 points, 300–940 nm).
-// Apply as G4LogicalBorderSurface(bar → sipmPhys) for every SiPM volume.
-G4OpticalSurface* CreateSiPMSurface();
+// SiPM optical surface. The selected model's PDE file is installed as
+// EFFICIENCY(lambda), with REFLECTIVITY(lambda)=0.
+G4OpticalSurface* CreateSiPMSurface(const G4String& model);
 
 } // namespace Materials

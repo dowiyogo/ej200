@@ -1,0 +1,112 @@
+{
+  "fig_id": "fig05b",
+  "figura": "F5",
+  "material": "EJ-230",
+  "dataset": "endonly_mylar_230",
+  "optica": "sslg4",
+  "x_mm_list": [
+    0,
+    400,
+    690
+  ],
+  "root_inputs": {
+    "0": "/home/reriosto/SHiP/t0minidaq/endonly_mylar_230/photon_hits_x0mm.root",
+    "400": "/home/reriosto/SHiP/t0minidaq/endonly_mylar_230/photon_hits_x400mm.root",
+    "690": "/home/reriosto/SHiP/t0minidaq/endonly_mylar_230/photon_hits_x690mm.root"
+  },
+  "sha256_inputs": {
+    "0": "0d30b51f40c9ffe46463fc1627cc87faca8900342340c176998e14069050c930",
+    "400": "1054527b17854828f663fecc31456723157cda7999785bae652ba51017fc10b6",
+    "690": "c67b636a1e0cf916b2a51dc7b10a9cda4784cfb8807cb2c7aded2bcf06eaad97"
+  },
+  "binning": "100 bins over median\u00b18\u00b7MAD; 4-iter Gaussian core fit (TH1::Fit)",
+  "escala": "Y lineal; tabla de 3 puntos",
+  "estimador": "sigma_single = sigma(DeltaT_LR)/sqrt(2); congruente con endonly_sum4.py",
+  "positions": [
+    {
+      "x_mm": 0,
+      "n_events": 2000,
+      "n_hits_total": 240086,
+      "n_triggered": 2000,
+      "trigger_efficiency": 1.0,
+      "mean_delta_lr_ns": 0.011269252971752481,
+      "sigma_lr_ps": 196.7824937729867,
+      "sigma_lr_err_ps": 4.957473276773968,
+      "sigma_lr_rms_ps": 209.50717264209436,
+      "sigma_single_ps": 139.14623576567845,
+      "sigma_single_err_ps": 3.505462971557967,
+      "sigma_total_with_quadrature_ps": 140.5762246176706,
+      "sigma_total_note": "POSIBLE DOBLE CONTEO: jitter 20ps ya incluido en time_ns (SiPMSD.cc). sigma_single_ps es el valor reportado en el deck.",
+      "fit_used": true,
+      "fit_chi2_ndf": 0.5914201262209041,
+      "fit_n_values": 2000
+    },
+    {
+      "x_mm": 400,
+      "n_events": 2000,
+      "n_hits_total": 560052,
+      "n_triggered": 1989,
+      "trigger_efficiency": 0.9945,
+      "mean_delta_lr_ns": 3.7416223205553596,
+      "sigma_lr_ps": 348.76696096248503,
+      "sigma_lr_err_ps": 9.74398077182656,
+      "sigma_lr_rms_ps": 491.6765693128538,
+      "sigma_single_ps": 246.61548315039704,
+      "sigma_single_err_ps": 6.89003487950989,
+      "sigma_total_with_quadrature_ps": 247.4251331807336,
+      "sigma_total_note": "POSIBLE DOBLE CONTEO: jitter 20ps ya incluido en time_ns (SiPMSD.cc). sigma_single_ps es el valor reportado en el deck.",
+      "fit_used": true,
+      "fit_chi2_ndf": 3.199100338524909,
+      "fit_n_values": 1989
+    },
+    {
+      "x_mm": 690,
+      "n_events": 2000,
+      "n_hits_total": 5356237,
+      "n_triggered": 1569,
+      "trigger_efficiency": 0.7845,
+      "mean_delta_lr_ns": 6.745269370459381,
+      "sigma_lr_ps": 592.498641533491,
+      "sigma_lr_err_ps": 20.22947307357431,
+      "sigma_lr_rms_ps": 916.8615483490257,
+      "sigma_single_ps": 418.95980727214885,
+      "sigma_single_err_ps": 14.304397590155064,
+      "sigma_total_with_quadrature_ps": 419.43690837778706,
+      "sigma_total_note": "POSIBLE DOBLE CONTEO: jitter 20ps ya incluido en time_ns (SiPMSD.cc). sigma_single_ps es el valor reportado en el deck.",
+      "fit_used": true,
+      "fit_chi2_ndf": 4.4033275335863244,
+      "fit_n_values": 1569
+    }
+  ],
+  "cache_comparison_curvefit_vs_TH1Fit": {
+    "0": {
+      "sigma_single_ps_TH1Fit": 139.14623576567845,
+      "sigma_single_ps_cache_curvefit": 140.2,
+      "delta_ps": -1.0537642343215339
+    },
+    "400": {
+      "sigma_single_ps_TH1Fit": 246.61548315039704,
+      "sigma_single_ps_cache_curvefit": 243.9,
+      "delta_ps": 2.7154831503970343
+    },
+    "690": {
+      "sigma_single_ps_TH1Fit": 418.95980727214885,
+      "sigma_single_ps_cache_curvefit": 434.0,
+      "delta_ps": -15.04019272785115
+    }
+  },
+  "fit_method_note": "TH1::Fit usa pesos Poisson internos (a diferencia de curve_fit sin pesos en endonly_sum4.py). Diferencias esperadas <pocos ps para distribuciones bien gaussianas.",
+  "jitter_per_hit_ps": 20.0,
+  "readout_jitter_quadrature_ps": 20.0,
+  "jitter_note": "Per-hit jitter in time_ns (SiPMSD.cc fJitterSigma=20ps default, scan.mac line commented \u2192 uses default) PLUS readout jitter in quadrature (endonly_sum4.py DEFAULT_READOUT_JITTER_PS=20). Same physical value at two stages. Likely double-counting. Pending Ren\u00e9/Gerardo decision.",
+  "time_convention": "time_ns = (GetGlobalTime() + G4RandGauss(0, 20ps)) / ns. t=0 is primary muon generation (Geant4 global clock). Includes: muon transit (~ps, negligible) + scintillation emission delay + optical propagation to SiPM + per-hit Gaussian jitter (20ps sigma). Verified: t_min per event at x=0 ~ 2.8 ns, consistent with 700mm / 27.7 cm/ns.",
+  "caption_label": "intrinseco + jitter por-hit 20 ps (Etapa 1): sin time-walk/ToT/SPTR. sigma_single = sigma(DeltaT_LR)/sqrt(2). Readout jitter adicional 20 ps NO aplicado para evitar doble conteo (pending confirmacion Gerardo). Topologia: min() gana-el-primero entre dos clusters SUM4 por extremo (hipotesis).",
+  "jitter_decision": "DECISION QA-1: sigma_single_ps es el valor del deck (sin cuadratura de readout jitter). sigma_total_with_quadrature_ps = sqrt(sigma_single^2 + 20^2) reportado separadamente como referencia, marcado POSIBLE DOBLE CONTEO.",
+  "caveats": [
+    "Topologia SUM4 = hipotesis gana-el-primero; pendiente confirmacion de Gerardo.",
+    "Jitter: per-hit 20ps en SiPMSD.cc YA incluido en time_ns; readout jitter adicional NO sumado en cuadratura para deck (doble conteo con fJitterSigma)."
+  ],
+  "comando": "python3.12 f5_sidecar.py fig_id=fig05b material=EJ-230",
+  "timestamp": "2026-06-15T21:52:58.488332Z",
+  "exec_tag": "EXEC_14"
+}

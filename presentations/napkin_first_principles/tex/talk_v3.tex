@@ -1,0 +1,840 @@
+% ============================================================
+%  napkin_first_principles v3 — revised 2026-08-19
+%  Engine: lualatex   Theme: standard Beamer (Warsaw)
+%  All napkin numbers from values/napkin_macros.tex
+%  Analysis numbers from analysis/optim/root_best_est/verification.json
+% ============================================================
+\documentclass[aspectratio=169,9pt]{beamer}
+
+\usetheme{Warsaw}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{colortbl}
+
+\input{../values/napkin_macros.tex}
+
+% ── compact footer ───────────────────────────────────────────
+\setbeamertemplate{footline}{%
+  \leavevmode\hbox{%
+  \begin{beamercolorbox}[wd=0.75\paperwidth,ht=1.8ex,dp=0.8ex,leftskip=3mm]{author in head/foot}%
+    \tiny SHiP Timing Bar · First principles \& optimisation · 2026%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=0.25\paperwidth,ht=1.8ex,dp=0.8ex,rightskip=3mm,right]{date in head/foot}%
+    \tiny\insertframenumber%
+  \end{beamercolorbox}}}
+
+% ── physics shorthands ────────────────────────────────────────
+\newcommand{\thetac}{\theta_c}
+\newcommand{\fTIR}{f_{\mathrm{TIR}}}
+\newcommand{\latt}{\lambda_{\mathrm{att}}}
+\newcommand{\vtg}{v_g}
+\newcommand{\veff}{v_{\mathrm{eff}}}
+\newcommand{\sigT}{\sigma(T_0)}
+\newcommand{\sE}{\sigma_{\mathrm{END}}}
+\newcommand{\sT}{\sigma_{\mathrm{TOP}}}
+\newcommand{\sB}{\sigma_{\mathrm{BLUE}}}
+\newcommand{\Lrefl}{\Lambda_{\mathrm{refl}}}
+% verified numbers (EJ-230, N_top=20, x=0)
+\newcommand{\sigEND}{53.68\,\mathrm{ps}}
+\newcommand{\sigTOP}{15.20\,\mathrm{ps}}
+\newcommand{\sigBLUE}{15.21\,\mathrm{ps}}
+\newcommand{\sigERRcomb}{0.26\,\mathrm{ps}}
+\newcommand{\wENDval}{0.013}
+\newcommand{\wTOPval}{0.987}
+\newcommand{\rhoETval}{0.16}
+
+% ── figure path shorthands ────────────────────────────────────
+\newcommand{\napfig}[1]{../figs/#1}
+\newcommand{\anafig}[1]{../../../analysis/optim/root_best_est/#1}
+
+% ── row highlight ─────────────────────────────────────────────
+\definecolor{rowhl}{rgb}{1.0,0.95,0.75}
+
+% ═══════════════════════════════════════════════════════════════
+\begin{document}
+% ═══════════════════════════════════════════════════════════════
+
+%% ── FRAME 1: TITLE ────────────────────────────────────────────
+\begin{frame}[plain]
+  \vspace{1.0cm}
+  \begin{center}
+    {\Large\bfseries What should we expect before we simulate?}\\[5pt]
+    {\small First-principles photon budget and timing optimisation\\
+    of a 1.4\,m scintillator bar for the SHiP Timing Detector}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{center}
+    René Ríos \quad·\quad Universidad de La Serena \quad·\quad August 2026
+  \end{center}
+  \vspace{0.4cm}
+  \begin{block}{Central idea}
+    {\small Geometry + Snell + exponential attenuation predict the dominant trends
+    before any Geant4 output is shown.
+    The estimator choice — how we extract $T_0$ from photon arrival times —
+    is as important as the reflector or material.}
+  \end{block}
+\end{frame}
+
+%% ── FRAME 2: THE OBJECT ───────────────────────────────────────
+\begin{frame}{The object: one bar of a 50\,m$^2$ detector}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      {\small Bar geometry: \NapLmm\ $\times$ \NapWmm\ $\times$ \NapHmm}\\[4pt]
+      \begin{itemize}\setlength\itemsep{2pt}
+        \item[$\bullet$] 8 SiPMs/END face — 16 END total (L+R)
+        \item[$\bullet$] 20 sparse SiPMs along TOP face
+        \item[$\bullet$] Vikuiti 3M ESR reflector
+        \item[$\bullet$] 1 GeV $\mu^-$ vertical, through $H=10$\,mm
+      \end{itemize}
+      \vspace{5pt}
+      \begin{block}{Best result tested  (EJ-230, $x=0$, optical limit)}
+        {\footnotesize
+        $N_{\rm END}=16$, $N_{\rm TOP}=20$, $N_{\rm total}=36$\\[2pt]
+        $\sE=\NapsigmaENDbestps$\quad
+        $\sT=\NapsigmaTOPbestps$\quad
+        $\sB=\NapsigmaBLUEbestps$\\[2pt]
+        $w_{\rm TOP}=\wTOPval$ \quad BLUE $\approx$ TOP alone.}
+      \end{block}
+    \column{0.46\textwidth}
+      \begin{alertblock}{New in this version}
+        {\footnotesize
+        \begin{itemize}\setlength\itemsep{2pt}
+          \item Estimator definitions made explicit
+          \item Historical $\sim$70\,ps traced and explained
+          \item BLUE derivation with weights \& correlation
+          \item $\sigT$ vs position (21\% peak-to-peak)
+          \item Pareto frontier: resolution vs channel count
+          \item Role of END: position, not timing
+        \end{itemize}}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 3: PHILOSOPHY ──────────────────────────────────────
+\begin{frame}{Napkin first — Geant4 second}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \begin{block}{1 — Napkin}
+        {\small Snell, geometry and exponential attenuation fix
+        the order of magnitude and the \emph{direction} of every trend:
+        which material gives more light, which gives better timing.}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{block}{2 — Geant4}
+        {\small Confirms the scale, adds distributions the napkin cannot produce:
+        Landau fluctuations, path-length dispersion, angular mixing.}
+      \end{block}
+  \end{columns}
+  \vspace{6pt}
+  \begin{alertblock}{}
+    {\small\itshape Knoll on optical Monte Carlo: these codes are accurate only to the
+    extent that surface reflection, bulk absorption and refractive indices are correct.
+    Those are exactly the inputs a napkin calculation can police.}
+  \end{alertblock}
+\end{frame}
+
+%% ── FRAME 4: STEP 1 — ENERGY ─────────────────────────────────
+\begin{frame}{Step 1 — Energy deposition}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Bethe–Bloch minimum, through $H = \NapHmm$}
+        \[
+          \frac{dE}{dx}\approx\NapdEdxMeVcm
+          \;\Rightarrow\;
+          E_{\mathrm{dep}}\approx\NapdEMeV
+        \]
+      \end{block}
+      \begin{itemize}\setlength\itemsep{3pt}
+        \item Sets the scale of everything downstream
+        \item Every later factor multiplies this \NapdEMeV
+        \item Width is Landau — simulation territory
+      \end{itemize}
+    \column{0.48\textwidth}
+      \begin{alertblock}{What the napkin cannot give}
+        {\small Event-by-event Landau fluctuations, $\delta$-ray production,
+        path-length variation.  The mean survives; the width is for Geant4.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 5: STEP 2 — YIELD ──────────────────────────────────
+\begin{frame}{Step 2 — Scintillation yield}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \[N_\gamma = E_{\mathrm{dep}}\cdot Y \approx 2\times 9700 \approx 1.9\times10^4\]
+      {\small Optical properties used in simulations:}\\[4pt]
+      {\footnotesize
+      \setlength{\tabcolsep}{5pt}
+      \begin{tabular}{@{}lccc@{}}
+        \toprule
+        Material & Yield [ph/MeV] & $\tau_d$ [ns] & $\latt$ [cm]\\
+        \midrule
+        EJ-200 & 10000 & 2.1 & 380\\
+        EJ-204 & 10400 & 1.8 & 160\\
+        EJ-230 & 9700  & 1.5 & 120\\
+        \bottomrule
+      \end{tabular}}
+    \column{0.48\textwidth}
+      \begin{block}{The trade-off}
+        {\small Yields agree to within 7\,\%.  What separates the materials
+        is how much survives 70\,cm travel ($\latt$) and how fast
+        the emission decays ($\tau_d$) — and those two pull in opposite directions.}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 6: STEP 3 — TIR ────────────────────────────────────
+\begin{frame}{Step 3 — Total internal reflection}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Critical angle}
+        \[
+          \thetac = \arcsin(1/n) = \Napthetacdeg,
+          \quad n=\Napnpvt
+        \]
+      \end{block}
+      \begin{block}{Trapped fraction — slab (Knoll Eq.\,8.15)}
+        \[
+          a = \cos\thetac = 0.774,\quad
+          \fTIR = 2a - 1 = \NapfTIR
+        \]
+        Both walls: $\fTIR/\text{end} = \NapfTIRperend$
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{The bar is not a slab}
+        {\small Two wall families must hold TIR simultaneously.
+        Knoll Eq.\,8.14 (cylinder, meridional rays) gives $18.4\%$
+        per direction — different geometry.}
+      \end{alertblock}
+      \begin{block}{Key number}
+        {\small $\approx\NapfTIRperend$ of photons are guided toward each end.}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 7: STEP 4 — VELOCITY ───────────────────────────────
+\begin{frame}{Step 4 — Photon propagation velocity}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Group velocity}
+        \[\vtg = c/n \approx \Napvgroupmmns\]
+      \end{block}
+      \begin{block}{Effective velocity (END, from Geant4)}
+        \[\veff = \Napveffendmmns \;\Rightarrow\; \beta_{\mathrm{eff}}\approx\Napbetaeffenddeg\]
+      \end{block}
+      {\small$\beta_{\mathrm{eff}}$ is the effective axial angle of the
+      photon population that dominates the earliest arrival times.}
+    \column{0.48\textwidth}
+      \begin{block}{END vs.\ TOP select different photons}
+        {\small END is dominated by nearly axial, early photons.
+        TOP integrates markedly more diagonal trajectories.
+        These two faces carry \emph{different} timing information,
+        motivating the BLUE combination.}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 8: STEP 5 — BOUNCES ────────────────────────────────
+\begin{frame}{Step 5 — Number of reflections}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Geometric estimate, ray just outside TIR}
+        \[
+          N_{\mathrm{bounce}} \approx \frac{d\,\tan\alpha_c}{D},
+          \quad \alpha_c = \Napalphacdeg
+        \]
+      \end{block}
+      {\small With $d = 700$\,mm, $\tan\alpha_c = \Naptanalphac$:}
+      \vspace{4pt}
+      \begin{center}
+      {\footnotesize
+      \begin{tabular}{@{}lcc@{}}
+        \toprule
+        Face & $D$ & $N_{\mathrm{bounce}}$\\
+        \midrule
+        thin ($H$) & \NapHmm & $\approx 86$\\
+        wide ($W$) & \NapWmm & $\approx 14$\\
+        \bottomrule
+      \end{tabular}}
+      \end{center}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Factor of 6 difference}
+        {\small The same photon direction produces $\sim$6$\times$ more bounces
+        against the 10\,mm face than the 60\,mm face.
+        Reflector quality matters more for the thin faces.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 9: STEP 6 — REFLECTOR ─────────────────────────────
+\begin{frame}{Step 6 — Reflector losses become exponential attenuation}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Survival after $N$ bounces}
+        \[P_R = R^N = e^{N\ln R}\]
+        \[\Lrefl = \frac{-D}{\tan\alpha_c\cdot\ln R}\]
+      \end{block}
+      {\small With $R = 0.98$ (Vikuiti, napkin):}
+      \vspace{4pt}
+      \begin{center}
+      {\footnotesize
+      \begin{tabular}{@{}lcc@{}}
+        \toprule
+        Face & $D$ & $\Lrefl$\\
+        \midrule
+        thin ($H$) & \NapHmm & $\approx 0.4$\,m\\
+        wide ($W$) & \NapWmm & $\approx 2.4$\,m\\
+        \bottomrule
+      \end{tabular}}
+      \end{center}
+    \column{0.48\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\napfig{fig_survival_RN.pdf}}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 10: STEP 7 — MATERIALS ────────────────────────────
+\begin{frame}{Step 7 — Bulk attenuation and decay time pull in opposite directions}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\napfig{fig_bulk_survival.pdf}}
+    \column{0.48\textwidth}
+      \begin{block}{Napkin prediction (before the run)}
+        {\small EJ-200 delivers the most light (largest $\latt$).\\
+        EJ-230 loses the most, but its faster kinetics
+        ($\tau_d = \NaptaudecayejC$ vs.\ $\NaptaudecayejA$)
+        should win on timing.}
+      \end{block}
+      \begin{alertblock}{Geant4 confirms both orderings}
+        {\small $N_{pe}$: EJ-200 $>$ EJ-204 $>$ EJ-230\\
+        $\sigT$: EJ-230 $<$ EJ-204 $<$ EJ-200\\[2pt]
+        Both directions as predicted.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 11: PREDICTIVE VALIDATION ─────────────────────────
+\begin{frame}{The ordering was predicted, then observed}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\napfig{fig_npe_x.pdf}}
+      {\tiny $N_{pe}$/END vs.\ position.  EJ-200 $>$ EJ-204 $>$ EJ-230,
+      steeper fall for shorter $\latt$.}
+    \column{0.50\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\napfig{fig_sigma_t_x.pdf}}
+      {\tiny $\sigT$/END vs.\ position.  Ordering inverted: EJ-230 $<$ EJ-204 $<$ EJ-200,
+      driven by $\tau_d$.}
+  \end{columns}
+  \vspace{4pt}
+  {\small\itshape
+    Two figures, two orderings, opposite directions — written down before the simulation ran.
+    These are END-face results; TOP SiPMs not yet included.}
+\end{frame}
+
+%% ── FRAME 12: PHOTON BUDGET ──────────────────────────────────
+\begin{frame}{Closing the chain: photon budget for EJ-230 at $x=0$}
+  \begin{center}
+  {\footnotesize
+  \begin{tabular}{@{}lcc@{}}
+    \toprule
+    Step & Factor & Cumulative (per end)\\
+    \midrule
+    Produced & $Y \times E_{\mathrm{dep}} = 9700\times 2$ & $\sim 1.94\times10^4$\\
+    TIR-guided toward one end & $\times\NapfTIRperend$ & $\sim 5320$\\
+    Bulk survival (70\,cm) & $\times\NapbulksurvejC$ & $\sim 2970$\\
+    End-face coverage (\Napsipmactivemmsq/\Napendfacemmsq) & $\times\Napfcoverage$ & $\sim 1425$\\
+    PDE ($\approx\NapPDEnapkin$) & $\times\NapPDEnapkin$ & $\sim\NapNpenapkinC\ \mathbf{PE/end}$\\
+    \midrule
+    \rowcolor{rowhl}
+    Geant4 (EJ-230, END-only, Vikuiti, $x=0$) & — & $\approx 700$\,\textbf{PE/end}\\
+    \bottomrule
+  \end{tabular}}
+  \end{center}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Scale check}
+        {\small Napkin: $\sim$570\,PE/end.\ \ Geant4: $\sim$700\,PE/end.
+        Agreement at 20\,\% level.
+        The excess comes from the reflector-recovered population
+        (non-TIR paths not counted in the napkin chain).}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Count per end — always}
+        {\small Geant4 total $L+R \approx 1400$\,PE.
+        Compare with napkin $\mathbf{570}$\,\textbf{PE/end},
+        not with 1400\,PE.
+        Mixing per-end and L+R silently doubles the answer.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 13: SCOREBOARD ─────────────────────────────────────
+\begin{frame}{Napkin vs.\ Geant4 — scoreboard}
+  \begin{center}
+  {\footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}p{4.0cm}p{3.6cm}p{1.8cm}@{}}
+    \toprule
+    Quantity & Napkin / literature & Verdict\\
+    \midrule
+    Photons per muon & $\approx 2\times10^4$ & consistent\\
+    Trapped fraction (one wall) & $a=0.774$, Knoll 8.15 & textbook match\\
+    Group velocity & $\leq\Napvgroupmmns$ & consistent\\
+    $N_{pe}$ ordering & EJ-200 $>$ EJ-204 $>$ EJ-230 & confirmed\\
+    $\sigT$ ordering & EJ-230 $<$ EJ-204 $<$ EJ-200 & confirmed\\
+    $\sigma_x$ from $\sigma_{\Delta t}$ & $\Napsigmaxendmm$ & internal check\\
+    Napkin PE/end vs.\ Geant4 & 570 vs.\ ${\sim}700$ (+20\%) & consistent\\
+    Cylinder trapping (EJ-228) & $18.4\%$/dir (Eq.\,8.14) & different defn.\\
+    \bottomrule
+  \end{tabular}}
+  \end{center}
+  {\small\itshape 7 agreements.  1 definition check.  The napkin correctly identifies the
+  reflector-recovered population as the source of the 20\% surplus.}
+\end{frame}
+
+%% ── FRAME 14: TWO POPULATIONS ───────────────────────────────
+\begin{frame}{Two photon populations carry different information}
+  \begin{block}{Population A — TIR-guided}
+    {\small Large $|u_x|$, few bounces, $v_x$ close to $c/n$, arrives first.
+    The leading-edge (earliest-$k$) estimator is dominated by this population.}
+  \end{block}
+  \begin{block}{Population B — reflector-recovered}
+    {\small Large transverse component, many bounces, $R^N$ penalty, arrives late.
+    Vikuiti raises total $N_{pe}$ mainly through this population.}
+  \end{block}
+  \vspace{4pt}
+  \begin{alertblock}{Key message}
+    \centering{\small Total $N_{pe}$ $\neq$ timing information carried by the \emph{first} photons.\\
+    A reflector that doubles $N_{pe}$ does not halve $\sigT$.\\
+    The earliest photons drive timing; the rest give position and redundancy.}
+  \end{alertblock}
+\end{frame}
+
+%% ── FRAME 15: END ESTIMATOR ──────────────────────────────────
+\begin{frame}{END estimator — optimising the $m$-average}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\anafig{fig_end_mscan.pdf}}
+    \column{0.46\textwidth}
+      \begin{block}{Estimator definition}
+        {\footnotesize Pool the first $m$ photon-arrival times on each END face:
+        \[
+          T_{\rm END}(m)
+          = \frac{1}{2}\!\left[
+            \frac{1}{m}\sum_{i=1}^{m}t_L^{(i)}
+            + \frac{1}{m}\sum_{i=1}^{m}t_R^{(i)}
+          \right]
+        \]
+        $t_L^{(i)}, t_R^{(i)}$: sorted arrival times on LEFT / RIGHT END face.}
+      \end{block}
+      \begin{alertblock}{Two geometries}
+        {\footnotesize
+        \begin{tabular}{@{}lcc@{}}
+          & $m^*$ & $\sE$ (ps)\\
+          \midrule
+          END-only & 7 & 50.5\\
+          \rowcolor{rowhl}
+          +TOP SiPMs & 8 & \textbf{53.7}\\
+        \end{tabular}\\[4pt]
+        TOP SiPMs intercept early photons\\
+        before they reach END $\Rightarrow$ +3\,ps.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 16: TOP ESTIMATOR ──────────────────────────────────
+\begin{frame}{TOP estimator — pooled order statistic}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\anafig{fig1_kscan.pdf}}
+    \column{0.46\textwidth}
+      \begin{block}{Estimator definition}
+        {\small Pool \emph{all} photon-arrival times from all $N_{\rm TOP}$ SiPMs
+        on the TOP face.  Sort the pooled list.  Take the $k$-th earliest:
+        \[
+          T_{\rm TOP}(k) = t_{\rm TOP}^{(k)}
+        \]}
+        {\footnotesize $N_{\rm TOP}=20$: pool $\sim$1340 photons/event.
+        Optimal $k^*=3$.}
+      \end{block}
+      \begin{alertblock}{Why $\sim$70\,ps is not directly comparable}
+        {\footnotesize
+        \textbf{Old analysis}: per-SiPM mean estimator (average first-photon
+        over many SiPMs), EJ-230 TIR, $N=70$ SiPMs $\to$ 70.2\,ps.\\[3pt]
+        \textbf{New analysis}: pooled order statistic (all photons in one pool),
+        EJ-230 Vikuiti, $N=20$ sparse $\to$ 15.2\,ps.\\[3pt]
+        The estimator advance is the primary driver of improvement.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 17: WHAT IS BLUE? ─────────────────────────────────
+\begin{frame}{What is BLUE?}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      {\small\bfseries BLUE = Best Linear Unbiased Estimator}\\[4pt]
+      {\small Optimally combine two calibrated estimators of the same quantity $T_0$:}
+      \[
+        T_{\rm BLUE} = w_{\rm END}\,T_{\rm END} + w_{\rm TOP}\,T_{\rm TOP},
+      \]
+      with $w_{\rm END}+w_{\rm TOP}=1$.\vspace{-2pt}
+      {\small Weights minimise $\mathrm{Var}(T_{\rm BLUE})$ given the covariance matrix:}
+      \[
+        C =
+        \begin{pmatrix}
+          \sigma_{\rm END}^2 & \mathrm{Cov}\\
+          \mathrm{Cov} & \sigma_{\rm TOP}^2
+        \end{pmatrix},
+        \quad \mathrm{Cov}=\rho\,\sigma_{\rm END}\,\sigma_{\rm TOP}.
+      \]
+      {\small BLUE result:}
+      \begin{align*}
+        \vec w &= \frac{C^{-1}\mathbf{1}}{\mathbf{1}^TC^{-1}\mathbf{1}},
+        \qquad
+        \sigma_{\rm BLUE}^2 = \frac{1}{\mathbf{1}^TC^{-1}\mathbf{1}}.
+      \end{align*}
+      {\footnotesize For two estimators:\\[2pt]
+      $w_{\rm END} = (\sigma_{\rm TOP}^2-\mathrm{Cov})\,/\,
+                    (\sigma_{\rm END}^2+\sigma_{\rm TOP}^2-2\,\mathrm{Cov})$}
+    \column{0.46\textwidth}
+      \begin{block}{Physical interpretation}
+        {\small BLUE gives significant improvement only when both estimators
+        carry \emph{independent} information that the other lacks.}
+      \end{block}
+      \vspace{4pt}
+      \begin{alertblock}{Applied here}
+        {\footnotesize
+        Both $T_{\rm END}$ and $T_{\rm TOP}$ are functions of photons from the
+        same muon event, so they are correlated: $\rho\approx\rhoETval$.\\[4pt]
+        Weights computed event-by-event from the sample covariance matrix.
+        Optimality is statistical, not per-event.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 18: BLUE — UNCORRELATED BENCHMARK ─────────────────
+\begin{frame}{BLUE — uncorrelated benchmark and actual result ($x=0$, $N_{\rm TOP}=20$)}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{If END and TOP were independent ($\rho=0$)}
+        {\small Inverse-variance combination:
+        \[
+          \sigma_{\rm ind}
+          = \left(\frac{1}{\sigma_{\rm END}^2}+\frac{1}{\sigma_{\rm TOP}^2}\right)^{-1/2}
+          \approx 14.6\,\mathrm{ps}
+        \]
+        \[
+          w_{\rm END}^{\rm ind}\approx 0.074,\quad w_{\rm TOP}^{\rm ind}\approx 0.926.
+        \]}
+      \end{block}
+      \begin{block}{Actual result ($\rho=\rhoETval$)}
+        \[
+          \sigma_{\rm BLUE} = 15.21\pm\sigERRcomb
+        \]
+        \[
+          w_{\rm END}=\wENDval,\quad w_{\rm TOP}=\wTOPval
+        \]
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Interpretation}
+        {\small The correlation $\rho=\rhoETval$ pushes $w_{\rm END}$ from 0.074
+        (uncorrelated limit) to 0.013.
+        Correlation reduces the independent information that END provides.\\[4pt]
+        At $N_{\rm TOP}=20$, END contributes essentially no additional
+        event-time information.
+        $\sigma_{\rm BLUE}\approx\sigma_{\rm TOP}$ within statistical precision
+        (0.01\,ps difference, well inside $\sigERRcomb$ bootstrap uncertainty).}
+      \end{alertblock}
+      \begin{block}{Correct statement}
+        {\small BLUE \textit{does not improve} on TOP alone at $N_{\rm TOP}=20$.
+        It is the statistically correct combination — it simply confirms that TOP
+        already captures the available event-time information.}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 19: BLUE vs N_TOP ──────────────────────────────────
+\begin{frame}{BLUE combination vs.\ number of TOP SiPMs}
+  \begin{columns}[T]
+    \column{0.60\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\anafig{fig_ntop_scan_full.pdf}}
+    \column{0.38\textwidth}
+      {\footnotesize
+      \setlength{\tabcolsep}{3pt}
+      \begin{tabular}{@{}ccccc@{}}
+        \toprule
+        $N$ & $\sE$ & $\sT$ & $w_E$ & $\sB$\\
+        & [ps] & [ps] & & [ps]\\
+        \midrule
+        4  & 51.0 & 78.2 & 0.74 & 45.5\\
+        8  & 50.2 & 32.0 & 0.21 & 28.9\\
+        14 & 51.0 & 18.7 & 0.024 & 18.2\\
+        \rowcolor{rowhl}
+        20 & 53.7 & 15.2 & 0.013 & \textbf{15.2}\\
+        \bottomrule
+      \end{tabular}}\\[5pt]
+      \begin{alertblock}{Message}
+        {\footnotesize BLUE genuinely combines information at low $N$.
+        At high $N$, weights collapse onto TOP — correctly.
+        This is a successful result, not a failure of BLUE.\\[3pt]
+        $\rho\approx 0.16$ throughout
+        (correlation does not depend on $N_{\rm TOP}$).}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 20: SIGMA VS X ─────────────────────────────────────
+\begin{frame}{$\sigT$ vs.\ muon position — three estimators}
+  \begin{columns}[T]
+    \column{0.62\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\anafig{fig_sigma_vs_x_new.pdf}}
+    \column{0.36\textwidth}
+      {\footnotesize EJ-230, $N_{\rm TOP}=20$, Vikuiti, optical limit.}\\[4pt]
+      \begin{block}{Range}
+        {\footnotesize
+        $\sigma_{\rm END}$: 53–61\,ps\\
+        $\sigma_{\rm TOP}$: 14.9–18.2\,ps\\
+        $\sigma_{\rm BLUE}$: 14.6–17.8\,ps\\[3pt]
+        Peak-to-peak variation: \textbf{21\%}.
+        Not flat.}
+      \end{block}
+      \begin{alertblock}{Physical origin}
+        {\footnotesize The variation tracks proximity to the nearest TOP SiPM,
+        not $\latt$.
+        Three positions ($x\approx\pm200$, $\pm500$\,mm) fall between SiPMs
+        and show elevated $\sigT$.\\[3pt]
+        \textbf{Implication}: uniform timing response requires optimised sparse
+        TOP placement, not simply more SiPMs.}
+      \end{alertblock}
+    \end{columns}
+\end{frame}
+
+%% ── FRAME 21: PARETO ─────────────────────────────────────────
+\begin{frame}{Pareto frontier: timing resolution vs.\ channel count}
+  \begin{columns}[T]
+    \column{0.62\textwidth}
+      \includegraphics[width=\textwidth,keepaspectratio]{\anafig{fig_pareto.pdf}}
+    \column{0.36\textwidth}
+      {\footnotesize Channel accounting (EJ-230):}\\[3pt]
+      {\footnotesize
+      \setlength{\tabcolsep}{3pt}
+      \begin{tabular}{@{}lccc@{}}
+        \toprule
+        Config & $N_E$ & $N_T$ & $\sigma$ [ps]\\
+        \midrule
+        END only   & 16 & 0  & 56\\
+        END $m$-avg & 16 & 0  & 54\\
+        BLUE $N{=}4$  & 16 & 4  & 45.5\\
+        BLUE $N{=}8$  & 16 & 8  & 28.9\\
+        BLUE $N{=}14$ & 16 & 14 & 18.2\\
+        \rowcolor{rowhl}
+        BLUE $N{=}20$ & 16 & 20 & \textbf{15.2}\\
+        \bottomrule
+      \end{tabular}}\\[5pt]
+      {\footnotesize Adding 20 sparse TOP SiPMs to the baseline 16 END SiPMs
+      (total 36 channels) reduces $\sigT$ by a factor $\times3.7$
+      vs.\ END alone.}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 22: ROLE OF END ────────────────────────────────────
+\begin{frame}{What END does that TOP cannot}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{TOP face}
+        {\small \textbf{Strong event-time estimator}.  $\sigma_{\rm TOP}=15.2$\,ps.
+        Pooled order statistic on $\sim$1340 photons/event.
+        Provides $T_0$ to sub-20\,ps precision across the bar.}
+      \end{block}
+      \begin{block}{END faces}
+        {\small \textbf{Longitudinal position estimator}.  From the time difference:
+        \[
+          \Delta t = t_R - t_L = -\frac{2x}{\veff}
+          \;\Rightarrow\;
+          \sigma_x\approx\Napsigmaxendmm
+        \]
+        Also a redundant $T_0$ estimator, but with 3.5$\times$ worse resolution
+        than TOP.}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Design question}
+        {\small The question is no longer simply:\\
+        \emph{How do we minimise $\sigma_t$?}\\[4pt]
+        It is:\\
+        \emph{What is the minimum instrumentation that satisfies
+        both the timing requirement and the longitudinal-position requirement?}\\[4pt]
+        With SiPM SPTR and front-end jitter included, the answer may differ
+        from the optical-limit result here.}
+      \end{alertblock}
+      \begin{block}{EJ-204 vs.\ EJ-230}
+        {\small At $N_{\rm TOP}=20$: $\sigma_{\rm BLUE}$ = 15.14 vs.\ 15.21\,ps.
+        Difference $<$0.3\,$\sigma$ — scintillator choice is irrelevant at this SiPM count.}
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%% ── FRAME 23: CONCLUSIONS ────────────────────────────────────
+\begin{frame}{Conclusions}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{1 — Napkin confirms geometry}
+        {\small TIR, propagation and repeated reflection predict the correct ordering
+        of all three materials and close the photon budget to 20\,\%.}
+      \end{block}
+      \vspace{3pt}
+      \begin{block}{2 — Estimator matters as much as hardware}
+        {\small Pooled k-th order statistic (TOP, $N=20$): 15.2\,ps.\\
+        Per-SiPM mean estimator (old, $N=70$): $\sim$70\,ps.\\
+        Same bar, same photons — 4.6$\times$ difference from the estimator.}
+      \end{block}
+      \vspace{3pt}
+      \begin{block}{3 — END provides position; TOP provides time}
+        {\small At $N_{\rm TOP}=20$, BLUE weight on END $\approx$1.3\,\%.
+        END is nearly irrelevant for timing but essential for longitudinal position
+        ($\sigma_x\approx\Napsigmaxendmm$).}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{4 — Optimisation is not finished}
+        {\small
+        \begin{itemize}\setlength\itemsep{3pt}
+          \item Best tested point: $\sB=15.2$\,ps (36 SiPMs, optical limit).
+          \item $\sigT$ varies 21\,\% over the bar — TOP SiPM placement can be optimised for uniformity.
+          \item SiPM SPTR and front-end jitter not included yet.
+          \item EJ-204 and EJ-230 are statistically equivalent at $N_{\rm TOP}=20$.
+          \item The Pareto front with jitter will determine the practical channel minimum.
+        \end{itemize}}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ═══════════════════════════════════════════════════════════════
+%% BACKUP SLIDES
+%% ═══════════════════════════════════════════════════════════════
+\appendix
+
+\begin{frame}[plain]
+  \vspace{2.5cm}
+  \begin{center}
+    {\Large\bfseries Backup slides}
+  \end{center}
+\end{frame}
+
+%% ── BACKUP A: OBSERVABLES ────────────────────────────────────
+\begin{frame}{From arrival times to physical observables}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      \begin{block}{Two-end readout}
+        \begin{align*}
+          t_L &= t_0 + (L/2+x)/\veff + \varepsilon_L\\
+          t_R &= t_0 + (L/2-x)/\veff + \varepsilon_R
+        \end{align*}
+        Sum: $T_0=(t_L+t_R)/2$, $x$ cancels\\
+        Diff: $\Delta t = -2x/\veff$ $\;\Rightarrow\;$ position\\[4pt]
+        $\sigma_x = (\veff/2)\cdot\sigma_{\Delta t} \approx \Napsigmaxendmm$
+      \end{block}
+    \column{0.46\textwidth}
+      \begin{block}{Consistency check}
+        {\small $\veff=\Napveffendmmns$,\;$\sigma_{\Delta t}=\NapsigmaDtendps$:
+        \[\sigma_x\approx\Napsigmaxendmm.\]
+        Position resolution is not independent information —
+        it is derived from the timing resolution.}
+      \end{block}
+      \begin{alertblock}{Path-length spread limits timing}
+        {\small For large scintillators and fast emitters, the distribution
+        of $t_{\mathrm{prop}}$ is the dominant limit (Knoll).}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── BACKUP B: FIRST-PHOTON ASSUMPTION ───────────────────────
+\begin{frame}{Why assume the first photon is optimal?}
+  \begin{columns}[T]
+    \column{0.52\textwidth}
+      {\small Current estimators:}
+      \begin{itemize}\setlength\itemsep{2pt}
+        \item Leading-edge: use $t^{(k)}$ for $k=1$
+        \item Trimmed mean of first $m$ photons (END)
+        \item Pooled $k$-th order statistic (TOP)
+        \item BLUE combination of END + TOP
+      \end{itemize}
+      \vspace{6pt}
+      \begin{block}{Evidence that $k=1$ is not always optimal}
+        {\small In an EJ-228 cylinder study, $\sigT(k)$ is non-monotonic
+        with minimum near $k\approx8$.  The number does not transfer;
+        the principle does.\\
+        For EJ-230 END (this bar): $k^*=2$ (k-scan) but $m^*=7$ (m-average)
+        gives $50.5$\,ps, better than any single-photon order statistic.}
+      \end{block}
+    \column{0.46\textwidth}
+      \begin{alertblock}{END k-scan caution}
+        {\small The k-scan minimum (56\,ps at $k^*=2$) is not the best END
+        estimator.  The m-average at $m^*=7$ gives 50.5\,ps (END-only geometry)
+        and 53.7\,ps in the combined geometry.\\[4pt]
+        The Pareto frontier for END uses the k-scan values — it slightly
+        understates the best achievable END timing.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── BACKUP C: 1 PE ANOMALY ───────────────────────────────────
+\begin{frame}{Auditing the 1\,PE anomaly (backup)}
+  \begin{center}
+  {\footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}p{3.5cm}p{3.4cm}p{2.0cm}p{2.0cm}@{}}
+    \toprule
+    Readout coupling & Acceptance toward one end & PE/end & Vik/TIR ratio\\
+    \midrule
+    Index-matched & $\NapfTIRperend$ (TIR-guided) & $\approx\Napnpeidxmatch$ & $\approx 1.2$\\
+    Air gap (escape cone) & $\Napfescapecone$ & $\approx\Napnpeairgap$ & $\approx 3$\\
+    \rowcolor{rowhl}
+    \textbf{Reported run} & — & $\approx\mathbf{1}$\,PE & $\approx 10^3$\\
+    \bottomrule
+  \end{tabular}}
+  \end{center}
+  \vspace{4pt}
+  \begin{columns}[T]
+    \column{0.50\textwidth}
+      \begin{block}{Escape cone cannot explain $10^3$}
+        {\small The cone cuts both Vikuiti and TIR configurations by
+        the same factor — it cannot generate the ratio.
+        The napkin brackets the genuine ratio between 1 and 3.}
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{alertblock}{Falsifiable prediction}
+        {\small Run END + TIR-only and END + Vikuiti under identical conditions.
+        A ratio near $10^3$ is a surface or RINDEX definition problem,
+        not a physics result.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+%% ── BACKUP D: SPECULAR OR DIFFUSE ────────────────────────────
+\begin{frame}{Specular or diffuse reflector? — a campaign we have not run (backup)}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+      \begin{block}{Specular — Vikuiti 3M ESR}
+        {\small Preserves angle of incidence.  Keeps path-length dispersion
+        small, favouring the earliest photons.}
+      \end{block}
+      \begin{block}{Diffuse — Teflon, TiO$_2$, MgO}
+        {\small Lambert's law: outgoing direction independent of incoming.
+        Every bounce is a fresh chance to redirect toward a readout window,
+        at the cost of a broader $t_{\mathrm{prop}}$ distribution.}
+      \end{block}
+    \column{0.50\textwidth}
+      \begin{alertblock}{Napkin hypothesis (falsifiable)}
+        {\small At comparable reflectivity, diffuse scattering should raise
+        collected light and broaden the arrival distribution.
+        One campaign, one variable, prediction on record.\\[4pt]
+        Knoll: diffuse reflectors generally collect more light,
+        but that comparison is on yield, not timing.}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\end{document}

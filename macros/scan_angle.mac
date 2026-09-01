@@ -2,7 +2,7 @@
 # scan_angle.mac — angular scan: fixed midpoint, θ from -30° to +30°
 # Usage: ./ej200_bar_sim -m macros/scan_angle.mac
 #
-# The muon is placed at the midpoint between top SiPMs 9 and 10
+# The muon is placed at the midpoint between top SiPMs 34 and 35
 # (central gap of the bar) and the incidence angle is swept.
 # ============================================================
 
@@ -16,8 +16,8 @@
 /gun/particle  mu-
 /gun/energy    1 GeV
 
-# Fix gun position at midpoint of top SiPMs 9 and 10
-/muon/midpointSiPMs 9 10
+# Fix gun position at midpoint of top SiPMs 34 and 35
+/muon/midpointSiPMs 34 35
 
 # Sweep angle from -30 to +30 degrees in 5-degree steps
 # scan_angle_step.mac receives alias {angle}

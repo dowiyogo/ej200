@@ -1,0 +1,18 @@
+# endtop scan — x = -690 mm — 5000 events — feat/endtop-sslg4
+# index [01/31]  seeds: 710000 910000
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/numberOfThreads 24
+/det/readout EndTop
+/det/scintillator OPSC-101
+/sipm/model AFBR-S4N66P024M
+/run/initialize
+/sipm/jitterSigma 0 ns
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+/random/setSeeds 710000 910000
+/muon/gunX -690 mm
+/run/beamOn 5000
