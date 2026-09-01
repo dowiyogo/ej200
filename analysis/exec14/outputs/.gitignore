@@ -1,3 +1,6 @@
 *.root
 *.png
 *.pdf
+# Un-exclude CSV and meta.json (overrides root .gitignore *.csv rule)
+!*.csv
+!*.meta.json
