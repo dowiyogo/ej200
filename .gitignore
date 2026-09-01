@@ -3,6 +3,7 @@
 # =========================
 build/
 build-*/
+build_*/
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
@@ -74,6 +75,9 @@ analysis/*.svg
 *.nav
 *.snm
 *.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # =========================
 # Python cache
