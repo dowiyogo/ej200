@@ -1,0 +1,58 @@
+# ============================================================
+# vis_scan_png.mac — visual scan with 1 muon per X position
+# Saves one PDF per position to build/vis_scan_png/
+#
+# Usage from build/:
+#   ./ej200_bar_sim -m ../macros/vis_scan_png.mac
+# ============================================================
+
+/control/verbose 1
+/run/verbose     0
+/event/verbose   0
+/tracking/verbose 0
+
+# Visualisation is easier to interpret in single-thread mode.
+/run/numberOfThreads 1
+
+/run/initialize
+
+# ── Gun ──────────────────────────────────────────────────────
+/gun/particle  mu-
+/gun/energy    1 GeV
+/muon/angle    0
+
+# ── Visualisation ────────────────────────────────────────────
+# OGLSQt is convenient interactively, but under WSL2/WSLg the
+# /vis/ogl/export path can crash inside Mesa/Gallium. Use this macro for
+# stepping through the scan visually; export may still be unstable there.
+/vis/open OGLSQt 1400x900-0+0
+/vis/viewer/set/background white
+/vis/drawVolume
+
+# Look along +Y so the image is the XZ plane.
+/vis/viewer/set/upVector 0 0 1
+/vis/viewer/set/viewpointVector 0 1 0
+/vis/viewer/set/projection orthogonal
+/vis/viewer/zoom 1.4
+/vis/viewer/set/autoRefresh true
+
+/vis/scene/add/axes 0 0 0 200 mm
+/vis/scene/add/eventID
+
+# ── Trajectories ─────────────────────────────────────────────
+/tracking/storeTrajectory 1
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByParticleID
+/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton cyan
+/vis/modeling/trajectories/drawByParticleID-0/set mu- red
+/vis/modeling/trajectories/drawByParticleID-0/set e- yellow
+/vis/modeling/trajectories/drawByParticleID-0/set gamma green
+
+# Keep only the current event on screen.
+/vis/scene/endOfEventAction accumulate 1
+
+# Output folder relative to the build directory.
+/control/shell mkdir -p vis_scan_png
+
+# Same X positions as scan.mac
+/control/loop ../macros/vis_scan_png_step.mac xpos -650 650 65
