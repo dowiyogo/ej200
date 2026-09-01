@@ -1140,14 +1140,28 @@
     \begin{itemize}\setlength\itemsep{3pt}
       \item \textbf{Photon emission timing:} convolution of $\tau_\text{rise}=0.5\ns$ + $\tau_\text{decay}=1.5\ns$ → time-to-first-photon distribution
       \item \textbf{Propagation jitter:} path length spread (TIR zig-zag + reflector-recovered)
-      \item \textbf{SiPM jitter:} single-photon timing resolution (SPTR) of AFBR-S4N66P024M $\sim\!100\ps$
+      \item \textbf{SiPM SPTR:} datasheet (DS105) does not tabulate SPTR.
+            Published measurement, optically identical $6{\times}6$\,mm$^2$ NUV-MT\\
+            (AFBR-S4N66P014M; Lee et al., IEEE TRPMS \textbf{9}(4), 406--411, 2025,
+            DOI:~10.1109/TRPMS.2024.3518479):\\
+            {\footnotesize
+            intrinsic: $137\pm4\ps$ FWHM $\Rightarrow$ $\sigma = \text{FWHM}/2.355 \approx 58\ps$\\
+            w/ electronics: $172\ps$ FWHM $\Rightarrow$ $\sigma\approx73\ps$\\
+            $V_b=48\,\text{V}$ (${\approx}15.5\,\text{V}$ OV, near abs.\ max.\ of 16\,V);
+            SPTR degrades below ${\approx}40\,\text{V}$.
+            48\,V is the assumed operating point, not guaranteed.\\
+            \textit{$\sigma_\text{TOP}=15.2\ps$ is a std.\ dev.; SPTR FWHM must be
+            converted ($\sigma=\text{FWHM}/2.355$) before combining.}}
       \item \textbf{Electronic:} TDC binning, cable, trigger — not included in this simulation
     \end{itemize}
     \vspace{4pt}
     Current simulation includes: photon emission + propagation + SiPM PDE.\\
-    Does not include: SPTR jitter, electronic jitter.\\[4pt]
+    Does not include: SPTR, electronic jitter, optical crosstalk
+    (23\% total at 12\,V OV; spurious simultaneous pulse can advance $k$th-order timestamp).\\[4pt]
     \alert{Quoted $\sigma_\text{TOP}=15.2\ps$ is a lower bound.}
-    Adding $\sigma_\text{SPTR}\approx100\ps/\sqrt{k\cdot N_\text{active}}$ in quadrature will increase $\sigma_t$.
+    \textit{Note:} $\sigma_\text{SPTR}/\sqrt{k\cdot N_\text{active}}$ applies to averages,
+    not to the $k$th order statistic of the TOP estimator.
+    Propagation of SPTR through the order-$k$ estimator is pending formal derivation.
 
     \column{0.44\linewidth}
     \anafig{fig_sigma_t_x}\\[2pt]

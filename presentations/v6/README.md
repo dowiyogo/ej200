@@ -11,6 +11,14 @@ El volumen se llama `VikuitiXXXLV`; el nombre es histórico (Vikuiti ESR como ca
 
 ## Defectos conocidos
 
+**SPTR diapositiva I1 (corregida en `4851c43`→ tex en siguiente commit):** El valor
+"~100 ps" no tenía procedencia (DS105 no tabula SPTR). Reemplazado por medida publicada
+del 6×6 mm² NUV-MT (Lee et al., IEEE TRPMS 9(4) 2025): 137±4 ps FWHM intrínseco
+(σ≈58 ps); 172 ps FWHM con electrónica (σ≈73 ps); Vbias=48 V (~15.5 V OV).
+Conversiones FWHM→σ explicitadas en la diapositiva. Fórmula de promedio marcada como
+pendiente (estadístico de orden ≠ promedio). Crosstalk óptico 23% añadido a efectos
+no incluidos. Ver `docs/branch_diagnosis/SPTR_PROVENANCE.md`.
+
 **Reflectividad R = 0.95 en datos históricos (corregida en `c7acb7a`):** Los datasets
 `scan_end_vikuiti` y `scan_end_vik_sparse_top_v2` fueron producidos con `REFLECTIVITY=0.95`
 en `CreateBarSkinReflector()`. Los números del deck (σ_END=53.68 ps, σ_BLUE=15.21 ps,
