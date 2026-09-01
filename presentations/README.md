@@ -1,24 +1,33 @@
 # presentations/ — Índice de presentaciones
 
-Columna **compila**: SÍ = todas las figuras están versionadas y el PDF previo confirma compilación exitosa;
-NO = figuras MISSING en disco (ver detalle abajo); n/a = deck sin .tex propio.  
-LaTeX no está instalado en el host de desarrollo (HOST `/home/rrios/ej200`); compilar en máquina con TeX Live.
+Columna **compila**:  
+- **SÍ (MSI)** = verificado en máquina con TeX Live (MSI)  
+- **pendiente MSI** = arreglado en este PR, pendiente de verificación en MSI  
+- **NO** = figuras MISSING en disco; no puede compilarse en ningún entorno  
 
-| Deck | Fecha | Estado | Compila | pp | Figuras faltantes |
-|------|-------|--------|---------|----|-------------------|
-| [v6/](v6/) | 2026-09-01 | **ACTUAL** | **SÍ** | 36 | — |
-| [v5/](v5/) | agosto 2026 | OBSOLETO | **SÍ** | 19 | — |
-| [v4/](v4/) | agosto 2026 | OBSOLETO | **SÍ** | 33 | — |
-| [napkin_first_principles/tex/talk.tex](napkin_first_principles/tex/talk.tex) | jun–ago 2026 | OBSOLETO | **SÍ** | 20 | — |
-| [napkin_first_principles/tex/talk_v3.tex](napkin_first_principles/tex/talk_v3.tex) | jun–ago 2026 | OBSOLETO | **SÍ** | 28 | — |
-| [best_est_2026-08-17/](best_est_2026-08-17/) | 2026-08-17 | OBSOLETO | **SÍ** | 11 | — |
-| [optim_2026-08-17/](optim_2026-08-17/) | 2026-08-17 | OBSOLETO | **SÍ** | 10 | — |
-| [optim_2026-08-16/](optim_2026-08-16/) | 2026-08-16 | OBSOLETO | **SÍ** | 9 | — |
-| [summary_2026-08-16/](summary_2026-08-16/) | 2026-08-16 | OBSOLETO | **SÍ** | 10 | — |
-| [end_vikuiti_2026-08-16/](end_vikuiti_2026-08-16/) | 2026-08-16 | OBSOLETO | **SÍ** | 11 | — |
-| [exec14/](exec14/) | 2026-06-15/16 | OBSOLETO | **NO** | — | `outputs/fig01a–fig07_ej230.pdf` (12 PDFs); `outputs/fig06_ej230_macros.tex`, `fig07_ej230_macros.tex` |
-| [sim_status_hi_2026-06-08/](sim_status_hi_2026-06-08/) | 2026-06-08 | OBSOLETO | **NO** | — | `results/scan_hi_2026-06-08/yield_vs_position.pdf`; `results/congruent_metric_2026-06-08/sigma_single_vs_position.pdf`, `trigger_efficiency_vs_position.pdf` |
-| [sim_status_2026-06-08/](sim_status_2026-06-08/) | 2026-06-08 | OBSOLETO | **NO** | — | `results/scan_2026-06-08/yield_vs_position.pdf`, `sigma_intrinsic_vs_position.pdf`, `efficiency_vs_position.pdf` |
+LaTeX no está instalado en el host de desarrollo (HOST `/home/rrios/ej200`).  
+Verificar los decks "pendiente MSI" con:  
+```
+cd presentations && for d in v4 end_vikuiti_2026-08-16 optim_2026-08-16 summary_2026-08-16; do \
+  (cd "$d" && latexmk -pdf -interaction=nonstopmode *.tex >/dev/null 2>&1 \
+    && echo "OK   $d" || echo "FALLA $d"); done
+```
+
+| Deck | Fecha | Estado | Compila | pp | Notas |
+|------|-------|--------|---------|----|-------|
+| [v6/](v6/) | 2026-09-01 | **ACTUAL** | **SÍ (MSI)** | 36 | — |
+| [v5/](v5/) | agosto 2026 | OBSOLETO | **SÍ (MSI)** | 19 | — |
+| [napkin_first_principles/tex/talk.tex](napkin_first_principles/tex/talk.tex) | jun–ago 2026 | OBSOLETO | **SÍ (MSI)** | 20 | — |
+| [napkin_first_principles/tex/talk_v3.tex](napkin_first_principles/tex/talk_v3.tex) | jun–ago 2026 | OBSOLETO | **SÍ (MSI)** | 28 | — |
+| [best_est_2026-08-17/](best_est_2026-08-17/) | 2026-08-17 | OBSOLETO | **SÍ (MSI)** | 11 | — |
+| [optim_2026-08-17/](optim_2026-08-17/) | 2026-08-17 | OBSOLETO | **SÍ (MSI)** | 10 | — |
+| [v4/](v4/) | agosto 2026 | OBSOLETO | **pendiente MSI** | 33 | Fix: `\ensuremath` en macros de unidad (`\ps`, `\ns`, `\mm`, `\MeV`, `\mmns`) |
+| [end_vikuiti_2026-08-16/](end_vikuiti_2026-08-16/) | 2026-08-16 | OBSOLETO | **pendiente MSI** | 11 | Fix: `\DeclareUnicodeCharacter{2713}` + `amssymb` para ✓ |
+| [summary_2026-08-16/](summary_2026-08-16/) | 2026-08-16 | OBSOLETO | **pendiente MSI** | 10 | Fix: ídem |
+| [optim_2026-08-16/](optim_2026-08-16/) | 2026-08-16 | OBSOLETO | **pendiente MSI** | 9 | Fix: `xcolor[table]` para `\rowcolors` |
+| [exec14/](exec14/) | 2026-06-15/16 | OBSOLETO | **NO** | — | `outputs/` no existe en disco (12 PDFs + 2 tex input) |
+| [sim_status_hi_2026-06-08/](sim_status_hi_2026-06-08/) | 2026-06-08 | OBSOLETO | **NO** | — | `results/scan_hi_2026-06-08/` y `results/congruent_metric_2026-06-08/` no existen |
+| [sim_status_2026-06-08/](sim_status_2026-06-08/) | 2026-06-08 | OBSOLETO | **NO** | — | `results/scan_2026-06-08/` no existe en disco |
 | [presentacion_timing_detector_scan_ej-230.tex](presentacion_timing_detector_scan_ej-230.tex) | — | OBSOLETO | **NO** | — | `fpt_png/muon_*.png` (69 PNGs; directorio inexistente) |
 
 ### Decks que no compilan — detalle
