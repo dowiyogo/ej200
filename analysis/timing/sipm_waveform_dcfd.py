@@ -47,6 +47,7 @@ from pulse_models import (  # noqa: E402
     SPTR_LEE_INTRINSIC_SIGMA_PS,
     SPTR_LEE_DETECTOR_SIGMA_PS,
     SPTR_OV_WARNING,
+    SPTR_CATALOG,
 )
 
 
@@ -132,13 +133,15 @@ def parse_args() -> argparse.Namespace:
         type=float,
         default=None,
         help=(
-            "Sigma del SPTR en ps (requerido). "
-            "Lee et al. IEEE TRPMS 9(4) 2025, DOI 10.1109/TRPMS.2024.3518479: "
-            f"sigma_intrinsico = 137 FWHM / 2.355 = {SPTR_LEE_INTRINSIC_SIGMA_PS:.1f} ps, "
-            f"sigma_detector = 172 FWHM / 2.355 = {SPTR_LEE_DETECTOR_SIGMA_PS:.1f} ps, "
-            "medidos a OV ~15.5 V (AFBR-S4N66P014M). "
-            "Este banco opera a OV = 10 V: valores de Lee son cotas optimistas. "
-            "NO usar 200 ps: era el SPTR del SiPM de Lv et al., no del AFBR-S4N66P024M."
+            "Sigma del SPTR en ps (requerido). Ver pulse_models.SPTR_CATALOG para el catalogo completo. "
+            "Valores disponibles para AFBR-S4N66P014M (6x6 mm^2 NUV-MT): "
+            f"Lee 2025 (OV~15.5 V) sigma_intrinsico={SPTR_LEE_INTRINSIC_SIGMA_PS:.1f} ps / "
+            f"sigma_detector={SPTR_LEE_DETECTOR_SIGMA_PS:.1f} ps "
+            f"(PUBLICADO, otro punto de operacion); "
+            "banco propio (OV=10 V) rango 85-92 ps RMS "
+            "(DERIVADO de barrido de intensidad laser, pendiente medida formal). "
+            "NO usar 200 ps: era SPTR del SiPM de Lv et al., no del AFBR-S4N66P024M. "
+            "FWHM_TO_SIGMA = 1/2.355 aplicado explicitamente en pulse_models.py."
         ),
     )
     parser.add_argument(
@@ -174,8 +177,12 @@ def parse_args() -> argparse.Namespace:
         help=(
             "Jitter gaussiano de electronica en ps (requerido). "
             "JITTER TOTAL DEL FASTIC+ NO MEDIDO. "
-            "El TDC embebido de 25 ps contribuye >= 25/sqrt(12) ~= 7.2 ps (cota inferior de cuantizacion). "
-            "Usar 0 para deshabilitar (sin jitter electronico modelado)."
+            "Derivado del banco propio (barrido laser 2026): sigma_elec <= 18 ps "
+            "(peor caso N=7.5, sigma_ToA=37 ps, SPTR~89 ps); excluye 30 ps "
+            "(modelo predicha 44 ps a N=7.5 con sigma_elec=30 ps, observado 30-37 ps). "
+            "Los 30 ps anteriores eran simulacion del discriminador del front-end, no jitter del ASIC. "
+            "Cota inferior: TDC de 25 ps contribuye >= 25/sqrt(12) ~= 7.1 ps (cuantizacion). "
+            "Usar 0 para deshabilitar."
         ),
     )
     parser.add_argument(

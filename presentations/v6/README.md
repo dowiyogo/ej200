@@ -19,6 +19,15 @@ Conversiones FWHM→σ explicitadas en la diapositiva. Fórmula de promedio marc
 pendiente (estadístico de orden ≠ promedio). Crosstalk óptico 23% añadido a efectos
 no incluidos. Ver `docs/branch_diagnosis/SPTR_PROVENANCE.md`.
 
+**SPTR diapositiva I1 — actualización disponible (banco propio, 2026-09-01):** El barrido
+de intensidad láser a V_OV = 10 V (punto de operación real) y umbral FastIC+ = 35 da,
+por ajuste σ²(N) = SPTR²/N + σ_elec²: **SPTR ≈ 85–92 ps RMS** a 10 V OV; σ_elec ≤ 18 ps.
+Coherente con Lee 2025 (58 ps a 15.5 V OV): SPTR empeora al bajar OV, dirección esperada.
+El valor original ~100 ps (sin procedencia) resultó razonable como cota conservadora.
+La diapositiva I1 puede actualizarse con el rango propio indicando OV y carácter derivado.
+**No editar el `.tex` hasta que la medida formal con datos de EOS esté disponible.**
+Ver `analysis/timing/TODO.md` y `docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md`.
+
 **Reflectividad R = 0.95 en datos históricos (corregida en `c7acb7a`):** Los datasets
 `scan_end_vikuiti` y `scan_end_vik_sparse_top_v2` fueron producidos con `REFLECTIVITY=0.95`
 en `CreateBarSkinReflector()`. Los números del deck (σ_END=53.68 ps, σ_BLUE=15.21 ps,

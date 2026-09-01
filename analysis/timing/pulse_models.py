@@ -47,13 +47,20 @@ PULSE_MODELS = {
         ),
     },
     "fastic_measured": {
-        "tau_r_ns": None,
-        "tau_f_ns": None,
-        "source": "PENDIENTE — medida en banco de láser con FastIC+",
+        "tau_r_ns": 2.0,
+        "tau_f_ns": 3.0,
+        "source": (
+            "Capturas de osciloscopio del banco (1 GHz, 6.4 GS/s): "
+            "ajuste exponencial da tau_fall = 55 ns (pulso libre) y par (2 ns, 3 ns) "
+            "tras la red de cancelación polo-cero. "
+            "La rama de tiempo del FastIC+ (TIA de ~20 Ohm + discriminador de corriente) "
+            "no altera el flanco de subida (2 ns)."
+        ),
         "note": (
-            "Configuración real de este detector. Aún no medida. "
-            "Es la que debe usarse al finalizar la caracterización. "
-            "Requiere --tau-r-ns y --tau-f-ns explícitos."
+            "Configuración real de este detector. "
+            "El par (2, 3) ns es el pulso que ve la electrónica real de este banco. "
+            "Requiere confirmación formal midiendo tau_r/tau_f directamente con el FastIC+ "
+            "en la cadena completa (ver analysis/timing/TODO.md)."
         ),
     },
 }
@@ -82,3 +89,76 @@ SPTR_OV_WARNING = (
     f"sigma_detector ≈ {SPTR_LEE_DETECTOR_SIGMA_PS:.1f} ps) "
     f"son cotas optimistas para el punto de operación real."
 )
+
+# ── Catálogo completo de SPTR ────────────────────────────────────────────────
+# Cada entrada: dispositivo, sobrevoltaje, sigma_ps, fuente, estado.
+# Estados: PUBLICADO · DERIVADO (banco propio) · PUBLICADO (otro OV) · PUBLICADO (otro dispositivo)
+#
+# Ajuste σ²(N) = SPTR²/N + σ_elec² sobre el barrido de intensidad láser (2026):
+#   N=2,  σ=63 ps → 1/N=0.500, σ²=3969 ps²
+#   N=4,  σ=43 ps → 1/N=0.250, σ²=1849 ps²   (midpoint rango 3–5)
+#   N=7.5,σ=33.5ps→ 1/N=0.133, σ²=1122 ps²   (midpoints de rangos)
+#   Pendiente (OLS) = 7877 ps²  →  SPTR = 88.8 ≈ 89 ps RMS
+#   Intercepto = −6 ps² (→ σ_elec ≈ 0; cota superior ≤ 18 ps)
+#
+SPTR_CATALOG = {
+    "lee_2025_intrinsic": {
+        "device": "AFBR-S4N66P014M (6×6 mm² NUV-MT)",
+        "ov_v": 15.5,
+        "sigma_ps": SPTR_LEE_INTRINSIC_SIGMA_PS,   # 137 FWHM / 2.355 ≈ 58.2 ps
+        "source": "Lee et al., IEEE TRPMS 9(4) 406–411 (2025), DOI 10.1109/TRPMS.2024.3518479",
+        "status": "PUBLICADO (otro punto de operacion)",
+        "note": "SiPM solo, sin electrónica del banco de Lee.",
+    },
+    "lee_2025_detector": {
+        "device": "AFBR-S4N66P014M (6×6 mm² NUV-MT) + electrónica del banco de Lee",
+        "ov_v": 15.5,
+        "sigma_ps": SPTR_LEE_DETECTOR_SIGMA_PS,    # 172 FWHM / 2.355 ≈ 73.0 ps
+        "source": "Lee et al., IEEE TRPMS 9(4) 406–411 (2025), DOI 10.1109/TRPMS.2024.3518479",
+        "status": "PUBLICADO (otro punto de operacion)",
+        "note": "Incluye electrónica del banco de Lee (no FastIC+).",
+    },
+    "banco_propio_low": {
+        "device": "AFBR-S4N66P014M (6×6 mm² NUV-MT) + FastIC+",
+        "ov_v": 10.0,
+        "sigma_ps": 85.0,
+        "source": (
+            "Banco propio SHiP, barrido de intensidad láser, V_bias=38 V, umbral FastIC+=35. "
+            "Ajuste OLS sigma^2=SPTR^2/N+sigma_elec^2; pendiente=7877 ps^2, SPTR=88.8 ps; "
+            "rango declarado 85–92 ps (extremos del rango de N y sigma medidos)."
+        ),
+        "status": "DERIVADO (banco propio)",
+        "note": (
+            "Cota inferior del rango derivado. Requiere medida formal con datos de EOS "
+            "(ver analysis/timing/TODO.md). "
+            "Coherente con Lee 2025 (89 > 58 ps a OV menor, dirección esperada)."
+        ),
+    },
+    "banco_propio_high": {
+        "device": "AFBR-S4N66P014M (6×6 mm² NUV-MT) + FastIC+",
+        "ov_v": 10.0,
+        "sigma_ps": 92.0,
+        "source": (
+            "Banco propio SHiP, barrido de intensidad láser, V_bias=38 V, umbral FastIC+=35. "
+            "Mismo ajuste que banco_propio_low; cota superior del rango."
+        ),
+        "status": "DERIVADO (banco propio)",
+        "note": "Cota superior del rango derivado. Ver banco_propio_low.",
+    },
+    "colaboracion_geant4_ref": {
+        "device": "Referencia Geant4 colaboración SHiP (origen: Hamamatsu S13360-3050CS, 3–4.5 V OV)",
+        "ov_v": None,
+        "sigma_ps": 106.0,
+        "source": "Estándar colaboración SHiP; heredado de Hamamatsu S13360-3050CS.",
+        "status": "PUBLICADO (otro dispositivo)",
+        "note": (
+            "ADVERTENCIA DE UNIDADES (ambigüedad sin resolver): "
+            "las notas del grupo describen '100–120 ps FWHM' y '~106 ps RMS' como equivalentes. "
+            "Son incompatibles: 110 ps FWHM = ~47 ps sigma. "
+            "Si el valor inyectado en Geant4 (106 ps) se interpreta como sigma cuando "
+            "la medida original era FWHM, el jitter está sobreestimado en factor ~2.355. "
+            "Requiere consulta con Gerardo para resolver la convención. "
+            "No usar este valor sin aclarar la ambigüedad."
+        ),
+    },
+}
