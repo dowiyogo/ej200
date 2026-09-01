@@ -8,7 +8,11 @@ Fase 7 commit `5576687`, 2026-08-14).
 
 ## Defectos conocidos
 
-Ningún defecto de fase óptica (Fase 7 correcta).
+**Reflectividad R = 0.95 (corregida en `c7acb7a`):** Datos producidos con `REFLECTIVITY=0.95`
+en `CreateBarSkinReflector()` — error de configuración; spec Vikuiti 3M ESR es R≈0.98.
+Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Dataset necesita
+re-simulación con R=0.98. Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
+
 Segunda iteración del análisis de optimización; introduce readout EndSparseTop
 combinado (Phase II). Supersedido por el análisis de best_est con ROOT verificado.
 

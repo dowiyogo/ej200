@@ -9,7 +9,11 @@ EJ-200, EJ-204, EJ-230; configuraciones TIR y Vikuiti.
 
 ## Defectos conocidos
 
-Ningún defecto de fase óptica (Fase 7 correcta).
+**Reflectividad R = 0.95 (corregida en `c7acb7a`):** Datos producidos con `REFLECTIVITY=0.95`
+en `CreateBarSkinReflector()` — error de configuración; spec Vikuiti 3M ESR es R≈0.98.
+Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Dataset necesita
+re-simulación con R=0.98. Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
+
 El deck es una síntesis preliminar del 2026-08-16 con σ(T₀)=59 ps reportado para
 EJ-230 + END + Vikuiti — valor del análisis rápido inmediato al scan, previo a la
 optimización detallada de los parámetros α, β del estimador.

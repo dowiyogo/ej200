@@ -12,9 +12,16 @@
 
 ## Defectos conocidos
 
-Ningún defecto de fase óptica en las figuras de simulación (Fase 7 correcta).
-La discrepancia R=0.98 (napkin) vs R=0.95 (código) es declarada explícitamente
-en la diapositiva A1/A2 de talk_v6.tex como parte del análisis de consistencia.
+**Reflectividad R = 0.95 en figuras de simulación (corregida en `c7acb7a`):** El modelo
+analítico (napkin) usó R=0.98 (spec Vikuiti 3M ESR) — intencional y correcto. Las figuras
+de simulación (`fig_gen.py`, `fig_gen.C`) usaron datos de `scan_end_vikuiti` producidos
+con `REFLECTIVITY=0.95` — error de configuración. La discrepancia fue declarada en
+`talk_v6.tex:A1/A2`.
+
+Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Nuevas simulaciones con
+R=0.98 serán directamente comparables con el napkin sin factor de escala correctivo.
+Las figuras actuales del deck corresponden a R=0.95 y son históricas.
+Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md §5`.
 
 ## Por qué se conserva
 

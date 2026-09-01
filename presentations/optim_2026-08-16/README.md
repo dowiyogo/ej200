@@ -9,7 +9,11 @@ geometría End-only (sin SiPMs TOP); EJ-200, EJ-204, EJ-230.
 
 ## Defectos conocidos
 
-Ningún defecto de fase óptica (Fase 7 correcta).
+**Reflectividad R = 0.95 (corregida en `c7acb7a`):** Datos producidos con `REFLECTIVITY=0.95`
+en `CreateBarSkinReflector()` — error de configuración; spec Vikuiti 3M ESR es R≈0.98.
+Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Dataset necesita
+re-simulación con R=0.98. Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
+
 Primera iteración del análisis de optimización (parámetros α, β del estimador SUM4);
 supersedido por optim_2026-08-17 con readout EndSparseTop combinado.
 
