@@ -200,8 +200,8 @@ def plot_grouped_resolution(results, threshold_pe, out_pdf):
         central_ps = central.mean() * 1e3 if len(central) else np.nan
         sigma650_ps = describe_point(sub, 650.0)
         label = f"{name} (central {central_ps:.0f} ps, x=650 {sigma650_ps:.0f} ps)"
-        ax.errorbar(sub["x_mm"], sub["sigma_ns"] * 1e3,
-                    yerr=sub["sigma_err"] * 1e3,
+        ax.errorbar(sub["x_mm"].to_numpy(), (sub["sigma_ns"] * 1e3).to_numpy(),
+                    yerr=(sub["sigma_err"] * 1e3).to_numpy(),
                     marker="o", ms=4, lw=1.5, capsize=2,
                     color=COLORS.get(name), label=label)
 

@@ -190,8 +190,8 @@ def main():
                    if not pathlib.Path(args.out).is_absolute() else args.out
         write_root(df, out_path)
         print(f"\n  Listo. Puedes leerlo con:")
-        print(f"    python analyze.py {out_path}")
-        print(f"    python resolution_vs_x.py {out_path}")
+        print(f"    python analyze_dCFD.py {out_path}")
+        print(f"    python resolution_vs_x_dCFD.py {out_path}")
 
 
 if __name__ == "__main__":

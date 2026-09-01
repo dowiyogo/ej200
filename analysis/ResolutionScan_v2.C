@@ -9,6 +9,7 @@
 #include "TGraphErrors.h"
 #include "TF1.h"
 #include "TLine.h"
+#include "TLatex.h"
 #include "TSystem.h"
 
 // Función para obtener un tiempo de trigger estable
@@ -24,7 +25,7 @@ Double_t GetStableTime(const std::vector<Double_t>& times, size_t nPhotons = 1) 
     return sum / static_cast<Double_t>(nUse);
 }
 
-void ResolutionScan_v2(size_t nPhotons = 1) {
+void ResolutionScan_v2(size_t nPhotons = 1, bool drawFits = true) {
     TChain *chain = new TChain("sipm_hits");
     bool filesFound = false;
 
@@ -51,6 +52,9 @@ void ResolutionScan_v2(size_t nPhotons = 1) {
         return;
     }
 
+    std::cout << "ResolutionScan_v2: entradas totales en el chain = "
+              << chain->GetEntries() << std::endl;
+
     Int_t event_id, face_type;
     Double_t time_ns, gun_x;
     chain->SetBranchAddress("event_id", &event_id);
@@ -76,6 +80,7 @@ void ResolutionScan_v2(size_t nPhotons = 1) {
     }
 
     TGraphErrors *grRes = new TGraphErrors();
+    std::vector<TH1D*> fitHists;
     int pIdx = 0;
 
     for (auto const& [x, events] : data) {
@@ -95,23 +100,93 @@ void ResolutionScan_v2(size_t nPhotons = 1) {
             Double_t rms = hDiff.GetRMS();
             if (rms <= 0.0) continue;
 
+            Double_t sigma    = rms;
+            Double_t sigmaErr = (hDiff.GetEntries() > 1)
+                ? rms / std::sqrt(2.0 * (hDiff.GetEntries() - 1.0))
+                : 0.0;
+
             hDiff.Fit("gaus", "Q", "", mean - 2*rms, mean + 2*rms);
             
             TF1 *f = hDiff.GetFunction("gaus");
-            if (f) {
-                grRes->SetPoint(pIdx, x, f->GetParameter(2) * 1000.0);
-                grRes->SetPointError(pIdx, 0, f->GetParError(2) * 1000.0);
-                pIdx++;
+            if (f && std::isfinite(f->GetParameter(2)) && f->GetParameter(2) > 0.0) {
+                sigma    = f->GetParameter(2);
+                sigmaErr = f->GetParError(2);
             }
+
+            TH1D* hClone = nullptr;
+            if (drawFits) {
+                hClone = static_cast<TH1D*>(hDiff.Clone(Form("hDiff_draw_x%d", x)));
+                hClone->SetDirectory(nullptr);
+                hClone->SetTitle(Form("x = %d mm; (t_{L} - t_{R}) / 2 [ns]; eventos", x));
+                fitHists.push_back(hClone);
+            }
+
+            grRes->SetPoint(pIdx, x, sigma * 1000.0);
+            grRes->SetPointError(pIdx, 0, sigmaErr * 1000.0);
+            std::cout << "  x = " << x
+                      << " mm, entries = " << hDiff.GetEntries()
+                      << ", mean = " << mean
+                      << " ns, sigma = " << sigma * 1000.0
+                      << " ps" << std::endl;
+            pIdx++;
+        } else {
+            std::cout << "  x = " << x
+                      << " mm descartado: solo "
+                      << hDiff.GetEntries()
+                      << " entradas" << std::endl;
         }
+    }
+
+    std::cout << "ResolutionScan_v2: puntos cargados en la grafica = "
+              << pIdx << std::endl;
+    if (pIdx == 0) {
+        std::cerr << "Error: no se pudo construir ningun punto. "
+                  << "Revisa los mensajes por posicion de arriba." << std::endl;
+        return;
     }
 
     TCanvas *c = new TCanvas("c", "Scan de Resolucion", 800, 500);
     grRes->SetTitle("Resolucion Temporal Intrinsica; Posicion X [mm]; #sigma_{t} [ps]");
     grRes->SetMarkerStyle(20);
     grRes->SetMarkerColor(kAzure+2);
+    grRes->SetLineColor(kAzure+2);
+    grRes->SetMinimum(0.0);
     grRes->Draw("APL");
     
     TLine *target = new TLine(-700, 50, 700, 50);
     target->SetLineStyle(7); target->SetLineColor(kRed); target->Draw();
+
+    if (drawFits && !fitHists.empty()) {
+        const int nPads = static_cast<int>(fitHists.size());
+        const int nCols = 3;
+        const int nRows = (nPads + nCols - 1) / nCols;
+
+        TCanvas *cFits = new TCanvas("cFits", "Histograms and fits by position", 1500, 450 * nRows);
+        cFits->Divide(nCols, nRows);
+
+        for (int i = 0; i < nPads; ++i) {
+            cFits->cd(i + 1);
+            fitHists[i]->SetLineColor(kBlack);
+            fitHists[i]->SetMarkerStyle(20);
+            fitHists[i]->SetMarkerSize(0.6);
+            fitHists[i]->Draw("E");
+
+            TF1* fit = fitHists[i]->GetFunction("gaus");
+            if (fit) {
+                fit->SetLineColor(kRed + 1);
+                fit->SetLineWidth(2);
+                fit->Draw("same");
+
+                TLatex label;
+                label.SetNDC(true);
+                label.SetTextSize(0.045);
+                label.DrawLatex(0.14, 0.85, Form("#sigma = %.0f ps", fit->GetParameter(2) * 1000.0));
+            } else {
+                TLatex label;
+                label.SetNDC(true);
+                label.SetTextSize(0.045);
+                label.DrawLatex(0.14, 0.85, "sin ajuste gaussiano");
+            }
+        }
+    }
 }
