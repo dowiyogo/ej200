@@ -915,21 +915,21 @@
   \begin{center}
   \begin{tabular}{p{1.8cm}p{3.2cm}p{3.2cm}p{3.2cm}}
     \toprule
-    & \textbf{GEN-1} & \textbf{GEN-2} & \textbf{GEN-3} \\
+    & \textbf{GEN-1} & \textbf{GEN-3 END-only} \newline {\footnotesize (scan\_end\_vikuiti)} & \textbf{GEN-3} \\
     \midrule
     Build & end-only (early) & build\_end\_vikuiti & build\_end\_vikuiti \\
-    Air gap & No & No & Yes (0.10 mm) \\
-    Reflector & \texttt{dielectric\_metal skin} & skin surface, R=0.95 & border surface, R=0.95 \\
-    TIR & Eliminated by skin & Natural (no bar surface) & Natural Fresnel \\
-    $N_\text{pe}$ & $\sim\!0.37$ (BUG) & — & 701.3 \\
-    $\sigma_\text{END}$ & N/A (insufficient pe) & 50.5 ps & 53.7 ps \\
-    TOP & No & No & Yes ($N=4,8,14,20$) \\
+    Air gap & No & Yes (0.10 mm) & Yes (0.10 mm) \\
+    Reflector & \texttt{dielectric\_metal skin} & border surface, R=0.95 & border surface, R=0.95 \\
+    TIR & Eliminated by skin & Natural Fresnel & Natural Fresnel \\
+    $N_\text{pe}$ & $\sim\!0.37$ (BUG) & 701.3 & 701.3 \\
+    $\sigma_\text{END}$ & N/A (insufficient pe) & \sigmaENDonlyval\ ($m^*=7$) & \sigmaENDval\ ($m=8$) \\
+    TOP & No & No ($N=0$) & Yes ($N=4,8,14,20$) \\
     Status & \textcolor{red}{\textbf{INVALID}} & superseded & \textcolor{green!60!black}{\textbf{current}} \\
     \bottomrule
   \end{tabular}
   \end{center}
   \vspace{6pt}
-  \footnotesize GEN-2 END-only gives $\sigma_\text{END}=50.5\ps$ (smaller than GEN-3 $53.7\ps$) because TOP SiPMs in GEN-3 intercept $\sim\!3\ps$ worth of early photons that would otherwise have reached the END face.
+  \footnotesize GEN-3 END-only (scan\_end\_vikuiti, $m^*=7$, $x=0$): $\sigma_\text{END}=\sigmaENDonlyval$; GEN-3 with $N_\text{TOP}=20$: $\sigma_\text{END}=\sigmaENDval$ ($\sim\!3\ps$ more). \textit{Hypothesis:} TOP SiPMs intercept early photons that would otherwise reach the END face; not directly demonstrated (the comparison conflates $N_\text{TOP}$ and estimator parameters simultaneously).
 \end{frame}
 
 \begin{frame}{B2 — The 1-PE Anomaly (GEN-1 Historical Bug)}

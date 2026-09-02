@@ -16,21 +16,26 @@ Generated 2026-08-21. Every configuration that produced numbers shown in any pre
 
 ---
 
-## GEN-2: END-only + Vikuiti (exec21-optfix → end_vikuiti / exec22-endtop-optfix)
+## GEN-3 END-only: scan_end_vikuiti (build_end_vikuiti Phase 7)
 
-- **Build**: `build_end_vikuiti`
-- **Branch**: feat/end-vikuiti (or similar; see git log)
-- **Geometry**: 1400×60×10 mm³ bar; END-only (no TOP SiPMs)
-- **Scintillator**: EJ-230 (att=1200 mm, τ=1.5 ns, Y=9700/MeV, n=1.58)
-- **Also tested**: EJ-200 (att=3800 mm, τ=2.1 ns), EJ-204 (att=1600 mm, τ=1.8 ns)
-- **Reflector**: `CreateBarSkinReflector()` applied as SKIN surface on BarLV
+> **EXEC_23 FIX-08 (2026-09-02):** Previously mislabeled "GEN-2". Evidence: phase_ab.py reads
+> scan_end_vikuiti; presentations/v6/README.md states scan_end_vikuiti = build_end_vikuiti Phase 7
+> (air gap + Mylar + border surface, identical geometry to GEN-3 current, but N_TOP=0).
+
+- **Build**: `build_end_vikuiti` Phase 7 (same codebase as GEN-3 current)
+- **Data path**: `results/scan_end_vikuiti/`
+- **Geometry**: 1400×60×10 mm³ bar; END-only (N_TOP=0, no TOP SiPMs)
+- **Air gap**: 0.10 mm (kAirGapThickness) — explicit physical volume
+- **Mylar reflector**: 0.05 mm — explicit physical volume
+- **Reflector surface**: `CreateBarSkinReflector()` used as BORDER surface (air→Mylar boundary)
   - Type: `dielectric_dielectric`; Model: `unified`; Finish: `polished`
-  - REFLECTIVITY = 0.95 (constant); SigmaAlpha = 0.0
-  - **No explicit air-gap volume** in this build
+  - REFLECTIVITY = 0.95 (constant)
+- **Scintillator**: EJ-230 (att=1200 mm, τ=1.5 ns, Y=9700/MeV, n=1.58)
+- **Also tested**: EJ-200, EJ-204
 - **SiPM**: 8 per END face = 16 total; wavelength-dependent PDE (AFBR-S4N66P024M)
 - **Events**: 5000 per position, 13 positions (x = -600 to +600 mm step 100)
-- **Estimator**: m-average END estimator, optimal m*
-- **Key result**: σ_END = 50.5 ps (m*=7, EJ-230, x=0)
+- **Estimator**: m-average END estimator, optimal m* (phase_ab_optimal.csv)
+- **Key result**: σ_END = 50.49 ps (m*=7, EJ-230, x=0); bar mean 51.95 ps
 - **Reference files**: `analysis/optim/phase_ab_optimal.csv`, figM1/M2/M3
 
 ---
@@ -105,8 +110,10 @@ Generated 2026-08-21. Every configuration that produced numbers shown in any pre
 - **R=0.98**: napkin estimate from manufacturer Vikuiti spec, used for analytical predictions only
 - The code says "R=0.98 Vikuiti ESR" in comments but implements R=0.95
 
-### END σ: 50.5 vs 53.7 ps
+### END σ: 50.49 vs 53.68 ps
 
-- **50.5 ps**: END-only geometry (GEN-2 or conceptual), m*=7
-- **53.7 ps**: Hybrid geometry with TOP SiPMs (GEN-3), m*=8
-- TOP SiPMs physically intercept ~3 ps worth of early photons before they reach END → σ_END increases
+- **50.49 ps**: GEN-3 END-only (scan_end_vikuiti), m*=7, x=0 (from phase_ab_optimal.csv)
+- **53.68 ps**: GEN-3 hybrid with N_TOP=20 (scan_end_vik_sparse_top_v2), m=8, x=0
+- _Hypothesis_: TOP SiPMs intercept early photons that would otherwise reach END, accounting for
+  the ~3 ps difference. Not directly demonstrated — the comparison conflates N_TOP and estimator
+  parameters simultaneously. See EXEC_23 FIX-08 note in talk_v6.tex B1.
