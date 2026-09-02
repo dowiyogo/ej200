@@ -16,8 +16,10 @@ HEAD after Phase 1: ba00e0e
 | EXEC_25 Phase 1 build | 15e2e0beeccead87935fe51214bb5861f1d2d748fe5e179324fcf378573c8550 | 472 856 | 38 | ba00e0e |
 | EXEC_25 Phase 1b build (after FIX-23b) | ce20abef20cd3b316f8f0e9eccf4740d055ab85a10f8be8d9a09590d0ba62d73 | 472 856 | 38 | 9f8a3a9 |
 | EXEC_25 Phase 2+3 build (FIX-23c, FIX-18b, Phase 2 figs) | 6d6d9fa8257872fef4482e7ce5cc2c991d417ef88eeceac1ed864128b824cbb0 | 472 656 | 38 | 6488075 |
+| **EXEC_25 Phase 4 final build (FIX-26)** | **3f5f43c0f640b5a7351babf648942bdeb425aed73eed2d67a2dd138226b113cc** | **472 658** | **38** | **7f68624** |
 
 PDF built on MSI exec25-deckfix branch, latexmk -lualatex.
+Phase 4 PDF committed at HOST main c93c833.
 
 ---
 
@@ -52,12 +54,21 @@ PDF built on MSI exec25-deckfix branch, latexmk -lualatex.
 | FIX-24 | DONE | 47d0a2f | FINAL_NUMBERS.md, README.md | FINAL_NUMBERS.md: (1) Λ_refl(R=0.95) ~240 mm → 159.4 mm (EXEC_23 FIX-05 source); (2) σ_END END-only row 47.6/52.1/49.6 → 54.86/53.36/50.49 ps (EXEC_23 FIX-01 source, m*-opt x=0 from results_macros.tex). README.md: add "MSI branch topology" paragraph (Option A decision). |
 | FIX-25 | DONE | ba00e0e | EXEC_23_REPORT.md, CONFIGURATION_AUDIT.md | EXEC_23_REPORT.md FIX-03 row: note G1/G2 "combined frame" was split into G1+G2 by EXEC_24 FIX-11. CONFIGURATION_AUDIT.md BLUE weights §: clarify formula role — in w_E=(σ_T²−C_ET)/(σ_E²+σ_T²−2C_ET), σ_T² appears in numerator and denominator; σ_E² appears in denominator only. |
 | FIX-18b | DONE | 8073eec | talk_v6.tex | S17 oracle-gap line 680: "both below global k=3" → "global k=3 is suboptimal there". "Both below" misread as k ordering statement; new wording correctly says k=3 is suboptimal at ±200 and ±500 mm. |
+| FIX-26 | DONE | a09b7bc | talk_v6.tex | S13 "Why TOP beats END": `~100 pooled photons` → `~1300 pooled photons`. Source: top_npe_diag.csv x=0: N_pe^TOP mean=1341, median=1242. F1 d_near sentence also added but reverted (see FIX-26b). |
+| FIX-26b | DONE | 7f68624 | talk_v6.tex | Revert F1 appendix d_near sentence: frame overflow 12.3 pt (Overfull \\vbox at line 1103). Per CHECKPOINT 2/3: "ONLY IF it fits without overflow, otherwise skip." |
 
 ---
 
 ## §4 — Commit Log (pre-exec25-260902..HEAD)
 
 ```
+c93c833 EXEC_25 Phase 4: commit final PDF — talk_v6.pdf at 7f68624
+7f68624 EXEC_25 FIX-26b: revert F1 d_near sentence — frame overflows by 12.3pt
+41c94c5 EXEC_25: track SHiP_timing_first_principles.pptx in napkin_first_principles/
+8765cd0 EXEC_25 Phase 2: add CSV + meta.json sidecars for v5_veff_fit and v5_top_position_loo
+3b4cc31 EXEC_25 Phase 3 addendum: top_npe_diag — add hybrid vs END-only N_pe^END comparison
+a09b7bc EXEC_25 FIX-26: S13 ~100→~1300 pooled photons; F1 add d_near explanation sentence
+c449fdc EXEC_25: update EXEC_25_REPORT.md — Phase 1b, 2, 3 status and gate results
 6488075 EXEC_25 Phase 3: top_npe_diag.py — N_pe^TOP and N_pe^END diagnostic (CSV + meta.json)
 26d7355 EXEC_25 Phase 2: fix v5 figure encoding bugs (mojibake title; v_eff_err precision)
 8073eec EXEC_25 FIX-18b: S17 oracle-gap — replace "both below global k=3" with "global k=3 is suboptimal there"
@@ -98,6 +109,11 @@ No Overfull \vbox or \hbox warnings. **CLEAN.**
 
 No Overfull \vbox or \hbox warnings. **CLEAN.** (Underfull at B1 footnote expected to persist.)
 
+### EXEC_25 Phase 4 final build (7f68624, 38 pages)
+
+No Overfull \vbox or \hbox warnings. **CLEAN.**
+(FIX-26b reverted the F1 sentence that caused 12.3 pt overflow at line 1103 in the intermediate build a09b7bc.)
+
 ---
 
 ## §6 — MUST-NOT-CHANGE Gate
@@ -105,6 +121,7 @@ No Overfull \vbox or \hbox warnings. **CLEAN.** (Underfull at B1 footnote expect
 Named constants verified present (as literals or via macros) in talk_v6.tex after all FIX commits.
 FIX-23 replaced literal `0.95` with `\Rvikuiti` (expands to `0.95`; rendered value unchanged).
 FIX-21 changed `13` → `10` (13 mm was not a named constant; 10 mm = bar height, physically correct).
+FIX-26 changed `~100` → `~1300` (`~100` was not a named constant; `~1300` is derived from N_pe^TOP mean=1341 at x=0, top_npe_diag.csv).
 No named constant values were altered.
 
 ---
@@ -124,15 +141,18 @@ No named constant values were altered.
 
 ---
 
-## §8 — MSI Worktree Status
+## §8 — MSI Worktree Status (Phase 4)
 
 ```
-/mnt/d/SHiP/ej200                → exec25-deckfix @ ba00e0e (EXEC_25 build)
+/mnt/d/SHiP/ej200                → exec25-deckfix @ 7f68624 (Phase 4 final, FIX-26b)
 /mnt/d/SHiP/ej200_edge_scan      → main @ 5e90025 (frozen pre-EXEC_23; do not touch)
 /mnt/d/SHiP/ej200_endonly        → feat/endonly-mylar @ fb3749d
 /mnt/d/SHiP/ej200_event_display  → feat/ej204-event-display-tracks @ 47a9a4f
-W1 /home/reriosto/SHiP/ej200     → exec25-deckfix @ ba00e0e (via git fetch + reset or manual)
+/tmp/exec25_old                  → detached HEAD @ 1c5a4c5 (cleanup pending)
+W1 /home/reriosto/SHiP/ej200     → exec25-deckfix @ 7f68624 (main repo on MSI; ff'd to Phase 4)
 ```
+
+tex SHA-256 verified identical on HOST and MSI at 7f68624: `7ff0ce972fdb3c02b992442019d440542661a95f3d35332f0a4bf7962e80f808`
 
 ---
 
@@ -165,8 +185,16 @@ Gate PASSES. Check A and B PASS.
 | v5_top_position_loo.pdf | UTF-8 em dash `—` in ROOT TLatex → mojibake `â€"` in title | Replace `—` with `--` (ASCII) in DrawLatex call | pdftotext diff: title line only + cosmetic column-position shifts ✓ |
 | v5_veff_fit.pdf | `v_eff_err` formatted `:.0f` → `± 0 mm/ns` | Change to `:.2f` → `± 0.02 mm/ns` | pdftotext diff: uncertainty line only + cosmetic column shifts ✓ |
 
-Source: `presentations/v5/scripts/analysis_v5.py` (Sections 1 and 4, run as `analysis/top_npe_diag/fix_phase2_figs.py`).
+Source: `presentations/v5/scripts/analysis_v5.py` (Sections 1 and 4, run as scratchpad/fix_phase2_figs.py).
 Files replaced in-place: `presentations/v6/figs/v5_top_position_loo.pdf`, `presentations/v6/figs/v5_veff_fit.pdf`.
+
+**Phase 2 sidecars (commit 8765cd0):**
+CSV + meta.json sidecars added for both figures, documenting binning, source ROOT path, SHA-256, and generating command.
+- `v5_veff_fit.csv`: x, dt_median_ps, dt_err_ps, residual_ps, n_ev (13 rows)
+- `v5_veff_fit_meta.json`: fit params (a=0.44 ps, b=−11.259 ps/mm, v_eff=177.6 mm/ns), SHA-256 of all 13 ROOT files
+- `v5_top_position_loo.csv`: x, sigma_lin_mm, bias_lin_mm, sigma_cub_mm, bias_cub_mm (13 rows; mean σ_x linear=17.2 mm)
+- `v5_top_position_loo_meta.json`: TOP SiPM positions, calibration method, SHA-256 of all 13 ROOT files
+Generated by `gen_v5_fig_sidecars.py` (scratchpad); uproot+numpy replication of analysis_v5.py §1 and §4.
 
 ---
 
@@ -200,33 +228,56 @@ Gate: N_pe^END/face(x=0) = 701.28 ∈ 701.3 ± 1 ✓
 
 N_pe^END/face is highest near the END faces (x=±600) because photons have a shorter path to END. N_pe^TOP peaks near x=±100 mm where the four nearest TOP SiPMs (d_near=4.5 mm) strongly intercept — but dips at x=0 (d_near=34.5 mm). N_pe^END at x=0 (701.28) reproduces the FINAL_NUMBERS canonical value 701.3 ✓.
 
+**Phase 3 addendum (commit 3b4cc31):** Extended top_npe_diag.py and CSV to include hybrid vs END-only comparison.
+
+New columns: npe_end_hybrid (END hits/face from hybrid scan, N_TOP=20), npe_end_endonly (alias for npe_end_per_face), delta_pe (hybrid − endonly per face per event), delta_pct (%).
+
+**x=0 addendum row:**
+
+| Quantity | Value |
+|----------|-------|
+| npe_end_endonly (scan_end_vikuiti) | 701.28 hits/face/event |
+| npe_end_hybrid (scan_end_vik_sparse_top_v2) | 514.94 hits/face/event |
+| delta_pe | −186.34 hits/face/event |
+| delta_pct | −26.6 % |
+
+The 20 TOP SiPMs absorb ~26.6 % of photons that would otherwise reach the END faces at x=0. Photon-count half of OPEN-06.
+
 ---
 
 ## §9 — Open Items Carried Forward
 
 All OPEN-01..06 items from EXEC_23_REPORT.md remain open. No new open items from EXEC_25 Phase 1.
 
-**OPEN-07 (new):** SHiP_timing_first_principles.pptx (575 KB, 2026-08-19) is untracked on HOST.
-Not a build artifact; manually created PowerPoint. Decision: do not add to .gitignore.
-Future: user decides whether to track or keep untracked.
+**OPEN-07:** SHiP_timing_first_principles.pptx — **RESOLVED** (commit 41c94c5). Moved to `presentations/napkin_first_principles/` and tracked. README.md updated with one-line entry: "Manual PowerPoint prototype (2026-08-19), superseded by talk_v3.tex / talk_v6.tex."
 
 ---
 
-## §10 — Synchronization State
+## §10 — Synchronization State (Phase 4)
 
 | Location | Branch | HEAD | Ahead of origin |
 |----------|--------|------|----------------|
-| HOST main | main | 6488075 | 30 commits |
-| MSI exec25-deckfix | exec25-deckfix | 6488075 | — |
+| HOST main | main | c93c833 | 37 commits |
+| MSI exec25-deckfix (/home/reriosto/SHiP/ej200) | exec25-deckfix | 7f68624 | — |
+| MSI W1 (/mnt/d/SHiP/ej200) | exec25-deckfix | 7f68624 | — |
 | GitHub origin/main | main | 5e90025 | — |
 
-Push commands (NO push yet — user approval required):
-```
-# Push HOST main to GitHub:
+tex SHA-256 HOST = MSI = `7ff0ce972fdb3c02b992442019d440542661a95f3d35332f0a4bf7962e80f808` (at 7f68624).
+
+**Phase 4 push commands (PRINT ONLY — do not execute):**
+```bash
+# 1. MSI cleanup
+git -C /home/reriosto/SHiP/ej200 stash drop
+git -C /home/reriosto/SHiP/ej200 branch -d exec24-sync
+
+# 2. W1 fast-forward (after push)
+git -C /mnt/d/SHiP/ej200 fetch origin && git -C /mnt/d/SHiP/ej200 merge --ff-only origin/main
+
+# 3. Push HOST main to GitHub
 git push origin main
 
-# Print only — no auto-push:
-# git --no-pager log --oneline origin/main..main | wc -l
+# 4. Push rollback tag
+git push origin pre-exec25-260902
 ```
 
-No push executed. No merge. No rebase.
+No push executed. No merge. No rebase. No branch deleted.
