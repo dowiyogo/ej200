@@ -459,7 +459,7 @@
     \[
       \sigma_\text{END} = \sigmaENDval
     \]
-    \textbf{Propagation time END} $\sim\!700\mm / (v_g\cos\theta_c) \approx 3.7\ns$ — photons travel $\sim\!900\mm$ path to reach the far end.
+    \textbf{Path to END:} $L/2 = \NapLhalfmm$ axial (\NaptaxialENDns) up to $(L/2)/\!\sin\theta_c = \NappathTIRlimmm$ at $\theta_c$ from the $H$-face normal (\NaptTIRlimns).
 
     \column{0.44\linewidth}
     \anafig{fig_end_mscan}\\[2pt]
@@ -501,13 +501,14 @@
       \toprule
       & END & TOP \\
       \midrule
-      Path length & $\sim\!900\mm$ & $\sim\!13\mm$ \\
-      $\tau_\text{prop}$ & $\sim\!3.7\ns$ & $\sim\!53\ps$ \\
+      Path length & $\NapLhalfmm$--$\NappathTIRlimmm$ & $\sim\!13\mm$ \\
+      $\tau_\text{prop}$ & $\NaptaxialENDns$--$\NaptTIRlimns$ & $\sim\!53\ps$ \\
       Path dispersion & large & negligible \\
       $N_\text{pe}$ used & $\sim\!8$ & $\sim\!3$ (pooled) \\
       $\sigma_t$ at $x=0$ & $53.7\ps$ & $15.2\ps$ \\
       \bottomrule
-    \end{tabular}\\[6pt]
+    \end{tabular}\\[3pt]
+    {\footnotesize $m=8$ average uses earliest photons, near the axial bound (\NaptaxialENDns).}\\[3pt]
     The TOP SiPM nearest to the muon hit position receives photons that have traveled almost no distance.
     The 3rd-order statistic (out of $\sim\!100$ pooled photons) suppresses random single-photon fluctuations.\\[6pt]
     \alert{The factor 3.5× improvement is purely from geometry, not hardware.}
@@ -531,7 +532,7 @@
       \node[colTOP] at (1.3,0.65) {$\sim\!13\mm$};
       % Far-field arrow
       \draw[->,colEND,thick,dashed] (2.0,0.3) -- (6.6,0.3);
-      \node[colEND] at (4.8,-0.25) {$\sim\!900\mm$};
+      \node[colEND,font=\tiny] at (4.8,-0.28) {$\NapLhalfmm$--$\NappathTIRlimmm$};
     \end{tikzpicture}\\[4pt]
     \footnotesize The nearest TOP SiPM is at most $35\mm$ from any muon hit ($N=20$).
   \end{columns}

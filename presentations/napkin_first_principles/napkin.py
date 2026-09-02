@@ -286,7 +286,8 @@ def fmt(v):
     if av >= 1000:
         return f"{v:.0f}"
     elif av >= 100:
-        return f"{v:.1f}"
+        # suppress trailing ".0" for exact integers (e.g. 700.0 → "700")
+        return f"{int(v)}" if v == int(v) else f"{v:.1f}"
     elif av >= 10:
         return f"{v:.2f}"
     elif av >= 1:
