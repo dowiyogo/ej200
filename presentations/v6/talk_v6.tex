@@ -36,8 +36,9 @@
 \newcommand{\sigmaENDval}{53.68\ps}
 \newcommand{\sigmaTOPval}{15.20\ps}
 \newcommand{\sigmaBLUEval}{15.21\ps}
-\newcommand{\wEND}{0.013}
-\newcommand{\wTOP}{0.987}
+% EXEC_23 FIX-03: w_END not resolved at n=5000 (CP-B wscan); kept for G1 formula display only
+\newcommand{\wEND}{0.013}  % one convention (best_est mixed); not canonical
+\newcommand{\wTOP}{0.987}  % correspondingly; not canonical
 \newcommand{\veffEND}{177.6\mm/\text{ns}}
 \newcommand{\sigmax}{7.9\mm}
 
@@ -567,16 +568,16 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}[shrink=3]{BLUE Combination: TOP Carries 99\% of the Weight}
+\begin{frame}[shrink=3]{BLUE Combination: TOP Estimator Dominates}
   \begin{columns}[T]
     \column{0.56\linewidth}
     \textbf{BLUE (Best Linear Unbiased Estimator):}
     \[
       T_0^\text{BLUE} = w_\text{END}\,T_0^\text{END} + w_\text{TOP}\,T_0^\text{TOP}
     \]
-    Weights from covariance matrix ($\sigma^2 = \sigma_\text{IQR}^2$, $\sigma_\text{IQR} = (Q_{75}-Q_{25})/1.349$):
+    Weights from covariance matrix ($\sigma^2 = \sigma_\text{IQR}^2$, $C_{ET}=\text{Cov}(T_E,T_T)$ empirical):
     \[
-      w_\text{END} = \frac{\sigma_T^2 - \text{Cov}}{\sigma_E^2 + \sigma_T^2 - 2\,\text{Cov}}
+      w_\text{END} = \frac{\sigma_T^2 - C_{ET}}{\sigma_E^2 + \sigma_T^2 - 2\,C_{ET}}
     \]
     At $x=0$, $k=3$, $m=8$, $N_\text{TOP}=20$:
     \begin{center}
@@ -584,23 +585,24 @@
       \toprule
       Quantity & Value \\
       \midrule
-      $\sigma_\text{END}$ & $53.68\ps$ \\
-      $\sigma_\text{TOP}$ & $15.20\ps$ \\
-      $\rho(\text{END},\text{TOP})$ & $0.16$ \\
-      $w_\text{END}$ & $\wEND$ \\
-      $w_\text{TOP}$ & $\wTOP$ \\
+      $\sigma_\text{END}$ & $\sigmaENDval$ \\
+      $\sigma_\text{TOP}$ & $\sigmaTOPval$ \\
+      $C_{ET}$ & $196.3\,\text{ps}^2$ \\
+      $w_\text{END}$ & ${\lesssim}\,0.1$ (not resolved, $n=5000$) \\
       $\sigma_\text{BLUE}$ & $\mathbf{\sigmaBLUEval}$ \\
       \bottomrule
     \end{tabular}
     \end{center}
-    Cross-check: $\sigma_\text{BLUE}^\text{formula} = 15.18\ps$ vs event-by-event $15.21\ps$. $\checkmark$
+    {\footnotesize $\sigma_\text{BLUE}^\text{formula}$ ($w_\text{END}=0.013$, mixed cov.) $= 15.18\ps$;
+    $\sigma_\text{IQR}^\text{event} = 15.21\ps$.
+    Different scale metrics of a heavy-tailed distribution — not a consistency check.}
 
     \column{0.40\linewidth}
-    \textbf{Why $w_\text{END} = 0.013$?}\\[2pt]
+    \textbf{Why does TOP dominate?}\\[2pt]
     $\sigma_\text{TOP}^2 \ll \sigma_\text{END}^2$: the END estimator is so much worse that it contributes almost nothing to the BLUE combination.\\[5pt]
     \alert{The BLUE estimator is, to excellent approximation, just the TOP estimator.}\\[5pt]
-    \textbf{Shared photon pool:} both estimators see some of the same photons ($\rho=0.16$ non-zero) but this effect is small.\\[5pt]
-    \textbf{Canonical result} (IQR-based $\sigma^2$): $w_\text{END}=0.013$.
+    $\sigma_\text{BLUE}$ and $\sigma_\text{TOP}$ differ by less than one bootstrap standard error (${\approx}0.17\ps$ at $n=5000$).\\[5pt]
+    $w_\text{END}$ \textbf{not resolved} at $n=5000$: IQR flat to within errors over $w\in[0,0.1]$ (total variation $0.26\ps$). See App.~G2.
   \end{columns}
 \end{frame}
 
@@ -626,7 +628,7 @@
       \bottomrule
     \end{tabular}
     \footnotesize All $\sigma$ in ps. $N_\text{TOP}=20$, EJ-230.
-    $\dagger$$w_E$ computed position-by-position with np.var(); canonical IQR-based value at $x=0$: $w_E=0.013$ (see App.~G2).\\[6pt]
+    $\dagger$$w_E$ computed position-by-position with np.var(); best-estimate IQR-based $w_E{\lesssim}\,0.1$ at $x=0$ (not resolved at $n=5000$, see App.~G2).\\[6pt]
     \alert{Peaks at $x=\pm200,\pm500\mm$}: $k=3$ is locally suboptimal there.
     Mean $\sigma_\text{BLUE}=19.5\ps$ across bar.\\[3pt]
     {\footnotesize $\sigma_B(x{=}0)=15.0\ps$ (v5, \texttt{np.var} weights) vs $15.21\ps$ (best-estimate IQR weights); definitional, see App.~G2.}
@@ -776,7 +778,7 @@
       box/.style={draw,rounded corners=3pt,fill=blue!8,minimum width=3.0cm,minimum height=0.55cm,align=center}]
       \node[box] (a) at (0,7.2) {END-only baseline\\$\sigma=50.5\ps$};
       \node[box,fill=green!10] (b) at (0,5.5) {+ TOP estimator\\$k=3,N=20$: $\sigma=15.2\ps$};
-      \node[box,fill=green!20] (c) at (0,3.8) {BLUE combination\\$w_T=0.987$: $\sigma=15.2\ps$};
+      \node[box,fill=green!20] (c) at (0,3.8) {BLUE combination\\$w_\text{END}{\lesssim}\,0.1$: $\sigma=15.2\ps$};
       \node[box,fill=orange!10] (d) at (0,2.1) {Position: END $\Delta t$\\$\sigma_x=7.9\mm$};
       \draw[->,thick] (a)--(b) node[midway,right,xshift=3pt] {$\times\!3.3$};
       \draw[->,thick] (b)--(c) node[midway,right,xshift=3pt] {$\approx 0\ps$};
@@ -805,7 +807,7 @@
     \begin{itemize}\setlength\itemsep{2pt}
       \item END m-avg ($m=8$): $\sigma=53.7\ps$
       \item TOP $k$-th order ($k=3$, $N=20$): $\sigma=15.2\ps$
-      \item BLUE: $\sigma=15.2\ps$, $w_E=0.013$
+      \item BLUE: $\sigma=15.2\ps$, $w_\text{END}{\lesssim}\,0.1$ (END contributes marginally)
     \end{itemize}
 
     \column{0.48\linewidth}
@@ -1034,7 +1036,8 @@
     \bottomrule
   \end{tabular}
   \end{center}
-  \footnotesize $k=3$, $m=8$, $N_\text{TOP}=20$, EJ-230. $\sigma = \sigma_\text{IQR} = (Q_{75}-Q_{25})/1.349$.
+  \footnotesize $k=3$, $m=8$, $N_\text{TOP}=20$, EJ-230. $\sigma = \sigma_\text{IQR}$.
+  $w_E$ and $\rho$: v5 (np.var weights); $\rho = C/\!\sqrt{\mathrm{var}_E\,\mathrm{var}_T}$ (empirical corrcoef, \emph{not} the BLUE-consistent $C/(\sigma_E\sigma_T)=0.241$ at $x=0$). See App.~G1.
 \end{frame}
 
 \begin{frame}{E2 — Effective Velocity: $v_\text{eff}$ Discrepancy}
@@ -1080,37 +1083,44 @@
 \end{frame}
 
 % ---- Appendix G: BLUE statistics ----
-\begin{frame}{G1 — BLUE Weight Derivation and Cross-Check}
+\begin{frame}[shrink=5]{G1 — BLUE Weight Derivation / G2 — Covariance Convention Comparison}
   \begin{columns}[T]
-    \column{0.54\linewidth}
-    \textbf{BLUE formula:}
+    \column{0.52\linewidth}
+    \textbf{G1 — BLUE formula:}
     \[
       w_E = \frac{\sigma_T^2 - C_{ET}}{\sigma_E^2 + \sigma_T^2 - 2C_{ET}}
     \]
-    where $\sigma^2 = \sigma_\text{IQR}^2$ and $C_{ET} = \text{Cov}(T_0^E, T_0^T)$ from empirical sample.\\[4pt]
-    At $x=0$: $\sigma_E = 53.68\ps$, $\sigma_T = 15.20\ps$, $C_{ET}/(\sigma_E\sigma_T) = 0.16$.
+    $\sigma^2 = \sigma_\text{IQR}^2$ (diagonal); $C_{ET} = \text{Cov}(T_E,T_T)$ empirical (best\_est).\\[3pt]
+    At $x=0$: $\sigma_E=\sigmaENDval$, $\sigma_T=\sigmaTOPval$, $C_{ET}=196.3\,\text{ps}^2$.\\
+    $C_{ET}/(\sigma_E\sigma_T)=0.241$ (BLUE-consistent $\rho$; \emph{not} the corrcoef 0.16).
     \[
-      w_E = \frac{15.20^2 - C}{53.68^2 + 15.20^2 - 2C} = 0.013
+      w_E = \frac{15.20^2 - 196.3}{53.68^2 + 15.20^2 - 2{\times}196.3} = 0.013
     \]
-    \textbf{Formula cross-check:}
-    \[
-      \sigma_\text{BLUE}^\text{formula} = \sqrt{\frac{\sigma_E^2\sigma_T^2 - C^2}{\sigma_E^2 + \sigma_T^2 - 2C}} = 15.18\ps
-    \]
-    Event-by-event $\sigma_\text{IQR}[\text{BLUE}] = 15.21\ps$. $\checkmark$ (0.03 ps agreement)
+    This is one defensible convention — see G2.\\[3pt]
+    \textbf{Formula vs.\ event:}\\
+    $\sigma^\text{formula}=15.18\ps$ (Gaussian approximation);\\
+    $\sigma_\text{IQR}^\text{event}=15.21\ps$ (IQR of BLUE series).\\
+    These are different scale metrics; their agreement is coincidental for non-Gaussian data.
 
-    \column{0.42\linewidth}
-    \textbf{G2 — Two variants of $w_E$}\\[4pt]
-    \begin{tabular}{p{1.3cm}p{0.9cm}p{1.5cm}}
+    \column{0.44\linewidth}
+    \textbf{G2 — Three covariance conventions}\\[3pt]
+    \begin{tabular}{p{1.5cm}p{0.9cm}p{0.8cm}p{1.3cm}}
       \toprule
-      Script & $w_E$ & $\sigma^2$ used \\
+      Convention & $C_{ET}$ & $w_E$ & $\sigma_\text{IQR}^\text{ev}$ \\
       \midrule
-      best\_est & 0.013 & $\sigma_\text{IQR}^2$ \\
-      v5 & 0.086 & np.var() \\
+      best\_est & 196.3 & 0.013 & 15.21 ps \\
+      (IQR σ² + & & & \\
+      \quad emp.\ cov) & & & \\[2pt]
+      robust IQR & 80.5 & 0.051 & 15.12 ps \\
+      \quad (polariz.) & & & \\[2pt]
+      empirical & 196.3 & 0.086 & 15.03 ps \\
+      (np.var + & & & \\
+      \quad np.cov) & & & \\
       \bottomrule
-    \end{tabular}\\[6pt]
-    Both are self-consistent. The difference is whether $\sigma^2$ in the BLUE formula uses IQR-based or empirical variance.\\[4pt]
-    \alert{Canonical: $w_E=0.013$} (IQR-based). The IQR metric is the reported resolution, so consistency requires IQR-based weights.\\[4pt]
-    The v5 value ($w_E=0.086$) is from np.var() which includes heavy tails. It's physically less clean but not wrong within its own convention.
+    \end{tabular}\\[4pt]
+    All three lie within $0.18\ps$ — comparable to the bootstrap SE on $\sigma_\text{IQR}$ (${\approx}0.17\ps$ at $n=5000$). The choice of covariance convention is not resolved by this dataset; no design conclusion depends on it.\\[3pt]
+    $\sigma_\text{IQR}(w)$ is flat to within one SE over $w\in[0,0.1]$ (total variation $0.26\ps$).\\[3pt]
+    \textbf{Qualitative BLUE check:} $w_E$ increases with $\sigma_T$ as expected — $w_E^{\rm analytic}$: $x=0$ ($0.013$) $<$ $x{=}{+}600$ ($0.041$) $<$ $x{=}{+}200$ ($0.106$). Empirical $w^*$ ordering is consistent but not statistically resolved ($n=5000$).
   \end{columns}
 \end{frame}
 

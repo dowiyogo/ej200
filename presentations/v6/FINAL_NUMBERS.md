@@ -57,14 +57,27 @@ Config: EJ-230, Vikuiti ESR (R=0.95 constant), N_TOP=20 unless noted.
 
 ## Point performance at x=0 (GEN-3, EJ-230, N_TOP=20, k=3, m=8)
 
-| Estimator | σ_IQR [ps] | w (BLUE) | ρ(E,T) |
-|-----------|-----------|---------|--------|
-| END (m=8) | **53.68** | 0.013 | 0.160 |
-| TOP (k=3) | **15.20** | 0.987 | — |
+| Estimator | σ_IQR [ps] | C_ET [ps²] | ρ_BLUE = C/(σ_Eσ_T) |
+|-----------|-----------|-----------|-------------------|
+| END (m=8) | **53.68** | 196.3 | 0.241 |
+| TOP (k=3) | **15.20** | — | — |
 | **BLUE** | **15.21** | — | — |
 
-BLUE formula cross-check: σ_BLUE^formula = 15.18 ps vs event-by-event 15.21 ps. ✓
-Canonical w_END = 0.013 (IQR-based σ² in BLUE formula, from best_est_analysis.py).
+ρ = 0.160 (corrcoef with empirical σ's, NOT BLUE-consistent; see G1) — do not use inside BLUE formula.
+
+**EXEC_23 FIX-03 (2026-09-02): w_END not resolved at n=5000 (CP-B w-scan).**
+
+Three covariance conventions (same 5000 events, x=0):
+
+| Convention | C_ET [ps²] | w_END | σ_IQR^event [ps] |
+|------------|-----------|-------|-----------------|
+| best_est: IQR σ² + np.cov | 196.3 | 0.013 | 15.21 |
+| robust IQR (polarization) | 80.5 | 0.051 | 15.12 |
+| empirical: np.var + np.cov | 196.3 | 0.086 | 15.03 |
+
+All three within 0.18 ps ≈ bootstrap SE (≈0.17 ps at n=5000). σ_IQR(w) flat to within one SE over w ∈ [0, 0.10] (total variation 0.26 ps). The choice of covariance convention is not resolved by this dataset; no design conclusion depends on it.
+
+Sidecar: analysis/optim/root_best_est/blue_wscan_x0.{csv,meta.json,root}
 
 ---
 

@@ -11,6 +11,13 @@ El volumen se llama `VikuitiXXXLV`; el nombre es histórico (Vikuiti ESR como ca
 
 ## Defectos conocidos
 
+**[OPEN] FIX-03 — w_END unresolved at n=5000:**
+CP-B w-scan (n=5000, 1000-resample bootstrap) shows σ_IQR(w) is flat within one bootstrap SE
+over w ∈ [0, 0.10] (total variation 0.26 ps ≈ SE 0.17 ps). Three covariance conventions give
+w_END ∈ {0.013, 0.051, 0.086} with σ_IQR^event within 0.18 ps. Resolution would require
+≥50k events at x=0 under the same hybrid geometry; this currently changes no design conclusion.
+Sidecar: analysis/optim/root_best_est/blue_wscan_x0.{csv,meta.json,root}
+
 **[OPEN] FIX-01b — figM1/figM2 figure sidecars missing (phase_ab.py):**
 `analysis/optim/phase_ab.py` saves `fig1_sigma_vs_k_x0.png`, `fig2_optimal_vs_x.png`,
 `fig3_sigma_vs_efficiency.png` but emits no CSV or `.meta.json` sidecars.

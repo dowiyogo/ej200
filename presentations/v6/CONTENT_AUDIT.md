@@ -27,7 +27,7 @@ Statuses: valid | superseded | historical | config-dependent | requires-reanalys
 | Napkin vs Geant4 scoreboard | GEN-3 | valid | Main S10/11 |
 | m-average END estimator: σ_END=53.7 ps (m*=8, x=0) | GEN-3 hybrid | valid | Main S14 |
 | Top k-th order statistic: σ_TOP=15.2 ps (k*=3, N=20, x=0) | GEN-3 | valid | Main S15 |
-| BLUE: w_END=0.013, w_TOP=0.987, σ_BLUE=15.21 ps | GEN-3, x=0, N=20 | valid | Main S18 |
+| BLUE: w_END ≲ 0.1 (not resolved n=5000), σ_BLUE=15.21 ps | GEN-3, x=0, N=20 | valid — FIX-03 | Main S15 |
 | BLUE uncorrelated benchmark: 14.6 ps | GEN-3 | valid | Appendix G1 |
 | BLUE vs N_TOP table | GEN-3 | valid | Main S19 |
 | σ(x) variation 14.6-17.8 ps, peaks at x=±200,±500 mm | GEN-3, oracle k*(x) | superseded by global/oracle distinction | Main S21 + note |
@@ -48,7 +48,7 @@ Statuses: valid | superseded | historical | config-dependent | requires-reanalys
 | τ_prop END ≈ 3.7 ns vs TOP ≈ 185 ps | GEN-3 | valid | Main S15 |
 | σ_END m*=8 = 53.68 ps | GEN-3, x=0 | valid | Main S14 |
 | σ_TOP k*=3 = 15.20 ps | GEN-3, x=0, N=20 | valid | Main S15 |
-| σ_BLUE = 15.21 ps (w_END=0.013) | GEN-3, x=0, N=20 | valid | Main S18 |
+| σ_BLUE = 15.21 ps (w_END ≲ 0.1, not resolved) | GEN-3, x=0, N=20 | valid — FIX-03 | Main S15 |
 | N_TOP table: {4,8,14,20} → {45.5,28.9,18.2,15.2} ps | GEN-3 | valid | Main S19 |
 | σ_BLUE(x) range 14.6–17.8 ps | GEN-3, oracle | superseded (now use global/oracle) | Appendix |
 | Historical ~70 ps per-SiPM | older config | historical | Appendix B2 |
@@ -111,11 +111,14 @@ Statuses: valid | superseded | historical | config-dependent | requires-reanalys
 - 177.6 mm/ns: best-fit to m=8 average Δt (v5 global analysis)
 - v6: explain the distinction; use whichever is relevant to the estimator being discussed
 
-### BLUE weights discrepancy (0.013 vs 0.086)
-- Both are technically correct but use different variance definitions
-- 0.013 (best_est): IQR-based σ² in BLUE formula → physically clean
-- 0.086 (v5): empirical np.var() → includes heavy tails
-- v6: use 0.013 as canonical; explain in appendix G2 that both exist
+### BLUE weights ambiguity (0.013 / 0.051 / 0.086) — EXEC_23 FIX-03
+
+Three conventions: best_est (IQR σ²+emp. cov, C=196.3, w=0.013), robust IQR (C=80.5, w=0.051),
+empirical np.var+np.cov (C=196.3, w=0.086). All σ_IQR^event within 0.18 ps of each other.
+CP-B w-scan (n=5000, 1000 bootstrap) shows σ_IQR(w) flat within one SE over w ∈ [0, 0.10]
+(total variation 0.26 ps ≈ bootstrap SE 0.17 ps). w_END is NOT resolved at n=5000.
+v6 presents all three in Appendix G2 with the not-resolved statement. No canonical value.
+ρ=0.160 is corrcoef with empirical σ's; not the BLUE-consistent ρ=C/(σ_Eσ_T)=0.241.
 
 ### Figure fig3_sigma_vs_x (oracle mislabeled as global)
 - This was from presentation_v4 and was the key error identified in v5

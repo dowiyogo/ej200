@@ -1,0 +1,39 @@
+{
+  "description": "w-scan: \u03c3_IQR(T_BLUE(w)) vs w for EJ-230 N_TOP=20 x=0",
+  "source_file": "scan_end_vik_sparse_top_v2/photon_hits_ej230_ntop20_x0.root",
+  "scint": "EJ-230",
+  "ntop": 20,
+  "x_mm": 0,
+  "m_end": 8,
+  "k_top": 3,
+  "n_events": 5000,
+  "w_min": 0.0,
+  "w_max": 0.4,
+  "n_w": 81,
+  "w_star": 0.08,
+  "sigma_iqr_wstar_ps": 15.006215556574793,
+  "curvature_ps_per_w2": 158.69568435140155,
+  "bootstrap": {
+    "n_boot": 1000,
+    "w_star_68ci": [
+      0.055,
+      0.095
+    ],
+    "sigma_at_wstar_68ci_ps": [
+      14.767234742706727,
+      15.286997205686806
+    ],
+    "frac_resamples_minimum_resolved": 0.89,
+    "mean_improvement_ps": 0.23389058478871408,
+    "std_improvement_ps": 0.18745306237615372
+  },
+  "flatness": {
+    "range_w0_w01_ps": 0.2573128410032144
+  },
+  "sigma_iqr_at": {
+    "w=0.000": 15.199380499541524,
+    "w=0.013": 15.211683894670664,
+    "w=0.051": 15.150976541096814,
+    "w=0.086": 15.04664334633273
+  }
+}

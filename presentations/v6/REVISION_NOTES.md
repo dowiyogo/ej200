@@ -29,14 +29,22 @@ v6 adds five original TikZ diagrams not present in v5:
 
 ---
 
-## 4. BLUE weights corrected to canonical values (CRITICAL)
+## 4. BLUE weights: two conventions → documented ambiguity below statistical resolution
 
 v5 BLUE: w_END = 0.086 (from np.var() empirical variance)
 v6 BLUE: w_END = 0.013 (from IQR-based σ² — consistent with best_est_analysis.py)
 
-Both are self-consistent within their own conventions. v6 uses the canonical IQR-based result
-because σ_IQR is the reported metric and the BLUE formula should use the same σ².
-The discrepancy is explained in Appendix G2.
+Both are self-consistent within their own conventions. v6 originally presented 0.013 as canonical
+(σ_IQR is the reported metric, so consistency requires IQR-based weights).
+
+**EXEC_23 FIX-03 correction (2026-09-02):** w_END is NOT resolved at n=5000. A CP-B w-scan
+(81 values of w, 1000-resample bootstrap) on the same 5000-event sample shows σ_IQR(w) is
+flat to within one bootstrap SE over w ∈ [0, 0.10] (total variation 0.26 ps; bootstrap SE ≈ 0.17 ps).
+Three conventions give w_END ∈ {0.013, 0.051, 0.086} with σ_IQR^event within 0.18 ps.
+The "correction" from 0.086 to 0.013 is now described as a documented ambiguity, not a resolved
+correction. Appendix G2 presents all three and closes with the not-resolved statement.
+See FINAL_NUMBERS.md §"Point performance" for the full three-convention table.
+Sidecar: analysis/optim/root_best_est/blue_wscan_x0.{csv,meta.json,root}
 
 ---
 
