@@ -99,8 +99,8 @@ Generated 2026-08-21. Every configuration that produced numbers shown in any pre
 
 ### BLUE weights: 0.013 vs 0.086
 
-- **0.013** (best_est_analysis.py): uses IQR-based σ² in numerator/denominator, empirical cov
-- **0.086** (v5 analysis_v5.py): uses empirical np.var() (includes tails) in numerator/denominator
+- **0.013** (best_est_analysis.py): IQR-based σ² for σ_E² and σ_T²; C_ET from np.cov. In BLUE formula w_E = (σ_T²−C_ET)/(σ_E²+σ_T²−2C_ET): σ_T² in numerator, σ_E² only in denominator.
+- **0.086** (v5 analysis_v5.py): np.var() σ² (includes tails) for σ_E² and σ_T²; C_ET from np.cov. Same formula role distribution as above.
 - **Recommendation**: use 0.013 as the canonical result (consistent with cross-check σ_BLUE)
 - The IQR-based method is physically more meaningful since σ_IQR is the reported resolution metric
 
