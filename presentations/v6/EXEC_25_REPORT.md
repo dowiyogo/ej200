@@ -16,10 +16,11 @@ HEAD after Phase 1: ba00e0e
 | EXEC_25 Phase 1 build | 15e2e0beeccead87935fe51214bb5861f1d2d748fe5e179324fcf378573c8550 | 472 856 | 38 | ba00e0e |
 | EXEC_25 Phase 1b build (after FIX-23b) | ce20abef20cd3b316f8f0e9eccf4740d055ab85a10f8be8d9a09590d0ba62d73 | 472 856 | 38 | 9f8a3a9 |
 | EXEC_25 Phase 2+3 build (FIX-23c, FIX-18b, Phase 2 figs) | 6d6d9fa8257872fef4482e7ce5cc2c991d417ef88eeceac1ed864128b824cbb0 | 472 656 | 38 | 6488075 |
-| **EXEC_25 Phase 4 final build (FIX-26)** | **3f5f43c0f640b5a7351babf648942bdeb425aed73eed2d67a2dd138226b113cc** | **472 658** | **38** | **7f68624** |
+| EXEC_25 Phase 4 final build (FIX-26) | 3f5f43c0f640b5a7351babf648942bdeb425aed73eed2d67a2dd138226b113cc | 472 658 | 38 | 7f68624 |
+| **EXEC_25 FIX-27b build (N_pe^END hybrid correction)** | **45784ae6a46ab2306004ade963b9e897611a21bd6f51877975b4347dc11a55de** | **472 931** | **38** | **1c9dda6** |
 
-PDF built on MSI exec25-deckfix branch, latexmk -lualatex.
-Phase 4 PDF committed at HOST main c93c833.
+PDF built on MSI exec25-deckfix branch, latexmk -lualatex -gg (forced full rebuild).
+Phase 4 PDF committed at HOST main c93c833. FIX-27b PDF committed at HOST main 82ce74d.
 
 ---
 
@@ -56,12 +57,18 @@ Phase 4 PDF committed at HOST main c93c833.
 | FIX-18b | DONE | 8073eec | talk_v6.tex | S17 oracle-gap line 680: "both below global k=3" → "global k=3 is suboptimal there". "Both below" misread as k ordering statement; new wording correctly says k=3 is suboptimal at ±200 and ±500 mm. |
 | FIX-26 | DONE | a09b7bc | talk_v6.tex | S13 "Why TOP beats END": `~100 pooled photons` → `~1300 pooled photons`. Source: top_npe_diag.csv x=0: N_pe^TOP mean=1341, median=1242. F1 d_near sentence also added but reverted (see FIX-26b). |
 | FIX-26b | DONE | 7f68624 | talk_v6.tex | Revert F1 appendix d_near sentence: frame overflow 12.3 pt (Overfull \\vbox at line 1103). Per CHECKPOINT 2/3: "ONLY IF it fits without overflow, otherwise skip." |
+| FIX-27 | DONE | fe5f73c | talk_v6.tex | Physics error: 701.3 (END-only, N_TOP=0) was presented as the design N_pe (hybrid, N_TOP=20). Four locations corrected: (a) S20 table: `701.3` → `514.9 (hybrid, N_TOP=20)`; (b) S10 table: column header `G4` → `G4 (END-only)`, surplus line labels `(END-only)`; (c) D1 budget table: after G4/end (END-only) 701.3, added rows G4/end (hybrid, N_TOP=20) 514.9, TOP interception −26.6%; (d) B1 historical table: GEN-3 N_pe column 701.3 → 514.9; GEN-3 END-only 701.3 kept. Source: top_npe_diag.csv x=0. |
+| FIX-27b | DONE | 1c9dda6 | talk_v6.tex | S10 frame overflow fix: original FIX-27 added `(END-only, $N_\text{TOP}=0$)` to S10 header text → 11.679 pt overflow (Overfull \\vbox at line 461). Reverted main header change; instead labeled table column header only: `Path & Napkin & G4 (END-only)`. Overflow eliminated. |
 
 ---
 
 ## §4 — Commit Log (pre-exec25-260902..HEAD)
 
 ```
+82ce74d EXEC_25 FIX-27b: rebuilt PDF after FIX-27/27b — N_pe^END hybrid correction
+1c9dda6 EXEC_25 FIX-27b: S10 — label G4 column END-only in table header (avoid frame overflow)
+fe5f73c EXEC_25 FIX-27: correct N_pe^END from 701.3 (END-only) to 514.9 (hybrid N_TOP=20)
+beb341b EXEC_25: EXEC_25_REPORT.md — Phase 4 final version
 c93c833 EXEC_25 Phase 4: commit final PDF — talk_v6.pdf at 7f68624
 7f68624 EXEC_25 FIX-26b: revert F1 d_near sentence — frame overflows by 12.3pt
 41c94c5 EXEC_25: track SHiP_timing_first_principles.pptx in napkin_first_principles/
@@ -114,6 +121,18 @@ No Overfull \vbox or \hbox warnings. **CLEAN.** (Underfull at B1 footnote expect
 No Overfull \vbox or \hbox warnings. **CLEAN.**
 (FIX-26b reverted the F1 sentence that caused 12.3 pt overflow at line 1103 in the intermediate build a09b7bc.)
 
+### EXEC_25 FIX-27 intermediate build (fe5f73c, 38 pages)
+
+| Log line | Type | Size | Cause |
+|----------|------|------|-------|
+| 461 | Overfull \vbox | 11.679 pt | FIX-27 added `(END-only, $N_\text{TOP}=0$)` to S10 main header; wrapped to 2 lines → frame too tall. Fixed in FIX-27b. |
+
+NOT committed. Fixed by FIX-27b.
+
+### EXEC_25 FIX-27b build (1c9dda6, 38 pages)
+
+No Overfull \vbox or \hbox warnings. **CLEAN.** (Overflow fixed by labeling table column header only, not main header.)
+
 ---
 
 ## §6 — MUST-NOT-CHANGE Gate
@@ -122,7 +141,8 @@ Named constants verified present (as literals or via macros) in talk_v6.tex afte
 FIX-23 replaced literal `0.95` with `\Rvikuiti` (expands to `0.95`; rendered value unchanged).
 FIX-21 changed `13` → `10` (13 mm was not a named constant; 10 mm = bar height, physically correct).
 FIX-26 changed `~100` → `~1300` (`~100` was not a named constant; `~1300` is derived from N_pe^TOP mean=1341 at x=0, top_npe_diag.csv).
-No named constant values were altered.
+FIX-27 changed `701.3` → `514.9` in S20, S10, D1, B1 where 701.3 was incorrectly presented as the hybrid design value. 701.3 (END-only, N_TOP=0) remains in D1 first row and B1 GEN-3 END-only column — those uses are correct. **514.9 added to MUST-NOT-CHANGE list** (hybrid N_pe^END/face at x=0, N_TOP=20, from top_npe_diag.csv).
+No other named constant values were altered.
 
 ---
 
@@ -138,21 +158,25 @@ No named constant values were altered.
 | 20 | Design Decision | FIX-19, FIX-23 | "15.2 ps intrinsic (see App. I2)" ✓; R=\Rvikuiti renders 0.95 ✓ |
 | 27 | C1 Material Table | FIX-16, FIX-23 | Napkin/G4 ratio row absent; Napkin bulk survival = last row ✓ |
 | 33 | G2 Covariance | FIX-17 | "w_E monotone increasing in σ_T²" ✓; all caveat text intact ✓ |
+| 10 | S10 Geant4 Validates Napkin | FIX-27/27b | Column header "G4 (END-only)" ✓; "+23% (END-only)" ✓; no overflow ✓ |
+| 20 | S20 Design Decision | FIX-27 | "514.9 (hybrid, N_TOP=20)" in performance table ✓; frame fits (2.7 pt slack) ✓ |
+| 25 | B1 Historical Generations | FIX-27 | GEN-3 END-only = 701.3 ✓; GEN-3 = 514.9 ✓; hypothesis footnote unchanged ✓ |
+| 28 | D1 Detailed Photon Budget | FIX-27 | G4/end (END-only) 701.3 ✓; G4/end (hybrid, N_TOP=20) 514.9 ✓; TOP interception −26.6% ✓; Surplus (END-only) +23% ✓ |
 
 ---
 
-## §8 — MSI Worktree Status (Phase 4)
+## §8 — MSI Worktree Status (FIX-27b)
 
 ```
-/mnt/d/SHiP/ej200                → exec25-deckfix @ 7f68624 (Phase 4 final, FIX-26b)
+/mnt/d/SHiP/ej200                → exec25-deckfix @ 1c9dda6 (FIX-27b)
 /mnt/d/SHiP/ej200_edge_scan      → main @ 5e90025 (frozen pre-EXEC_23; do not touch)
 /mnt/d/SHiP/ej200_endonly        → feat/endonly-mylar @ fb3749d
 /mnt/d/SHiP/ej200_event_display  → feat/ej204-event-display-tracks @ 47a9a4f
-/tmp/exec25_old                  → detached HEAD @ 1c5a4c5 (cleanup pending)
-W1 /home/reriosto/SHiP/ej200     → exec25-deckfix @ 7f68624 (main repo on MSI; ff'd to Phase 4)
+W1 /home/reriosto/SHiP/ej200     → exec25-deckfix @ 1c9dda6 (ff'd to FIX-27b)
 ```
 
-tex SHA-256 verified identical on HOST and MSI at 7f68624: `7ff0ce972fdb3c02b992442019d440542661a95f3d35332f0a4bf7962e80f808`
+tex SHA-256 verified identical on HOST and MSI at 1c9dda6:
+`f05b53698bb9d91c2fd10e6ef6cd1576f47d2e158e726088f1052482ab75bbf1`
 
 ---
 
@@ -253,31 +277,37 @@ All OPEN-01..06 items from EXEC_23_REPORT.md remain open. No new open items from
 
 ---
 
-## §10 — Synchronization State (Phase 4)
+## §10 — Synchronization State (FIX-27b / CHECKPOINT 5)
 
 | Location | Branch | HEAD | Ahead of origin |
 |----------|--------|------|----------------|
-| HOST main | main | c93c833 | 37 commits |
-| MSI exec25-deckfix (/home/reriosto/SHiP/ej200) | exec25-deckfix | 7f68624 | — |
-| MSI W1 (/mnt/d/SHiP/ej200) | exec25-deckfix | 7f68624 | — |
+| HOST main | main | 82ce74d | 41 commits |
+| MSI exec25-deckfix (/home/reriosto/SHiP/ej200) | exec25-deckfix | 1c9dda6 | — |
+| MSI W1 (/mnt/d/SHiP/ej200) | exec25-deckfix | 1c9dda6 | — |
 | GitHub origin/main | main | 5e90025 | — |
 
-tex SHA-256 HOST = MSI = `7ff0ce972fdb3c02b992442019d440542661a95f3d35332f0a4bf7962e80f808` (at 7f68624).
+tex SHA-256 HOST = MSI = `f05b53698bb9d91c2fd10e6ef6cd1576f47d2e158e726088f1052482ab75bbf1` (at 1c9dda6).
 
-**Phase 4 push commands (PRINT ONLY — do not execute):**
+**MSI branch inventory (verified 2026-09-03):**
+- `exec25-deckfix` = current campaign branch (1c9dda6)
+- `exec24-sync` = 1c5a4c5 (EXEC_24 result = rollback tag = pre-exec25-260902); fully contained in exec25-deckfix → safe to delete after push
+- `exec24-deckfix` = does NOT exist (deleted in CHECKPOINT 0)
+- No stash exists on /mnt/d/SHiP/ej200
+
+**Post-approval push commands (PRINT ONLY — do not execute):**
 ```bash
-# 1. MSI cleanup
-git -C /home/reriosto/SHiP/ej200 stash drop
-git -C /home/reriosto/SHiP/ej200 branch -d exec24-sync
+# 1. MSI cleanup — exec24-sync fully contained in exec25-deckfix (verified via --contains)
+#    Note: no stash exists; skip stash drop
+git -C /mnt/d/SHiP/ej200 branch -d exec24-sync
 
-# 2. W1 fast-forward (after push)
-git -C /mnt/d/SHiP/ej200 fetch origin && git -C /mnt/d/SHiP/ej200 merge --ff-only origin/main
-
-# 3. Push HOST main to GitHub
+# 2. Push HOST main to GitHub
 git push origin main
 
-# 4. Push rollback tag
+# 3. Push rollback tag
 git push origin pre-exec25-260902
+
+# 4. W1 fast-forward (after push clears origin/main)
+git -C /home/reriosto/SHiP/ej200 fetch origin && git -C /home/reriosto/SHiP/ej200 merge --ff-only origin/main
 ```
 
 No push executed. No merge. No rebase. No branch deleted.
