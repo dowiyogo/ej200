@@ -41,6 +41,24 @@
 \newcommand{\wTOP}{0.987}  % correspondingly; not canonical
 \newcommand{\veffEND}{177.6\mm/\text{ns}}
 \newcommand{\sigmax}{7.9\mm}
+% EXEC_24 FIX-11: bare-number macros for G1 formula and G2 table
+\newcommand{\sigmaENDbval}{53.68}      % bare σ_E (ps); hybrid m=8 x=0
+\newcommand{\sigmaTOPbval}{15.20}      % bare σ_T (ps); k=3 x=0
+\newcommand{\CETval}{196.3}            % C_ET best_est and empirical (ps²)
+\newcommand{\CETrobust}{80.5}          % C_ET robust IQR polarization (ps²)
+\newcommand{\wENDrobust}{0.051}        % w_E robust IQR; not canonical
+\newcommand{\wENDemp}{0.086}           % w_E empirical np.var+np.cov; not canonical
+\newcommand{\sigBLUEbestest}{15.21}    % σ_IQR^ev best_est (ps, bare)
+\newcommand{\sigBLUErobust}{15.12}     % σ_IQR^ev robust IQR (ps, bare)
+\newcommand{\sigBLUEemp}{15.03}        % σ_IQR^ev empirical (ps, bare)
+\newcommand{\sigmaformBLUE}{15.18}     % σ^formula Gaussian BLUE algebra (ps, bare)
+% w* from CP-B wscan (biased argmin, not a reported result)
+\newcommand{\wstarxzero}{0.080}        % w*(x=0); blue_wscan_x0.meta.json
+\newcommand{\wstarxptwo}{0.125}        % w*(x=+200); ρ(x) check
+\newcommand{\wstarxpsix}{0.065}        % w*(x=+600); ρ(x) check
+% σ_TOP at off-center positions (G2 qualitative check)
+\newcommand{\sigmaTOPxptwo}{24.3}      % bare σ_TOP (ps) at x=+200
+\newcommand{\sigmaTOPxpsix}{16.8}      % bare σ_TOP (ps) at x=+600
 
 % ---- auto-generated macro files ----
 \input{../napkin_first_principles/values/napkin_macros}
@@ -196,8 +214,8 @@
     \textbf{Population I: TIR-guided}
     \begin{itemize}
       \item Travel at zig-zag angle; never hit Vikuiti
-      \item Path to END $\approx L/(2\cos\theta_c)$
-      \item Fast: arrive $\sim\!3.7\ns$ after emission
+      \item Path to END: $\NapLhalfmm$ to $\NappathTIRlimmm$
+      \item Arrive $\NaptaxialENDns$ to $\NaptTIRlimns$ after emission
       \item These dominate END timing
     \end{itemize}
     \vspace{4pt}
@@ -482,7 +500,7 @@
     \[
       \tau_\text{prop}^\text{TOP} \approx \frac{10\mm}{v_g} = 53\ps
     \]
-    vs.\ $\tau_\text{prop}^\text{END} \approx 3.7\ns$.\\[4pt]
+    vs.\ $\tau_\text{prop}^\text{END} \in [\NaptaxialENDns,\,\NaptTIRlimns]$.\\[4pt]
     \textbf{Result at $x=0$, $k=3$, $N_\text{TOP}=20$:}
     \[
       \sigma_\text{TOP} = \sigmaTOPval
@@ -751,7 +769,7 @@
     \textbf{Selected configuration:}
     \begin{itemize}\setlength\itemsep{3pt}
       \item Scintillator: \textbf{EJ-230} ($\tau=1.5\ns$, $\lambda_\text{att}=1200\mm$)
-      \item Reflector: \textbf{Vikuiti ESR} ($R=0.95$ constant in code)
+      \item Reflector: \textbf{Vikuiti ESR} ($R=\Rvikuiti$ in data; code $0.98$ since \texttt{c7acb7a})
       \item END SiPMs: \textbf{8 per face} = 16 total
       \item TOP SiPMs: \textbf{20 along bar} (step $\approx\!70\mm$)
       \item Total channels: \textbf{36}
@@ -980,7 +998,7 @@
   \end{tabular}
   \end{center}
   \vspace{4pt}
-  \footnotesize Note: $\sigma_t$ values from GEN-3 END-only geometry (scan\_end\_vikuiti, $m^*$-optimal per position). GEN-3 with TOP SiPMs gives $\sigma_\text{END}=\sigmaENDval$ for EJ-230 at $x=0$ (see FIX-08 on TOP interception).
+  \footnotesize Note: $\sigma_t$ values from GEN-3 END-only geometry (scan\_end\_vikuiti, $m^*$-optimal per position). GEN-3 with TOP SiPMs gives $\sigma_\text{END}=\sigmaENDval$ for EJ-230 at $x=0$ (see App.~B1).
 \end{frame}
 
 % ---- Appendix D: Photon budget ----
@@ -1083,45 +1101,53 @@
 \end{frame}
 
 % ---- Appendix G: BLUE statistics ----
-\begin{frame}[shrink=5]{G1 — BLUE Weight Derivation / G2 — Covariance Convention Comparison}
+\begin{frame}{G1 — BLUE Weight Derivation}
   \begin{columns}[T]
-    \column{0.52\linewidth}
-    \textbf{G1 — BLUE formula:}
+    \column{0.54\linewidth}
+    \textbf{BLUE formula:}
     \[
       w_E = \frac{\sigma_T^2 - C_{ET}}{\sigma_E^2 + \sigma_T^2 - 2C_{ET}}
     \]
-    $\sigma^2 = \sigma_\text{IQR}^2$ (diagonal); $C_{ET} = \text{Cov}(T_E,T_T)$ empirical (best\_est).\\[3pt]
-    At $x=0$: $\sigma_E=\sigmaENDval$, $\sigma_T=\sigmaTOPval$, $C_{ET}=196.3\,\text{ps}^2$.\\
+    $\sigma^2 = \sigma_\text{IQR}^2$ (diagonal); $C_{ET} = \text{Cov}(T_E,T_T)$ (best\_est).\\[3pt]
+    At $x=0$: $\sigma_E=\sigmaENDval$,\; $\sigma_T=\sigmaTOPval$,\; $C_{ET}=\CETval\,\text{ps}^2$.\\[2pt]
     $C_{ET}/(\sigma_E\sigma_T)=0.241$ (BLUE-consistent $\rho$; \emph{not} the corrcoef 0.16).
     \[
-      w_E = \frac{15.20^2 - 196.3}{53.68^2 + 15.20^2 - 2{\times}196.3} = 0.013
+      w_E = \frac{\sigmaTOPbval^2 - \CETval}{\sigmaENDbval^2 + \sigmaTOPbval^2 - 2{\times}\CETval}
+          = \wEND
     \]
-    This is one defensible convention — see G2.\\[3pt]
-    \textbf{Formula vs.\ event:}\\
-    $\sigma^\text{formula}=15.18\ps$ (Gaussian approximation);\\
-    $\sigma_\text{IQR}^\text{event}=15.21\ps$ (IQR of BLUE series).\\
-    These are different scale metrics; their agreement is coincidental for non-Gaussian data.
+    One defensible convention — see G2 for ambiguity.\\[3pt]
+    \textbf{Formula vs.\ event:}\\[1pt]
+    $\sigma^\text{formula}=\sigmaformBLUE\ps$ (Gaussian BLUE algebra);\\
+    $\sigma_\text{IQR}^\text{event}=\sigmaBLUEval$ (IQR of BLUE series).\\[2pt]
+    Different scale metrics; agreement here is coincidental for non-Gaussian data.
 
-    \column{0.44\linewidth}
-    \textbf{G2 — Three covariance conventions}\\[3pt]
-    \begin{tabular}{p{1.5cm}p{0.9cm}p{0.8cm}p{1.3cm}}
-      \toprule
-      Convention & $C_{ET}$ & $w_E$ & $\sigma_\text{IQR}^\text{ev}$ \\
-      \midrule
-      best\_est & 196.3 & 0.013 & 15.21 ps \\
-      (IQR σ² + & & & \\
-      \quad emp.\ cov) & & & \\[2pt]
-      robust IQR & 80.5 & 0.051 & 15.12 ps \\
-      \quad (polariz.) & & & \\[2pt]
-      empirical & 196.3 & 0.086 & 15.03 ps \\
-      (np.var + & & & \\
-      \quad np.cov) & & & \\
-      \bottomrule
-    \end{tabular}\\[4pt]
-    All three lie within $0.18\ps$ — comparable to the bootstrap SE on $\sigma_\text{IQR}$ (${\approx}0.17\ps$ at $n=5000$). The choice of covariance convention is not resolved by this dataset; no design conclusion depends on it.\\[3pt]
-    $\sigma_\text{IQR}(w)$ is flat to within one SE over $w\in[0,0.1]$ (total variation $0.26\ps$).\\[3pt]
-    \textbf{Qualitative BLUE check:} $w_E$ increases with $\sigma_T$ as expected — $w_E^{\rm analytic}$: $x=0$ ($0.013$) $<$ $x{=}{+}600$ ($0.041$) $<$ $x{=}{+}200$ ($0.106$). Empirical $w^*$ ordering is consistent but not statistically resolved ($n=5000$).
+    \column{0.42\linewidth}
+    \textbf{Why $w_E \approx \wEND$?}\\[4pt]
+    $\sigma_E = \sigmaENDval \gg \sigma_T = \sigmaTOPval$:\\[2pt]
+    END dominated by propagation jitter; almost all BLUE weight falls on the precise TOP estimator.\\[8pt]
+    \textbf{$\rho$ distinction:}\\[2pt]
+    $\rho_\text{BLUE} = 0.241 = C_{ET}/(\sigma_E^\text{IQR}\sigma_T^\text{IQR})$\\
+    enters the BLUE denominator.\\[4pt]
+    $\rho_\text{emp} = 0.160$ is the Pearson corrcoef\\
+    of $(T_E,T_T)$ residuals.\\[4pt]
+    They differ because different $\sigma$ estimates enter the two ratios.
   \end{columns}
+\end{frame}
+
+\begin{frame}{G2 — Covariance Convention Comparison}
+  \textbf{Three conventions for $C_{ET}$ and $w_E$ at $x=0$:}\\[4pt]
+  \begin{tabular}{lrrr}
+    \toprule
+    Convention & $C_{ET}$ (ps$^2$) & $w_E$ & $\sigma_\text{IQR}^\text{ev}$ (ps) \\
+    \midrule
+    best\_est (IQR $\sigma^2$, emp.\ cov) & \CETval    & \wEND       & \sigBLUEbestest \\
+    robust IQR (polarization)             & \CETrobust & \wENDrobust & \sigBLUErobust \\
+    empirical (np.var $+$ np.cov)         & \CETval    & \wENDemp    & \sigBLUEemp \\
+    \bottomrule
+  \end{tabular}\\[5pt]
+  All three within $0.18\ps$ of each other — comparable to bootstrap SE (${\approx}0.17\ps$, $n=5000$). The convention is not resolved by this dataset; no design conclusion depends on it.\\[4pt]
+  $\sigma_\text{IQR}(w)$ flat to within one SE over $w\in[0,0.1]$ (total variation $0.26\ps$).\\[5pt]
+  \textbf{Qualitative BLUE check:} $w^*$ increases with $\sigma_T$ as expected ($w_E \propto \sigma_T^2$ in BLUE). Empirical $w^*$ (biased argmin, 81-point wscan, \emph{not} a reported result): $x{=}{+}600$ ($\sigma_T{=}\sigmaTOPxpsix\ps$, $w^*{=}\wstarxpsix$), $x{=}0$ ($\sigma_T{=}\sigmaTOPbval\ps$, $w^*{=}\wstarxzero$), $x{=}{+}200$ ($\sigma_T{=}\sigmaTOPxptwo\ps$, $w^*{=}\wstarxptwo$). Mostly monotone in $\sigma_T$; $x{=}0$ vs $x{=}{+}600$ reversed — statistical noise ($\lesssim\!1.25\sigma$ improvement, $n{=}5000$).
 \end{frame}
 
 % ---- Appendix H: Position ----
