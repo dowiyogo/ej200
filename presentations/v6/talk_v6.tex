@@ -431,7 +431,7 @@
 \begin{frame}{Geant4 Validates the Napkin}
   \begin{columns}[T]
     \column{0.50\linewidth}
-    \textbf{Photon yield at $x=0$, EJ-230:}\\[4pt]
+    \textbf{Photon yield at $x=0$, EJ-230 (END-only, $N_\text{TOP}=0$):}\\[4pt]
     \begin{tabular}{lcc}
       \toprule
       Path & Napkin & G4 \\
@@ -441,7 +441,7 @@
       \textbf{Total / end} & \textbf{570} & \textbf{701.3} \\
       \bottomrule
     \end{tabular}\\[1pt]
-    $\Delta N_\text{pe}/N_\text{nap} = +23\%$.\\[4pt]
+    $\Delta N_\text{pe}/N_\text{nap} = +23\%$ (END-only).\\[4pt]
     Napkin accuracy: $-17\%$ (predicted deficit).
     \emph{Reason:} napkin counts only the TIR-guided population.
     Reflector-recovered photons add a systematic $+23\%$ that the napkin cannot predict without knowing $R$.\\[6pt]
@@ -784,7 +784,7 @@
       $\sigma_t$ at $x=0$ & $\mathbf{15.2\ps}$ \\
       Mean $\sigma_t$ across bar & $19.5\ps$ \\
       $\sigma_x$ (END $\Delta t$) & $\mathbf{7.9\mm}$ \\
-      $N_\text{pe}$/end at $x=0$ & $701.3$ \\
+      $N_\text{pe}$/end at $x=0$ & $514.9$ (hybrid, $N_\text{TOP}=20$) \\
       \bottomrule
     \end{tabular}
     \end{center}
@@ -941,7 +941,7 @@
     Air gap & No & Yes (0.10 mm) & Yes (0.10 mm) \\
     Reflector & \texttt{dielectric\_metal skin} & border surface, R=\Rvikuiti & border surface, R=\Rvikuiti \\
     TIR & Eliminated by skin & Natural Fresnel & Natural Fresnel \\
-    $N_\text{pe}$ & $\sim\!0.37$ (BUG) & 701.3 & 701.3 \\
+    $N_\text{pe}$/end & $\sim\!0.37$ (BUG) & 701.3 & 514.9 \\
     $\sigma_\text{END}$ & N/A (insufficient pe) & \sigmaENDonlyval\ ($m^*=7$) & \sigmaENDval\ ($m=8$) \\
     TOP & No & No ($N=0$) & Yes ($N=4,8,14,20$) \\
     Status & \textcolor{red}{\textbf{INVALID}} & superseded & \textcolor{green!60!black}{\textbf{current}} \\
@@ -1018,8 +1018,10 @@
       PDE & 0.400 & assumed \\
       \textbf{Napkin/end} & \textbf{570} & TIR-only \\
       \midrule
-      \textbf{G4/end} & \textbf{701.3} & +refl.-rec. \\
-      Surplus & $+23\%$ & Pop.\ II \\
+      \textbf{G4/end (END-only)} & \textbf{701.3} & +refl.-rec. \\
+      G4/end (hybrid, $N_\text{TOP}{=}20$) & 514.9 & TOP intercept \\
+      TOP interception & $-26.6\%$ & vs END-only \\
+      Surplus (END-only) & $+23\%$ & Pop.\ II \\
       \bottomrule
     \end{tabular}}
 
