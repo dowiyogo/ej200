@@ -329,7 +329,7 @@
 % ---- Material comparison ----
 \begin{frame}{Material Choice: EJ-230 is the Fastest Scintillator Here}
   \begin{columns}[T]
-    \column{0.48\linewidth}
+    \column{0.52\linewidth}
     \begin{tabular}{lccc}
       \toprule
       & EJ-200 & EJ-204 & \textbf{EJ-230} \\
@@ -350,7 +350,7 @@
     $x=0$: EJ-230 (\RessigmaxzEROejC) $<$ EJ-204 (\RessigmaxzEROejB) $<$ EJ-200 (\RessigmaxzEROejA).\\
     Bar mean: EJ-230 (\RessigmamEANejC) $<$ EJ-200 (\RessigmamEANejA) $<$ EJ-204 (\RessigmamEANejB).
 
-    \column{0.48\linewidth}
+    \column{0.44\linewidth}
     \includegraphics[width=0.82\linewidth]{figs/figM2_mat_npe}\\[1pt]
     \includegraphics[width=0.82\linewidth]{figs/figM1_mat_sigma_end}
   \end{columns}
@@ -422,7 +422,7 @@
       Reflector-recovered & 0 & — \\
       \textbf{Total / end} & \textbf{570} & \textbf{701.3} \\
       \bottomrule
-    \end{tabular}\\[6pt]
+    \end{tabular}\\[1pt]
     $\Delta N_\text{pe}/N_\text{nap} = +23\%$.\\[4pt]
     Napkin accuracy: $-17\%$ (predicted deficit).
     \emph{Reason:} napkin counts only the TIR-guided population.
@@ -1151,7 +1151,7 @@
 
 
 % ---- Appendix I: Jitter ----
-\begin{frame}{I1 — Jitter and Timing Budget}
+\begin{frame}{I1 — Jitter: Sources and SPTR Provenance}
   \begin{columns}[T]
     \column{0.52\linewidth}
     \textbf{Sources of $\sigma_t$:}
@@ -1172,14 +1172,6 @@
             converted ($\sigma=\text{FWHM}/2.355$) before combining.}}
       \item \textbf{Electronic:} TDC binning, cable, trigger — not included in this simulation
     \end{itemize}
-    \vspace{4pt}
-    Current simulation includes: photon emission + propagation + SiPM PDE.\\
-    Does not include: SPTR, electronic jitter, optical crosstalk
-    (23\% total at 12\,V OV; spurious simultaneous pulse can advance $k$th-order timestamp).\\[4pt]
-    \alert{Quoted $\sigma_\text{TOP}=15.2\ps$ is a lower bound.}
-    \textit{Note:} $\sigma_\text{SPTR}/\sqrt{k\cdot N_\text{active}}$ applies to averages,
-    not to the $k$th order statistic of the TOP estimator.
-    Propagation of SPTR through the order-$k$ estimator is pending formal derivation.
 
     \column{0.44\linewidth}
     \anafig{fig_sigma_t_x}\\[2pt]
@@ -1187,6 +1179,22 @@
     Napkin: EJ-230 fastest at all positions (faster $\tau$).
     G4 ($x=0$, $m^*$-opt, GEN-3 END-only): EJ-230 (\RessigmaxzEROejC) $<$ EJ-204 (\RessigmaxzEROejB) $<$ EJ-200 (\RessigmaxzEROejA).
   \end{columns}
+\end{frame}
+
+\begin{frame}{I2 — Timing Simulation Coverage}
+  \textbf{Current simulation includes:} photon emission + propagation + SiPM PDE.\\[6pt]
+  \textbf{Not included:}
+  \begin{itemize}\setlength\itemsep{4pt}
+    \item SPTR (see I1 for provenance)
+    \item Electronic jitter (TDC binning, cable, trigger)
+    \item Optical crosstalk: 23\% total at 12\,V OV;
+          spurious simultaneous pulse can advance the $k$th-order timestamp
+  \end{itemize}
+  \vspace{6pt}
+  \alert{Quoted $\sigma_\text{TOP}=15.2\ps$ is a lower bound.}\\[6pt]
+  \textit{Order-statistic caveat:} $\sigma_\text{SPTR}/\sqrt{k\cdot N_\text{active}}$ applies to
+  sample averages, not to the $k$th order statistic of the TOP estimator.
+  Propagation of SPTR through the order-$k$ estimator is pending formal derivation.
 \end{frame}
 
 % ---- Appendix J: Provenance ----
