@@ -863,14 +863,11 @@
 
     \column{0.41\linewidth}
     \textbf{A2 — R=0.95 vs R=0.98}\\[4pt]
-    Code value (Materials.cc): $R = 0.95$\\
-    Manufacturer Vikuiti ESR spec: $R \approx 0.98$\\[4pt]
-    The code comment says ``R=0.98 Vikuiti ESR'' but the actual constant set is 0.95.
-    All simulation results in this analysis use \alert{$R=0.95$}.\\[6pt]
-    \textbf{Napkin uses $R=0.98$} for reflector attenuation estimates.
-    The $\Lambda_\text{refl}$ values assume R=0.98.
-    With $R=\Rvikuiti$ (simulation data): $\Lambda_\text{refl}^H = \NapLambdareflHmmsim$ (shorter --- more loss).\\[4pt]
-    This discrepancy should be corrected in a future simulation campaign.
+    All simulation data shown: $R=\Rvikuiti$ (Materials.cc at data generation).\\[4pt]
+    Code corrected to $R=0.98$ in commit \texttt{c7acb7a} (2026-09-01);
+    re-simulation pending.\\[4pt]
+    \textbf{Napkin uses $R=0.98$} for reflector attenuation estimates ($\Lambda_\text{refl}^H \approx \LambdaH$).
+    With $R=\Rvikuiti$ (simulation data): $\Lambda_\text{refl}^H = \NapLambdareflHmmsim$ (shorter --- more loss).
   \end{columns}
 \end{frame}
 
