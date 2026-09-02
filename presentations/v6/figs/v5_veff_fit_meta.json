@@ -1,0 +1,71 @@
+{
+  "figure": "v5_veff_fit.pdf",
+  "source_root_dir": "/home/rrios/ej200/results/scan_end_vik_sparse_top_v2",
+  "source_root_files": [
+    "photon_hits_ej230_ntop20_x-600.root",
+    "photon_hits_ej230_ntop20_x-500.root",
+    "photon_hits_ej230_ntop20_x-400.root",
+    "photon_hits_ej230_ntop20_x-300.root",
+    "photon_hits_ej230_ntop20_x-200.root",
+    "photon_hits_ej230_ntop20_x-100.root",
+    "photon_hits_ej230_ntop20_x0.root",
+    "photon_hits_ej230_ntop20_x100.root",
+    "photon_hits_ej230_ntop20_x200.root",
+    "photon_hits_ej230_ntop20_x300.root",
+    "photon_hits_ej230_ntop20_x400.root",
+    "photon_hits_ej230_ntop20_x500.root",
+    "photon_hits_ej230_ntop20_x600.root"
+  ],
+  "sha256": {
+    "photon_hits_ej230_ntop20_x-600.root": "7da8b5aae54b839f4df0556b06d646288d07c9738a96ac1ad7c1a2e904fb48b9",
+    "photon_hits_ej230_ntop20_x-500.root": "ddb5a43d53715455be8131878728564b7abae4cc8f19ebe2d21d19640c75888f",
+    "photon_hits_ej230_ntop20_x-400.root": "55f53e9a2944b4ccc8a3174e64d610446b6786a1084ec9c31a7ecaf7332e2f5c",
+    "photon_hits_ej230_ntop20_x-300.root": "4f036f1744c447a5cef511e915d7f53d61b3a3af178841e14090463ba772ede5",
+    "photon_hits_ej230_ntop20_x-200.root": "2c7df87953573f51e06cd16182b2be4e80e21f29ea77ecf014f35120da1117d2",
+    "photon_hits_ej230_ntop20_x-100.root": "1eda6ad09f066147d7b3d68f9d303048be3675f45ba6312aef760d42cd8a50e3",
+    "photon_hits_ej230_ntop20_x0.root": "f6fcc7138593208011c0314acc0d374773c2d04706225838f03e18bb3e9579d3",
+    "photon_hits_ej230_ntop20_x100.root": "f37b1b968f06ceaa9a1b75387dbe22aa4d3b5585140974885bd3d178f3e84ef8",
+    "photon_hits_ej230_ntop20_x200.root": "766071c6de75a96b6e9a9b50c00be7b994ba39b1b4bff5eb06832c9b7cc557e4",
+    "photon_hits_ej230_ntop20_x300.root": "13199156a8e6db941bcd4831596ce0c066106127f74a196d6d58449ca2565f0e",
+    "photon_hits_ej230_ntop20_x400.root": "bf95c763026f8caec096bc60cefd8aedaa7a3d4af0176c74307211abcdbf6b80",
+    "photon_hits_ej230_ntop20_x500.root": "037ad1cf5e070e7cf99b0c5ad79e1e8ef54e508c75169ca85a8cd596bc8f9202",
+    "photon_hits_ej230_ntop20_x600.root": "a050924e3c3605df1ee7c5d35ef46567811fe9f7834231eedaeec7a37db3418e"
+  },
+  "generating_script": "presentations/v5/scripts/analysis_v5.py (Section 1); re-run via scratchpad/fix_phase2_figs.py (Phase 2, EXEC_25)",
+  "generating_command": "python gen_v5_fig_sidecars.py  # this script",
+  "scintillator": "EJ-230",
+  "estimator": "m=8 average END estimator",
+  "x_positions": [
+    -600,
+    -500,
+    -400,
+    -300,
+    -200,
+    -100,
+    0,
+    100,
+    200,
+    300,
+    400,
+    500,
+    600
+  ],
+  "binning": "x_scan = range(-600, +600+1, 100) [13 positions]; no spatial binning \u2014 one median per x",
+  "fit": {
+    "model": "DeltaT = a + b*x",
+    "a_ps": 0.437,
+    "ea_ps": 4.036,
+    "b_psmm": -11.258677,
+    "eb_psmm": 0.011538,
+    "v_eff_mmns": 177.6,
+    "v_eff_err_mmns": 0.18,
+    "residual_rms_ps": 14.47
+  },
+  "columns": {
+    "x": "muon gun x position [mm]",
+    "dt_median_ps": "median DeltaT_END = tR - tL [ps], m=8 average per side",
+    "dt_err_ps": "statistical uncertainty on median [ps]",
+    "residual_ps": "r(x) = DeltaT(x) - (a + b*x) [ps]",
+    "n_ev": "number of events passing m>=8 on both sides"
+  }
+}
