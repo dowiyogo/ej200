@@ -1,0 +1,64 @@
+{
+  "script": "top_npe_diag.py",
+  "datasets": {
+    "npe_top": "scan_end_vik_sparse_top_v2 (EJ-230, N_TOP=20, face_type=2)",
+    "npe_end": "scan_end_vikuiti (EJ-230, END-only, face_type 0+1, per-face mean)"
+  },
+  "scintillator": "EJ-230",
+  "ntop_hybrid": 20,
+  "x_positions": [
+    -600,
+    -500,
+    -400,
+    -300,
+    -200,
+    -100,
+    0,
+    100,
+    200,
+    300,
+    400,
+    500,
+    600
+  ],
+  "n_events_sp": 5000,
+  "n_events_eo": 5000,
+  "columns": {
+    "x": "muon gun x position [mm]",
+    "npe_end_per_face": "mean hits per END face per event, from scan_end_vikuiti (raw count/2)",
+    "npe_top_mean": "mean total TOP hits per event, all 20 SiPMs pooled (scan_end_vik_sparse_top_v2)",
+    "npe_top_median": "median total TOP hits per event",
+    "npe_top_iqr_sigma": "IQR-based sigma of total TOP hits per event",
+    "d_nearest": "distance from x to nearest TOP SiPM center [mm]",
+    "d_second": "distance from x to second-nearest TOP SiPM center [mm]"
+  },
+  "gate": {
+    "quantity": "npe_end_per_face at x=0 (scan_end_vikuiti)",
+    "expected": 701.3,
+    "tolerance": 1.0,
+    "actual": 701.2816,
+    "status": "PASS"
+  },
+  "top_sipm_positions": [
+    -664.3,
+    -594.3,
+    -524.3,
+    -454.3,
+    -384.4,
+    -314.4,
+    -244.4,
+    -174.4,
+    -104.5,
+    -34.5,
+    34.5,
+    104.5,
+    174.4,
+    244.4,
+    314.4,
+    384.4,
+    454.3,
+    524.3,
+    594.3,
+    664.3
+  ]
+}
