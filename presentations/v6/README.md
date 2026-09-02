@@ -62,6 +62,13 @@ Inconsistencias narrativas documentadas en `docs/branch_diagnosis/TALKV6_CONSIST
 - Línea 860 (`talk_v6.tex:860`): describe la discrepancia R=0.95/0.98 como defecto activo —
   obsoleta una vez el deck se regenere con datos R=0.98.
 
+## MSI branch topology (EXEC_25 note)
+
+On MSI, `main` is held at `5e90025` by the `ej200_edge_scan` worktree (frozen
+pre-EXEC_23 reference; do not touch). The MSI working branch tracking HOST
+`main` is `exec24-sync` / `exec25-deckfix`. W1 (`/home/reriosto/SHiP/ej200`)
+tracks the same branch.
+
 ## Por qué se conserva
 
 Versión actual de la presentación principal del proyecto.

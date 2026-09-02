@@ -19,7 +19,7 @@ Config: EJ-230, Vikuiti ESR (R=0.95 constant), N_TOP=20 unless noted.
 | N_bounce (H=10mm face, L/2) | 85.63 | geometric |
 | N_bounce (W=60mm face, L/2) | 14.27 | geometric |
 | Λ_refl (H-face, R=0.98) | 404.6 mm | napkin, R=0.98 |
-| Λ_refl (H-face, R=0.95) | ~240 mm | corrected |
+| Λ_refl (H-face, R=0.95) | 159.4 mm | from \NapLambdaReflRlow (EXEC_23 FIX-05) |
 | N_pe/end (TIR-only napkin) | 570 | EJ-230, x=0 |
 | N_pe/end (Geant4) | 701.3 | GEN-3, x=0 |
 | Surplus (reflector-recovered) | +23% | (701.3−570)/570 |
@@ -36,7 +36,7 @@ Config: EJ-230, Vikuiti ESR (R=0.95 constant), N_TOP=20 unless noted.
 | Yield [ph/MeV] | 10000 | 10400 | 9700 |
 | n | 1.58 | 1.58 | 1.58 |
 | N_pe/end (G4, x=0) | 1311 | 941 | **701.3** |
-| σ_END END-only [ps] | 47.6 | 52.1 | 49.6 |
+| σ_END END-only, m*-opt, x=0 [ps] | 54.86 | 53.36 | 50.49 |
 
 ---
 
