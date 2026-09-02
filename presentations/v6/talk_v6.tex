@@ -222,7 +222,7 @@
     \textbf{Population II: Reflector-recovered}
     \begin{itemize}
       \item Exit slab at $\theta < \theta_c$, hit Vikuiti
-      \item Reflected ($R=0.95$ per bounce) back into bar
+      \item Reflected ($R=\Rvikuiti$ per bounce) back into bar
       \item Re-enter at various angles; can become TIR
       \item Arrive \emph{later} with more spread
       \item Account for 23\% of extra Npe vs napkin
@@ -386,7 +386,7 @@
       \item Explicit \textbf{air gap} ($0.10\mm$) around bar
       \item Explicit \textbf{Mylar reflector} ($0.05\mm$) outside air
       \item Bar$\to$air: \texttt{CreateBarSurface()} — \texttt{dielectric\_dielectric, polished} → natural Fresnel + TIR for $\theta>\theta_c$
-      \item Air$\to$Mylar: \texttt{CreateBarSkinReflector()} as border surface — \texttt{dielectric\_dielectric}, $R=0.95$ constant
+      \item Air$\to$Mylar: \texttt{CreateBarSkinReflector()} as border surface — \texttt{dielectric\_dielectric}, $R=\Rvikuiti$ constant
       \item SiPM: \texttt{dielectric\_metal}, wavelength-dependent PDE (AFBR-S4N66P024M)
     \end{itemize}
     \vspace{4pt}
@@ -818,7 +818,7 @@
     \textbf{Optical physics:}
     \begin{itemize}\setlength\itemsep{2pt}
       \item TIR traps 54.8\% of photons toward ends
-      \item Vikuiti (R=0.95) recovers non-TIR photons (+23\%)
+      \item Vikuiti ($R=\Rvikuiti$) recovers non-TIR photons (+23\%)
       \item EJ-230 is fastest despite lower yield
     \end{itemize}
     \textbf{Estimators:}
@@ -873,7 +873,7 @@
     \begin{itemize}\setlength\itemsep{1pt}
       \item Type: \texttt{dielectric\_dielectric}
       \item Model: \texttt{unified}; Finish: \texttt{polished}
-      \item $R = 0.95$ constant (wavelength-independent)
+      \item $R = \Rvikuiti$ constant (wavelength-independent)
       \item Used as \emph{border} surface (naming is legacy from skin-surface era)
     \end{itemize}
     \vspace{4pt}
@@ -885,7 +885,7 @@
     \end{itemize}
 
     \column{0.41\linewidth}
-    \textbf{A2 — R=0.95 vs R=0.98}\\[4pt]
+    \textbf{A2 — $R=\Rvikuiti$ vs $R=0.98$}\\[4pt]
     All simulation data shown: $R=\Rvikuiti$ (Materials.cc at data generation).\\[4pt]
     Code corrected to $R=0.98$ in commit \texttt{c7acb7a} (2026-09-01);
     re-simulation pending.\\[4pt]
@@ -912,7 +912,7 @@
     This geometry correctly separates:
     \begin{enumerate}\setlength\itemsep{1pt}
       \item Fresnel refraction at bar–air interface (natural physics)
-      \item Vikuiti reflectivity at air–Mylar interface ($R=0.95$)
+      \item Vikuiti reflectivity at air–Mylar interface ($R=\Rvikuiti$)
     \end{enumerate}
     \vspace{4pt}
     \textbf{GROUPVEL verification:} propagation time in air is set correctly (no superluminal photons).
@@ -939,7 +939,7 @@
     \midrule
     Build & end-only (early) & build\_end\_vikuiti & build\_end\_vikuiti \\
     Air gap & No & Yes (0.10 mm) & Yes (0.10 mm) \\
-    Reflector & \texttt{dielectric\_metal skin} & border surface, R=0.95 & border surface, R=0.95 \\
+    Reflector & \texttt{dielectric\_metal skin} & border surface, $R=\Rvikuiti$ & border surface, $R=\Rvikuiti$ \\
     TIR & Eliminated by skin & Natural Fresnel & Natural Fresnel \\
     $N_\text{pe}$ & $\sim\!0.37$ (BUG) & 701.3 & 701.3 \\
     $\sigma_\text{END}$ & N/A (insufficient pe) & \sigmaENDonlyval\ ($m^*=7$) & \sigmaENDval\ ($m=8$) \\
@@ -964,7 +964,7 @@
       \item Most of those are absorbed by the ``Vikuiti'' metal surface before reaching END
       \item Vikuiti/TIR ratio of $\sim\!10^3$ claimed from these data was a simulation artifact
     \end{itemize}
-    \textbf{Fix (exec21-optfix):} Changed to \texttt{dielectric\_dielectric} border surface with $R=0.95$, preserving natural TIR at bar–air interface.
+    \textbf{Fix (exec21-optfix):} Changed to \texttt{dielectric\_dielectric} border surface with $R=\Rvikuiti$, preserving natural TIR at bar–air interface.
 
     \column{0.40\linewidth}
     \textbf{Sanity check:}\\[3pt]
@@ -1253,7 +1253,7 @@
       Positions $x$ & 13 ($-600$ to $+600$\,mm) \\
       $N_\text{TOP}$ configs & 4, 8, 14, 20 \\
       Scintillator & EJ-230 \\
-      Reflector & Vikuiti ESR ($R=0.95$) \\
+      Reflector & Vikuiti ESR ($R=\Rvikuiti$) \\
       Geometry & GEN-3 (air gap + Mylar) \\
       \bottomrule
     \end{tabular}
