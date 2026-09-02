@@ -11,6 +11,13 @@ El volumen se llama `VikuitiXXXLV`; el nombre es histórico (Vikuiti ESR como ca
 
 ## Defectos conocidos
 
+**[OPEN] FIX-01b — figM1/figM2 figure sidecars missing (phase_ab.py):**
+`analysis/optim/phase_ab.py` saves `fig1_sigma_vs_k_x0.png`, `fig2_optimal_vs_x.png`,
+`fig3_sigma_vs_efficiency.png` but emits no CSV or `.meta.json` sidecars.
+figM1/figM2/fig_sigma_t_x/fig_npe_x in `presentations/v6/figs/` lack provenance metadata.
+Adding proper sidecar infrastructure to phase_ab.py is estimated >30 min;
+deferred pending re-simulation campaign with R=0.98.
+
 **SPTR diapositiva I1 (corregida en `4851c43`→ tex en siguiente commit):** El valor
 "~100 ps" no tenía procedencia (DS105 no tabula SPTR). Reemplazado por medida publicada
 del 6×6 mm² NUV-MT (Lee et al., IEEE TRPMS 9(4) 2025): 137±4 ps FWHM intrínseco
