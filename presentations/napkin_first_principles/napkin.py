@@ -69,7 +69,8 @@ materials = {
 
 # ── Simulation results at x=0  (from convention.json + phase_ab_optimal.csv) ──
 sim_npe   = {"EJ-200": 1310.8, "EJ-204": 941.0, "EJ-230": 701.3}   # PE/end
-sim_sigma = {"EJ-200": 47.6,   "EJ-204": 52.1,  "EJ-230": 49.6}    # ps
+# DEPRECATED (EXEC_23 FIX-01): orphaned values; source of truth is phase_ab_optimal.csv via results_macros.py
+sim_sigma = {"EJ-200": 47.6,   "EJ-204": 52.1,  "EJ-230": 49.6}    # ps — DO NOT USE
 # Effective propagation velocity and timing (EJ-230 END-only, from Geant4 analysis)
 veff_end_mm_ns  = 184.6       # mm/ns  (END SiPMs, EJ-230)
 sigma_Dt_end_ps = 111.5       # ps     (σ of t_R − t_L for END, EJ-230)

@@ -340,14 +340,14 @@
       $n$                       & 1.58  & 1.58  & 1.58 \\
       \midrule
       $N_\text{pe}$/end (G4)    & 1311  & 941  & \textbf{701} \\
-      $\sigma_t$ (G4) [ps]      & 47.6  & 52.1 & \textbf{49.6}$^{\dagger}$ \\
+      $\sigma_t$ ($x{=}0$) [ps]  & \RessigmabxzEROejA & \RessigmabxzEROejB & \textbf{\RessigmabxzEROejC}$^{\dagger}$ \\
+      $\sigma_t$ (bar mean) [ps] & \RessigmabmEANejA  & \RessigmabmEANejB  & \textbf{\RessigmabmEANejC} \\
       \bottomrule
     \end{tabular}
     \vspace{4pt}\\
-    \footnotesize $^\dagger$END-only geometry, $m^*$-optimal.\\[4pt]
-    EJ-200 has more photons and wins at $x=0$ (47.6 vs 49.6\ps).
-    EJ-230 wins on the \textbf{bar average} (50.5 vs 54.9\ps, lower figure) —
-    faster $\tau_\text{rise}$ + $\tau_\text{decay}$ dominate off-centre.
+    \footnotesize $^\dagger$GEN-3 END-only (scan\_end\_vikuiti), $m^*$-opt.\\[4pt]
+    $x=0$: EJ-230 (\RessigmaxzEROejC) $<$ EJ-204 (\RessigmaxzEROejB) $<$ EJ-200 (\RessigmaxzEROejA).\\
+    Bar mean: EJ-230 (\RessigmamEANejC) $<$ EJ-200 (\RessigmamEANejA) $<$ EJ-204 (\RessigmamEANejB).
 
     \column{0.48\linewidth}
     \includegraphics[width=0.82\linewidth]{figs/figM2_mat_npe}\\[1pt]
@@ -968,7 +968,7 @@
     \midrule
     $N_\text{pe}$/end (G4, $x=0$) & 1311 & 941 & \textbf{701.3} \\
     $N_\text{pe}$/end (napkin) & — & — & 570 \\
-    $\sigma_t$ END-only (G4) & 47.6 ps & 52.1 ps & 49.6 ps \\
+    $\sigma_t$ (G4, $x{=}0$, $m^*$-opt) & \RessigmaxzEROejA & \RessigmaxzEROejB & \RessigmaxzEROejC \\
     Napkin bulk survival & 0.832 & 0.646 & \textbf{0.558} \\
     \midrule
     Napkin/G4 ratio $N_\text{pe}$ & 0.807 / 0.718 & 0.651 / 0.535 & napkin uses EJ-230 only \\
@@ -976,7 +976,7 @@
   \end{tabular}
   \end{center}
   \vspace{4pt}
-  \footnotesize Note: $\sigma_t$ values above are from END-only geometry (GEN-2/GEN-3 no-TOP). GEN-3 with TOP SiPMs gives $\sigma_\text{END}=53.7\ps$ for EJ-230 because TOP SiPMs intercept early photons.
+  \footnotesize Note: $\sigma_t$ values from GEN-3 END-only geometry (scan\_end\_vikuiti, $m^*$-optimal per position). GEN-3 with TOP SiPMs gives $\sigma_\text{END}=\sigmaENDval$ for EJ-230 at $x=0$ (see FIX-08 on TOP interception).
 \end{frame}
 
 % ---- Appendix D: Photon budget ----
@@ -1173,7 +1173,7 @@
     \anafig{fig_sigma_t_x}\\[2pt]
     \footnotesize $\sigma_t$ vs position for three materials.
     Napkin: EJ-230 fastest at all positions (faster $\tau$).
-    G4: EJ-200 wins at $x=0$ (47.6 vs 49.6\ps); EJ-230 wins on bar average.
+    G4 ($x=0$, $m^*$-opt, GEN-3 END-only): EJ-230 (\RessigmaxzEROejC) $<$ EJ-204 (\RessigmaxzEROejB) $<$ EJ-200 (\RessigmaxzEROejA).
   \end{columns}
 \end{frame}
 

@@ -34,6 +34,7 @@ with open(SRCCSV) as f:
         })
 
 def fmt_ps(v): return f"{v:.2f}\\,\\text{{ps}}"
+def fmt_bare(v): return f"{v:.2f}"          # bare number, no units (for table cells with unit header)
 def fmt_mm(v): return f"{int(v):+d}\\,\\text{{mm}}" if v != 0 else "0\\,\\text{{mm}}"
 def fmt_pe(v): return f"{v:.0f}\\,\\text{{pe}}"
 def fmt_int(v): return str(v)
@@ -58,9 +59,11 @@ for mat, tag in MAT_TAG.items():
 
     label = MAT_LABEL[mat]
     lines.append(f"% {label}")
-    lines.append(f"\\newcommand{{\\RessigmaxzERO{tag}}}{{{fmt_ps(sig_x0)}}}  % {label} sigma_m*(x=0)")
+    lines.append(f"\\newcommand{{\\RessigmaxzERO{tag}}}{{{fmt_ps(sig_x0)}}}  % {label} sigma_m*(x=0) with units")
+    lines.append(f"\\newcommand{{\\RessigmabxzERO{tag}}}{{{fmt_bare(sig_x0)}}}  % {label} sigma_m*(x=0) bare (for table)")
     lines.append(f"\\newcommand{{\\ResmoptxzERO{tag}}}{{{fmt_int(mopt_x0)}}}  % {label} m* at x=0")
-    lines.append(f"\\newcommand{{\\RessigmamEAN{tag}}}{{{fmt_ps(sig_mean)}}}  % {label} bar-mean sigma_m*")
+    lines.append(f"\\newcommand{{\\RessigmamEAN{tag}}}{{{fmt_ps(sig_mean)}}}  % {label} bar-mean sigma_m* with units")
+    lines.append(f"\\newcommand{{\\RessigmabmEAN{tag}}}{{{fmt_bare(sig_mean)}}}  % {label} bar-mean sigma_m* bare (for table)")
     lines.append(f"\\newcommand{{\\RessigmaMIN{tag}}}{{{fmt_ps(min_sig)}}}  % {label} min sigma_m* on bar")
     lines.append(f"\\newcommand{{\\ResxMIN{tag}}}{{{fmt_mm(x_min)}}}  % {label} x at min sigma")
     lines.append(f"\\newcommand{{\\ResNpexzERO{tag}}}{{{fmt_pe(npe_x0)}}}  % {label} mean N_pe/end at x=0")
