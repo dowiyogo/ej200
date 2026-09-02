@@ -200,6 +200,18 @@ add("tan_alpha_c",    tan_alpha_c,    "",      "tan(α_c) for bounce counting fo
 add("N_bounce_H",     N_bH,          "",      "Bounces on H=10 mm face to reach L/2")
 add("N_bounce_W",     N_bW,          "",      "Bounces on W=60 mm face to reach L/2")
 
+# ── FIX-06: propagation path bounds to END face (center → end, x=0) ────────
+# Direct axial path: L/2 = d_half = 700 mm → t = (L/2)/v_group
+# TIR-critical path: (L/2)/sin(θ_c) = (L/2)·n  [since sin θ_c = 1/n by Snell]
+L_half_mm       = d_half                                      # 700 mm
+path_TIR_lim_mm = L_half_mm / math.sin(theta_c_rad)          # ≈ 1106 mm
+t_axial_END_ns  = L_half_mm / v_group_mm_ns                   # ≈ 3.69 ns
+t_TIR_lim_ns    = path_TIR_lim_mm / v_group_mm_ns             # ≈ 5.83 ns
+add("L_half_mm",        L_half_mm,        "mm", "Bar half-length: L/2 = 700 mm (center to END face)")
+add("path_TIR_lim_mm",  path_TIR_lim_mm, "mm", "TIR-critical path to END: (L/2)/sin(theta_c)")
+add("t_axial_END_ns",   t_axial_END_ns,  "ns", "Direct axial propagation time to END: (L/2)/v_group")
+add("t_TIR_lim_ns",     t_TIR_lim_ns,   "ns", "TIR-critical propagation time to END")
+
 # ── Slide 9: reflector attenuation length ───────────────────────────────────
 # Λ_refl = −D / (tan α_c · ln R)    [mm]
 Lambda_refl_H = -H_mm / (tan_alpha_c * math.log(R_vik_nap))   # thin face, mm
@@ -207,6 +219,12 @@ Lambda_refl_W = -W_mm / (tan_alpha_c * math.log(R_vik_nap))   # wide face, mm
 add("R_vik_nap",        R_vik_nap,        "",   "Vikuiti reflectivity (napkin, manufacturer spec)")
 add("Lambda_refl_H_mm", Lambda_refl_H,    "mm", "Reflector attenuation length, H=10 mm face")
 add("Lambda_refl_W_mm", Lambda_refl_W,    "mm", "Reflector attenuation length, W=60 mm face")
+
+# ── FIX-05: Λ_refl with R=0.95 (simulation data value) ─────────────────────
+Lambda_refl_H_sim = -H_mm / (tan_alpha_c * math.log(R_vik))   # R=0.95 → ~159 mm
+Lambda_refl_W_sim = -W_mm / (tan_alpha_c * math.log(R_vik))   # R=0.95 → ~956 mm
+add("Lambda_refl_H_mm_sim", Lambda_refl_H_sim, "mm", "Refl. att. length H face, R=0.95 (simulation)")
+add("Lambda_refl_W_mm_sim", Lambda_refl_W_sim, "mm", "Refl. att. length W face, R=0.95 (simulation)")
 
 # ── Slide 12: photon budget chain (EJ-230 at x=0) ──────────────────────────
 N_prod_230   = materials["EJ-230"]["yield_per_MeV"] * dE_MeV   # 19400

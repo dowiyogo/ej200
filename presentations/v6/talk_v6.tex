@@ -41,6 +41,12 @@
 \newcommand{\veffEND}{177.6\mm/\text{ns}}
 \newcommand{\sigmax}{7.9\mm}
 
+% ---- auto-generated macro files ----
+\input{../napkin_first_principles/values/napkin_macros}
+\input{results_macros}
+% ---- derived aliases ----
+\newcommand{\sigmaENDonlyval}{\RessigmaxzEROejC}   % EJ-230 END-only m*=7 x=0, phase_ab_optimal.csv
+
 % ---- colors ----
 \definecolor{colEND}{RGB}{0,102,178}
 \definecolor{colTOP}{RGB}{204,102,0}
@@ -247,8 +253,9 @@
     \[
       \Lambda_\text{refl} = \frac{H}{\tan\alpha_c\cdot\ln(1/R)} \approx \LambdaH
     \]
-    {\footnotesize Napkin: $R=0.98$ (Vikuiti spec).}\\[2pt]
-    At $L/2=700\mm$: survival $= 0.95^{85.6} \approx 1.2\%$ (code $R=0.95$). \\[4pt]
+    {\footnotesize Napkin ($R=0.98$): $\Lambda_\text{refl}^H \approx \LambdaH$.
+    Sim.\ data ($R=\Rvikuiti$): $\Lambda_\text{refl}^H \approx \NapLambdareflHmmsim$.}\\[2pt]
+    At $L/2=700\mm$: survival $= 0.95^{85.6} \approx 1.2\%$.\\[4pt]
     \alert{Most photons reaching the END did \emph{not} bounce off the $H$-face Vikuiti.}
 
     \column{0.46\linewidth}
@@ -861,7 +868,7 @@
     All simulation results in this analysis use \alert{$R=0.95$}.\\[6pt]
     \textbf{Napkin uses $R=0.98$} for reflector attenuation estimates.
     The $\Lambda_\text{refl}$ values assume R=0.98.
-    With R=0.95: $\Lambda_\text{refl}^H = 240\mm$ (shorter — more loss).\\[4pt]
+    With $R=\Rvikuiti$ (simulation data): $\Lambda_\text{refl}^H = \NapLambdareflHmmsim$ (shorter --- more loss).\\[4pt]
     This discrepancy should be corrected in a future simulation campaign.
   \end{columns}
 \end{frame}
