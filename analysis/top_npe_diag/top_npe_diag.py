@@ -70,6 +70,13 @@ for x in x_scan:
         minlength=n_ev_sp
     ).astype(float)
 
+    # N_pe^END from HYBRID scan (face_type 0+1, raw count / 2 = per-face mean)
+    mask_end_sp = (ft_sp == 0) | (ft_sp == 1)
+    npe_end_hybrid_pf = np.bincount(
+        np.searchsorted(ev_uniq_sp, ev_sp[mask_end_sp]),
+        minlength=n_ev_sp
+    ).astype(float) / 2.0
+
     # N_pe^END from END-only scan (face_type 0+1, raw count / 2 = per-face mean)
     path_eo = INDIR_EO / f"photon_hits_ej230_x{x}.root"
     with uproot.open(path_eo) as f:
@@ -86,14 +93,20 @@ for x in x_scan:
 
     d_near, d_sec = d_nearest_two(x, TOP_XPOS)
 
+    eo_mean = float(np.mean(npe_end_per_face))
+    hyb_mean = float(np.mean(npe_end_hybrid_pf))
     row = dict(
         x=x,
-        npe_end_per_face=float(np.mean(npe_end_per_face)),
+        npe_end_per_face=eo_mean,
         npe_top_mean=float(np.mean(npe_top)),
         npe_top_median=float(np.median(npe_top)),
         npe_top_iqr_sigma=float(iqr_sigma(npe_top)),
         d_nearest=d_near,
         d_second=d_sec,
+        npe_end_hybrid=hyb_mean,
+        npe_end_endonly=eo_mean,
+        delta_pe=hyb_mean - eo_mean,
+        delta_pct=(hyb_mean - eo_mean) / eo_mean * 100.0,
     )
     rows.append(row)
     print(f"{x:>6}  {row['npe_end_per_face']:>13.2f}  {row['npe_top_mean']:>13.2f}  "
@@ -110,7 +123,8 @@ if not gate_ok:
 # Write CSV
 csv_path = OUTDIR / "top_npe_diag.csv"
 fieldnames = ['x', 'npe_end_per_face', 'npe_top_mean', 'npe_top_median',
-              'npe_top_iqr_sigma', 'd_nearest', 'd_second']
+              'npe_top_iqr_sigma', 'd_nearest', 'd_second',
+              'npe_end_hybrid', 'npe_end_endonly', 'delta_pe', 'delta_pct']
 with open(csv_path, 'w', newline='') as f:
     w = csv.DictWriter(f, fieldnames=fieldnames)
     w.writeheader()
@@ -122,7 +136,8 @@ meta = dict(
     script="top_npe_diag.py",
     datasets=dict(
         npe_top="scan_end_vik_sparse_top_v2 (EJ-230, N_TOP=20, face_type=2)",
-        npe_end="scan_end_vikuiti (EJ-230, END-only, face_type 0+1, per-face mean)",
+        npe_end_endonly="scan_end_vikuiti (EJ-230, END-only, face_type 0+1, per-face mean)",
+        npe_end_hybrid="scan_end_vik_sparse_top_v2 (EJ-230, N_TOP=20, face_type 0+1, per-face mean)",
     ),
     scintillator="EJ-230",
     ntop_hybrid=20,
@@ -137,6 +152,10 @@ meta = dict(
         npe_top_iqr_sigma="IQR-based sigma of total TOP hits per event",
         d_nearest="distance from x to nearest TOP SiPM center [mm]",
         d_second="distance from x to second-nearest TOP SiPM center [mm]",
+        npe_end_hybrid="mean hits per END face per event from hybrid scan (scan_end_vik_sparse_top_v2, N_TOP=20)",
+        npe_end_endonly="same as npe_end_per_face — mean hits per END face per event from END-only scan",
+        delta_pe="npe_end_hybrid - npe_end_endonly [hits/face/event]: effect of TOP SiPMs on END count",
+        delta_pct="delta_pe / npe_end_endonly * 100 [%]",
     ),
     gate=dict(
         quantity="npe_end_per_face at x=0 (scan_end_vikuiti)",
