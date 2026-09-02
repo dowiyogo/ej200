@@ -39,3 +39,4 @@ referencia de primer principios y base pedagógica del deck v6.
 | `fig_gen.C` | Equivalente en ROOT C++ |
 | `napkin.py` | Cálculo analítico (survival, estimador) |
 | `values/` | Constantes y macros LaTeX compartidas |
+| `SHiP_timing_first_principles.pptx` | Manual PowerPoint prototype (2026-08-19), superseded by talk_v3.tex / talk_v6.tex. |
