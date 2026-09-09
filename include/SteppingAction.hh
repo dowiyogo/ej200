@@ -25,5 +25,6 @@ namespace BoundaryCensus {
     long long GetMylarReflected();
     long long GetMylarToSiPM();
     long long GetKilledWorld();
+    long long GetSparedWorldReflection();
     void      Reset();
 }
