@@ -1,4 +1,5 @@
 #include "SteppingAction.hh"
+#include "BoundaryCensus.hh"
 #include "G4OpBoundaryProcess.hh"
 #include "G4ProcessManager.hh"
 #include "G4ProcessVector.hh"
@@ -59,7 +60,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     static G4ThreadLocal G4OpBoundaryProcess* boundary_process = nullptr;
     // EXEC_27: no reutilizar el estado de una frontera anterior en otro paso.
     G4OpBoundaryProcessStatus boundary_status = Undefined;
-    // Boundary status is required by the escape guard; locate once per thread.
+    // EXEC_26: censo de fronteras. Localiza el proceso una vez por hilo.
     if (step->GetTrack()->GetDefinition() == G4OpticalPhoton::Definition() &&
         step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
         if (!boundary_process) {
@@ -74,7 +75,17 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         }
         if (boundary_process) {
             boundary_status = boundary_process->GetStatus();
-
+            const auto* pre_pv = step->GetPreStepPoint()->GetPhysicalVolume();
+            const auto* post_pv = step->GetPostStepPoint()->GetPhysicalVolume();
+            if (pre_pv && post_pv) {
+                BoundaryCensus::Instance().Record({
+                    pre_pv->GetName(),
+                    step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber(),
+                    post_pv->GetName(),
+                    step->GetPostStepPoint()->GetTouchableHandle()->GetCopyNumber(),
+                    static_cast<G4int>(boundary_status)
+                });
+            }
         }
     }
 
