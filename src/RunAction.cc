@@ -200,6 +200,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             << "\n  Bar -> Bar (TIR/refl)    : " << BoundaryCensus::GetMylarReflected()
             << "\n  Bar -> SiPM (entering)   : " << BoundaryCensus::GetMylarToSiPM()
             << "\n  Killed in WorldLV        : " << BoundaryCensus::GetKilledWorld()
+            << "\n  Spared World reflection : " << BoundaryCensus::GetSparedWorldReflection()
             << "\n====================================\n"
             << G4endl;
     }
