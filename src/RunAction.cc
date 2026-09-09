@@ -1,4 +1,7 @@
 #include "RunAction.hh"
+#include "BoundaryCensus.hh"
+#include "Randomize.hh"
+#include "G4Threading.hh"
 #include "DetectorConstruction.hh"
 #include "SiPMModel.hh"
 #include "SteppingAction.hh"
@@ -140,6 +143,13 @@ RunAction::RunAction() {
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
     BoundaryCensus::Reset();
+    // EXEC_26: reinicio único y copia del motor, sin consumir números aleatorios.
+    if (IsMaster()) BoundaryCensus::Instance().Reset();
+    const auto rngPrefix = "rng_run" + std::to_string(run->GetRunID()) +
+                           "_thread" + std::to_string(G4Threading::G4GetThreadId());
+    G4Random::saveEngineStatus((rngPrefix + "_begin.rndm").c_str());
+    G4cout << "EXEC_26 RNG engine: " << G4Random::getTheEngine()->name()
+           << "; state: " << rngPrefix << "_begin.rndm" << G4endl;
 
     auto* am = G4AnalysisManager::Instance();
 
@@ -164,6 +174,15 @@ void RunAction::EndOfRunAction(const G4Run* run) {
     auto* am = G4AnalysisManager::Instance();
     am->Write();
     am->CloseFile();
+
+    // EXEC_26: el maestro exporta tras finalizar los trabajadores; cada hilo guarda su motor.
+    const auto rngPrefix = "rng_run" + std::to_string(run->GetRunID()) +
+                           "_thread" + std::to_string(G4Threading::G4GetThreadId());
+    G4Random::saveEngineStatus((rngPrefix + "_end.rndm").c_str());
+    if (IsMaster()) {
+        BoundaryCensus::Instance().Write(
+            "boundary_census_run" + std::to_string(run->GetRunID()) + ".csv");
+    }
 
     const G4int nEvents = run->GetNumberOfEvent();
     if (nEvents == 0) return;
