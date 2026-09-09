@@ -1,4 +1,9 @@
 #include "SteppingAction.hh"
+#include "BoundaryCensus.hh"
+#include "G4OpBoundaryProcess.hh"
+#include "G4ProcessManager.hh"
+#include "G4ProcessVector.hh"
+#include "G4TouchableHandle.hh"
 #include "RunAction.hh"
 
 #include "G4RunManager.hh"
@@ -49,6 +54,35 @@ namespace BoundaryCensus {
 }
 
 void SteppingAction::UserSteppingAction(const G4Step* step) {
+    // EXEC_26: censo de fronteras. Localiza el proceso una vez por hilo.
+    if (step->GetTrack()->GetDefinition() == G4OpticalPhoton::Definition() &&
+        step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
+        static G4ThreadLocal G4OpBoundaryProcess* boundary_process = nullptr;
+        if (!boundary_process) {
+            auto* pv = step->GetTrack()->GetDefinition()
+                           ->GetProcessManager()->GetProcessList();
+            for (G4int i = 0; i < static_cast<G4int>(pv->size()); ++i) {
+                if ((*pv)[i]->GetProcessName() == "OpBoundary") {
+                    boundary_process = dynamic_cast<G4OpBoundaryProcess*>((*pv)[i]);
+                    break;
+                }
+            }
+        }
+        if (boundary_process) {
+            const auto* pre_pv = step->GetPreStepPoint()->GetPhysicalVolume();
+            const auto* post_pv = step->GetPostStepPoint()->GetPhysicalVolume();
+            if (pre_pv && post_pv) {
+                BoundaryCensus::Instance().Record({
+                    pre_pv->GetName(),
+                    step->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber(),
+                    post_pv->GetName(),
+                    step->GetPostStepPoint()->GetTouchableHandle()->GetCopyNumber(),
+                    static_cast<G4int>(boundary_process->GetStatus())
+                });
+            }
+        }
+    }
+
     auto* track = step->GetTrack();
 
     if (track->GetDefinition() != G4OpticalPhoton::Definition()) return;
