@@ -1,4 +1,5 @@
 #include "RunAction.hh"
+#include "TrackingAction.hh"
 #include "BoundaryCensus.hh"
 #include "Randomize.hh"
 #include "G4Threading.hh"
@@ -144,7 +145,10 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
     BoundaryCensus::Reset();
     // EXEC_26: reinicio único y copia del motor, sin consumir números aleatorios.
-    if (IsMaster()) BoundaryCensus::Instance().Reset();
+    if (IsMaster()) {
+        BoundaryCensus::Instance().Reset();
+        TerminalCensus::Reset();
+    }
     const auto rngPrefix = "rng_run" + std::to_string(run->GetRunID()) +
                            "_thread" + std::to_string(G4Threading::G4GetThreadId());
     G4Random::saveEngineStatus((rngPrefix + "_begin.rndm").c_str());
@@ -180,6 +184,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
                            "_thread" + std::to_string(G4Threading::G4GetThreadId());
     G4Random::saveEngineStatus((rngPrefix + "_end.rndm").c_str());
     if (IsMaster()) {
+        TerminalCensus::Write("terminal_fates_run" + std::to_string(run->GetRunID()));
         BoundaryCensus::Instance().Write(
             "boundary_census_run" + std::to_string(run->GetRunID()) + ".csv");
     }

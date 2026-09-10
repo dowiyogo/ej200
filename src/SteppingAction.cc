@@ -1,4 +1,5 @@
 #include "SteppingAction.hh"
+#include "TrackingAction.hh"
 #include "BoundaryCensus.hh"
 #include "G4OpBoundaryProcess.hh"
 #include "G4ProcessManager.hh"
@@ -145,6 +146,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         // energy is in G4 internal units (MeV); eV = 1e-6, nm = 1 mm * 1e-6
         const G4double wl_nm = kHC_eVnm / (energy / eV);
         if (wl_nm < 300.0 || wl_nm > 900.0) {
+            TerminalCensus::MarkKill(track, "wavelength_filter");
             track->SetTrackStatus(fStopAndKill);
             return;
         }
@@ -155,6 +157,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
 
     // Kill if outside the world entirely (safety net).
     if (postVol == nullptr) {
+        TerminalCensus::MarkKill(track, "null_post_volume");
         track->SetTrackStatus(fStopAndKill);
         return;
     }
@@ -172,6 +175,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
             ++gSparedWorldReflection;
         } else {
             ++gKilledWorld;
+            TerminalCensus::MarkKill(track, "world_guard");
             track->SetTrackStatus(fStopAndKill);
         }
     }
