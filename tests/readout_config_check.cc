@@ -25,22 +25,49 @@ void Require(bool condition, const std::string& message) {
     if (!condition) Fail(message);
 }
 
-void RequireBarSkin(const DetectorConstruction& detector) {
+void RequirePanelReflectors(const DetectorConstruction& detector) {
     const auto& sipmSurfaces = detector.GetSiPMSurfaces();
     Require(!sipmSurfaces.empty(), "no SiPM surfaces");
     auto* barPV = sipmSurfaces.begin()->second->GetVolume1();
     Require(barPV != nullptr, "SiPM border has no volume1");
-    auto* barLV = barPV->GetLogicalVolume();
-    Require(barLV != nullptr, "BarPV has no logical volume");
+    Require(G4LogicalSkinSurface::GetSurface(barPV->GetLogicalVolume()) == nullptr,
+            "explicit air-gap geometry must not have a bar skin reflector");
 
-    auto* skin = G4LogicalSkinSurface::GetSurface(barLV);
-    Require(skin != nullptr, "BarLV has no reflector skin surface");
-    auto* optical = dynamic_cast<G4OpticalSurface*>(skin->GetSurfaceProperty());
-    Require(optical != nullptr, "Bar skin is not an optical surface");
-    Require(optical->GetName() == "BarSkinReflector",
-        "Bar skin does not use BarSkinReflector");
-    Require(detector.GetReflectorSurfaces().empty(),
-        "reflector panel border surfaces should be removed");
+    const auto& panels = detector.GetReflectorSurfaces();
+    Require(panels.size() == (detector.IsTopInstrumented() ? 3u : 4u),
+            "wrong lateral reflector count");
+    Require(panels.count("+Y") == (detector.IsTopInstrumented() ? 0u : 1u),
+            "YPlus reflector must be present only without TOP sensors");
+    for (const auto& entry : panels) {
+        auto* border = entry.second;
+        auto* air = border->GetVolume1();
+        auto* wrap = border->GetVolume2();
+        Require(air && wrap, "reflector border has missing volume");
+        Require(air->GetName().find("AirGap") == 0 &&
+                wrap->GetName().find("Vikuiti") == 0,
+                "reflector border must point from air to wrap");
+        auto* optical = dynamic_cast<G4OpticalSurface*>(border->GetSurfaceProperty());
+        Require(optical && optical->GetType() == dielectric_metal &&
+                optical->GetFinish() == polished, "wrong air-wrap reflector model");
+        auto* mpt = optical->GetMaterialPropertiesTable();
+        auto* reflectivity = mpt ? mpt->GetProperty("REFLECTIVITY") : nullptr;
+        Require(reflectivity && reflectivity->GetVectorLength() > 0,
+                "reflector has no reflectivity spectrum");
+        for (std::size_t i = 0; i < reflectivity->GetVectorLength(); ++i)
+            Require(std::abs((*reflectivity)[i] - 0.98) < 1e-12,
+                    "reflector reflectivity differs from 0.98");
+        auto* reverse = G4LogicalBorderSurface::GetSurface(wrap, air);
+        Require(reverse && reverse->GetSurfaceProperty() == optical,
+                "reverse wrap-air reflector border missing or inconsistent");
+        auto* barAir = G4LogicalBorderSurface::GetSurface(barPV, air);
+        auto* airBar = G4LogicalBorderSurface::GetSurface(air, barPV);
+        Require(barAir && airBar, "bidirectional bar-air border missing");
+        auto* barOptical = dynamic_cast<G4OpticalSurface*>(barAir->GetSurfaceProperty());
+        Require(barOptical && barOptical->GetType() == dielectric_dielectric &&
+                barOptical->GetFinish() == polished &&
+                airBar->GetSurfaceProperty() == barOptical,
+                "bar-air interface must retain polished dielectric model for TIR");
+    }
 }
 
 void RequireSiPMSurfaceProperties(const DetectorConstruction& detector) {
@@ -101,7 +128,7 @@ void CheckEnd() {
     Require(detector.GetNActiveEndSiPMs() == 16, "End config does not activate 16 End SiPMs");
     Require(detector.GetNActiveTopSiPMs() == 0, "End config activates Top SiPMs");
     Require(detector.GetSiPMSurfaces().size() == 16, "End config has wrong SiPM surface count");
-    RequireBarSkin(detector);
+    RequirePanelReflectors(detector);
     RequireSiPMSurfaceProperties(detector);
 }
 
@@ -119,7 +146,7 @@ void CheckTop() {
     Require(detector.GetSiPMSurfaces().size() ==
                 static_cast<std::size_t>(detector.GetNTopSiPMs()),
             "Top config has wrong SiPM surface count");
-    RequireBarSkin(detector);
+    RequirePanelReflectors(detector);
     RequireSiPMSurfaceProperties(detector);
 }
 
@@ -132,7 +159,7 @@ void CheckEndTop() {
             "EndTop does not instrument both readouts");
     Require(detector.GetNActiveEndSiPMs() == 16, "EndTop does not activate 16 End SiPMs");
     Require(detector.GetNActiveTopSiPMs() == 70, "EndTop does not activate 70 Top SiPMs");
-    RequireBarSkin(detector);
+    RequirePanelReflectors(detector);
     RequireEndTopPlacements(detector);
     RequireSiPMSurfaceProperties(detector);
 }
