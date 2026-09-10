@@ -1,5 +1,8 @@
 #include "TrackingAction.hh"
 #include "G4Event.hh"
+#include "G4OpBoundaryProcess.hh"
+#include "G4ProcessManager.hh"
+#include "G4ProcessVector.hh"
 #include "G4EventManager.hh"
 #include "G4LogicalVolume.hh"
 #include "G4OpticalPhoton.hh"
@@ -20,6 +23,7 @@ namespace {
 using Key = std::tuple<G4String, G4String, G4String>;
 std::mutex censusMutex;
 std::map<Key, long long> allFates, scintFates;
+std::map<G4int, long long> barBoundaryAll, barBoundaryScint;
 std::map<G4String, long long> audit;
 // Event/track identities deduplicate terminal callbacks without changing track data.
 thread_local G4int eventId = -1, runId = -1;
@@ -50,6 +54,7 @@ void MarkKill(const G4Track* track, const G4String& reason) {
 void Reset() {
     const std::lock_guard<std::mutex> lock(censusMutex);
     allFates.clear(); scintFates.clear(); audit.clear();
+    barBoundaryAll.clear(); barBoundaryScint.clear();
     for (const auto* key : {"started_optical", "started_scintillation", "terminal_optical",
              "terminal_scintillation", "duplicate_terminal", "nonterminal_post", "unknown_process",
              "unknown_volume", "terminal_without_start"}) audit[key] = 0;
@@ -58,6 +63,16 @@ void Write(const G4String& prefix) {
     const std::lock_guard<std::mutex> lock(censusMutex);
     WriteMap(prefix + "_all.csv", allFates);
     WriteMap(prefix + "_scintillation.csv", scintFates);
+    const auto writeBoundary = [&prefix](const G4String& suffix, const std::map<G4int, long long>& counts) {
+        std::ofstream out(prefix + suffix);
+        out << "process,volume,kill_reason,status_int,count\n";
+        for (const auto& item : counts)
+            out << "Transportation,BarLV,none," << item.first << ',' << item.second << '\n';
+        out.flush();
+        if (!out) throw std::runtime_error("Cannot write terminal boundary states: " + prefix);
+    };
+    writeBoundary("_bar_boundary_all.csv", barBoundaryAll);
+    writeBoundary("_bar_boundary_scintillation.csv", barBoundaryScint);
     std::ofstream out(prefix + "_audit.csv");
     out << "metric,count\n";
     for (const auto& entry : audit) out << entry.first << ',' << entry.second << '\n';
@@ -98,6 +113,24 @@ void TrackingAction::PostUserTrackingAction(const G4Track* track) {
     const auto flag = killFlags.find(track->GetTrackID());
     const G4String reason = flag == killFlags.end() ? "none" : flag->second;
     const Key key{processName, volumeName, reason};
+    // EXEC_29: status belongs to this final step; never reuse it for a non-boundary step.
+    if (processName == "Transportation" && volumeName == "BarLV" && reason == "none") {
+        static G4ThreadLocal G4OpBoundaryProcess* boundary = nullptr;
+        if (!boundary) {
+            auto* processes = track->GetDefinition()->GetProcessManager()->GetProcessList();
+            for (G4int i = 0; i < static_cast<G4int>(processes->size()); ++i) {
+                if ((*processes)[i]->GetProcessName() == "OpBoundary") {
+                    boundary = dynamic_cast<G4OpBoundaryProcess*>((*processes)[i]);
+                    break;
+                }
+            }
+        }
+        const G4int status = post && post->GetStepStatus() == fGeomBoundary
+            ? (boundary ? static_cast<G4int>(boundary->GetStatus()) : static_cast<G4int>(Undefined))
+            : static_cast<G4int>(NotAtBoundary);
+        ++barBoundaryAll[status];
+        if (IsScint(track)) ++barBoundaryScint[status];
+    }
     ++allFates[key]; ++audit["terminal_optical"];
     if (IsScint(track)) { ++scintFates[key]; ++audit["terminal_scintillation"]; }
     if (!process) ++audit["unknown_process"];
