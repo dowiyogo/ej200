@@ -24,6 +24,8 @@ using Key = std::tuple<G4String, G4String, G4String>;
 std::mutex censusMutex;
 std::map<Key, long long> allFates, scintFates;
 std::map<G4int, long long> barBoundaryAll, barBoundaryScint;
+using StatusKey = std::tuple<G4String, G4String, G4String, G4int>;
+std::map<StatusKey, long long> terminalStatusAll, terminalStatusScint;
 std::map<G4String, long long> audit;
 // Event/track identities deduplicate terminal callbacks without changing track data.
 thread_local G4int eventId = -1, runId = -1;
@@ -55,6 +57,7 @@ void Reset() {
     const std::lock_guard<std::mutex> lock(censusMutex);
     allFates.clear(); scintFates.clear(); audit.clear();
     barBoundaryAll.clear(); barBoundaryScint.clear();
+    terminalStatusAll.clear(); terminalStatusScint.clear();
     for (const auto* key : {"started_optical", "started_scintillation", "terminal_optical",
              "terminal_scintillation", "duplicate_terminal", "nonterminal_post", "unknown_process",
              "unknown_volume", "terminal_without_start"}) audit[key] = 0;
@@ -73,6 +76,17 @@ void Write(const G4String& prefix) {
     };
     writeBoundary("_bar_boundary_all.csv", barBoundaryAll);
     writeBoundary("_bar_boundary_scintillation.csv", barBoundaryScint);
+    const auto writeStatuses = [&prefix](const G4String& suffix, const std::map<StatusKey, long long>& counts) {
+        std::ofstream out(prefix + suffix);
+        out << "process,volume,kill_reason,status_int,count\n";
+        for (const auto& item : counts)
+            out << Quote(std::get<0>(item.first)) << ',' << Quote(std::get<1>(item.first)) << ','
+                << Quote(std::get<2>(item.first)) << ',' << std::get<3>(item.first) << ',' << item.second << '\n';
+        out.flush();
+        if (!out) throw std::runtime_error("Cannot write terminal status ledger: " + prefix);
+    };
+    writeStatuses("_states_all.csv", terminalStatusAll);
+    writeStatuses("_states_scintillation.csv", terminalStatusScint);
     std::ofstream out(prefix + "_audit.csv");
     out << "metric,count\n";
     for (const auto& entry : audit) out << entry.first << ',' << entry.second << '\n';
@@ -113,21 +127,22 @@ void TrackingAction::PostUserTrackingAction(const G4Track* track) {
     const auto flag = killFlags.find(track->GetTrackID());
     const G4String reason = flag == killFlags.end() ? "none" : flag->second;
     const Key key{processName, volumeName, reason};
-    // EXEC_29: status belongs to this final step; never reuse it for a non-boundary step.
-    if (processName == "Transportation" && volumeName == "BarLV" && reason == "none") {
-        static G4ThreadLocal G4OpBoundaryProcess* boundary = nullptr;
-        if (!boundary) {
-            auto* processes = track->GetDefinition()->GetProcessManager()->GetProcessList();
-            for (G4int i = 0; i < static_cast<G4int>(processes->size()); ++i) {
-                if ((*processes)[i]->GetProcessName() == "OpBoundary") {
-                    boundary = dynamic_cast<G4OpBoundaryProcess*>((*processes)[i]);
-                    break;
-                }
+    // EXEC_30: current final-step status, never a stale previous boundary.
+    static G4ThreadLocal G4OpBoundaryProcess* boundary = nullptr;
+    if (!boundary) {
+        auto* processes = track->GetDefinition()->GetProcessManager()->GetProcessList();
+        for (G4int i = 0; i < static_cast<G4int>(processes->size()); ++i)
+            if ((*processes)[i]->GetProcessName() == "OpBoundary") {
+                boundary = dynamic_cast<G4OpBoundaryProcess*>((*processes)[i]); break;
             }
-        }
-        const G4int status = post && post->GetStepStatus() == fGeomBoundary
-            ? (boundary ? static_cast<G4int>(boundary->GetStatus()) : static_cast<G4int>(Undefined))
-            : static_cast<G4int>(NotAtBoundary);
+    }
+    const G4int status = post && post->GetStepStatus() == fGeomBoundary
+        ? (boundary ? static_cast<G4int>(boundary->GetStatus()) : static_cast<G4int>(Undefined))
+        : static_cast<G4int>(NotAtBoundary);
+    const StatusKey statusKey{processName, volumeName, reason, status};
+    ++terminalStatusAll[statusKey];
+    if (IsScint(track)) ++terminalStatusScint[statusKey];
+    if (processName == "Transportation" && volumeName == "BarLV" && reason == "none") {
         ++barBoundaryAll[status];
         if (IsScint(track)) ++barBoundaryScint[status];
     }
