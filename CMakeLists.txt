@@ -16,10 +16,21 @@ endif()
 add_subdirectory(src/external/OPSimTool)
 add_subdirectory(src/external/SSLG4)
 
+option(EJ200_ENABLE_DIAGNOSTICS "Enable optical boundary and terminal-fate censuses" OFF)
+
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
+if(NOT EJ200_ENABLE_DIAGNOSTICS)
+    list(REMOVE_ITEM sources
+        ${PROJECT_SOURCE_DIR}/src/BoundaryCensus.cc
+        ${PROJECT_SOURCE_DIR}/src/TrackingAction.cc)
+endif()
+
 function(configure_ej200_target target)
+    if(EJ200_ENABLE_DIAGNOSTICS)
+        target_compile_definitions(${target} PRIVATE EJ200_ENABLE_DIAGNOSTICS)
+    endif()
     target_include_directories(${target} PRIVATE ${PROJECT_SOURCE_DIR}/include)
     target_compile_definitions(${target} PRIVATE EJ200_DATA_DIR="${PROJECT_SOURCE_DIR}/data")
     target_link_libraries(${target} ${Geant4_LIBRARIES} OPSim sslg4)

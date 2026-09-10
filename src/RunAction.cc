@@ -1,6 +1,10 @@
 #include "RunAction.hh"
+#ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "TrackingAction.hh"
+#endif
+#ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "BoundaryCensus.hh"
+#endif
 #include "Randomize.hh"
 #include "G4Threading.hh"
 #include "DetectorConstruction.hh"
@@ -143,6 +147,7 @@ RunAction::RunAction() {
 
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
+#ifdef EJ200_ENABLE_DIAGNOSTICS
     // EXEC_26: reinicio único y copia del motor, sin consumir números aleatorios.
     if (IsMaster()) {
         BoundaryCensus::Reset(); // EXEC_30: shared atomics reset once, before workers.
@@ -155,6 +160,7 @@ void RunAction::BeginOfRunAction(const G4Run* run) {
     G4cout << "EXEC_26 RNG engine: " << G4Random::getTheEngine()->name()
            << "; state: " << rngPrefix << "_begin.rndm" << G4endl;
 
+#endif
     auto* am = G4AnalysisManager::Instance();
 
     std::ostringstream fname;
@@ -179,6 +185,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
     am->Write();
     am->CloseFile();
 
+#ifdef EJ200_ENABLE_DIAGNOSTICS
     // EXEC_26: el maestro exporta tras finalizar los trabajadores; cada hilo guarda su motor.
     const auto rngPrefix = "rng_run" + std::to_string(run->GetRunID()) +
                            "_thread" + std::to_string(G4Threading::G4GetThreadId());
@@ -189,6 +196,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             "boundary_census_run" + std::to_string(run->GetRunID()) + ".csv");
     }
 
+#endif
     if (!IsMaster()) return; // EXEC_30: aggregate summary only after worker merges.
     const G4int nEvents = run->GetNumberOfEvent();
     if (nEvents == 0) return;
@@ -217,6 +225,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         << "\n==============================\n"
         << G4endl;
 
+#ifdef EJ200_ENABLE_DIAGNOSTICS
     if (IsMaster()) {
         G4cout
             << "\n=== Boundary Census (diagnostic) ==="
@@ -229,4 +238,5 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             << "\n====================================\n"
             << G4endl;
     }
+#endif
 }

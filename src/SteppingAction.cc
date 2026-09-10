@@ -1,6 +1,10 @@
 #include "SteppingAction.hh"
+#ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "TrackingAction.hh"
+#endif
+#ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "BoundaryCensus.hh"
+#endif
 #include "G4OpBoundaryProcess.hh"
 #include "G4ProcessManager.hh"
 #include "G4ProcessVector.hh"
@@ -22,6 +26,7 @@ static constexpr G4double kHC_eVnm = 1239.84193;  // eV·nm
 
 // Contadores de diagnóstico de frontera — acumulan durante toda la corrida.
 // Se usan std::atomic para thread-safety en MT builds.
+#ifdef EJ200_ENABLE_DIAGNOSTICS
 namespace {
     std::atomic<long long> gBarToMylar{0};     // Bar -> reflector panel
     std::atomic<long long> gMylarToWorld{0};   // Bar -> World escape
@@ -57,11 +62,12 @@ namespace BoundaryCensus {
     }
 }
 
+#endif
 void SteppingAction::UserSteppingAction(const G4Step* step) {
     static G4ThreadLocal G4OpBoundaryProcess* boundary_process = nullptr;
     // EXEC_27: no reutilizar el estado de una frontera anterior en otro paso.
     G4OpBoundaryProcessStatus boundary_status = Undefined;
-    // EXEC_26: censo de fronteras. Localiza el proceso una vez por hilo.
+    // Required by the escape guard, independent of optional diagnostics.
     if (step->GetTrack()->GetDefinition() == G4OpticalPhoton::Definition() &&
         step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
         if (!boundary_process) {
@@ -76,6 +82,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         }
         if (boundary_process) {
             boundary_status = boundary_process->GetStatus();
+#ifdef EJ200_ENABLE_DIAGNOSTICS
             const auto* pre_pv = step->GetPreStepPoint()->GetPhysicalVolume();
             const auto* post_pv = step->GetPostStepPoint()->GetPhysicalVolume();
             if (pre_pv && post_pv) {
@@ -87,6 +94,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
                     static_cast<G4int>(boundary_status)
                 });
             }
+#endif
         }
     }
 
@@ -108,6 +116,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         }
     }
 
+#ifdef EJ200_ENABLE_DIAGNOSTICS
     // ── Diagnóstico de frontera ──────────────────────────────────────────────
     if (step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
         const G4String preVolName =
@@ -135,6 +144,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
             ++gMylarToSiPM;
     }
 
+#endif
     // ── Wavelength filter ────────────────────────────────────────────────────
     // Kill photons outside the SiPM sensitivity window (300–900 nm).
     // EJ-200 emits in 380–500 nm so this filter has negligible effect on
@@ -146,7 +156,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         // energy is in G4 internal units (MeV); eV = 1e-6, nm = 1 mm * 1e-6
         const G4double wl_nm = kHC_eVnm / (energy / eV);
         if (wl_nm < 300.0 || wl_nm > 900.0) {
+#ifdef EJ200_ENABLE_DIAGNOSTICS
             TerminalCensus::MarkKill(track, "wavelength_filter");
+#endif
             track->SetTrackStatus(fStopAndKill);
             return;
         }
@@ -157,7 +169,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
 
     // Kill if outside the world entirely (safety net).
     if (postVol == nullptr) {
+#ifdef EJ200_ENABLE_DIAGNOSTICS
         TerminalCensus::MarkKill(track, "null_post_volume");
+#endif
         track->SetTrackStatus(fStopAndKill);
         return;
     }
@@ -172,10 +186,16 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
                                 st == SpikeReflection ||
                                 st == BackScattering);
         if (reflected) {
+#ifdef EJ200_ENABLE_DIAGNOSTICS
             ++gSparedWorldReflection;
+#endif
         } else {
+#ifdef EJ200_ENABLE_DIAGNOSTICS
             ++gKilledWorld;
+#endif
+#ifdef EJ200_ENABLE_DIAGNOSTICS
             TerminalCensus::MarkKill(track, "world_guard");
+#endif
             track->SetTrackStatus(fStopAndKill);
         }
     }
