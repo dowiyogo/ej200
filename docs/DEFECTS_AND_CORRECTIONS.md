@@ -47,6 +47,8 @@ The existing `LogReadoutConfiguration` in `src/RunAction.cc:65` still inspects t
 
 The integration acceptance criterion is: **reproduce D1 = 397.1525 ± 2.4099 pe/end within ±1σ combined**, using EndTop 70 TOP, OPSC-101, N=2000, seeds 26092601 8349041, one worker. A failure requires investigation, not parameter tuning. OFF and ON must also have identical physical output. Results and exact commands are recorded in [EXEC_31 regression](/home/rrios/exec31_20260911/regression.meta.json) and [physical equivalence](/home/rrios/exec31_20260911/physical_equivalence.meta.json); the final acceptance status is in [REPORT_EXEC31](/home/rrios/REPORT_EXEC31_20260911.md).
 
+EXEC_31 **PASS**: OFF and ON each measured **397.1525 ± 2.409927228 pe/end**, identical to D1, with zero events differing in END/TOP counts and identical ordered contents of every physical hit column. ON RNG snapshots also match D1. N=2000 per cell, seeds 26092601 8349041, one worker. Commands and runtime hashes: [OFF invocation](/home/rrios/exec31_20260911/cell_off/invocation.meta.json), [ON invocation](/home/rrios/exec31_20260911/cell_on/invocation.meta.json). Evidence: [regression sidecars](/home/rrios/exec31_20260911/regression.meta.json), [equivalence sidecars](/home/rrios/exec31_20260911/physical_equivalence.meta.json).
+
 **A main promoted from this branch is not the simulation provenance of `talk_v6`.** Base main contained both defects; the corrected physics changes that provenance. All deck numbers remain pending re-simulation and validation, especially timing results. This does not claim every historical value has been individually disproved. No deck file, historical value or timing-resolution result is replaced by EXEC_31.
 
 ## Provenance register
