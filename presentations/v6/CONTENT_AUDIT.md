@@ -21,7 +21,7 @@ Statuses: valid | superseded | historical | config-dependent | requires-reanalys
 | Λ_refl ≈ 404 mm (H=10 mm, R=0.98) | analytic, R=0.98 | config-dependent (R=0.98) | Main S9 (note R=0.95) |
 | EJ-200 > EJ-204 > EJ-230 in Npe | GEN-3 | valid | Main S10 |
 | EJ-230 < EJ-204 < EJ-200 in σ_t | GEN-3 | valid | Main S10 |
-| Photon budget: 570 PE/end (napkin) vs 701 PE/end (G4) | GEN-3, EJ-230, x=0 | valid (20% surplus from reflector-recovered) | Main S11 |
+| Photon budget: 570 PE/end (napkin) vs 701 PE/end (G4) | Historical GEN-3, EJ-230, END-only, N_TOP=0, x=0; napkin_values.csv / phase_ab_optimal.csv | Numerical historical comparison retained; reflector-recovery attribution withdrawn as unverified (EXEC_29) | Main S11; see CONFIGURATION_AUDIT.md reflector evidence and EXEC_28 ab_comparison.meta.json |
 | Per-end vs L+R distinction | analytic | valid | Main S11 |
 | Two photon populations (TIR-guided, reflector-recovered) | conceptual | valid | Main S7 |
 | Napkin vs Geant4 scoreboard | GEN-3 | valid | Main S10/11 |

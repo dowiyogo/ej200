@@ -106,9 +106,10 @@ Generated 2026-08-21. Every configuration that produced numbers shown in any pre
 
 ### Reflector: R=0.95 vs R=0.98
 
-- **R=0.95**: actual code value in `CreateBarSkinReflector()` (constant)
-- **R=0.98**: napkin estimate from manufacturer Vikuiti spec, used for analytical predictions only
-- The code says "R=0.98 Vikuiti ESR" in comments but implements R=0.95
+- **Withdrawn (EXEC_29):** the unqualified statement that the current code implements R=0.95 and R=0.98 is only analytical. Main 8349041 supplies REFLECTIVITY=0.98 to a dielectric_dielectric polished surface; this coefficient is not its measured reflectance.
+- **Measured in main (EXEC_26 Phase 1b):** 484,562 / 3,623,938 forward air→wrap encounters reflect (13.371145%); 72,799 absorb at the boundary (2.008837%). EJ-204, EndTop, 70 TOP, x=0, N=500, seeds 26092601 8349041. Sidecar: `/home/rrios/ej200_exec26_20260909/build_exec26_phase1b_20260909/run500_ready/tables/directional_states.meta.json`.
+- **Measured corrected factory (EXEC_28 B0):** forward reflection 97.9995%; END gain B0/A0 = 1.01155 ± 0.00830, EJ-204, EndTop, 70 TOP, x=0, N=2000 per arm, same seeds. Sidecars: `/home/rrios/ej200_exec26_20260909/build_nightly_20260910/cells/B0/reflection_panels.meta.json` and `build_nightly_20260910/ab_comparison.meta.json` in the same simulation worktree.
+- **Internal contradiction / withdrawn causal attribution:** CONTENT_AUDIT.md previously treated the entire historical napkin surplus as measured reflector recovery while this section treated the reflectance as merely analytical. The surplus attribution is withdrawn. Different coefficients or configurations can coexist; neither note establishes that causal decomposition. The measured modern EJ-204 EndTop gain does not quantify historical EJ-230 END-only recovery.
 
 ### END σ: 50.49 vs 53.68 ps
 
