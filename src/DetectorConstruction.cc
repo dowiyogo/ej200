@@ -341,7 +341,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
              {kBarHalfX, kBarHalfY + g, 0.5*m},
              {0.0, 0.0, -(kBarHalfZ + g + 0.5*m)}},
         };
-        if (!IsTopInstrumented()) {
+        { // EXEC_29 D2: also construct the existing YPlus PanelSpec with TOP.
             panels.push_back({"+Y", "YPlus",
                 {kBarHalfX, 0.5*g, kBarHalfZ + g},
                 {0.0, +(kBarHalfY + 0.5*g), 0.0},
