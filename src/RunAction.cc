@@ -143,9 +143,9 @@ RunAction::RunAction() {
 
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
-    BoundaryCensus::Reset();
     // EXEC_26: reinicio único y copia del motor, sin consumir números aleatorios.
     if (IsMaster()) {
+        BoundaryCensus::Reset(); // EXEC_30: shared atomics reset once, before workers.
         BoundaryCensus::Instance().Reset();
         TerminalCensus::Reset();
     }
@@ -189,6 +189,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             "boundary_census_run" + std::to_string(run->GetRunID()) + ".csv");
     }
 
+    if (!IsMaster()) return; // EXEC_30: aggregate summary only after worker merges.
     const G4int nEvents = run->GetNumberOfEvent();
     if (nEvents == 0) return;
 
