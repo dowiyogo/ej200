@@ -1288,4 +1288,28 @@
   \end{center}
 \end{frame}
 
+
+\begin{frame}{K1 --- Photon Balance: Every Terminal Photon Accounted For}
+  \small EJ-204, EndTop, 70 TOP, $x=0$, $N=2000$; corrected guard and reflector (EXEC\_28/B0).
+  \begin{center}\scriptsize
+  \begin{tabular}{lrr}\toprule
+    Disjoint terminal group (scintillation only) & Count & Fraction [\%] \\\midrule
+Bulk absorption: bar & 9\,099\,837 & 22.7271\\
+Bulk absorption: wrap & 197\,707 & 0.4938\\
+Other Transportation / none & 5\,114\,686 & 12.7741\\
+Explicit world guard & 8\,553\,596 & 21.3629\\
+Transportation / BarLV / none & 17\,073\,709 & 42.6421\\
+Total scintillation terminals & 40\,039\,535 & 100.0000\\
+Ledger residual & 0 & 0.0000\\
+    \bottomrule\end{tabular}\end{center}
+  \scriptsize Zero residual verifies accounting, not a causal interpretation of every status.
+  \texttt{Transportation} is the final step process; it must not be read as a boundary outcome.
+  END/TOP hits are observations, not additional disjoint terminal bins.\\[3pt]
+  Source: EXEC\_28/B0, \texttt{terminal\_fates\_run0\_scintillation}; grouped sidecar:
+  \texttt{build\_exec29\_docs/backup\_photon\_balance} (CSV/ROOT/meta).
+  Seeds: \texttt{26092601 8349041}; exact invocation in B0 \texttt{cell.meta.json}.
+\end{frame}
+% Source: /home/rrios/ej200_exec26_20260909/build_nightly_20260910/cells/B0/terminal_fates_run0_scintillation.meta.json
+% Derived table: /home/rrios/ej200_deck_20260910/build_exec29_docs/backup_photon_balance.meta.json
+
 \end{document}
