@@ -1331,4 +1331,25 @@ Ledger residual & 0 & 0.0000\\
 \end{frame}
 % Source: /home/rrios/ej200_exec26_20260909/build_nightly_20260910/ab_comparison.meta.json
 
+
+\begin{frame}{K3 --- Geant4 11.4: REFLECTIVITY Is Not Always Reflectance}
+  \small \texttt{dielectric\_dielectric} + \texttt{polished} (not backpainted):
+  the supplied \texttt{REFLECTIVITY} sets survival before the Fresnel decision.
+  This statement is tested by a boundary census, not inferred from the label ESR.
+  \begin{center}\small
+  \begin{tabular}{lrr}\toprule
+    Forward air$\to$wrap boundary outcome & Count & Fraction [\%] \\\midrule
+    Fresnel reflection & 484\,562 & 13.371145 \\
+    Fresnel refraction & 3\,066\,577 & 84.620018 \\
+    Boundary absorption & 72\,799 & 2.008837 \\\bottomrule
+  \end{tabular}\end{center}
+  \small A coefficient of $0.98$ did not produce $98\%$ reflection.
+  The measured absorption is close to $2\%$; repeated encounters are correlated,
+  so a naive binomial significance is not a calibrated uncertainty.\\[3pt]
+  \scriptsize EXEC\_26 Phase 1b: main physics, EJ-204, EndTop, 70 TOP, $x=0$, $N=500$;
+  seeds \texttt{26092601 8349041}. Source: \texttt{tables/directional\_states}
+  (CSV/ROOT/meta), including exact command and provenance.
+\end{frame}
+% Source: /home/rrios/ej200_exec26_20260909/build_exec26_phase1b_20260909/run500_ready/tables/directional_states.meta.json
+
 \end{document}
