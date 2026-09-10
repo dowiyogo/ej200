@@ -21,8 +21,8 @@ Config: EJ-230, Vikuiti ESR (R=0.95 constant), N_TOP=20 unless noted.
 | Λ_refl (H-face, R=0.98) | 404.6 mm | napkin, R=0.98 |
 | Λ_refl (H-face, R=0.95) | 159.4 mm | from \NapLambdaReflRlow (EXEC_23 FIX-05) |
 | N_pe/end (TIR-only napkin) | 570 | EJ-230, x=0 |
-| N_pe/end (Geant4) | 701.3 | GEN-3, x=0 |
-| Surplus (reflector-recovered) | +23% | (701.3−570)/570 |
+| N_pe/end (Geant4, END-only) | 701.3 | GEN-3, EJ-230, END-only, N_TOP=0, x=0; phase_ab_optimal.csv |
+| Surplus (historical comparison) | +23% | (701.3−570)/570; EJ-230, END-only, N_TOP=0, x=0; reflector attribution unverified |
 
 ---
 
@@ -35,7 +35,7 @@ Config: EJ-230, Vikuiti ESR (R=0.95 constant), N_TOP=20 unless noted.
 | τ_decay [ns] | 2.1 | 1.8 | **1.5** |
 | Yield [ph/MeV] | 10000 | 10400 | 9700 |
 | n | 1.58 | 1.58 | 1.58 |
-| N_pe/end (G4, x=0) | 1311 | 941 | **701.3** |
+| N_pe/end (G4, END-only, N_TOP=0, x=0) | 1311 | 941 | **701.3** |
 | σ_END END-only, m*-opt, x=0 [ps] | 54.86 | 53.36 | 50.49 |
 
 ---
