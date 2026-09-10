@@ -1312,4 +1312,23 @@ Ledger residual & 0 & 0.0000\\
 % Source: /home/rrios/ej200_exec26_20260909/build_nightly_20260910/cells/B0/terminal_fates_run0_scintillation.meta.json
 % Derived table: /home/rrios/ej200_deck_20260910/build_exec29_docs/backup_photon_balance.meta.json
 
+
+\begin{frame}{K2 --- The Reflector Recycles; TIR Guides}
+  \small Ideal specular reflection preserves the angle to the surface normal.
+  For parallel faces, a ray outside the TIR acceptance remains outside it after a specular return; the reflector does not randomize its direction into a guided ray.
+  \begin{center}\small
+  \begin{tabular}{crr}\toprule
+    $|x|$ [mm] & END gain at $+x$ & END gain at $-x$ \\\midrule
+    200 & 1.0198 & 1.0235 \\
+    500 & 1.1082 & 1.0765 \\
+    650 & 1.2760 & 1.2819 \\\bottomrule
+  \end{tabular}\end{center}
+  \small Measured B/A: corrected metal reflector / original dielectric factory,
+  with the guard corrected in both. Recovery varies with source position and the associated optical paths; $|x|$ is not a measured photon path length.\\[3pt]
+  \scriptsize EJ-204, EndTop, 70 TOP, $N=1000$ per arm and position;
+  seeds \texttt{26092601 8349041}. EXEC\_28, \texttt{ab\_comparison} (CSV/ROOT/meta),
+  per-cell commands and uncertainties in its provenance.
+\end{frame}
+% Source: /home/rrios/ej200_exec26_20260909/build_nightly_20260910/ab_comparison.meta.json
+
 \end{document}
