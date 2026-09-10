@@ -3,6 +3,7 @@
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 #include "SteppingAction.hh"
+#include "TrackingAction.hh"
 
 void ActionInitialization::BuildForMaster() const {
     SetUserAction(new RunAction());
@@ -16,4 +17,5 @@ void ActionInitialization::Build() const {
     SetUserAction(run);
     SetUserAction(event);
     SetUserAction(new SteppingAction());
+    SetUserAction(new TrackingAction());
 }
