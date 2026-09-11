@@ -147,6 +147,7 @@ RunAction::RunAction() {
 
 void RunAction::BeginOfRunAction(const G4Run* run) {
     G4AccumulableManager::Instance()->Reset();
+    if (IsMaster()) BoundaryCensus::ResetSiPMEntries();
 #ifdef EJ200_ENABLE_DIAGNOSTICS
     // EXEC_26: reinicio único y copia del motor, sin consumir números aleatorios.
     if (IsMaster()) {
@@ -218,6 +219,7 @@ void RunAction::EndOfRunAction(const G4Run* run) {
         << "\n  End-right photons     : " << fNEndRight.GetValue()
         << "\n  Top SiPM  photons     : " << fNTop.GetValue()
         << "\n  Scint photons generated: " << nSc
+        << "\n  Bar -> SiPM (entering)   : " << BoundaryCensus::GetMylarToSiPM()
         << "\n  Total photons detected : " << nDet
         << "\n  Detection efficiency   : " << std::fixed << std::setprecision(4)
         << eff << " %"
@@ -232,7 +234,6 @@ void RunAction::EndOfRunAction(const G4Run* run) {
             << "\n  Bar -> reflector panel   : " << BoundaryCensus::GetBarToMylar()
             << "\n  Bar -> World (escaped)   : " << BoundaryCensus::GetMylarToWorld()
             << "\n  Bar -> Bar (TIR/refl)    : " << BoundaryCensus::GetMylarReflected()
-            << "\n  Bar -> SiPM (entering)   : " << BoundaryCensus::GetMylarToSiPM()
             << "\n  Killed in WorldLV        : " << BoundaryCensus::GetKilledWorld()
             << "\n  Spared World reflection : " << BoundaryCensus::GetSparedWorldReflection()
             << "\n====================================\n"

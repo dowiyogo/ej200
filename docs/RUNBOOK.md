@@ -16,7 +16,7 @@ ctest --test-dir /home/rrios/exec31_20260911/build_off \
   -R 'sslg4_properties_check|readout_config_check' --output-on-failure
 ```
 
-`EJ200_ENABLE_DIAGNOSTICS` defaults to **OFF** if omitted. ON compiles the optical-boundary census, terminal-fate TrackingAction, explicit-kill annotations, legacy atomic counters and RNG snapshots. OFF removes those sources/actions and hot-loop census updates; ordinary scintillation/event totals and hit ROOT output remain available. The optical boundary lookup required by the corrected escape guard stays enabled in either build. Build ON in a separate directory using `-DEJ200_ENABLE_DIAGNOSTICS=ON`.
+`EJ200_ENABLE_DIAGNOSTICS` defaults to **OFF** if omitted. ON compiles the optical-boundary census, terminal-fate TrackingAction, explicit-kill annotations, legacy atomic counters and RNG snapshots. OFF removes those sources/actions and optional hot-loop census updates; ordinary scintillation/event totals and hit ROOT output remain available. EXEC_32 keeps the required `Bar -> SiPM (entering)` boundary-encounter tally and its master-only reset/output active with either flag, so the physics smoke assertion remains observable. This historical tally counts encounters toward a SiPM, not unique transmitted photons. The optical boundary lookup required by the corrected escape guard stays enabled in either build. Build ON in a separate directory using `-DEJ200_ENABLE_DIAGNOSTICS=ON`.
 
 ## Macro configuration
 

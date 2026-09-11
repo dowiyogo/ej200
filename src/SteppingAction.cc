@@ -24,6 +24,17 @@
 // hc constant for wavelength calculation [eV·nm]
 static constexpr G4double kHC_eVnm = 1239.84193;  // eV·nm
 
+// Required run observation, independent of optional diagnostic maps.
+// Historical name retained: counts optical boundary encounters toward a SiPM,
+// not unique photons or a proof that transmission/detection occurred.
+namespace {
+    std::atomic<long long> gMylarToSiPM{0};
+}
+namespace BoundaryCensus {
+    long long GetMylarToSiPM() { return gMylarToSiPM.load(); }
+    void ResetSiPMEntries() { gMylarToSiPM = 0; }
+}
+
 // Contadores de diagnóstico de frontera — acumulan durante toda la corrida.
 // Se usan std::atomic para thread-safety en MT builds.
 #ifdef EJ200_ENABLE_DIAGNOSTICS
@@ -31,7 +42,6 @@ namespace {
     std::atomic<long long> gBarToMylar{0};     // Bar -> reflector panel
     std::atomic<long long> gMylarToWorld{0};   // Bar -> World escape
     std::atomic<long long> gMylarReflected{0}; // Boundary reflection back to BarLV
-    std::atomic<long long> gMylarToSiPM{0};    // Bar -> SiPM detector
     std::atomic<long long> gKilledWorld{0};    // Kills en WorldLV por SteppingAction
     std::atomic<long long> gSparedWorldReflection{0}; // Reflexiones que este guard no mata
 
@@ -49,14 +59,12 @@ namespace BoundaryCensus {
     long long GetBarToMylar()     { return gBarToMylar.load(); }
     long long GetMylarToWorld()   { return gMylarToWorld.load(); }
     long long GetMylarReflected() { return gMylarReflected.load(); }
-    long long GetMylarToSiPM()    { return gMylarToSiPM.load(); }
     long long GetKilledWorld()    { return gKilledWorld.load(); }
     long long GetSparedWorldReflection() { return gSparedWorldReflection.load(); }
     void Reset() {
         gBarToMylar = 0;
         gMylarToWorld = 0;
         gMylarReflected = 0;
-        gMylarToSiPM = 0;
         gKilledWorld = 0;
         gSparedWorldReflection = 0;
     }
@@ -116,8 +124,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         }
     }
 
-#ifdef EJ200_ENABLE_DIAGNOSTICS
-    // ── Diagnóstico de frontera ──────────────────────────────────────────────
+    // Required SiPM observation and optional boundary diagnostics.
     if (step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary) {
         const G4String preVolName =
             (step->GetPreStepPoint()->GetPhysicalVolume())
@@ -130,6 +137,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
                       ->GetLogicalVolume()->GetName()
                 : "NULL";
 
+#ifdef EJ200_ENABLE_DIAGNOSTICS
         if (IsBarLV(preVolName) && IsReflectorLV(postVolName))
             ++gBarToMylar;
 
@@ -139,12 +147,12 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         if (IsBarLV(preVolName) && IsBarLV(postVolName))
             ++gMylarReflected;
 
-        if (IsBarLV(preVolName) &&
+#endif
+        if (preVolName == "BarLV" &&
             (postVolName == "EndSiPMLV" || postVolName == "TopSiPMLV"))
             ++gMylarToSiPM;
     }
 
-#endif
     // ── Wavelength filter ────────────────────────────────────────────────────
     // Kill photons outside the SiPM sensitivity window (300–900 nm).
     // EJ-200 emits in 380–500 nm so this filter has negligible effect on

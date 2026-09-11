@@ -14,12 +14,17 @@ class SteppingAction : public G4UserSteppingAction {
 // Acceso externo a los contadores de diagnóstico de frontera.
 // Definidos en SteppingAction.cc; thread-safe (std::atomic).
 // Historical accessor names are kept for compatibility with diag scripts.
+namespace BoundaryCensus {
+    // Required physics smoke observation, available with diagnostics OFF.
+    long long GetMylarToSiPM();
+    void ResetSiPMEntries();
+}
+
 #ifdef EJ200_ENABLE_DIAGNOSTICS
 namespace BoundaryCensus {
     long long GetBarToMylar();
     long long GetMylarToWorld();
     long long GetMylarReflected();
-    long long GetMylarToSiPM();
     long long GetKilledWorld();
     long long GetSparedWorldReflection();
     void      Reset();
