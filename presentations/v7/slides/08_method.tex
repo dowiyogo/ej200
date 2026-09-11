@@ -19,7 +19,7 @@ The explicit-gap commit did not introduce the wrong factory selection. The later
 \end{frame}
 
 \begin{frame}{Backup: earlier genealogy spans different branches}
-\begin{tabularx}{\linewidth}{lX}
+\begin{tabular}{lp{\WideWidth}}
 \toprule
 Commit & Verified change and qualification\\
 \midrule
@@ -28,7 +28,7 @@ Commit & Verified change and qualification\\
 \texttt{\GeneRefl} & Add a reflectivity property to that dielectric factory. The old non-TIR recovery interpretation is not established for the later gap geometry.\\
 \texttt{\GenePort} / \texttt{\GenePortOther} & Corresponding EndTop factory ports on different lineages, not two sequential main ancestors.\\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \vspace{\Gap}
 Earlier skin-only decisions and the later explicit air--wrap border are different model placements. A surface property cannot be interpreted independently of that placement.
 \Source{Verified SHA stat/diffs; branch qualifications follow \texttt{docs/DEFECTS\_AND\_CORRECTIONS.md}. Historical implementation intent is not a newly measured physical result.}
@@ -44,5 +44,5 @@ For dielectric/dielectric, ordinary polished finish in the tested build:
 Thus the input coefficient is not directly an observed reflected fraction. The experimental check is the forward census, with nominal input $\MetalR$ but observed reflection $\OldReflection\%$ in \IdROne.
 \vspace{\Gap}
 This source reading is labeled \emph{hypothesis}; the measurement establishes the discrepancy. Repeated encounters are correlated, so no independent-Bernoulli significance is assigned.
-\Source{Geant4 \GeantVersion: installed \BoundaryFile source snapshot/hash under \texttt{sources/}. Experimental source: \IdROne, \texttt{\ShaROne}, \MaterialName, EndTop $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\GuardN$, seeds \Seeds; \texttt{sources/directional}.}
+\Source{Geant4 \GeantVersion: installed \BoundaryFile\ source snapshot/hash under \texttt{sources/}. Experimental source: \IdROne, \texttt{\ShaROne}, \MaterialName, EndTop $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\GuardN$, seeds \Seeds; \texttt{sources/directional}.}
 \end{frame}
