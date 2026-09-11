@@ -158,3 +158,41 @@ launch the grid**. The eventual grid uses the same even-TRAIN orientation.
 `provenance/` document the unchanged imported workflows, historical conflicts
 and electronics variants. Their original pending-choice statements describe
 EXEC33; the choices above supersede them specifically for EXEC34.
+
+## EXEC34B prepared runner (not executed by EXEC34A)
+
+The handoff pins the complete campaign in
+`/home/rrios/exec34b_20260911/campaign.json` and prepares an append-only
+`manifest.jsonl`. Cells: EJ-200/OPSC-100, EJ-204/OPSC-101, EJ-230/OPSC-106;
+x=0,+200,-200,+500,-500,+650,-650 mm; all 10000 events, one worker,
+eventModulo=1, same seeds, frozen even-TRAIN convention and intrinsic parameters.
+Every new position learns its own TRAIN model and then freezes it for EVAL.
+
+Read-only validation and plan:
+
+```bash
+/usr/bin/python /home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/grid.py \
+  --config /home/rrios/exec34b_20260911/campaign.json
+```
+
+EXEC34B start (EXEC34A does not execute this command):
+
+```bash
+/usr/bin/python /home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/grid.py \
+  --config /home/rrios/exec34b_20260911/campaign.json --execute
+```
+
+Resume uses the same command plus `--resume`. PASS cells are skipped only after
+verifying their sidecars; completed simulation stages can be reused. Incomplete
+or inconsistent outputs are preserved and refused, not overwritten or deleted.
+A filesystem lock prevents two concurrent runners. A failed cell stops new
+submissions; already active cells finish and are recorded. Each cell retains its
+stdout and every stage exit code. No change of physics is attempted on failure.
+
+Concurrency is capped by 24 logical CPUs, pending cells, the recorded 20% RAM
+reserve and twice the larger measured simulation/analysis RSS. This bounds the
+complete one-worker process chain conservatively; simulation-only memory allows
+more processes. Available RAM is checked again at launch and may lower the cap.
+OMP/OpenBLAS/MKL thread counts are one inside each independent cell. These are
+execution limits, not changes to the estimator. No simultaneous-job throughput
+is claimed to have been measured by this pilot.
