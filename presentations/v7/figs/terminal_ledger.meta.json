@@ -1,0 +1,395 @@
+{
+  "runs": {
+    "D1": {
+      "cell_id": "D1",
+      "arm": "D1",
+      "x_mm": 0,
+      "N": 2000,
+      "source_commit": "2ddf20592406058c0ad741bd7cdd0f2ce7780acf",
+      "binary_sha256": "6a7f1791f0038643fcd1a4d81e7a6eb884858bf0236769c8174eabc81b332da5",
+      "Geant4": {
+        "version": "11.4.0",
+        "identity": "geant4-11-04 [MT], 5-December-2025",
+        "install_prefix": "/home/tdship/opt/geant4-v11.4.0-install"
+      },
+      "seeds": [
+        26092601,
+        8349041
+      ],
+      "threads": 1,
+      "material": "EJ-204 / OPSC-101",
+      "readout": "EndTop",
+      "N_TOP": 70,
+      "TOP_layout": {
+        "count": 70,
+        "global_ids": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85
+        ],
+        "copy_numbers": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85
+        ],
+        "x_mm": [
+          -692,
+          -672,
+          -652,
+          -632,
+          -612,
+          -592,
+          -572,
+          -552,
+          -532,
+          -512,
+          -492,
+          -472,
+          -452,
+          -432,
+          -412,
+          -392,
+          -372,
+          -352,
+          -332,
+          -312,
+          -292,
+          -272,
+          -252,
+          -232,
+          -212,
+          -192,
+          -172,
+          -152,
+          -132,
+          -112,
+          -92,
+          -72,
+          -52,
+          -32,
+          -12,
+          12,
+          32,
+          52,
+          72,
+          92,
+          112,
+          132,
+          152,
+          172,
+          192,
+          212,
+          232,
+          252,
+          272,
+          292,
+          312,
+          332,
+          352,
+          372,
+          392,
+          412,
+          432,
+          452,
+          472,
+          492,
+          512,
+          532,
+          552,
+          572,
+          592,
+          612,
+          632,
+          652,
+          672,
+          692
+        ],
+        "center_y_mm": 29.75,
+        "center_z_mm": 0.0,
+        "source": "unchanged DetectorConstruction.cc:50-54,432-440"
+      },
+      "gun": "mu- 1 GeV vertical x=0 mm",
+      "macro_sha256": "356b49f17346db07be7b2cff1bff7a5b59056bf3f77991b29f65823ee87255d5",
+      "command": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/base/ej200_bar_sim -m /home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1/run.mac",
+      "cwd": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1",
+      "start_utc": "2026-09-10T09:46:05.449799+00:00",
+      "preregister_sha256": "7ab12a080d2188b41b960a02f96a62715d14c7e11eeadaf3a16451be13a78b73",
+      "end_utc": "2026-09-10T10:14:23.330337+00:00",
+      "wall_s": 1697.8802930450765,
+      "exit_code": 0,
+      "rng_states": {
+        "rng_run0_thread-1_begin.rndm": "5adc16913fd73fbeeaceb380e8381a7a31b63758a90f41990636980eac860a95",
+        "rng_run0_thread-1_end.rndm": "6cce39575e2bc45faba50b5c2fc3a94d6482bb96fef28d6fd53e9be13f214220",
+        "rng_run0_thread0_begin.rndm": "b6c1b5a824b79769d5f128ec867d79593b8661cec0f465378a7416ffb89976f0",
+        "rng_run0_thread0_end.rndm": "d772975da08468fc072fd9165ba6323f087ab018477d6e591788c386cdad4b33"
+      },
+      "summary": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1/cell_summary.json"
+    }
+  },
+  "sources": {
+    "guard": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec27_20260910/run500/tables/metrics_comparison",
+      "copied_base": "sources/guard",
+      "sha256": {
+        "csv": "2ecf226a67b6818f36abfdc44387cd193146f8fc2696df51da8551618d5fcdf1",
+        "root": "8b2b082680a05a46e3e007aee391685bde85c54d80714bd43601b553f34b1519",
+        "meta.json": "0fdd9d303947cf41097e61a76d87717e7d679195d81a53f7f10569e09d71d90d"
+      }
+    },
+    "bar_world": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec27_20260910/run500/tables/bar_world_states",
+      "copied_base": "sources/bar_world",
+      "sha256": {
+        "csv": "aab322e747037eb4043dc6dbe50460c29dc91b736cabbe0f2bba9b1817cfed0c",
+        "root": "7b14fda000a827c8ad367257fc9930434896f5e1b42570c04d8014f99594beed",
+        "meta.json": "62c4247dac2bb3138449dd17334d85620133e2612c995cb862b5a34a4e4fa0ef"
+      }
+    },
+    "directional": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec26_phase1b_20260909/run500_ready/tables/directional_states",
+      "copied_base": "sources/directional",
+      "sha256": {
+        "csv": "65f3f93369006cb7026c1fe7bf95af6329248415ce39fc4a326beee40a799079",
+        "root": "e2ccd0013498bf5b168c3bb53cc18b026ea8543fee9a82a277ef56e10d07040b",
+        "meta.json": "653b5509f54f916c7097fa3806b0e58dccc1ae02d29fb229d013088cdae1e6d9"
+      }
+    },
+    "metal_reflection": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1/reflection_panels",
+      "copied_base": "sources/metal_reflection",
+      "sha256": {
+        "csv": "b307003a998f1985c7a31733813a47b1cc50de7e89bcac345ca4eb42f8107068",
+        "root": "e2dfdbb241731b32072d8645032e2c68c259e04b8b698f4c3f83d43fe9b46163",
+        "meta.json": "80aa1647070005113a6b2f242f6832b1c75db6ad0a9d2cd3eaa6ee72acaf5e1d"
+      }
+    },
+    "factorial": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/factorial_gains",
+      "copied_base": "sources/factorial",
+      "sha256": {
+        "csv": "e1eb9c0d0a1e3ddff8bfbdb55348e63951a3c7b4fb039ec0a2c7b4821943d79f",
+        "root": "303ce72bfae500a7a8feba004c9d018d18d4909a7a64ee48782fe50e04ffe601",
+        "meta.json": "8d53df4b7ac23deaecc21e493a2a249159bbf2ca9a9d2f4c635fe845258593d4"
+      }
+    },
+    "positions": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_nightly_20260910/ab_comparison",
+      "copied_base": "sources/positions",
+      "sha256": {
+        "csv": "2a90eb24b02c0f6d9947a2b5edc12ee5ce8886dc4d97122049449bb9d7fa782b",
+        "root": "98245acd3848225133e31c0d3945be71d4249ad0be7bee0baeffa2e38c4d0917",
+        "meta.json": "c37c1bd567f6c1ac060cef702df3604d15da00695262721059f4a149c39cc8b0"
+      }
+    },
+    "design": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/design_gain",
+      "copied_base": "sources/design",
+      "sha256": {
+        "csv": "56bfa3e6f24ff8e8bf9ac428b42f2f915aebbcc59e5f9cf8cd46e21efc18a792",
+        "root": "317d07787d9a55135845530f68f72ff3e23b8e87a6210d75d1382e4e9976fe98",
+        "meta.json": "87e7e5365f57825f401815d26d054dfe43d5ab966d59022128ba643bc2b0146e"
+      }
+    },
+    "multiplicity_dielectric": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/D3/encounter_multiplicity",
+      "copied_base": "sources/multiplicity_dielectric",
+      "sha256": {
+        "csv": "35eee33ba0db0ca3ef0de7d51e670def40579a2163b9b7d520734a2429770125",
+        "root": "ca2172dfd1f16dddbdd679822fdc10920a2ba99e5a7459a1491cbd4b175c704a",
+        "meta.json": "dfb9fa7437d3626bab05e1ac188235e2483c41c45493c9da33d27dfad5761be0"
+      }
+    },
+    "multiplicity_metal": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1/encounter_multiplicity",
+      "copied_base": "sources/multiplicity_metal",
+      "sha256": {
+        "csv": "342bafbdb78965b99fecad161e979a0d56ac3f8ee73fd6376149d74e034f1fc0",
+        "root": "9a3cb52d118015fe57e0a8e72a1a4f6d93ea353eae3cc04d28a5d8125bbff385",
+        "meta.json": "d60ad096aec1f031cb1f30337dd2df993a7fbd67f096e13f963919cabc6fdfab"
+      }
+    },
+    "terminal_scint": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1/terminal_fates_run0_scintillation",
+      "copied_base": "sources/terminal_scint",
+      "sha256": {
+        "csv": "c8fa3e83ae8861596f9b699def2b0619bce4acaea89ca634ff203319f9c85123",
+        "root": "c00cb8b3ed03803cb02dd61dcbde960d3aeca60a10aececf07468cc64f7cacc1",
+        "meta.json": "0a2b371a4e079e6043fb5b5a44b7bfa367249884f7bbd1600d8415a24356ade0"
+      }
+    },
+    "terminal_audit": {
+      "original_base": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1/terminal_fates_run0_audit",
+      "copied_base": "sources/terminal_audit",
+      "sha256": {
+        "csv": "d4cbab61df1898d757abdfacf8837adeb969b5294a65382392c6f00087b5f30a",
+        "root": "9782ae165a2c38075658acf8989af80f4b2fc9359e82621556d4a82d107c9841",
+        "meta.json": "9cc526f46c258e19ef2850c8f6243e368bf86a464aeccee7a240747664af42ac"
+      }
+    },
+    "claims_audit": {
+      "original_base": "/home/rrios/ej200_deck_20260910/build_exec29_docs/claims_audit",
+      "copied_base": "sources/claims_audit",
+      "sha256": {
+        "csv": "bb3a3d6e3e769a85b5cbbe487e1915ae6c9df4447f73af63f2131db76b243ded",
+        "root": "e6b9d7cd2735c85e61ba231223cddddab904c691cd2f90f1fc1f29b1049780a8",
+        "meta.json": "967dfef181a5a99f2c1f44fbe394294c4fe7b6e86e54d101a362edf7d1e85f71"
+      }
+    }
+  },
+  "description": "Disjoint terminal process/volume/explicit-kill grouping. Other transport/boundary is not equated to detected hits.",
+  "row_count": 4,
+  "columns": {
+    "category": "string",
+    "count": "int64",
+    "fraction": "float64"
+  },
+  "roundtrip_verified": true,
+  "sidecars": {
+    ".root": {
+      "path": "/home/rrios/ej200_talkv7_20260911/presentations/v7/figs/terminal_ledger.root",
+      "sha256": "08575916bcfed71a46aec8751a29fcb4f5434c59cdf65dfaf0f71431a8795e17"
+    },
+    ".csv": {
+      "path": "/home/rrios/ej200_talkv7_20260911/presentations/v7/figs/terminal_ledger.csv",
+      "sha256": "ccc222d310fe9ed21e616f68c9247a8696e48a321adb01bb16527e069c03b322"
+    }
+  },
+  "figure": {
+    "path": "/home/rrios/ej200_talkv7_20260911/presentations/v7/figs/terminal_ledger.pdf",
+    "sha256": "e4fdfaf4682c7252fb913b9858c4878e25edd0a46c5ab5fa162ccedf0e9d096b"
+  }
+}
