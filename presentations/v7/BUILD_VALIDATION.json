@@ -1,0 +1,129 @@
+{
+  "created_utc": "2026-09-11T12:08:41.628794+00:00",
+  "builds": {
+    "t0minidaq": {
+      "source_commit": "3542a410c144b170784c0973a5fafff62b492341",
+      "exit_code": 0,
+      "pages": 17,
+      "overfull": 0,
+      "underfull": 0,
+      "missing_character_warnings": 37,
+      "other_warning_entries": 2,
+      "pdf_sha256": "5b4b1d3122128ed90ddcd370a8263b1c1c346c1f49fdfb4cecc904587638b08b",
+      "log_sha256": "b5bcf77c384466dc60617553f519efd5235f0fa4857cb8f68c983e32aa878c86",
+      "pdf": "/home/rrios/exec32_20260911/compile_t0_release/talk_v7.pdf",
+      "log": "/home/rrios/exec32_20260911/compile_t0_release/talk_v7.log",
+      "invocation": {
+        "id": "C055",
+        "start": "2026-09-11T12:06:57.182930+00:00",
+        "end": "2026-09-11T12:06:58.428223+00:00",
+        "cwd": "/home/rrios/ej200_talkv7_20260911/presentations/v7",
+        "command": "/home/rrios/ej200_deck_20260910/build_exec29_docs/tools/tectonic --keep-logs --keep-intermediates --outdir /home/rrios/exec32_20260911/compile_t0_release talk_v7.tex",
+        "exit": 0,
+        "output": "/home/rrios/exec32_20260911/audit/command_055.log"
+      },
+      "engine": {
+        "name": "Tectonic 0.17.0",
+        "path": "/home/rrios/ej200_deck_20260910/build_exec29_docs/tools/tectonic",
+        "sha256": "a98aa59ad5c1df39a6c9e56cbfc5088f2b11d6c179c0130b97998e4bd46a46da"
+      }
+    },
+    "MSI": {
+      "source_commit": "3542a410c144b170784c0973a5fafff62b492341",
+      "exit_code": 0,
+      "pages": 17,
+      "overfull": 0,
+      "underfull": 0,
+      "missing_character_warnings": 0,
+      "other_warning_entries": 2,
+      "pdf_sha256": "59ea49f5fa7cac06ecf18bed938e04f725077d6bea0faae1f8f0baf9457ac5f7",
+      "log_sha256": "70f4a47f675c7de0df64be250b660be34b79da7a9b19856cda44ee9a9f8fc2c3",
+      "pdf": "/home/rrios/exec32_20260911/msi_release/talk_v7.pdf",
+      "log": "/home/rrios/exec32_20260911/msi_release/talk_v7.log",
+      "invocations": [
+        {
+          "command": "git -C /home/rrios/ej200_talkv7_20260911 archive --format=tar --output=/home/rrios/exec32_20260911/msi_release/source.tar 3542a41 presentations/v7",
+          "start": "2026-09-11T12:07:09.129382+00:00",
+          "end": "2026-09-11T12:07:09.142702+00:00",
+          "exit": 0,
+          "output": "/home/rrios/exec32_20260911/msi_release/command_1.log"
+        },
+        {
+          "command": "ssh -p 9022 -o BatchMode=yes -o ConnectTimeout=5 reriosto@localhost 'mkdir /home/reriosto/exec32_v7_3542a41_20260911'",
+          "start": "2026-09-11T12:07:09.142760+00:00",
+          "end": "2026-09-11T12:07:09.923294+00:00",
+          "exit": 0,
+          "output": "/home/rrios/exec32_20260911/msi_release/command_2.log"
+        },
+        {
+          "command": "scp -P 9022 -o BatchMode=yes /home/rrios/exec32_20260911/msi_release/source.tar reriosto@localhost:/home/reriosto/exec32_v7_3542a41_20260911/source.tar",
+          "start": "2026-09-11T12:07:09.923359+00:00",
+          "end": "2026-09-11T12:07:10.721711+00:00",
+          "exit": 0,
+          "output": "/home/rrios/exec32_20260911/msi_release/command_3.log"
+        },
+        {
+          "command": "ssh -p 9022 -o BatchMode=yes -o ConnectTimeout=5 reriosto@localhost 'cd /home/reriosto/exec32_v7_3542a41_20260911 && tar -xf source.tar && cd presentations/v7 && latexmk -pdf -interaction=nonstopmode -halt-on-error talk_v7.tex'",
+          "start": "2026-09-11T12:07:10.721769+00:00",
+          "end": "2026-09-11T12:07:14.568593+00:00",
+          "exit": 0,
+          "output": "/home/rrios/exec32_20260911/msi_release/command_4.log"
+        },
+        {
+          "command": "scp -P 9022 -o BatchMode=yes reriosto@localhost:/home/reriosto/exec32_v7_3542a41_20260911/presentations/v7/talk_v7.pdf reriosto@localhost:/home/reriosto/exec32_v7_3542a41_20260911/presentations/v7/talk_v7.log /home/rrios/exec32_20260911/msi_release",
+          "start": "2026-09-11T12:07:14.568652+00:00",
+          "end": "2026-09-11T12:07:15.983352+00:00",
+          "exit": 0,
+          "output": "/home/rrios/exec32_20260911/msi_release/command_5.log"
+        }
+      ]
+    }
+  },
+  "canonical": "t0minidaq",
+  "visual_review": "All 17 canonical pages rendered and reviewed; genealogy clipping/paragraph placement corrected before release. Key scientific values extracted from both PDFs.",
+  "warning_qualification": "Tectonic final log has 37 nullfont missing-character warnings; MSI has none. Required displayed values are present. Both have two other warning entries (hyperref PDF-metadata token removal). Zero box warnings in both.",
+  "v6_unchanged": true,
+  "baseline_v6_exact_copy": true,
+  "packages_identical": true,
+  "figures": {
+    "boundary_reflectance": {
+      "rows": 2,
+      "sha256": {
+        "pdf": "ea43e00e048df6a8e8a2a351bb64bd947e681ce3a9e340a9a90ef269387004a6",
+        "csv": "6e666d3f5598bb53aa04f5668ec1942eab52c559b454b99e0aa626110925819c",
+        "root": "f7abdf4753642f01243307747926de40c20b1e373bf36dfb58113ed888015e5e",
+        "meta.json": "d48e85314a6047144674523e76de9fe8c76035190969650f520fadbf7e463710"
+      }
+    },
+    "guard_yields": {
+      "rows": 2,
+      "sha256": {
+        "pdf": "b3c0816134a8c9cce8f4aba9f45dc2bfe379fbd1a9730737663b4e3ecd59ac62",
+        "csv": "acfdaacdf51f434cf721fdadaf3c3e10d1ac648ca46a633585467049597f5605",
+        "root": "9b73593fa37afc4865e764d235271d5c3a9d3c7fe121a5eced7dea148b8e54ab",
+        "meta.json": "28ef758a5cba9cdf98edad54a46a9d9ae343b6fe9318e65323188447c91ca73b"
+      }
+    },
+    "position_gain": {
+      "rows": 6,
+      "sha256": {
+        "pdf": "85a4e5adc6944e8f66eb5ed2ff1ebf817ed0b98ef327b2402fe9e6446a6cb65e",
+        "csv": "7d4c04d3ba9c06e932f0d24a49cc0cd57d62a3712d222f11e4cbb0d0e8d094c0",
+        "root": "3c3f9b6bb096809db9e14eaa351a6ef6d7e1c3fc4b82a7e55f5c33587112b05b",
+        "meta.json": "95e2b20b8641755bed5de47656eb5998458020a3eb14e68d3eced80971659df0"
+      }
+    },
+    "terminal_ledger": {
+      "rows": 4,
+      "sha256": {
+        "pdf": "e4fdfaf4682c7252fb913b9858c4878e25edd0a46c5ab5fa162ccedf0e9d096b",
+        "csv": "ccc222d310fe9ed21e616f68c9247a8696e48a321adb01bb16527e069c03b322",
+        "root": "08575916bcfed71a46aec8751a29fcb4f5434c59cdf65dfaf0f71431a8795e17",
+        "meta.json": "512d85036dac980adf40336485d12343c27685f8e3d382ce0e98babc06da9774"
+      }
+    }
+  },
+  "source_triplets_verified": 12,
+  "value_rows": 64,
+  "run_records": 21
+}
