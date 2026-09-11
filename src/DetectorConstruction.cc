@@ -310,7 +310,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     //   air→Vik : dielectric_dielectric R=0.95 (CreateBarSkinReflector, Materials.cc:354)
     {
         auto* scintAirSurface     = Materials::CreateBarSurface();
-        auto* airReflectorSurface = Materials::CreateBarSkinReflector();
+        auto* airReflectorSurface = Materials::CreateMylarReflector(0.98);
 
         const G4double g = kAirGapThickness;
         const G4double m = kReflectorThickness;
