@@ -30,6 +30,8 @@ def main(args):
         sim=json.loads(simulation_meta.read_text())
         assert sim['exit_code']==0 and sha(sim['root_path'])==sim['root_sha256']
         assert sim['N_generated']==10000 and sim['material']==args.material and sim['opsc_code']==args.opsc and sim['x_mm']==args.x
+        assert sim['workers']==args.workers and sim['eventModulo']==1
+        assert sim['seeds']==[26092601,8349041] and sim['N_TOP']==70 and sim['diagnostics'] is False
     else:
         stage('simulation',[sys.executable,str(HERE/'run_simulation.py'),'--binary',args.binary,
             '--output',str(dest),'--workers',str(args.workers),'--material',args.material,'--opsc',args.opsc,'--x',str(args.x)])
