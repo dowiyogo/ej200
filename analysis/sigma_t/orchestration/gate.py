@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import sys
+import numpy as np
 import uproot
 from run_simulation import now, sha
 
@@ -52,6 +53,9 @@ def evaluate(directory):
         rows = list(csv.DictReader((out/'analysis.csv').open()))
         with uproot.open(out/'analysis.root') as f:
             checks['root_csv_row_count'] = f['result_summary'].num_entries==len(rows)
+            saved = f['result_summary']['sigma_ps'].array(library='np')
+            expected = np.array([float(r['sigma_ps']) if r['sigma_ps'] else float('nan') for r in rows])
+            checks['root_csv_values'] = bool(np.array_equal(saved,expected,equal_nan=True))
             checks['all_generated_end_events'] = f['end_events'].num_entries==data['N_generated']
         checks['metadata_complete'] = all(key in data for key in ('simulation','pipeline_commit','orchestration_commit','split_rule','top','end','stages','rng','script_sha256'))
         checks['simulation_provenance'] = all(key in data['simulation'] for key in ('simulation_commit','geant4_version','seeds','N_generated','material','opsc_code','configuration','N_TOP','x_mm','workers','eventModulo','PDE_path','PDE_sha256'))
