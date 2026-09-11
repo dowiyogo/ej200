@@ -1,0 +1,17 @@
+commit 51ca4ff53e732221fa9518be6aa4cd65ea449e25
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Wed May 6 23:20:49 2026 -0400
+
+    fix(optics): add Al-foil reflective surface to wrap (dielectric_metal)
+    
+    The Mylar-as-dielectric model provided identical optical confinement to a bare bar in air (same TIR critical angle at the bar face). Replace with an explicit G4LogicalBorderSurface(WrapPV -> WorldPV) using dielectric_metal model with spectrally-resolved Al-foil reflectivity R(lambda) = 0.85-0.92.
+    
+    Also fix geometry bug: remove kMylarThick gap between BarCenter and BarCap sub-volumes (was inserting 50 um of Mylar inside the bar, causing extra Fresnel losses for photons crossing the longitudinal boundaries).
+    
+    Resolves: photon yield 2-5x below experimental data (Betancourt 2020).
+
+ README.md                   |  5 +++++
+ include/Materials.hh        |  8 ++++++++
+ src/DetectorConstruction.cc | 27 ++++++++++++++++++++-------
+ src/Materials.cc            | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 78 insertions(+), 7 deletions(-)

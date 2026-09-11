@@ -1,0 +1,30 @@
+\documentclass[aspectratio=169,9pt]{beamer}
+\usetheme{Warsaw}
+\usecolortheme{seahorse}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,tabularx,colortbl}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,patterns,calc,shapes.geometric}
+\input{results_macros_v7}
+\definecolor{colEND}{RGB}{0,102,178}
+\definecolor{colTOP}{RGB}{204,102,0}
+\definecolor{colBLUE}{RGB}{0,153,76}
+\newcommand{\ps}{\,\text{ps}}
+\newcommand{\mm}{\,\text{mm}}
+\newcommand{\Source}[1]{\par\vfill{\scriptsize\color{gray}#1\par}}
+\newcommand{\CommonSource}{\MaterialName; vertical $\mu^-$, $\Energy$ GeV; seeds \Seeds.}
+\newcommand{\GuardSource}{\CommonSource\ EndTop, $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\GuardN$/arm, one worker. \IdROne/\IdRTwo: \texttt{\ShaROne}/\texttt{\ShaRTwo}; sidecars \texttt{sources/guard}, \texttt{sources/bar\_world}.}
+\newcommand{\DOneSource}{\CommonSource\ EndTop, $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\MainN$, one worker. \IdDOne: \texttt{\ShaDOne}; sidecars \texttt{sources/terminal\_scint}, \texttt{sources/terminal\_audit}.}
+\newcommand{\FactorSource}{\CommonSource\ $x=\Zero\mm$, $N=\MainN$/arm. END-only: \IdDZero/\IdDThree, $N_{\rm TOP}=\NoTopCount$, \texttt{\ShaDZero}/\texttt{\ShaDThree}; EndTop: \IdBZero/\IdAZero, $N_{\rm TOP}=\TopCount$, \texttt{\ShaBZero}/\texttt{\ShaAZero}. Worker settings in backup; sidecars \texttt{sources/factorial}.}
+\title[SHiP Timing Bar]{SHiP Timing Bar:\\Corrected Transport, Measured Light Collection}
+\subtitle{What is established after the optical-physics audit}
+\author[René Ríos (ULS)]{René Ríos\\\small Universidad de La Serena (ULS)}
+\date{\DeckDate\ --- \DeckNew}
+\begin{document}
+% SLIDE INPUTS
+\input{slides/00_scope}
+\end{document}

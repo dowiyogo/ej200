@@ -1,0 +1,26 @@
+commit f3a8062f8484318dd17c8a9fdb095030697b73cc
+Author: rrios <dowiyogo@gmail.com>
+Date:   Sun Aug 16 09:52:14 2026 +0200
+
+    feat(bar-end-vikuiti): End-only readout + Vikuiti air-gap on all lateral faces
+    
+    Physics model:
+      - Bar surface: dielectric_dielectric polished → TIR at θ > 39.3°
+      - Air gap 0.10 mm + Vikuiti 3M ESR 0.05 mm on -Y, +Y, +Z, -Z faces
+      - +Y panel added conditionally when NOT IsTopInstrumented (End mode)
+      - End SiPMs ±X only (face_type=0 left, face_type=1 right)
+    
+    Additions vs feat/endtop-sslg4:
+      - OPSC-106 (EJ-230) support with L=120 cm, rise=0.5 ns overrides
+      - GROUPVEL = c/1.58 fix for world air (prevents superluminal aliasing)
+      - +Y Vikuiti panel in End mode
+      - Renamed Mylar volumes → Vikuiti; surface CreateBarSkinReflector R=0.98
+    
+    Validated (100 ev, x=0):
+      EJ-204: 1896 ph/ev | EJ-230: 1361 ph/ev | EJ-200: 2651 ph/ev
+      face_type=2 (top) = 0 for all — End readout confirmed
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ src/DetectorConstruction.cc | 88 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 67 insertions(+), 21 deletions(-)

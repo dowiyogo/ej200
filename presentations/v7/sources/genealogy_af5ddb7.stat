@@ -1,0 +1,23 @@
+commit af5ddb7ee04189d32cc4522e4405945367dd87f6
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Sun Jun 21 08:33:57 2026 +0200
+
+    fix(optics): dielectric_metal→dielectric_dielectric enabling TIR on bar skin surface
+    
+    exec21-optfix: replaces dielectric_metal (R=0.98, no TIR) with dielectric_dielectric
+    (polished, unified) on the bar LogicalSkinSurface. This enables TIR for photons at
+    angles > arcsin(1/1.58)=39.3° relative to the bar surface normal, dramatically
+    improving light collection at END SiPMs from ~0.37 PE (no TIR) to O(100) PE.
+    
+    Root cause identified in EXEC_21 D4: with 164 average bounces to reach END face,
+    dielectric_metal with R=0.98 gives only 0.98^164=3.6% survival, then additional
+    ABSLENGTH attenuation over ~328 cm path → 0.04 PE expected (observed: 0.37 PE).
+    Even R=1.0 metallic gives only 1.2 PE. TIR is the only physical fix.
+    
+    Non-TIR photons now escape the bar (no Mylar recovery); a follow-up commit
+    should add explicit Mylar wrapping volume to recover non-TIR photons.
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ src/Materials.cc | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)

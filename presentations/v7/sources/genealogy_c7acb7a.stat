@@ -1,0 +1,15 @@
+commit c7acb7a3b78349b7a9c94a01cb35876e5abe001e
+Author: rrios <dowiyogo@gmail.com>
+Date:   Tue Sep 1 14:50:59 2026 +0200
+
+    fix(optics): correct reflectivity to R=0.98 (Vikuiti 3M ESR spec) in CreateBarSkinReflector
+    
+    R=0.95 was a configuration error; the Vikuiti 3M ESR manufacturer spec is R≈0.98.
+    Investigation (§1) confirmed that with explicit REFLECTIVITY on the dielectric_dielectric
+    surface, Fresnel equations are bypassed — RINDEX of the Mylar volume is not consulted.
+    Only the surface value matters. G4_MYLAR and VikuitiXXXLV name preserved (optically inert).
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ src/Materials.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)

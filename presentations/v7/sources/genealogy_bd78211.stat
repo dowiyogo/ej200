@@ -1,0 +1,55 @@
+commit bd7821170c1c6997a733d0f279f3eac85821c10c
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Sun Jun 21 13:53:44 2026 +0200
+
+    EXEC_23: implement explicit air gap reflector geometry
+    
+    Geometry:
+    - src/DetectorConstruction.cc: add explicit 0.10 mm optical air-gap panels around lateral faces
+    - src/DetectorConstruction.cc: add external 0.05 mm Mylar reflector panels and border surfaces
+    - src/Materials.cc: make AirGap->Reflector dielectric_metal polished with R=0.95
+    
+    Validation:
+    - geometry overlap check PASS
+    - speed gate PASS, max v/(c/n)=1.0 and superluminal fraction=0
+    - <Npe>_END(0): EXEC_22b 0.763 -> EXEC_23 2035.26 in 50-event diagnostic
+    - sigma_END(0): 60.12 ps diagnostic, bootstrap unstable due small sample
+    - flagged as not baseline: Npe > 300 and 500-event center run exceeded practical wall-clock
+    
+    No ROOT data committed.
+
+ EXEC_23_REPORT.md                                  |    108 +
+ analysis/exec23_analysis.py                        |    444 +
+ include/DetectorConstruction.hh                    |     13 +-
+ include/SteppingAction.hh                          |      7 +
+ out/EXEC_23/detected_photon_history.csv            | 101764 ++++++++++++++++++
+ out/EXEC_23/end_npe_summary.csv                    |      2 +
+ out/EXEC_23/end_pairing_summary.csv                |      2 +
+ out/EXEC_23/end_sigma_summary.csv                  |      2 +
+ out/EXEC_23/end_time_structure_summary.csv         |      7 +
+ out/EXEC_23/geometry_check.txt                     |     41 +
+ out/EXEC_23/geometry_dimensions.json               |      8 +
+ out/EXEC_23/geometry_volumes.csv                   |     12 +
+ out/EXEC_23/optical_boundary_counts.csv            |     79 +
+ out/EXEC_23/optical_history_summary.json           |      8 +
+ out/EXEC_23/optical_volume_counts.csv              |     11 +
+ .../png/detected_reflections_hist_center.png       |    Bin 0 -> 26719 bytes
+ out/EXEC_23/png/npe_end_vs_x_quick.png             |    Bin 0 -> 27217 bytes
+ out/EXEC_23/png/sigma_end_vs_x_quick.png           |    Bin 0 -> 20660 bytes
+ out/EXEC_23/png/time_pdf_center.png                |    Bin 0 -> 21957 bytes
+ out/EXEC_23/results_exec23.json                    |     90 +
+ out/EXEC_23/results_exec23_nominal.json            |     83 +
+ out/EXEC_23/speed_audit_steps.csv                  |     11 +
+ out/EXEC_23/speed_audit_summary.json               |     28 +
+ out/EXEC_23/speed_ratio_by_material.png            |    Bin 0 -> 39552 bytes
+ out/EXEC_23/t0_git_status.txt                      |     25 +
+ out/EXEC_23/t0_inventory.txt                       |    246 +
+ out/EXEC_23/x0mm_optical_history_summary.json      |      6 +
+ scripts/run_scan.sh                                |      2 +-
+ src/DetectorConstruction.cc                        |    115 +-
+ src/Materials.cc                                   |     32 +-
+ src/RunAction.cc                                   |      2 +
+ src/SiPMSD.cc                                      |      4 +
+ src/SteppingAction.cc                              |    443 +-
+ tests/endonly_geometry_check.cc                    |     91 +-
+ 34 files changed, 103571 insertions(+), 115 deletions(-)

@@ -1,0 +1,21 @@
+commit 3dc2c37ef5eb363d3dbea8079a6dbec921d9a53d
+Merge: 8349041 2a0b43a
+Author: rrios <dowiyogo@gmail.com>
+Date:   Fri Sep 11 08:06:23 2026 +0200
+
+    Merge branch 'integrate/physics-fixes-20260911'
+
+ CMakeLists.txt                  |  11 +++
+ docs/DEFECTS_AND_CORRECTIONS.md |  65 +++++++++++++++++
+ docs/RUNBOOK.md                 |  74 +++++++++++++++++++
+ include/BoundaryCensus.hh       |  37 ++++++++++
+ include/SteppingAction.hh       |  13 ++--
+ include/TrackingAction.hh       |  14 ++++
+ src/ActionInitialization.cc     |   6 ++
+ src/BoundaryCensus.cc           | 111 +++++++++++++++++++++++++++++
+ src/DetectorConstruction.cc     |   2 +-
+ src/RunAction.cc                |  38 +++++++++-
+ src/SteppingAction.cc           |  82 +++++++++++++++++++--
+ src/TrackingAction.cc           | 154 ++++++++++++++++++++++++++++++++++++++++
+ tests/readout_config_check.cc   |  57 +++++++++++----
+ 13 files changed, 636 insertions(+), 28 deletions(-)

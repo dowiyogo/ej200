@@ -1,0 +1,222 @@
+commit 4cb2c236baa18aa2093cb6497b34af2b3a9e0b4a
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Wed Aug 12 09:54:36 2026 +0200
+
+    feat(optics): port EXEC_23 explicit air-gap + Mylar reflector geometry to EndTop
+    
+    Ports the air-gap panel geometry from ej200_endonly/exec23-explicit-airgap
+    to the EndTop build (feat/endtop-sslg4).
+    
+    Physics model:
+    - 3 lateral face panels (−Y, +Z, −Z); ±X excluded (END SiPMs), +Y excluded
+      (TOP SiPMs are barLV daughters flush with the +Y face — photons missing
+      SiPMs escape through bar-air boundary and are reflected by the −Y/±Z panels)
+    - Each panel: 0.10 mm air gap + 0.05 mm Mylar layer in worldLV
+    - Bar→Air boundary: CreateBarSurface() dielectric_dielectric polished → TIR for
+      θ > arcsin(1/1.58) = 39.3° (automatic Fresnel), no artificial REFLECTIVITY
+    - Air→Mylar boundary: CreateMylarReflector() dielectric_metal R=0.95 →
+      models Mylar/ESR substrate reflectance for non-TIR photons
+    
+    New functions added:
+    - Materials::CreateMylarReflector() — AirGap→Mylar surface (dielectric_metal)
+    - Materials::CreateMylar() now includes ABSLENGTH=1µm (opaque bulk)
+    
+    New member:
+    - DetectorConstruction::fScintillatorAirSurfaces (bar↔air border surfaces)
+    
+    Root cause context: EXEC_23 showed that adding explicit air gap in EndOnly
+    raised <Npe>_END from 0.76 → 2035 PE. The BarSkin (surface-only) approach
+    in exec22 was an interim fix; this is the full geometry fix.
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+diff --git a/src/DetectorConstruction.cc b/src/DetectorConstruction.cc
+index 0edbcd5..4d6acfd 100644
+--- a/src/DetectorConstruction.cc
++++ b/src/DetectorConstruction.cc
+@@ -23,12 +23,15 @@
+ #include <algorithm>
+ #include <cctype>
+ #include <cmath>
++#include <iterator>
+ #include <string>
+ 
+ // ── Geometry constants ────────────────────────────────────────────────────────
+ static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
+ static constexpr G4double kBarHalfY   =  30.0 * mm;  // 60 mm width
+ static constexpr G4double kBarHalfZ   =   5.0 * mm;  // 10 mm height
++static constexpr G4double kAirGapThickness   = 0.10 * mm;  // EXEC_23: air gap between bar and Mylar
++static constexpr G4double kReflectorThickness = 0.05 * mm; // EXEC_23: Mylar reflector panel
+ 
+ // End SiPM (on ±X face): thin slab, 6×6 mm² active area
+ static constexpr G4double kEndHalfX   = 0.25 * mm;
+@@ -215,8 +218,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
+             }
+         }
+     }
+-    G4Material* barMat   = fActiveScintillator;
+-    G4Material* sipmMat  = Materials::CreateSiPMCoupling();
++    G4Material* barMat      = fActiveScintillator;
++    G4Material* airGapMat   = worldMat;
++    G4Material* reflectorMat = Materials::CreateMylar();
++    G4Material* sipmMat     = Materials::CreateSiPMCoupling();
+ 
+     // Air RINDEX required for optical-photon tracking
+     {
+@@ -250,11 +255,98 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
+     fTopSiPMLV = nullptr;
+     fSiPMSurfaces.clear();
+     fReflectorSurfaces.clear();
+-
+-    // Apply branch-specific reflector properties directly to the bar.
+-    auto* reflector = Materials::CreateBarSkinReflector();
+-    auto* barSkin = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
+-    (void)barSkin;
++    fScintillatorAirSurfaces.clear();
++
++    // EXEC_23 port: explicit air-gap + Mylar panel geometry for lateral faces.
++    //
++    // EndTop instrumented faces (no panels here):
++    //   ±X → END SiPMs (border surface BarPV↔EndSiPMPV)
++    //   +Y → TOP SiPMs inside barLV, flush with +Y face (BarPV↔TopSiPMPV)
++    //
++    // Lateral faces with panels (reflect photons back into the bar):
++    //   -Y, ±Z → 3 panels (air gap 0.10 mm + Mylar 0.05 mm each)
++    //
++    // Two-tier reflection model per panel:
++    //   bar→air : dielectric_dielectric polished (CreateBarSurface) → TIR for θ>39.3°
++    //   air→Mylar: dielectric_metal R=0.95 (CreateMylarReflector) → absorbs or reflects
++    {
++        auto* scintAirSurface     = Materials::CreateBarSurface();
++        auto* airReflectorSurface = Materials::CreateMylarReflector();
++
++        const G4double g = kAirGapThickness;
++        const G4double m = kReflectorThickness;
++
++        struct PanelSpec {
++            G4String key;
++            G4String stem;
++            G4ThreeVector airHalf;
++            G4ThreeVector airCenter;
++            G4ThreeVector reflectorHalf;
++            G4ThreeVector reflectorCenter;
++        };
++
++        const PanelSpec panels[] = {
++            {"-Y", "YMinus",
++             {kBarHalfX, 0.5*g, kBarHalfZ + g},
++             {0.0, -(kBarHalfY + 0.5*g), 0.0},
++             {kBarHalfX, 0.5*m, kBarHalfZ + g + m},
++             {0.0, -(kBarHalfY + g + 0.5*m), 0.0}},
++            {"+Z", "ZPlus",
++             {kBarHalfX, kBarHalfY, 0.5*g},
++             {0.0, 0.0, kBarHalfZ + 0.5*g},
++             {kBarHalfX, kBarHalfY + g, 0.5*m},
++             {0.0, 0.0, kBarHalfZ + g + 0.5*m}},
++            {"-Z", "ZMinus",
++             {kBarHalfX, kBarHalfY, 0.5*g},
++             {0.0, 0.0, -(kBarHalfZ + 0.5*g)},
++             {kBarHalfX, kBarHalfY + g, 0.5*m},
++             {0.0, 0.0, -(kBarHalfZ + g + 0.5*m)}},
++        };
++
++        for (std::size_t i = 0; i < std::size(panels); ++i) {
++            const auto& panel = panels[i];
++
++            auto* airSolid = new G4Box(
++                G4String("AirGap") + panel.stem + "Solid",
++                panel.airHalf.x(), panel.airHalf.y(), panel.airHalf.z());
++            auto* airLV = new G4LogicalVolume(
++                airSolid, airGapMat, G4String("AirGap") + panel.stem + "LV");
++            auto* airVA = new G4VisAttributes(G4Colour(0.6, 0.8, 1.0, 0.12));
++            airVA->SetForceSolid(true);
++            airLV->SetVisAttributes(airVA);
++            auto* airPV = new G4PVPlacement(
++                nullptr, panel.airCenter, airLV,
++                G4String("AirGap") + panel.stem + "PV",
++                worldLV, false, static_cast<G4int>(i), true);
++
++            auto* reflSolid = new G4Box(
++                G4String("Mylar") + panel.stem + "Solid",
++                panel.reflectorHalf.x(), panel.reflectorHalf.y(), panel.reflectorHalf.z());
++            auto* reflLV = new G4LogicalVolume(
++                reflSolid, reflectorMat, G4String("Mylar") + panel.stem + "LV");
++            auto* reflVA = new G4VisAttributes(G4Colour(0.85, 0.85, 0.85, 0.35));
++            reflVA->SetForceSolid(true);
++            reflLV->SetVisAttributes(reflVA);
++            auto* reflPV = new G4PVPlacement(
++                nullptr, panel.reflectorCenter, reflLV,
++                G4String("Mylar") + panel.stem + "PV",
++                worldLV, false, static_cast<G4int>(i), true);
++
++            fScintillatorAirSurfaces[panel.key] = new G4LogicalBorderSurface(
++                G4String("ScintToAirGap_") + panel.stem,
++                fBarPhys, airPV, scintAirSurface);
++            new G4LogicalBorderSurface(
++                G4String("AirGapToScint_") + panel.stem,
++                airPV, fBarPhys, scintAirSurface);
++
++            fReflectorSurfaces[panel.key] = new G4LogicalBorderSurface(
++                G4String("AirGapToMylar_") + panel.stem,
++                airPV, reflPV, airReflectorSurface);
++            new G4LogicalBorderSurface(
++                G4String("MylarToAirGap_") + panel.stem,
++                reflPV, airPV, airReflectorSurface);
++        }
++    }
+ 
+     if (IsEndInstrumented()) {
+         auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
+diff --git a/src/Materials.cc b/src/Materials.cc
+index 19dae92..9af4a21 100644
+--- a/src/Materials.cc
++++ b/src/Materials.cc
+@@ -264,14 +264,45 @@ G4Material* CreateMylar() {
+     G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
+     G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
+ 
++    // EXEC_23 port: ABSLENGTH = 1 µm makes the Mylar volume effectively opaque,
++    // so photons that enter the Mylar volume are absorbed there rather than
++    // transmitted; the air→Mylar surface with dielectric_metal + REFLECTIVITY=0.95
++    // handles the reflective bounce before photons enter the bulk.
++    G4double abs[n] = {1.0*um, 1.0*um, 1.0*um, 1.0*um};
++
+     auto* mpt = new G4MaterialPropertiesTable();
+-    mpt->AddProperty("RINDEX", e, r, n);
+-    // Mylar is transparent at optical wavelengths; omit ABSLENGTH so G4 does
+-    // not apply bulk absorption inside the 25 µm film.
++    mpt->AddProperty("RINDEX",    e, r,   n);
++    mpt->AddProperty("ABSLENGTH", e, abs, n);
+     mat->SetMaterialPropertiesTable(mpt);
+     return mat;
+ }
+ 
++// ---------------------------------------------------------------------------
++G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
++                                       G4double specularLobe,
++                                       G4double sigmaAlpha) {
++    // EXEC_23 port: placed on the AirGap → Mylar reflector boundary.
++    // dielectric_metal surface: photons are not transmitted, REFLECTIVITY
++    // controls the fraction bounced back into the air gap.
++    auto* surf = new G4OpticalSurface("AirReflectorSurface");
++    surf->SetType(dielectric_metal);
++    surf->SetModel(unified);
++    surf->SetFinish(polished);
++    surf->SetSigmaAlpha(sigmaAlpha);
++
++    const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
++    const std::vector<G4double> refl   = {reflectivity, reflectivity};
++    const std::vector<G4double> eff    = {0.0, 0.0};
++    const std::vector<G4double> lobe   = {specularLobe, specularLobe};
++
++    auto* mpt = new G4MaterialPropertiesTable();
++    mpt->AddProperty("REFLECTIVITY",        energy, refl);
++    mpt->AddProperty("EFFICIENCY",          energy, eff);
++    mpt->AddProperty("SPECULARLOBECONSTANT", energy, lobe);
++    surf->SetMaterialPropertiesTable(mpt);
++    return surf;
++}
++
+ // ---------------------------------------------------------------------------
+ G4Material* CreateBlackTape() {
+     auto* nist = G4NistManager::Instance();

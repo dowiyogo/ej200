@@ -1,0 +1,84 @@
+{
+  "cell_id": "V1",
+  "arm": "V1",
+  "x_mm": 0,
+  "N": 2000,
+  "source_commit": "2e3872ef140957925f7238b3bed647fecf2c776a",
+  "binary_sha256": "4e4ad87a51652aec53f06841deecce91e31af70c72827ddf99d3ad5bc23b0ee3",
+  "Geant4": {
+    "version": "11.4.0",
+    "identity": "geant4-11-04 [MT], 5-December-2025",
+    "install_prefix": "/home/tdship/opt/geant4-v11.4.0-install"
+  },
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "threads": 12,
+  "eventModulo": 1,
+  "material": "EJ-204 / OPSC-101",
+  "readout": "End",
+  "N_TOP": 0,
+  "TOP_layout": {
+    "count": 0,
+    "global_ids": []
+  },
+  "gun": "mu- 1 GeV vertical x=0 mm",
+  "macro_sha256": "5f0ad50140c27176b6392bdef9f33ec3081ea85bec4aeba7ce6e81a66006cc15",
+  "command": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/v1/ej200_bar_sim -m /home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1/run.mac",
+  "cwd": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1",
+  "start_utc": "2026-09-10T15:14:23.755727+00:00",
+  "preregister_sha256": "d7ac0eca3043c823b6e356944b6e9e40a2058bdad997304658d08cf7a67ec68a",
+  "end_utc": "2026-09-10T15:52:19.639460+00:00",
+  "wall_s": 2275.883586470969,
+  "exit_code": 0,
+  "rng_states": {
+    "rng_run0_thread-1_begin.rndm": "5adc16913fd73fbeeaceb380e8381a7a31b63758a90f41990636980eac860a95",
+    "rng_run0_thread-1_end.rndm": "6cce39575e2bc45faba50b5c2fc3a94d6482bb96fef28d6fd53e9be13f214220",
+    "rng_run0_thread0_begin.rndm": "b6c1b5a824b79769d5f128ec867d79593b8661cec0f465378a7416ffb89976f0",
+    "rng_run0_thread0_end.rndm": "e25b44d41ec7805aaa67f8474002f64d4250ba2f3edcb494a1481b6e221c4a81",
+    "rng_run0_thread10_begin.rndm": "50dd8fb14548089f68f7c41f84cfd6e1ca2834e62ef29c83394e0ba84807c111",
+    "rng_run0_thread10_end.rndm": "dc880b7ee980ae092a06af60575062309df3bcf9385954cba20d38e5da9989c6",
+    "rng_run0_thread11_begin.rndm": "98add654c3a0eb2af54ec6a4920cca3f53ef6f6e3d72547a8e84ca3f8b27ae96",
+    "rng_run0_thread11_end.rndm": "da2b0aa4dceda4e896e9ab010edffbb3945889c088ec02a06249be1b76e3d405",
+    "rng_run0_thread1_begin.rndm": "28415774cfea4fe73b7903cf2457065b8e8cefc196ec308549110fabe6b8e181",
+    "rng_run0_thread1_end.rndm": "126f240ffb3667891b60d9aec7bfda4129379c7388db64e90de2aec6998d4b3f",
+    "rng_run0_thread2_begin.rndm": "ada331f6c9556132b0815b577c282bc95de7e4930f989af3b4a2802d3c542294",
+    "rng_run0_thread2_end.rndm": "257a091aff117d164ee121c91dd3daf8c32037fc1d12189280c11e1acbbd84ce",
+    "rng_run0_thread3_begin.rndm": "41cb2486cff8ea8a6b2c57b4b70773f98a0e609eac1d2655c240a84371ad4f35",
+    "rng_run0_thread3_end.rndm": "b6717edd0a72e80f069197e55b54808d60ff57a5b2c0d6f842365b955e334b25",
+    "rng_run0_thread4_begin.rndm": "336ca947477bf803e4d9b01f23fcedbe82e43351b3bbb7314fde5aa4ded9ecee",
+    "rng_run0_thread4_end.rndm": "7c33e7b188af4772cb0553a78d7cdeb180b0118845f92abc4667206fe6e1d35a",
+    "rng_run0_thread5_begin.rndm": "84c61a617233bf0e2eff70b14b4adb0e9d47f1f17307938efe4f16a91a1bd43d",
+    "rng_run0_thread5_end.rndm": "74e1d7594306569bb5a1ebbcaa5a1c8a665236c2180f0e512aa4909d8f9f7375",
+    "rng_run0_thread6_begin.rndm": "33fce298e77693d6eeed70a15b925a2697a372b272289bc7e6908eea9bdcac17",
+    "rng_run0_thread6_end.rndm": "b4ff4ee70479b16cdec185399401ccc276d51ed77272a7c6182113da2a862444",
+    "rng_run0_thread7_begin.rndm": "0e9093bbfad394a725bbdab5f8ddf11f8944bfa983c4ccbe84157ca7abf05762",
+    "rng_run0_thread7_end.rndm": "c96aef3be492d4a5af6133e1f88bb7b9ded922c0be19532425f89aeed0d80b8b",
+    "rng_run0_thread8_begin.rndm": "1d3219288ea9e7401786f901b9da98e1226742e1c552665aa5558b2674913c39",
+    "rng_run0_thread8_end.rndm": "1b511d066523a5133d52d0ca8cb84362deb165c80fa6efe47723c7084ebae07d",
+    "rng_run0_thread9_begin.rndm": "c8ad8363100870473f299825b02eadd618efd49b5b446d0d15903450cd6308d9",
+    "rng_run0_thread9_end.rndm": "1cdc30e33eba94d9770e70bf485ca279d107b4c39890f6461cb3a67bd9883b52"
+  },
+  "description": "Forward matched air→wrap only; preregistered denominator exclusions; all reflection variants counted.",
+  "row_count": 5,
+  "columns": {
+    "panel": "string",
+    "raw": "int64",
+    "eligible": "int64",
+    "excluded": "int64",
+    "reflections": "int64",
+    "reflection_pct": "float64"
+  },
+  "roundtrip_verified": true,
+  "sidecars": {
+    ".root": {
+      "path": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1/reflection_panels.root",
+      "sha256": "e2dfdbb241731b32072d8645032e2c68c259e04b8b698f4c3f83d43fe9b46163"
+    },
+    ".csv": {
+      "path": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/V1/reflection_panels.csv",
+      "sha256": "b307003a998f1985c7a31733813a47b1cc50de7e89bcac345ca4eb42f8107068"
+    }
+  }
+}

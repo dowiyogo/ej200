@@ -1,0 +1,4 @@
+quantity,value,SEM_approx
+D0/D3 — reflector gain in END-only,1.098955519855238,0.00852070697745047
+B0/A0 — reflector gain in EndTop (EXEC_28 x=0),1.0115474617552014,0.008302772685320573
+Ratio of END-only and EndTop reflector gains,1.0864102391679866,0.012266685488091176

@@ -1,0 +1,27 @@
+commit fc5d8b0ec2896ff47af2ff196d9fa0a475697421
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Sun Jun 21 09:15:26 2026 +0200
+
+    fix(optics): port exec22 TIR fix to EndTop build (CreateBarSkinReflector)
+    
+    exec22-endtop-optfix: ports the optical surface fix from ej200_endonly exec21-optfix
+    to the EndTop reference build.
+    
+    Change in src/Materials.cc:293-333 (CreateBarSkinReflector):
+      - dielectric_metal (no TIR) → dielectric_dielectric (TIR enabled)
+      - polished finish, sigma_alpha=0 (specular Fresnel)
+      - REFLECTIVITY=0.95 in MPT for non-TIR photon recovery (Mylar model)
+    
+    Root cause context (EXEC_21): the old dielectric_metal surface caused ~300x
+    photon deficit at END SiPMs (0.37 vs ~40 PE real). Even metallic R=1.0 gives
+    only ~1.2 PE because ABSLENGTH kills photons over 164-bounce average path.
+    
+    Velocity audit (T2): zero superluminal photons before/after fix (verified in endonly build).
+    
+    DO NOT re-run the EndTop 5000-ev/pos campaign without explicit René approval.
+    Pending re-simulation command documented in EXEC_22_REPORT.md.
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ src/Materials.cc | 50 +++++++++++++++++++++++---------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
