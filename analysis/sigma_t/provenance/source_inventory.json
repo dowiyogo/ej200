@@ -1,0 +1,2748 @@
+[
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_16/build_beamer.py",
+    "lines": 376,
+    "sha256": "dd09d83a881e2c48a743e20f230ea905e9caa4fade0b23011993f4ce72145aa9",
+    "imports": [
+      {
+        "line": 8,
+        "statement": "import json, csv, math"
+      },
+      {
+        "line": 9,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 17,
+        "name": "nan_"
+      },
+      {
+        "line": 18,
+        "name": "ff"
+      },
+      {
+        "line": 19,
+        "name": "ps_val"
+      },
+      {
+        "line": 20,
+        "name": "ps_pm"
+      },
+      {
+        "line": 21,
+        "name": "cmns"
+      },
+      {
+        "line": 23,
+        "name": "get_sigma"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 11,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_17/build_beamer_17.py",
+    "lines": 310,
+    "sha256": "899a6b4bcd5a83f3aa76019d0d6adfa95c8f0e31812b9644ac4af7e0f3764700",
+    "imports": [
+      {
+        "line": 8,
+        "statement": "import json, csv, math"
+      },
+      {
+        "line": 9,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 18,
+        "name": "nan_"
+      },
+      {
+        "line": 19,
+        "name": "ff"
+      },
+      {
+        "line": 23,
+        "name": "build_c4_rows"
+      },
+      {
+        "line": 41,
+        "name": "get_tot"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 11,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_17"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_18/build_beamer_18.py",
+    "lines": 240,
+    "sha256": "64b5a526946db69c899cce9b68afd01927adfcfadee9908922cd0aa36e907cf0",
+    "imports": [
+      {
+        "line": 8,
+        "statement": "import json, csv, math"
+      },
+      {
+        "line": 9,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 18,
+        "name": "nan_"
+      },
+      {
+        "line": 19,
+        "name": "ff"
+      },
+      {
+        "line": 20,
+        "name": "ffs"
+      },
+      {
+        "line": 24,
+        "name": "t5_row"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 11,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_18"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_19/build_beamer_19.py",
+    "lines": 224,
+    "sha256": "e90f5dde21b2d852231914b9a0879ea2bfe55c818f5bc68e92416de8bdc9f4e4",
+    "imports": [
+      {
+        "line": 8,
+        "statement": "import json, math"
+      },
+      {
+        "line": 9,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 17,
+        "name": "g"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 11,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_19"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_20/build_beamer_20.py",
+    "lines": 203,
+    "sha256": "43f3107fb42885c66da8b805a51a78cd9f6f9593c4b9b8fb858ff1fc532a6e17",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "import json, math"
+      },
+      {
+        "line": 4,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 12,
+        "name": "g"
+      },
+      {
+        "line": 13,
+        "name": "G"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 6,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_20"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_21/build_beamer_21.py",
+    "lines": 187,
+    "sha256": "3b18ce07cf25aaa9fb810c1e62b05044bb3d95944d801c14273e197428051229",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "import json, math"
+      },
+      {
+        "line": 4,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 12,
+        "name": "G"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 6,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_21"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/beamer/EXEC_22/build_beamer_22.py",
+    "lines": 196,
+    "sha256": "d17da5e2d64a09eacc9c2c3140eb4fb009f182ce90b39e91588c3cd0a68dbbff",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "import json, math"
+      },
+      {
+        "line": 4,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 12,
+        "name": "G"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 6,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_22"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/cp5_final_figures.py",
+    "lines": 777,
+    "sha256": "15984c95896a6451e3369da314f4b4701107d561000294907a428c02681fb563",
+    "imports": [
+      {
+        "line": 13,
+        "statement": "import hashlib"
+      },
+      {
+        "line": 14,
+        "statement": "import math"
+      },
+      {
+        "line": 15,
+        "statement": "import pathlib"
+      },
+      {
+        "line": 16,
+        "statement": "import sys"
+      },
+      {
+        "line": 18,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 20,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 21,
+        "statement": "import matplotlib.patches as mpatches"
+      },
+      {
+        "line": 22,
+        "statement": "import matplotlib.gridspec as gridspec"
+      },
+      {
+        "line": 23,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 24,
+        "statement": "import pandas as pd"
+      },
+      {
+        "line": 25,
+        "statement": "import uproot"
+      }
+    ],
+    "functions": [
+      {
+        "line": 85,
+        "name": "save_both"
+      },
+      {
+        "line": 96,
+        "name": "load_csv"
+      },
+      {
+        "line": 105,
+        "name": "row_at_x0"
+      },
+      {
+        "line": 117,
+        "name": "read_th1"
+      },
+      {
+        "line": 133,
+        "name": "x_tag"
+      },
+      {
+        "line": 138,
+        "name": "nearest_valid_x"
+      },
+      {
+        "line": 146,
+        "name": "gauss_curve"
+      },
+      {
+        "line": 157,
+        "name": "draw_hist_and_fit"
+      },
+      {
+        "line": 226,
+        "name": "meta_box"
+      },
+      {
+        "line": 238,
+        "name": "deliverable_1_comparative_overlays"
+      },
+      {
+        "line": 319,
+        "name": "deliverable_2_matrix_table"
+      },
+      {
+        "line": 428,
+        "name": "deliverable_3a_sigma_vs_position"
+      },
+      {
+        "line": 487,
+        "name": "deliverable_3b_chi2_comparison"
+      },
+      {
+        "line": 550,
+        "name": "deliverable_3c_material_properties"
+      },
+      {
+        "line": 656,
+        "name": "write_sha256_manifest"
+      },
+      {
+        "line": 673,
+        "name": "main"
+      },
+      {
+        "line": 571,
+        "name": "norm"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 28,
+        "value": "/home/reriosto/SHiP/analysis_core"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec16_endtop_ej204.py",
+    "lines": 1097,
+    "sha256": "0e83190a3b7041985c158cc44b0f1610a94003a3e06c9952491360e0dae058f9",
+    "imports": [
+      {
+        "line": 13,
+        "statement": "import sys"
+      },
+      {
+        "line": 14,
+        "statement": "import os"
+      },
+      {
+        "line": 15,
+        "statement": "import json"
+      },
+      {
+        "line": 16,
+        "statement": "import hashlib"
+      },
+      {
+        "line": 17,
+        "statement": "import datetime"
+      },
+      {
+        "line": 18,
+        "statement": "import math"
+      },
+      {
+        "line": 19,
+        "statement": "import warnings"
+      },
+      {
+        "line": 20,
+        "statement": "import traceback"
+      },
+      {
+        "line": 21,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 23,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 24,
+        "statement": "import uproot"
+      },
+      {
+        "line": 25,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 27,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 28,
+        "statement": "import matplotlib.colors as mcolors"
+      },
+      {
+        "line": 29,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 32,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 33,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 103,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 361,
+        "statement": "import csv"
+      },
+      {
+        "line": 471,
+        "statement": "import csv"
+      },
+      {
+        "line": 633,
+        "statement": "import csv"
+      },
+      {
+        "line": 798,
+        "statement": "import csv"
+      }
+    ],
+    "functions": [
+      {
+        "line": 111,
+        "name": "classify_gid"
+      },
+      {
+        "line": 116,
+        "name": "hard_abort"
+      },
+      {
+        "line": 125,
+        "name": "_flush_morning_report"
+      },
+      {
+        "line": 129,
+        "name": "note"
+      },
+      {
+        "line": 133,
+        "name": "sha256_file"
+      },
+      {
+        "line": 140,
+        "name": "savefig"
+      },
+      {
+        "line": 150,
+        "name": "ps"
+      },
+      {
+        "line": 153,
+        "name": "fmt_ps"
+      },
+      {
+        "line": 165,
+        "name": "build_pos_map"
+      },
+      {
+        "line": 184,
+        "name": "load_pos"
+      },
+      {
+        "line": 193,
+        "name": "best_gids_by_npe"
+      },
+      {
+        "line": 208,
+        "name": "compute_tN_for_gids"
+      },
+      {
+        "line": 231,
+        "name": "gauss_fit"
+      },
+      {
+        "line": 254,
+        "name": "run_cp0_gates"
+      },
+      {
+        "line": 300,
+        "name": "run_level0"
+      },
+      {
+        "line": 382,
+        "name": "run_level1"
+      },
+      {
+        "line": 491,
+        "name": "run_level2"
+      },
+      {
+        "line": 661,
+        "name": "run_level3"
+      },
+      {
+        "line": 821,
+        "name": "run_level4"
+      },
+      {
+        "line": 931,
+        "name": "write_results_json"
+      },
+      {
+        "line": 966,
+        "name": "write_morning_report"
+      },
+      {
+        "line": 1041,
+        "name": "main"
+      },
+      {
+        "line": 435,
+        "name": "double_exp"
+      },
+      {
+        "line": 526,
+        "name": "_fit"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 43,
+        "value": "/home/reriosto/SHiP/ej200"
+      },
+      {
+        "line": 44,
+        "value": "/home/reriosto/SHiP/orchestrator"
+      },
+      {
+        "line": 45,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959"
+      },
+      {
+        "line": 46,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16"
+      },
+      {
+        "line": 47,
+        "value": "/home/reriosto/SHiP/analysis_core/beamer/EXEC_16"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec17_c0_patch.py",
+    "lines": 476,
+    "sha256": "815b1ceffb32fc84621df4a003d8109f0b9fc5d6648560196f7d13a8ef8e4ebf",
+    "imports": [
+      {
+        "line": 10,
+        "statement": "import sys, csv, json, math, datetime"
+      },
+      {
+        "line": 11,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 13,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 14,
+        "statement": "import uproot"
+      },
+      {
+        "line": 15,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 17,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 18,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 21,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 152,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 306,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 417,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 210,
+        "statement": "import sys as _sys"
+      },
+      {
+        "line": 211,
+        "statement": "from lib.fit_engine import fit_core_gaussian"
+      }
+    ],
+    "functions": [
+      {
+        "line": 48,
+        "name": "note"
+      },
+      {
+        "line": 50,
+        "name": "savefig"
+      },
+      {
+        "line": 61,
+        "name": "run_C0_V5"
+      },
+      {
+        "line": 163,
+        "name": "run_C0_V7"
+      },
+      {
+        "line": 315,
+        "name": "run_C0_V2"
+      },
+      {
+        "line": 426,
+        "name": "main"
+      },
+      {
+        "line": 222,
+        "name": "model_constrained"
+      },
+      {
+        "line": 233,
+        "name": "model_unconstrained"
+      },
+      {
+        "line": 325,
+        "name": "face_npe"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 23,
+        "value": "/home/reriosto/SHiP/ej200"
+      },
+      {
+        "line": 24,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 25,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_17"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec17_corrections.py",
+    "lines": 474,
+    "sha256": "19df41e838b049764aaa0856025cf73c14a4f3cac191f743b9a67715c00f303e",
+    "imports": [
+      {
+        "line": 13,
+        "statement": "import sys, csv, json, math, datetime"
+      },
+      {
+        "line": 14,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 16,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 17,
+        "statement": "import uproot"
+      },
+      {
+        "line": 18,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 20,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 23,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 24,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 49,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 67,
+        "statement": "import uproot as up"
+      },
+      {
+        "line": 139,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 300,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 368,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 432,
+        "statement": "import csv as _csv"
+      },
+      {
+        "line": 60,
+        "statement": "import uproot as up"
+      }
+    ],
+    "functions": [
+      {
+        "line": 55,
+        "name": "pos_map"
+      },
+      {
+        "line": 66,
+        "name": "load"
+      },
+      {
+        "line": 71,
+        "name": "cfg"
+      },
+      {
+        "line": 77,
+        "name": "fit"
+      },
+      {
+        "line": 84,
+        "name": "best_k"
+      },
+      {
+        "line": 93,
+        "name": "compute_tN"
+      },
+      {
+        "line": 110,
+        "name": "savefig"
+      },
+      {
+        "line": 117,
+        "name": "note"
+      },
+      {
+        "line": 119,
+        "name": "get_sigma16"
+      },
+      {
+        "line": 132,
+        "name": "run_C1"
+      },
+      {
+        "line": 227,
+        "name": "run_C2"
+      },
+      {
+        "line": 313,
+        "name": "run_C3"
+      },
+      {
+        "line": 382,
+        "name": "run_C4"
+      },
+      {
+        "line": 445,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 32,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 33,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_17"
+      },
+      {
+        "line": 34,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16/L2/sigma_t_all_estimators.csv"
+      },
+      {
+        "line": 143,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16/L3/endonly_vs_endtop.csv"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec17_validation.py",
+    "lines": 1070,
+    "sha256": "35263969417c3aee99d249e3d49ab5b5750587aaf98585f8a30313c5027bae12",
+    "imports": [
+      {
+        "line": 12,
+        "statement": "import sys, os, csv, json, math, datetime, hashlib, warnings"
+      },
+      {
+        "line": 13,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 15,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 16,
+        "statement": "import uproot"
+      },
+      {
+        "line": 17,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 19,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 20,
+        "statement": "import matplotlib.colors as mcolors"
+      },
+      {
+        "line": 21,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 22,
+        "statement": "from scipy.stats import norm"
+      },
+      {
+        "line": 25,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 26,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 943,
+        "statement": "from matplotlib.colors import LogNorm"
+      }
+    ],
+    "functions": [
+      {
+        "line": 53,
+        "name": "top_center_x"
+      },
+      {
+        "line": 96,
+        "name": "verdict"
+      },
+      {
+        "line": 101,
+        "name": "savefig"
+      },
+      {
+        "line": 108,
+        "name": "note"
+      },
+      {
+        "line": 112,
+        "name": "pos_map"
+      },
+      {
+        "line": 123,
+        "name": "load"
+      },
+      {
+        "line": 128,
+        "name": "classify"
+      },
+      {
+        "line": 133,
+        "name": "cfg_mock"
+      },
+      {
+        "line": 139,
+        "name": "gauss_fit_v"
+      },
+      {
+        "line": 149,
+        "name": "run_V1"
+      },
+      {
+        "line": 265,
+        "name": "run_V2"
+      },
+      {
+        "line": 347,
+        "name": "run_V3"
+      },
+      {
+        "line": 406,
+        "name": "run_V4"
+      },
+      {
+        "line": 520,
+        "name": "run_V5"
+      },
+      {
+        "line": 624,
+        "name": "run_V6"
+      },
+      {
+        "line": 721,
+        "name": "run_V7"
+      },
+      {
+        "line": 818,
+        "name": "run_V8"
+      },
+      {
+        "line": 885,
+        "name": "run_V9"
+      },
+      {
+        "line": 984,
+        "name": "write_verdict"
+      },
+      {
+        "line": 1044,
+        "name": "main"
+      },
+      {
+        "line": 551,
+        "name": "exp_func"
+      },
+      {
+        "line": 768,
+        "name": "model"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 81,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 82,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_17"
+      },
+      {
+        "line": 83,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16/L2/sigma_t_all_estimators.csv"
+      },
+      {
+        "line": 84,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_16/L1/npe_per_face.csv"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec18_main.py",
+    "lines": 1068,
+    "sha256": "f616b3d9178b02805354fc86c83b57f5b22bec42c1c96338b529e3efc220bf60",
+    "imports": [
+      {
+        "line": 9,
+        "statement": "import sys, os, csv, json, math, datetime, warnings"
+      },
+      {
+        "line": 10,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 12,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 13,
+        "statement": "import uproot"
+      },
+      {
+        "line": 14,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 16,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 17,
+        "statement": "from scipy.stats import pearsonr"
+      },
+      {
+        "line": 20,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 21,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 22,
+        "statement": "from walk_correction  import fit_walk, apply_correction, validate_correction"
+      },
+      {
+        "line": 1048,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 302,
+        "statement": "from walk_correction import _walk_model"
+      }
+    ],
+    "functions": [
+      {
+        "line": 56,
+        "name": "note"
+      },
+      {
+        "line": 60,
+        "name": "flag"
+      },
+      {
+        "line": 64,
+        "name": "hard_abort"
+      },
+      {
+        "line": 69,
+        "name": "_write_report"
+      },
+      {
+        "line": 74,
+        "name": "savefig"
+      },
+      {
+        "line": 81,
+        "name": "ff"
+      },
+      {
+        "line": 85,
+        "name": "pos_map"
+      },
+      {
+        "line": 95,
+        "name": "load"
+      },
+      {
+        "line": 100,
+        "name": "classify"
+      },
+      {
+        "line": 105,
+        "name": "best_k"
+      },
+      {
+        "line": 114,
+        "name": "tN_stream"
+      },
+      {
+        "line": 132,
+        "name": "npe_stream"
+      },
+      {
+        "line": 146,
+        "name": "gauss_fit"
+      },
+      {
+        "line": 160,
+        "name": "gate_integrity"
+      },
+      {
+        "line": 178,
+        "name": "run_T4"
+      },
+      {
+        "line": 223,
+        "name": "run_T1"
+      },
+      {
+        "line": 350,
+        "name": "run_T2"
+      },
+      {
+        "line": 465,
+        "name": "run_T3"
+      },
+      {
+        "line": 545,
+        "name": "run_T5"
+      },
+      {
+        "line": 629,
+        "name": "run_T6"
+      },
+      {
+        "line": 701,
+        "name": "run_T7"
+      },
+      {
+        "line": 800,
+        "name": "write_gerardo_memo"
+      },
+      {
+        "line": 922,
+        "name": "write_results_json"
+      },
+      {
+        "line": 956,
+        "name": "write_exec18_report"
+      },
+      {
+        "line": 1035,
+        "name": "main"
+      },
+      {
+        "line": 555,
+        "name": "kish_neff"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 41,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 42,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_18"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec19_main.py",
+    "lines": 894,
+    "sha256": "79fa4e6637151d680c878b8a439729a709c5b2fefe3de86ecae3de4f3b99cb78",
+    "imports": [
+      {
+        "line": 10,
+        "statement": "import sys, os, csv, json, math, datetime, warnings"
+      },
+      {
+        "line": 11,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 13,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 14,
+        "statement": "import uproot"
+      },
+      {
+        "line": 15,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 17,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 18,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 21,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 22,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 23,
+        "statement": "from walk_correction  import fit_walk, apply_correction"
+      },
+      {
+        "line": 290,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 873,
+        "statement": "import ROOT"
+      }
+    ],
+    "functions": [
+      {
+        "line": 51,
+        "name": "note"
+      },
+      {
+        "line": 52,
+        "name": "flag"
+      },
+      {
+        "line": 54,
+        "name": "hard_abort"
+      },
+      {
+        "line": 59,
+        "name": "_flush_report"
+      },
+      {
+        "line": 63,
+        "name": "savefig"
+      },
+      {
+        "line": 70,
+        "name": "ff"
+      },
+      {
+        "line": 76,
+        "name": "pos_map"
+      },
+      {
+        "line": 86,
+        "name": "load_pos"
+      },
+      {
+        "line": 90,
+        "name": "classify"
+      },
+      {
+        "line": 95,
+        "name": "top_cx"
+      },
+      {
+        "line": 99,
+        "name": "best_k"
+      },
+      {
+        "line": 108,
+        "name": "tN_stream"
+      },
+      {
+        "line": 125,
+        "name": "npe_stream"
+      },
+      {
+        "line": 138,
+        "name": "cfd_stream"
+      },
+      {
+        "line": 157,
+        "name": "gauss_fit_sqrt"
+      },
+      {
+        "line": 169,
+        "name": "apply_walk_to_array"
+      },
+      {
+        "line": 182,
+        "name": "gate_integrity"
+      },
+      {
+        "line": 198,
+        "name": "compute_chain_A"
+      },
+      {
+        "line": 223,
+        "name": "compute_chain_B"
+      },
+      {
+        "line": 279,
+        "name": "run_T1"
+      },
+      {
+        "line": 367,
+        "name": "run_T2"
+      },
+      {
+        "line": 436,
+        "name": "run_T3"
+      },
+      {
+        "line": 564,
+        "name": "run_T4"
+      },
+      {
+        "line": 637,
+        "name": "write_canonical_estimators"
+      },
+      {
+        "line": 693,
+        "name": "write_results_json"
+      },
+      {
+        "line": 723,
+        "name": "write_gerardo_memo_v2"
+      },
+      {
+        "line": 798,
+        "name": "write_exec19_report"
+      },
+      {
+        "line": 864,
+        "name": "main"
+      },
+      {
+        "line": 695,
+        "name": "get_t1"
+      },
+      {
+        "line": 724,
+        "name": "g"
+      },
+      {
+        "line": 799,
+        "name": "g"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 37,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 38,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_19"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec20_main.py",
+    "lines": 663,
+    "sha256": "76aabbb0442c7f327ac6c8ab7b38322e49a1a8b24a9a952e3f47b47e3ac0539b",
+    "imports": [
+      {
+        "line": 10,
+        "statement": "import sys, os, csv, json, math, datetime, warnings"
+      },
+      {
+        "line": 11,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 13,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 14,
+        "statement": "import uproot"
+      },
+      {
+        "line": 15,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 17,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 18,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 21,
+        "statement": "from lib.fit_engine   import fit_core_gaussian"
+      },
+      {
+        "line": 22,
+        "statement": "from lib.robust_seeds import gather_seeds"
+      },
+      {
+        "line": 23,
+        "statement": "from walk_correction  import fit_walk, apply_correction"
+      },
+      {
+        "line": 638,
+        "statement": "import ROOT"
+      }
+    ],
+    "functions": [
+      {
+        "line": 42,
+        "name": "note"
+      },
+      {
+        "line": 43,
+        "name": "flag"
+      },
+      {
+        "line": 45,
+        "name": "savefig"
+      },
+      {
+        "line": 52,
+        "name": "ff"
+      },
+      {
+        "line": 57,
+        "name": "gauss_fit"
+      },
+      {
+        "line": 68,
+        "name": "pos_map"
+      },
+      {
+        "line": 78,
+        "name": "load_pos"
+      },
+      {
+        "line": 83,
+        "name": "best_k"
+      },
+      {
+        "line": 92,
+        "name": "t_first_merged"
+      },
+      {
+        "line": 109,
+        "name": "npe_stream"
+      },
+      {
+        "line": 121,
+        "name": "walk_correct"
+      },
+      {
+        "line": 131,
+        "name": "run_T1"
+      },
+      {
+        "line": 230,
+        "name": "run_T3"
+      },
+      {
+        "line": 347,
+        "name": "run_T4"
+      },
+      {
+        "line": 407,
+        "name": "run_T5"
+      },
+      {
+        "line": 498,
+        "name": "write_results_json"
+      },
+      {
+        "line": 520,
+        "name": "write_gerardo_memo"
+      },
+      {
+        "line": 574,
+        "name": "write_exec20_report"
+      },
+      {
+        "line": 632,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 32,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 33,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_20"
+      },
+      {
+        "line": 485,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_19"
+      },
+      {
+        "line": 649,
+        "value": "/home/reriosto/SHiP/ej200_endonly/output"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec21_diagnosis.py",
+    "lines": 691,
+    "sha256": "e9dc7ec341996156f8e62a1cb635df0cb6ed7bc351ae6435885da3c9d3e45b3a",
+    "imports": [
+      {
+        "line": 14,
+        "statement": "import sys, os, csv, json, math, datetime"
+      },
+      {
+        "line": 15,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 17,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 18,
+        "statement": "import uproot"
+      },
+      {
+        "line": 19,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 21,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 24,
+        "statement": "from lib.fit_engine import fit_core_gaussian"
+      },
+      {
+        "line": 25,
+        "statement": "from walk_correction import fit_walk, apply_correction"
+      },
+      {
+        "line": 71,
+        "statement": "import ROOT"
+      }
+    ],
+    "functions": [
+      {
+        "line": 61,
+        "name": "note"
+      },
+      {
+        "line": 62,
+        "name": "flag"
+      },
+      {
+        "line": 63,
+        "name": "savefig"
+      },
+      {
+        "line": 67,
+        "name": "ff"
+      },
+      {
+        "line": 73,
+        "name": "gauss"
+      },
+      {
+        "line": 80,
+        "name": "load_root"
+      },
+      {
+        "line": 85,
+        "name": "t_first_face"
+      },
+      {
+        "line": 98,
+        "name": "walk_correct"
+      },
+      {
+        "line": 104,
+        "name": "npe_stream"
+      },
+      {
+        "line": 117,
+        "name": "run_D1"
+      },
+      {
+        "line": 177,
+        "name": "run_D2"
+      },
+      {
+        "line": 302,
+        "name": "run_D3"
+      },
+      {
+        "line": 396,
+        "name": "run_D4_theory"
+      },
+      {
+        "line": 474,
+        "name": "run_D6"
+      },
+      {
+        "line": 551,
+        "name": "write_diagnosis"
+      },
+      {
+        "line": 633,
+        "name": "write_results_json"
+      },
+      {
+        "line": 660,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 54,
+        "value": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959/outputs"
+      },
+      {
+        "line": 55,
+        "value": "/home/reriosto/SHiP/ej200_endonly/output/endonly_mylar_msi_20260620_222723"
+      },
+      {
+        "line": 56,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_21/D4"
+      },
+      {
+        "line": 57,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_21"
+      },
+      {
+        "line": 122,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_20/T1/T1_end_baseline.csv"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/exec22_analysis.py",
+    "lines": 185,
+    "sha256": "3ee385b7119879f729224f5358473513d9f80c02e33dbb114d9051024af0dd4d",
+    "imports": [
+      {
+        "line": 7,
+        "statement": "import sys, os, csv, json, math, datetime"
+      },
+      {
+        "line": 8,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 10,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 11,
+        "statement": "import uproot"
+      },
+      {
+        "line": 12,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 14,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 17,
+        "statement": "from lib.fit_engine import fit_core_gaussian"
+      },
+      {
+        "line": 18,
+        "statement": "from walk_correction import fit_walk, apply_correction"
+      },
+      {
+        "line": 19,
+        "statement": "import ROOT"
+      }
+    ],
+    "functions": [
+      {
+        "line": 25,
+        "name": "ff"
+      },
+      {
+        "line": 28,
+        "name": "savefig"
+      },
+      {
+        "line": 33,
+        "name": "gauss"
+      },
+      {
+        "line": 40,
+        "name": "t_first_face_fn"
+      },
+      {
+        "line": 55,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 23,
+        "value": "/home/reriosto/SHiP/analysis_core/out/EXEC_22"
+      },
+      {
+        "line": 88,
+        "value": "/home/reriosto/SHiP/ej200_endonly/output"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/lib/__init__.py",
+    "lines": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "imports": [],
+    "functions": [],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/lib/fit_engine.py",
+    "lines": 348,
+    "sha256": "788a540d47dccd4b36d04a8e4e7b1ef8b312452c363c43d1cf4dfdd266b00834",
+    "imports": [
+      {
+        "line": 28,
+        "statement": "import math"
+      },
+      {
+        "line": 29,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 30,
+        "statement": "import scipy.optimize as opt"
+      },
+      {
+        "line": 33,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 37,
+        "statement": "from .robust_seeds import gather_seeds"
+      }
+    ],
+    "functions": [
+      {
+        "line": 42,
+        "name": "_gaussian"
+      },
+      {
+        "line": 66,
+        "name": "_nan_result"
+      },
+      {
+        "line": 105,
+        "name": "_bootstrap_sigma"
+      },
+      {
+        "line": 192,
+        "name": "fit_core_gaussian"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/lib/gates.py",
+    "lines": 225,
+    "sha256": "3b93c054a8bd061992df3c805eee7b11bce1b83e0311cd7447db3a6d19a54bf6",
+    "imports": [
+      {
+        "line": 13,
+        "statement": "import math"
+      },
+      {
+        "line": 14,
+        "statement": "import hashlib"
+      },
+      {
+        "line": 15,
+        "statement": "import subprocess"
+      },
+      {
+        "line": 16,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 21,
+        "name": "gate_0_verify_sha"
+      },
+      {
+        "line": 66,
+        "name": "gate_1_verify_schema"
+      },
+      {
+        "line": 94,
+        "name": "gate_2_physics_bounds"
+      },
+      {
+        "line": 143,
+        "name": "gate_3_check_group"
+      },
+      {
+        "line": 189,
+        "name": "compute_sha256"
+      },
+      {
+        "line": 201,
+        "name": "gate_3d_write_manifest"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/lib/robust_seeds.py",
+    "lines": 205,
+    "sha256": "d6f8fcf026567ebe937dc21df9e34b45cead2eb3b4677e7ea55cac187b0d6f9a",
+    "imports": [
+      {
+        "line": 26,
+        "statement": "import numpy as np"
+      }
+    ],
+    "functions": [
+      {
+        "line": 31,
+        "name": "compute_n_bins_sqrt"
+      },
+      {
+        "line": 51,
+        "name": "compute_n_bins_fd"
+      },
+      {
+        "line": 76,
+        "name": "compute_mad_sigma"
+      },
+      {
+        "line": 119,
+        "name": "find_histogram_peak"
+      },
+      {
+        "line": 150,
+        "name": "gather_seeds"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/lib/sidecar.py",
+    "lines": 229,
+    "sha256": "2d4f15f194f5a4d94960f87af404982713cb080e57296e69a9a4aee8c0dd777d",
+    "imports": [
+      {
+        "line": 15,
+        "statement": "import json"
+      },
+      {
+        "line": 16,
+        "statement": "import hashlib"
+      },
+      {
+        "line": 17,
+        "statement": "import datetime"
+      },
+      {
+        "line": 18,
+        "statement": "import math"
+      },
+      {
+        "line": 19,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 21,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 22,
+        "statement": "import pandas as pd"
+      },
+      {
+        "line": 23,
+        "statement": "import ROOT"
+      }
+    ],
+    "functions": [
+      {
+        "line": 28,
+        "name": "_check_no_overwrite"
+      },
+      {
+        "line": 39,
+        "name": "write_root_sidecar"
+      },
+      {
+        "line": 109,
+        "name": "write_csv_sidecar"
+      },
+      {
+        "line": 163,
+        "name": "write_metadata_json"
+      },
+      {
+        "line": 131,
+        "name": "_ps"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/regenerate_figures.py",
+    "lines": 474,
+    "sha256": "e3bbfaa65c67c5de849bbe2b0381386407abd9ddd6d232bdd32ae2fa7904b8f4",
+    "imports": [
+      {
+        "line": 13,
+        "statement": "import math"
+      },
+      {
+        "line": 14,
+        "statement": "import re"
+      },
+      {
+        "line": 15,
+        "statement": "import sys"
+      },
+      {
+        "line": 16,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 18,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 19,
+        "statement": "import pandas as pd"
+      },
+      {
+        "line": 20,
+        "statement": "import uproot"
+      },
+      {
+        "line": 21,
+        "statement": "import yaml"
+      },
+      {
+        "line": 22,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 24,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 363,
+        "statement": "import argparse as _ap"
+      }
+    ],
+    "functions": [
+      {
+        "line": 52,
+        "name": "_info"
+      },
+      {
+        "line": 64,
+        "name": "_save"
+      },
+      {
+        "line": 75,
+        "name": "_nearest_valid_x"
+      },
+      {
+        "line": 84,
+        "name": "_asterisk_note"
+      },
+      {
+        "line": 92,
+        "name": "plot_resolution"
+      },
+      {
+        "line": 148,
+        "name": "plot_chi2ndf"
+      },
+      {
+        "line": 211,
+        "name": "_read_th1"
+      },
+      {
+        "line": 225,
+        "name": "plot_overlay_for_N"
+      },
+      {
+        "line": 362,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 27,
+        "value": "/home/reriosto/SHiP/analysis_core"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/timing_fit_pipeline.py",
+    "lines": 844,
+    "sha256": "3506c32191ab0bf97c0a06cc90d3aa8846a7540ec7a8f85b87bb409b63b26202",
+    "imports": [
+      {
+        "line": 15,
+        "statement": "import argparse"
+      },
+      {
+        "line": 16,
+        "statement": "import math"
+      },
+      {
+        "line": 17,
+        "statement": "import re"
+      },
+      {
+        "line": 18,
+        "statement": "import sys"
+      },
+      {
+        "line": 19,
+        "statement": "import subprocess"
+      },
+      {
+        "line": 20,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 22,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 23,
+        "statement": "import yaml"
+      },
+      {
+        "line": 24,
+        "statement": "import uproot"
+      },
+      {
+        "line": 25,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 27,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 28,
+        "statement": "import ROOT"
+      },
+      {
+        "line": 35,
+        "statement": "from lib.fit_engine    import fit_core_gaussian"
+      },
+      {
+        "line": 36,
+        "statement": "from lib.robust_seeds  import gather_seeds"
+      },
+      {
+        "line": 37,
+        "statement": "from lib.gates         import (gate_0_verify_sha, gate_1_verify_schema,\n                                gate_2_physics_bounds, gate_3_check_group,\n                                gate_3d_write_manifest)"
+      },
+      {
+        "line": 40,
+        "statement": "from lib.sidecar       import (write_root_sidecar, write_csv_sidecar,\n                                write_metadata_json)"
+      }
+    ],
+    "functions": [
+      {
+        "line": 51,
+        "name": "x_to_tag"
+      },
+      {
+        "line": 60,
+        "name": "build_filepath"
+      },
+      {
+        "line": 80,
+        "name": "best_gids_by_count"
+      },
+      {
+        "line": 107,
+        "name": "compute_tN"
+      },
+      {
+        "line": 155,
+        "name": "extract_group_tN"
+      },
+      {
+        "line": 259,
+        "name": "slugify"
+      },
+      {
+        "line": 264,
+        "name": "_info_box"
+      },
+      {
+        "line": 275,
+        "name": "plot_resolution"
+      },
+      {
+        "line": 347,
+        "name": "plot_chi2ndf"
+      },
+      {
+        "line": 410,
+        "name": "plot_overlay"
+      },
+      {
+        "line": 529,
+        "name": "run_material"
+      },
+      {
+        "line": 704,
+        "name": "write_summary"
+      },
+      {
+        "line": 804,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/analysis_core/walk_correction.py",
+    "lines": 168,
+    "sha256": "01819a9e80d19c3c9d76ce00ec2f728f1abcea451f0388fc0e84f998f09b878d",
+    "imports": [
+      {
+        "line": 18,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 19,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 20,
+        "statement": "from scipy.interpolate import PchipInterpolator"
+      }
+    ],
+    "functions": [
+      {
+        "line": 25,
+        "name": "_walk_model"
+      },
+      {
+        "line": 31,
+        "name": "_median_curve"
+      },
+      {
+        "line": 57,
+        "name": "fit_walk"
+      },
+      {
+        "line": 123,
+        "name": "apply_correction"
+      },
+      {
+        "line": 147,
+        "name": "validate_correction"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/420addf/analysis/optim/phase_ab.py",
+    "lines": 202,
+    "sha256": "305bb168509665e34517dc54d4af1c53f6802b01568db82b166fc8b7e81bb173",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "import uproot, numpy as np, matplotlib, pandas as pd, time, warnings"
+      },
+      {
+        "line": 5,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 6,
+        "statement": "from pathlib import Path"
+      }
+    ],
+    "functions": [
+      {
+        "line": 20,
+        "name": "rsigma"
+      },
+      {
+        "line": 26,
+        "name": "prep_side"
+      },
+      {
+        "line": 34,
+        "name": "analyze_file"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 10,
+        "value": "/home/rrios/ej200"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/420addf/analysis/optim/phase_sparse_top.py",
+    "lines": 203,
+    "sha256": "5596ee24e5b492133025fdeaf1b8e63c3bf3279e53a83bf188d13b732718a597",
+    "imports": [
+      {
+        "line": 12,
+        "statement": "import uproot, numpy as np, pandas as pd"
+      },
+      {
+        "line": 13,
+        "statement": "from pathlib import Path"
+      },
+      {
+        "line": 14,
+        "statement": "from itertools import product"
+      }
+    ],
+    "functions": [
+      {
+        "line": 26,
+        "name": "rsigma"
+      },
+      {
+        "line": 34,
+        "name": "prep_side"
+      },
+      {
+        "line": 42,
+        "name": "analyse_file"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 16,
+        "value": "/home/rrios/ej200"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/420addf/analysis/timing/pulse_models.py",
+    "lines": 164,
+    "sha256": "f3ee0002f4a9925fdfe94f4a3a26422dc7c584eb622af4d8200c12f0210ab0d3",
+    "imports": [],
+    "functions": [],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/420addf/analysis/timing/sipm_waveform_dcfd.py",
+    "lines": 718,
+    "sha256": "3324cbc15da0af115fb8e0cb1826380f21f1687680bd20e845330b91f483f652",
+    "imports": [
+      {
+        "line": 19,
+        "statement": "from __future__ import annotations"
+      },
+      {
+        "line": 21,
+        "statement": "import argparse"
+      },
+      {
+        "line": 22,
+        "statement": "import math"
+      },
+      {
+        "line": 23,
+        "statement": "import pathlib"
+      },
+      {
+        "line": 24,
+        "statement": "import sys"
+      },
+      {
+        "line": 25,
+        "statement": "from dataclasses import dataclass"
+      },
+      {
+        "line": 26,
+        "statement": "from typing import Iterable"
+      },
+      {
+        "line": 28,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 29,
+        "statement": "import pandas as pd"
+      },
+      {
+        "line": 30,
+        "statement": "import uproot"
+      },
+      {
+        "line": 31,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 44,
+        "statement": "from pulse_models import (  # noqa: E402\n    PULSE_MODELS,\n    FWHM_TO_SIGMA,\n    SPTR_LEE_INTRINSIC_SIGMA_PS,\n    SPTR_LEE_DETECTOR_SIGMA_PS,\n    SPTR_OV_WARNING,\n    SPTR_CATALOG,\n)"
+      },
+      {
+        "line": 485,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 544,
+        "statement": "import matplotlib.pyplot as plt"
+      }
+    ],
+    "functions": [
+      {
+        "line": 54,
+        "name": "gauss"
+      },
+      {
+        "line": 71,
+        "name": "face_label"
+      },
+      {
+        "line": 75,
+        "name": "hist_out_for_face"
+      },
+      {
+        "line": 82,
+        "name": "parse_args"
+      },
+      {
+        "line": 229,
+        "name": "resolve_inputs"
+      },
+      {
+        "line": 257,
+        "name": "read_schema"
+      },
+      {
+        "line": 268,
+        "name": "prepare_chunk"
+      },
+      {
+        "line": 275,
+        "name": "build_spe_kernel"
+      },
+      {
+        "line": 287,
+        "name": "reconstruct_waveform"
+      },
+      {
+        "line": 325,
+        "name": "dcfd_time_from_waveform"
+      },
+      {
+        "line": 355,
+        "name": "fit_resolution"
+      },
+      {
+        "line": 390,
+        "name": "select_faces"
+      },
+      {
+        "line": 397,
+        "name": "process_file"
+      },
+      {
+        "line": 478,
+        "name": "plot_example_waveform"
+      },
+      {
+        "line": 536,
+        "name": "plot_time_histogram"
+      },
+      {
+        "line": 580,
+        "name": "validate_and_resolve_pulse_params"
+      },
+      {
+        "line": 619,
+        "name": "main"
+      },
+      {
+        "line": 413,
+        "name": "consume_groups"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/b0aaac1/analysis/exec11_pair_analysis.py",
+    "lines": 934,
+    "sha256": "b9710ac9d7f440f6b64d13a2b9c3e3a1449c982f7186bf48963d91ffad50dcbd",
+    "imports": [
+      {
+        "line": 4,
+        "statement": "from __future__ import annotations"
+      },
+      {
+        "line": 6,
+        "statement": "import argparse"
+      },
+      {
+        "line": 7,
+        "statement": "import json"
+      },
+      {
+        "line": 8,
+        "statement": "import math"
+      },
+      {
+        "line": 9,
+        "statement": "import pathlib"
+      },
+      {
+        "line": 10,
+        "statement": "import re"
+      },
+      {
+        "line": 11,
+        "statement": "import subprocess"
+      },
+      {
+        "line": 12,
+        "statement": "from collections import Counter"
+      },
+      {
+        "line": 14,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 16,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 17,
+        "statement": "import numpy as np"
+      },
+      {
+        "line": 18,
+        "statement": "import pandas as pd"
+      },
+      {
+        "line": 19,
+        "statement": "import uproot"
+      },
+      {
+        "line": 20,
+        "statement": "from scipy.optimize import curve_fit"
+      },
+      {
+        "line": 21,
+        "statement": "from scipy.stats import moyal, pearsonr, spearmanr"
+      }
+    ],
+    "functions": [
+      {
+        "line": 46,
+        "name": "analysis_commit"
+      },
+      {
+        "line": 52,
+        "name": "extract_position"
+      },
+      {
+        "line": 59,
+        "name": "fourth_hit_and_counts"
+      },
+      {
+        "line": 111,
+        "name": "inventory_and_derive"
+      },
+      {
+        "line": 187,
+        "name": "validate_file_set"
+      },
+      {
+        "line": 199,
+        "name": "write_metadata"
+      },
+      {
+        "line": 215,
+        "name": "derive_all"
+      },
+      {
+        "line": 234,
+        "name": "load_derived"
+      },
+      {
+        "line": 239,
+        "name": "gaussian"
+      },
+      {
+        "line": 243,
+        "name": "iterative_gaussian_fit"
+      },
+      {
+        "line": 304,
+        "name": "qa_summary"
+      },
+      {
+        "line": 363,
+        "name": "figure_footer"
+      },
+      {
+        "line": 372,
+        "name": "save_figure"
+      },
+      {
+        "line": 380,
+        "name": "write_latex_table"
+      },
+      {
+        "line": 398,
+        "name": "read_pair_hit_times"
+      },
+      {
+        "line": 412,
+        "name": "bootstrap_pearson"
+      },
+      {
+        "line": 421,
+        "name": "moyal_shape_fit"
+      },
+      {
+        "line": 438,
+        "name": "detailed_analysis"
+      },
+      {
+        "line": 530,
+        "name": "weighted_polynomial_fit"
+      },
+      {
+        "line": 551,
+        "name": "loocv_rmse"
+      },
+      {
+        "line": 560,
+        "name": "invert_cubic"
+      },
+      {
+        "line": 578,
+        "name": "sample_summary"
+      },
+      {
+        "line": 594,
+        "name": "reconstruction"
+      },
+      {
+        "line": 734,
+        "name": "report"
+      },
+      {
+        "line": 909,
+        "name": "main"
+      },
+      {
+        "line": 381,
+        "name": "render"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 23,
+        "value": "/home/reriosto/SHiP/t0minidaq/pairscan_2026-06-11"
+      }
+    ],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/b0aaac1/analysis/exec12t_make_products.py",
+    "lines": 151,
+    "sha256": "b3be99e53ad92c0e8bb7b386aefa4432d68b35ca76149fbcaa0366d69e1edc8c",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "import argparse,pathlib,subprocess,pandas as pd,numpy as np"
+      }
+    ],
+    "functions": [
+      {
+        "line": 4,
+        "name": "latex_table"
+      },
+      {
+        "line": 8,
+        "name": "frame"
+      },
+      {
+        "line": 9,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [],
+    "syntax": "PASS"
+  },
+  {
+    "file": "upstream/related/b0aaac1/analysis/exec12t_timing_threshold_analysis.py",
+    "lines": 136,
+    "sha256": "e9819ea55db723de579c0b2c6f32b76ed716bc1ae6ab0530360a4aba3e5cbac1",
+    "imports": [
+      {
+        "line": 3,
+        "statement": "from __future__ import annotations"
+      },
+      {
+        "line": 4,
+        "statement": "import argparse,json,math,pathlib,re,subprocess"
+      },
+      {
+        "line": 5,
+        "statement": "import matplotlib"
+      },
+      {
+        "line": 6,
+        "statement": "import matplotlib.pyplot as plt"
+      },
+      {
+        "line": 7,
+        "statement": "import numpy as np,pandas as pd,uproot"
+      },
+      {
+        "line": 8,
+        "statement": "from scipy.stats import skew,kurtosis"
+      },
+      {
+        "line": 9,
+        "statement": "import importlib.util"
+      }
+    ],
+    "functions": [
+      {
+        "line": 19,
+        "name": "gitsha"
+      },
+      {
+        "line": 20,
+        "name": "xpos"
+      },
+      {
+        "line": 21,
+        "name": "latest"
+      },
+      {
+        "line": 23,
+        "name": "order_statistics"
+      },
+      {
+        "line": 32,
+        "name": "robust"
+      },
+      {
+        "line": 37,
+        "name": "fit_line"
+      },
+      {
+        "line": 41,
+        "name": "cache_file"
+      },
+      {
+        "line": 51,
+        "name": "load"
+      },
+      {
+        "line": 53,
+        "name": "inventory_cache"
+      },
+      {
+        "line": 61,
+        "name": "events"
+      },
+      {
+        "line": 66,
+        "name": "reproduce"
+      },
+      {
+        "line": 76,
+        "name": "analyze"
+      },
+      {
+        "line": 106,
+        "name": "make_figures"
+      },
+      {
+        "line": 121,
+        "name": "window"
+      },
+      {
+        "line": 132,
+        "name": "main"
+      }
+    ],
+    "absolute_paths": [
+      {
+        "line": 11,
+        "value": "/home/reriosto/SHiP/t0minidaq/pairscan_2026-06-11"
+      },
+      {
+        "line": 13,
+        "value": "/home/reriosto/SHiP/t0minidaq/sslg4/exec08b_window_dip"
+      }
+    ],
+    "syntax": "PASS"
+  }
+]

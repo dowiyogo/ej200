@@ -1,0 +1,99 @@
+[
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/congruent_sum4_timing.C",
+    "import_path": "upstream/related/420addf/analysis/congruent_sum4_timing.C",
+    "sha256": "d35146cccd3ae4487f3ded8b1bf66f8dfbc2a8b55708f9f4bf12758f7f2cafb7"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/tb_mirror_sigma_vs_x.C",
+    "import_path": "upstream/related/420addf/analysis/tb_mirror_sigma_vs_x.C",
+    "sha256": "5f22a5aabfc08fdf4c1bfc47024c5ce67f75aa7c9b13bd1130c99590a17cb653"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/optim/phase_ab.py",
+    "import_path": "upstream/related/420addf/analysis/optim/phase_ab.py",
+    "sha256": "305bb168509665e34517dc54d4af1c53f6802b01568db82b166fc8b7e81bb173"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/optim/phase_sparse_top.py",
+    "import_path": "upstream/related/420addf/analysis/optim/phase_sparse_top.py",
+    "sha256": "5596ee24e5b492133025fdeaf1b8e63c3bf3279e53a83bf188d13b732718a597"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/timing/pulse_models.py",
+    "import_path": "upstream/related/420addf/analysis/timing/pulse_models.py",
+    "sha256": "f3ee0002f4a9925fdfe94f4a3a26422dc7c584eb622af4d8200c12f0210ab0d3"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/timing/sipm_waveform_dcfd.py",
+    "import_path": "upstream/related/420addf/analysis/timing/sipm_waveform_dcfd.py",
+    "sha256": "3324cbc15da0af115fb8e0cb1826380f21f1687680bd20e845330b91f483f652"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/timing/sipm_waveform_dcfd.cpp",
+    "import_path": "upstream/related/420addf/analysis/timing/sipm_waveform_dcfd.cpp",
+    "sha256": "fce0ac02fcf3cc32b7a8eb021571e46eece9c22ed8187e673102b1472b16d02c"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/timing/README.md",
+    "import_path": "upstream/related/420addf/analysis/timing/README.md",
+    "sha256": "656dd6db4be6560f6835037024bf1cc987caea790d4ed68a47a08c464b038dee"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "analysis/timing/TODO.md",
+    "import_path": "upstream/related/420addf/analysis/timing/TODO.md",
+    "sha256": "1831dbdb451c9a3504ee3b760e2bc3cc676029d97fe23a14dc03458f3673de08"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "docs/branch_diagnosis/SPTR_PROVENANCE.md",
+    "import_path": "upstream/related/420addf/docs/branch_diagnosis/SPTR_PROVENANCE.md",
+    "sha256": "8a88312684c399fe7aa5d06d211039ee4cd80063248bdb671f132ea7143d0e8f"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md",
+    "import_path": "upstream/related/420addf/docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md",
+    "sha256": "8670bdcc8295f4e70f38c8dfbf7ee8359e0717fdaf818c0bf4be68e7f9119464"
+  },
+  {
+    "source_commit": "420addf0fd6029d5b2f0e235f472a8ae47f31fac",
+    "source_path": "docs/branch_diagnosis/ANALYSIS_CONSOLIDATION.md",
+    "import_path": "upstream/related/420addf/docs/branch_diagnosis/ANALYSIS_CONSOLIDATION.md",
+    "sha256": "6aa9a0981deb0f2a6ac5ff04b13c1e0ad05d4dcc23bfbae2f6e9d259935a648f"
+  },
+  {
+    "source_commit": "b0aaac1aac69cdb4943cf9e2b5f0d86a656f49bd",
+    "source_path": "analysis/exec12t_timing_threshold_analysis.py",
+    "import_path": "upstream/related/b0aaac1/analysis/exec12t_timing_threshold_analysis.py",
+    "sha256": "e9819ea55db723de579c0b2c6f32b76ed716bc1ae6ab0530360a4aba3e5cbac1"
+  },
+  {
+    "source_commit": "b0aaac1aac69cdb4943cf9e2b5f0d86a656f49bd",
+    "source_path": "analysis/exec12t_make_products.py",
+    "import_path": "upstream/related/b0aaac1/analysis/exec12t_make_products.py",
+    "sha256": "b3be99e53ad92c0e8bb7b386aefa4432d68b35ca76149fbcaa0366d69e1edc8c"
+  },
+  {
+    "source_commit": "b0aaac1aac69cdb4943cf9e2b5f0d86a656f49bd",
+    "source_path": "analysis/exec11_pair_analysis.py",
+    "import_path": "upstream/related/b0aaac1/analysis/exec11_pair_analysis.py",
+    "sha256": "b9710ac9d7f440f6b64d13a2b9c3e3a1449c982f7186bf48963d91ffad50dcbd"
+  },
+  {
+    "source_commit": null,
+    "source_path": "/home/rrios/ej200/analysis/optim/phase_ab_optimal.csv",
+    "import_path": "upstream/related/untracked/phase_ab_optimal.csv",
+    "sha256": "274e92c09da3f8ab25e50d5eae6b5ba0d3c671567d86a80335e14ed183903509",
+    "classification": "existing untracked historical artifact; no invented commit"
+  }
+]

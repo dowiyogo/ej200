@@ -1,0 +1,15 @@
+{
+  "task": "EXEC_33",
+  "status": "AWAITING_EXPLICIT_USER_CHOICES",
+  "top_grouping": null,
+  "top_index_range": null,
+  "top_reporting_procedure_a_b_c": null,
+  "top_selection_sample_and_rule": null,
+  "end_map_and_reduction": null,
+  "end_pulse_model_and_parameters": null,
+  "end_threshold": null,
+  "end_fit_variant_and_normalization": null,
+  "end_cuts_walk_and_electronics": null,
+  "pilot_executed": false,
+  "grid_authorized": false
+}
