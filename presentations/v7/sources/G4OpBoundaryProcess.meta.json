@@ -1,0 +1,14 @@
+{
+  "version": "11.4.0",
+  "original_path": "/home/tdship/opt/geant4-v11.4.0/source/processes/optical/src/G4OpBoundaryProcess.cc",
+  "sha256": "afb2adaebc53b4d7e346fc08ac60934090e30b6aed1e87ba4876853464fd6a5e",
+  "classification": "hypothesis: installed source mechanism, distinct from experimental verdict",
+  "relevant_lines": [
+    309,
+    311,
+    427,
+    464,
+    468,
+    490
+  ]
+}

@@ -1,0 +1,37 @@
+\begin{frame}{What the historical claims audit establishes}
+\begin{center}
+\begin{tabular}{lrp{\HalfWidth}}
+\toprule
+Audit status & Rows & Meaning in the historical inventory\\
+\midrule
+valid & \AuditValid & Source value or computation reproduced; not corrected-physics validation.\\
+unverified & \AuditUnverified & Provenance or interpretation not established.\\
+superseded & \AuditSuperseded & Replaced as a source-of-truth entry in the historical record.\\
+refuted & \AuditRefuted & Contradicted in the stated context.\\
+\midrule
+Total & \AuditTotal & Audited source occurrences, not independent measurements.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{block}{Scope of this talk}
+The inventory is preserved. No historical timing result is presented as a measurement with the corrected physics.
+\end{block}
+\Source{Historical inventory: \texttt{\AuditFileName}, before deck edits, source main \texttt{\AuditBaseSha}. Local CSV/ROOT/metadata: \ShortAuditSource. Configurations vary by row; no single event sample or seed pair applies to audit counts.}
+\end{frame}
+
+\begin{frame}{Historical numbers: source evidence is not a replacement result}
+\small
+\begin{tabularx}{\linewidth}{l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Number quoted for audit & Provenance & Status\\
+\midrule
+$\{\HistNpeA,\HistNpeB,\HistNpeC\}$ pe/end & Literal \HistDictName\ dictionary in \texttt{napkin.py}:\HistoricalLine. Material order follows the archived source. & No registered run provenance at that assignment; not a new simulation measurement.\\
+$\HistSigmaLabel\ps$ & \HistSigmaName\ in the historical CSV, labeled ``at $x=\Zero$''. The source dictionary is deprecated. & Matches the rounded bar minimum, not the center entry below.\\
+$\HistSigmaCenter\ps$ & Historical \texttt{RessigmaxzEROejB}, generated from the archived optimal-estimator table. & Historical center entry; corrected-physics validation pending.\\
+$\HistSigmaMinimum\ps$ & Historical \texttt{RessigmaMINejB}, same source family. & Historical bar minimum; corrected-physics validation pending.\\
+\bottomrule
+\end{tabularx}
+\vspace{\Gap}
+\alert{These are quoted source objects, not timing claims for the corrected detector.}
+\Source{\DeckOld\ source snapshots at \texttt{\MainSha}: \texttt{sources/historical\_napkin.py}, \texttt{sources/historical\_results\_macros.tex}. Pre-existing CSV snapshots have recorded SHA-256, not invented Git/run attribution. Historical EJ materials, END-only context; original N/seeds/physics commit are not established by these literals. See \ShortAuditSource\ and \texttt{sources/provenance.json}.}
+\end{frame}

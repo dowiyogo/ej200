@@ -1,0 +1,56 @@
+{
+  "source_commit": "8349041140958226a0ac1cb3bb3e30aff2303435",
+  "audit_phase": "before deck edits",
+  "Geant4": {
+    "version": "11.4.0",
+    "identity": "geant4-11-04 [MT], 5-December-2025"
+  },
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "N": "historical per-claim or measured sidecar; not one simulation",
+  "material": "per claim",
+  "threads": 1,
+  "TOP_layout": "per claim: 0 historical END,20 historical hybrid,70 diagnostic EndTop",
+  "arm": "claims audit",
+  "gun_position": "per claim",
+  "command": "python /home/rrios/ej200_deck_20260910/build_exec29_docs/audit/claims_audit.py",
+  "historical_sources": {
+    "/home/rrios/ej200/analysis/optim/phase_ab_optimal.csv": "274e92c09da3f8ab25e50d5eae6b5ba0d3c671567d86a80335e14ed183903509",
+    "/home/rrios/ej200/presentations/napkin_first_principles/values/napkin_values.csv": "352e16c87ae32b4bc91616420d3f006065fcf6941810f2254c4551c30931b110",
+    "/home/rrios/ej200_deck_20260910/analysis/optim/root_best_est/verification.json": "a2a7592079ef64220a8b2ef3cf8e798973c7db5ef28fd6dfea3c38a5321739e1"
+  },
+  "measured_sources": [
+    "/home/rrios/ej200_exec26_20260909/build_exec26_phase1b_20260909/run500_ready/tables/directional_states.meta.json",
+    "/home/rrios/ej200_exec26_20260909/build_nightly_20260910/ab_comparison.meta.json",
+    "/home/rrios/ej200_exec26_20260909/build_nightly_20260910/terminal_group_comparison.meta.json"
+  ],
+  "description": "One row per numeric macro definition, usage or body numeric literal, plus required prose assertions and figure-source inventory. Audit state distinguishes arithmetic/historical reproduction from current physical validation.",
+  "row_count": 967,
+  "columns": {
+    "claim_id": "string",
+    "file_line": "string",
+    "value": "string",
+    "macro_or_literal": "string",
+    "provenance": "string",
+    "configuration": "string",
+    "status": "string",
+    "claim_context": "string"
+  },
+  "roundtrip_verified": true,
+  "sidecars": {
+    ".root": {
+      "path": "/home/rrios/ej200_deck_20260910/build_exec29_docs/claims_audit.root",
+      "sha256": "e6b9d7cd2735c85e61ba231223cddddab904c691cd2f90f1fc1f29b1049780a8"
+    },
+    ".csv": {
+      "path": "/home/rrios/ej200_deck_20260910/build_exec29_docs/claims_audit.csv",
+      "sha256": "bb3a3d6e3e769a85b5cbbe487e1915ae6c9df4447f73af63f2131db76b243ded"
+    }
+  },
+  "provenance_completion": {
+    "date_utc": "2026-09-10T10:25:02.432573+00:00",
+    "scope": "Original base claim rows unchanged; existing source metadata from the original clone linked for four figure references. No source deck value or classification changed."
+  }
+}

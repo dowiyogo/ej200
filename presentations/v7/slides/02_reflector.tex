@@ -1,0 +1,14 @@
+\begin{frame}{Input REFLECTIVITY was not the measured reflectance}
+\begin{columns}[T]
+\column{\HalfWidth}
+\texttt{dielectric\_dielectric + polished} at the air--wrap border returned only
+\[\OldReflection\%\]
+of eligible forward encounters. The metal control returned
+\[\MetalReflection\%.\]
+\textbf{Interpretation in the tested Geant4 \GeantVersion\ build:} the dielectric input admits survival before Fresnel; it does not directly set the reflected fraction. Source mechanism is documented as a hypothesis in backup.
+\column{\HalfWidth}
+\includegraphics[width=\linewidth]{figs/boundary_reflectance.pdf}
+\centering Different geometries are labeled. This is a boundary-response comparison, not a matched yield ratio.
+\end{columns}
+\Source{\CommonSource\ $x=\Zero\mm$. \IdROne: EndTop, $N_{\rm TOP}=\TopCount$, $N=\GuardN$, one worker, \texttt{\ShaROne}. \IdVOne: END-only, $N_{\rm TOP}=\NoTopCount$, $N=\MainN$, \MetalWorkers\ workers/eventModulo \One, \texttt{\ShaVOne}. Sidecars: \texttt{sources/directional}, \texttt{sources/metal\_reflection}.}
+\end{frame}

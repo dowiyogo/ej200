@@ -1,0 +1,10 @@
+metric,count
+duplicate_terminal,0
+nonterminal_post,0
+started_optical,42223433
+started_scintillation,40039535
+terminal_optical,42223433
+terminal_scintillation,40039535
+terminal_without_start,0
+unknown_process,0
+unknown_volume,0

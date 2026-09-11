@@ -1,0 +1,37 @@
+commit 4cb2c236baa18aa2093cb6497b34af2b3a9e0b4a
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Wed Aug 12 09:54:36 2026 +0200
+
+    feat(optics): port EXEC_23 explicit air-gap + Mylar reflector geometry to EndTop
+    
+    Ports the air-gap panel geometry from ej200_endonly/exec23-explicit-airgap
+    to the EndTop build (feat/endtop-sslg4).
+    
+    Physics model:
+    - 3 lateral face panels (−Y, +Z, −Z); ±X excluded (END SiPMs), +Y excluded
+      (TOP SiPMs are barLV daughters flush with the +Y face — photons missing
+      SiPMs escape through bar-air boundary and are reflected by the −Y/±Z panels)
+    - Each panel: 0.10 mm air gap + 0.05 mm Mylar layer in worldLV
+    - Bar→Air boundary: CreateBarSurface() dielectric_dielectric polished → TIR for
+      θ > arcsin(1/1.58) = 39.3° (automatic Fresnel), no artificial REFLECTIVITY
+    - Air→Mylar boundary: CreateMylarReflector() dielectric_metal R=0.95 →
+      models Mylar/ESR substrate reflectance for non-TIR photons
+    
+    New functions added:
+    - Materials::CreateMylarReflector() — AirGap→Mylar surface (dielectric_metal)
+    - Materials::CreateMylar() now includes ABSLENGTH=1µm (opaque bulk)
+    
+    New member:
+    - DetectorConstruction::fScintillatorAirSurfaces (bar↔air border surfaces)
+    
+    Root cause context: EXEC_23 showed that adding explicit air gap in EndOnly
+    raised <Npe>_END from 0.76 → 2035 PE. The BarSkin (surface-only) approach
+    in exec22 was an interim fix; this is the full geometry fix.
+    
+    Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+
+ include/DetectorConstruction.hh |   1 +
+ include/Materials.hh            |   9 +++-
+ src/DetectorConstruction.cc     | 106 +++++++++++++++++++++++++++++++++++++---
+ src/Materials.cc                |  37 ++++++++++++--
+ 4 files changed, 141 insertions(+), 12 deletions(-)

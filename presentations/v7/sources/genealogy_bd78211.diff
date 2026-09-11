@@ -1,0 +1,242 @@
+commit bd7821170c1c6997a733d0f279f3eac85821c10c
+Author: dowiyogo <dowiyogo@gmail.com>
+Date:   Sun Jun 21 13:53:44 2026 +0200
+
+    EXEC_23: implement explicit air gap reflector geometry
+    
+    Geometry:
+    - src/DetectorConstruction.cc: add explicit 0.10 mm optical air-gap panels around lateral faces
+    - src/DetectorConstruction.cc: add external 0.05 mm Mylar reflector panels and border surfaces
+    - src/Materials.cc: make AirGap->Reflector dielectric_metal polished with R=0.95
+    
+    Validation:
+    - geometry overlap check PASS
+    - speed gate PASS, max v/(c/n)=1.0 and superluminal fraction=0
+    - <Npe>_END(0): EXEC_22b 0.763 -> EXEC_23 2035.26 in 50-event diagnostic
+    - sigma_END(0): 60.12 ps diagnostic, bootstrap unstable due small sample
+    - flagged as not baseline: Npe > 300 and 500-event center run exceeded practical wall-clock
+    
+    No ROOT data committed.
+
+diff --git a/src/DetectorConstruction.cc b/src/DetectorConstruction.cc
+index f46a226..766e1cd 100644
+--- a/src/DetectorConstruction.cc
++++ b/src/DetectorConstruction.cc
+@@ -22,12 +22,15 @@
+ #include <algorithm>
+ #include <cctype>
+ #include <cmath>
++#include <iterator>
+ #include <string>
+ 
+ // ── Geometry constants ────────────────────────────────────────────────────────
+ static constexpr G4double kBarHalfX   = 700.0 * mm;  // 1.4 m total length
+ static constexpr G4double kBarHalfY   =  30.0 * mm;  // 60 mm width
+ static constexpr G4double kBarHalfZ   =   5.0 * mm;  // 10 mm height
++static constexpr G4double kAirGapThickness = 0.10 * mm;
++static constexpr G4double kReflectorThickness = 0.05 * mm;
+ 
+ // End SiPM (on ±X face): thin slab, 6×6 mm² active area
+ static constexpr G4double kEndHalfX   = 0.25 * mm;
+@@ -85,8 +88,7 @@ DetectorConstruction::DetectorConstruction() {
+     fMessenger->DeclareMethod(
+         "edgeWrap",
+         &DetectorConstruction::SetEdgeWrapMode,
+-        "Legacy no-op. The Mylar wrap volume was removed; reflection is handled\n"
+-        "by a reflector skin surface on BarLV.");
++        "Legacy no-op. Reflection is handled by explicit air-gap and Mylar panels.");
+ 
+     fSiPMMessenger = new G4GenericMessenger(this, "/sipm/", "SiPM model control");
+     auto& sipmModelCmd = fSiPMMessenger->DeclareMethod(
+@@ -252,6 +254,20 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
+     G4Material* worldMat = nist->FindOrBuildMaterial("G4_AIR");
+     fActiveScintillator =
+         OrganicScintillatorFactory::GetInstance()->Get(fScintCode, true);
++    if (fActiveScintillator->GetMaterialPropertiesTable() == nullptr) {
++        fActiveScintillator->SetMaterialPropertiesTable(new G4MaterialPropertiesTable());
++    }
++    {
++        auto* mpt = fActiveScintillator->GetMaterialPropertiesTable();
++        auto* rindex = mpt ? mpt->GetProperty("RINDEX") : nullptr;
++        if (rindex == nullptr || rindex->GetVectorLength() == 0) {
++            mpt->AddProperty("RINDEX",
++                             {1.5 * eV, 6.5 * eV},
++                             {1.58, 1.58});
++            G4cout << "[DetectorConstruction] " << fScintCode
++                   << " RINDEX set to 1.58 for optical tracking." << G4endl;
++        }
++    }
+     if (fScintCode == "OPSC-101") {
+         auto* mpt = fActiveScintillator->GetMaterialPropertiesTable();
+         if (mpt != nullptr) {
+@@ -284,6 +300,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
+         }
+     }
+     G4Material* barMat   = fActiveScintillator;
++    G4Material* airGapMat = worldMat;
++    G4Material* reflectorMat = Materials::CreateMylar();
+     G4Material* sipmMat  = Materials::CreateSiPMCoupling();
+ 
+     // Air RINDEX required for optical-photon tracking
+@@ -317,14 +335,93 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
+     fEndSiPMLV = nullptr;
+     fTopSiPMLV = nullptr;
+     fSiPMSurfaces.clear();
++    fScintillatorAirSurfaces.clear();
+     fReflectorSurfaces.clear();
+-
+-    // Apply branch-specific reflector properties as a skin on the bar logical volume.
+-    auto* reflector = fTopSurface == "mylar"
+-        ? Materials::CreateMylarReflector(
+-              fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha)
+-        : Materials::CreateBarSkinReflector();
+-    fBarSkinSurface = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
++    fBarSkinSurface = nullptr;
++
++    if (fTopSurface == "mylar") {
++        auto* scintAirSurface = Materials::CreateBarSurface();
++        auto* airReflectorSurface = Materials::CreateMylarReflector(
++            fMylarReflectivity, fMylarSpecularLobe, fMylarSigmaAlpha);
++
++        struct PanelSpec {
++            G4String key;
++            G4String stem;
++            G4ThreeVector airHalf;
++            G4ThreeVector airCenter;
++            G4ThreeVector reflectorHalf;
++            G4ThreeVector reflectorCenter;
++        };
++
++        const G4double g = kAirGapThickness;
++        const G4double m = kReflectorThickness;
++        const PanelSpec panels[] = {
++            {"+Y", "YPlus",
++             {kBarHalfX, 0.5*g, kBarHalfZ + g},
++             {0.0, kBarHalfY + 0.5*g, 0.0},
++             {kBarHalfX, 0.5*m, kBarHalfZ + g + m},
++             {0.0, kBarHalfY + g + 0.5*m, 0.0}},
++            {"-Y", "YMinus",
++             {kBarHalfX, 0.5*g, kBarHalfZ + g},
++             {0.0, -(kBarHalfY + 0.5*g), 0.0},
++             {kBarHalfX, 0.5*m, kBarHalfZ + g + m},
++             {0.0, -(kBarHalfY + g + 0.5*m), 0.0}},
++            {"+Z", "ZPlus",
++             {kBarHalfX, kBarHalfY, 0.5*g},
++             {0.0, 0.0, kBarHalfZ + 0.5*g},
++             {kBarHalfX, kBarHalfY + g, 0.5*m},
++             {0.0, 0.0, kBarHalfZ + g + 0.5*m}},
++            {"-Z", "ZMinus",
++             {kBarHalfX, kBarHalfY, 0.5*g},
++             {0.0, 0.0, -(kBarHalfZ + 0.5*g)},
++             {kBarHalfX, kBarHalfY + g, 0.5*m},
++             {0.0, 0.0, -(kBarHalfZ + g + 0.5*m)}},
++        };
++
++        for (std::size_t i = 0; i < std::size(panels); ++i) {
++            const auto& panel = panels[i];
++            auto* airSolid = new G4Box(
++                G4String("AirGap") + panel.stem + "Solid",
++                panel.airHalf.x(), panel.airHalf.y(), panel.airHalf.z());
++            auto* airLV = new G4LogicalVolume(
++                airSolid, airGapMat, G4String("AirGap") + panel.stem + "LV");
++            auto* airVA = new G4VisAttributes(G4Colour(0.6, 0.8, 1.0, 0.12));
++            airVA->SetForceSolid(true);
++            airLV->SetVisAttributes(airVA);
++            auto* airPV = new G4PVPlacement(
++                nullptr, panel.airCenter, airLV, G4String("AirGap") + panel.stem + "PV",
++                worldLV, false, static_cast<G4int>(i), true);
++
++            auto* reflSolid = new G4Box(
++                G4String("Mylar") + panel.stem + "Solid",
++                panel.reflectorHalf.x(), panel.reflectorHalf.y(), panel.reflectorHalf.z());
++            auto* reflLV = new G4LogicalVolume(
++                reflSolid, reflectorMat, G4String("Mylar") + panel.stem + "LV");
++            auto* reflVA = new G4VisAttributes(G4Colour(0.85, 0.85, 0.85, 0.35));
++            reflVA->SetForceSolid(true);
++            reflLV->SetVisAttributes(reflVA);
++            auto* reflPV = new G4PVPlacement(
++                nullptr, panel.reflectorCenter, reflLV, G4String("Mylar") + panel.stem + "PV",
++                worldLV, false, static_cast<G4int>(i), true);
++
++            fScintillatorAirSurfaces[panel.key] = new G4LogicalBorderSurface(
++                G4String("ScintillatorToAirGap_") + panel.stem,
++                fBarPhys, airPV, scintAirSurface);
++            new G4LogicalBorderSurface(
++                G4String("AirGapToScintillator_") + panel.stem,
++                airPV, fBarPhys, scintAirSurface);
++
++            fReflectorSurfaces[panel.key] = new G4LogicalBorderSurface(
++                G4String("AirGapToReflector_") + panel.stem,
++                airPV, reflPV, airReflectorSurface);
++            new G4LogicalBorderSurface(
++                G4String("ReflectorToAirGap_") + panel.stem,
++                reflPV, airPV, airReflectorSurface);
++        }
++    } else {
++        auto* reflector = Materials::CreateBarSkinReflector();
++        fBarSkinSurface = new G4LogicalSkinSurface("BarSkin", barLV, reflector);
++    }
+ 
+     if (IsEndInstrumented()) {
+         auto* endSolid = new G4Box("EndSiPMSolid", kEndHalfX, kEndHalfY, kEndHalfZ);
+diff --git a/src/Materials.cc b/src/Materials.cc
+index 4544d69..171795e 100644
+--- a/src/Materials.cc
++++ b/src/Materials.cc
+@@ -264,11 +264,11 @@ G4Material* CreateMylar() {
+     const G4int n = 4;
+     G4double e[n] = {2.0*eV, 2.6*eV, 3.1*eV, 4.0*eV};
+     G4double r[n] = {1.65, 1.65, 1.65, 1.65};   // Mylar RINDEX ≈ 1.65
++    G4double abs[n] = {1.0*um, 1.0*um, 1.0*um, 1.0*um};
+ 
+     auto* mpt = new G4MaterialPropertiesTable();
+     mpt->AddProperty("RINDEX", e, r, n);
+-    // Mylar is transparent at optical wavelengths; omit ABSLENGTH so G4 does
+-    // not apply bulk absorption inside the 25 µm film.
++    mpt->AddProperty("ABSLENGTH", e, abs, n);
+     mat->SetMaterialPropertiesTable(mpt);
+     return mat;
+ }
+@@ -337,32 +337,24 @@ G4OpticalSurface* CreateBarSkinReflector() {
+ G4OpticalSurface* CreateMylarReflector(G4double reflectivity,
+                                        G4double specularLobe,
+                                        G4double sigmaAlpha) {
+-    // exec22: dielectric_dielectric + REFLECTIVITY (surface-only Mylar model, no air gap).
+-    //
+-    // Physics: two-tier reflection at the bar surface (n_bar=1.58 → n_world=1.0):
+-    //   (1) angle > theta_c = arcsin(1/1.58) = 39.3° → TIR, 100% reflection (automatic
+-    //       from Geant4 Fresnel equations; world RINDEX=1.0 set in DetectorConstruction).
+-    //   (2) angle < theta_c → non-TIR; REFLECTIVITY in the MPT gives the probability of
+-    //       reflection for these photons (Mylar/ESR substrate modelled as reflectivity).
+-    //       With REFLECTIVITY=0.95: 95% bounce back, 5% transmitted to world and lost.
+-    //
+-    // No air volume → no photon transport in air → no superluminal risk.
+-    // No Mylar volume → no independent RINDEX/ABSLENGTH to tune per wavelength.
+-    // sigmaAlpha: microfacet roughness (0.0 = perfectly flat, specular reflection).
+-    (void)specularLobe;           // not used; unified polished is fully specular
+-    auto* surf = new G4OpticalSurface("MylarReflector");
+-    surf->SetType(dielectric_dielectric);
++    // EXEC_23: this surface is only placed on the AirGap -> Mylar reflector
++    // boundary. The scintillator-air boundary is dielectric_dielectric polished
++    // and has no artificial REFLECTIVITY.
++    auto* surf = new G4OpticalSurface("AirReflectorSurface");
++    surf->SetType(dielectric_metal);
+     surf->SetModel(unified);
+-    surf->SetFinish(polished);    // specular; sigmaAlpha = 0 → perfect Fresnel + TIR
++    surf->SetFinish(polished);
+     surf->SetSigmaAlpha(sigmaAlpha);
+ 
+-    // REFLECTIVITY for non-TIR photons (Mylar/ESR substrate reflectance).
+-    // Applied uniformly 1.5–6.5 eV (covers EJ-204 emission 408 nm = 3.03 eV).
+     const std::vector<G4double> energy = {1.5 * eV, 6.5 * eV};
+     const std::vector<G4double> refl   = {reflectivity, reflectivity};
++    const std::vector<G4double> eff    = {0.0, 0.0};
++    const std::vector<G4double> lobe   = {specularLobe, specularLobe};
+ 
+     auto* mpt = new G4MaterialPropertiesTable();
+     mpt->AddProperty("REFLECTIVITY", energy, refl);
++    mpt->AddProperty("EFFICIENCY", energy, eff);
++    mpt->AddProperty("SPECULARLOBECONSTANT", energy, lobe);
+     surf->SetMaterialPropertiesTable(mpt);
+     return surf;
+ }

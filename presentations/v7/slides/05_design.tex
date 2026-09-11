@@ -1,0 +1,20 @@
+\begin{frame}{A design measurement: add the upper wrap with TOP present}
+\begin{columns}[T]
+\column{\HalfWidth}
+\textbf{Matched design comparison:}\newline
+\IdDOne: EndTop with an uncovered upper face around TOP sensors.\newline
+\IdDTwo: add the upper wrap panel while retaining TOP.
+\begin{block}{Measured END yield ratio}
+\[\IdDTwo/\IdDOne=\DesignGain\pm\DesignGainSem\]
+\end{block}
+This is an experimental design measurement, not a production correction or an established optimum.
+\column{\HalfWidth}
+\textbf{Baseline TOP hit/generation ratio:}
+\[\frac{\TopHits}{\GeneratedScint}=\TopHitRatio\%\]
+Numerator: all detected TOP hits.\newline
+Denominator: generated scintillation photons.
+\vspace{\Gap}
+\alert{This mixed-population ratio is not a measured fraction of unique scintillation photons intercepted by TOP.} It does not establish an END depletion fraction or a timing penalty.
+\end{columns}
+\Source{\CommonSource\ EndTop, $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\MainN$/arm, one worker. \IdDOne/\IdDTwo: \texttt{\ShaDOne}/\texttt{\ShaDTwo}. Sidecars: \texttt{sources/design}; TOP/generation counts in the \IdDOne\ summary linked by \texttt{sources/provenance.json}.}
+\end{frame}

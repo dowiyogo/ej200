@@ -1,0 +1,757 @@
+commit 87795b48da7ba967a4914be5ba136374d7a69dd0
+Merge: 84e902c 50cf02e
+Author: rrios <dowiyogo@gmail.com>
+Date:   Tue Sep 1 14:23:09 2026 +0200
+
+    merge: adopt Phase-7 optics and SSLG4 material framework from feat/bar-end-vikuiti
+    
+    Supersedes 84e902c (G4LogicalSkinSurface on BarLV), which eliminated TIR
+    and caused the ~1500x photon deficit. The air-group-velocity problem that
+    84e902c correctly identified is solved by the two-layer geometry:
+    explicit 0.10 mm air gap + 0.05 mm Mylar reflector, with
+    GROUPVEL_air = c/n_bar.
+
+ .gitignore                                         |   15 +
+ CMakeLists.txt                                     |   58 +-
+ GROUP_VELOCITY_AUDIT.md                            |  387 +
+ README.md                                          |  237 +-
+ REPORT_branch_status_2026-06-07.md                 |  219 +
+ REPORT_branch_status_2026-08-05.md                 |  209 +
+ analysis/analyze.py                                |    8 +-
+ analysis/analyze_hits.C                            |    4 +-
+ analysis/bar_comparison_4configs.cxx               |  375 +
+ analysis/bar_end_vikuiti_scan.cxx                  |  335 +
+ analysis/congruent_sum4_timing.C                   |  410 +
+ analysis/exec07/README.md                          |  158 +
+ analysis/exec07/__init__.py                        |    1 +
+ analysis/exec07/common.py                          |   51 +
+ analysis/exec07/conclusions_exec07.md              |   19 +
+ analysis/exec07/exec07_photon_budget_report.pdf    |  Bin 0 -> 768017 bytes
+ analysis/exec07/exec08b_timing_gate.csv            |    7 +
+ analysis/exec07/exec08b_timing_gate.py             |  153 +
+ analysis/exec07/exec08b_timing_gate_raw.csv        |   13 +
+ analysis/exec07/exec08b_window_dip.py              |  162 +
+ analysis/exec07/exec08b_window_dip_profiles.csv    |   56 +
+ analysis/exec07/exec09_report_full.pdf             |  Bin 0 -> 8401503 bytes
+ analysis/exec07/exec09_report_full.tex             |  920 +++
+ analysis/exec07/exec09_report_key.pdf              |  Bin 0 -> 4098215 bytes
+ analysis/exec07/exec09_report_key.tex              |  392 +
+ analysis/exec07/exec09_tail_comparison.csv         |   16 +
+ analysis/exec07/exec09_tail_metrics.csv            |   31 +
+ analysis/exec07/exec09_timing_mechanism.py         |  220 +
+ analysis/exec07/exec09_timing_verdict.txt          |    6 +
+ analysis/exec07/exec10_fano_by_channel.csv         | 2667 ++++++
+ analysis/exec07/exec10_fano_fit.csv                |    2 +
+ analysis/exec07/exec10_landau_analysis.py          |  247 +
+ analysis/exec07/exec10_landau_mpv.csv              |  603 ++
+ .../exec07/exec10_late_fraction_representative.csv |    9 +
+ analysis/exec07/exec10_report_full.pdf             |  Bin 0 -> 8828011 bytes
+ analysis/exec07/exec10_report_full.tex             |  982 +++
+ analysis/exec07/exec10_report_key.pdf              |  Bin 0 -> 4524506 bytes
+ analysis/exec07/exec10_report_key.tex              |  454 +
+ analysis/exec07/exec10_time_figures.py             |   69 +
+ analysis/exec07/exec10_veff_diagnosis.py           |  192 +
+ analysis/exec07/exec10_velocity_fits.csv           |   10 +
+ analysis/exec07/exec10_velocity_metrics.csv        |   63 +
+ analysis/exec07/exec11_arrival_metrics.csv         |   94 +
+ analysis/exec07/exec11_report_key.pdf              |  Bin 0 -> 5896626 bytes
+ analysis/exec07/exec11_report_key.tex              |  475 ++
+ analysis/exec07/exec11_time_arrival.py             |  835 ++
+ analysis/exec07/exec12_report_full.pdf             |  Bin 0 -> 19686922 bytes
+ analysis/exec07/exec12_report_full.tex             | 1696 ++++
+ analysis/exec07/exec12_report_key.tex              | 1696 ++++
+ analysis/exec07/exec12_tN_analysis.py              |  594 ++
+ analysis/exec07/exec12_tN_summary.csv              |   43 +
+ analysis/exec07/exec12b_tn_dispersion.py           |  310 +
+ analysis/exec07/figs/P1_npe_vs_x.png               |  Bin 0 -> 221684 bytes
+ analysis/exec07/figs/P2_npe_heatmap_top.png        |  Bin 0 -> 121945 bytes
+ analysis/exec07/figs/P3_fano_vs_x.png              |  Bin 0 -> 314510 bytes
+ analysis/exec07/figs/P4_poisson_check_x-400.png    |  Bin 0 -> 201781 bytes
+ analysis/exec07/figs/P4_poisson_check_x-690.png    |  Bin 0 -> 205903 bytes
+ analysis/exec07/figs/P4_poisson_check_x0.png       |  Bin 0 -> 233350 bytes
+ analysis/exec07/figs/P4_poisson_check_x400.png     |  Bin 0 -> 200352 bytes
+ analysis/exec07/figs/P4_poisson_check_x690.png     |  Bin 0 -> 185343 bytes
+ analysis/exec07/figs/P5_tdist_examples.png         |  Bin 0 -> 304143 bytes
+ analysis/exec07/figs/P6_tmean_vs_x.png             |  Bin 0 -> 260068 bytes
+ analysis/exec07/figs/P7_deltaT_end.png             |  Bin 0 -> 282457 bytes
+ analysis/exec07/figs/exec08b_id18_impact_maps.png  |  Bin 0 -> 369275 bytes
+ .../exec07/figs/exec08b_window_dip_profiles.png    |  Bin 0 -> 496454 bytes
+ analysis/exec07/figs/exec09_tail_comparison.png    |  Bin 0 -> 342461 bytes
+ analysis/exec07/figs/exec10_fano_vs_mean.png       |  Bin 0 -> 236747 bytes
+ analysis/exec07/figs/exec10_landau_fit_example.png |  Bin 0 -> 101611 bytes
+ .../exec07/figs/exec10_velocity_estimators.png     |  Bin 0 -> 273589 bytes
+ analysis/exec07/figs/exec11_arrival_-100mm.png     |  Bin 0 -> 207743 bytes
+ analysis/exec07/figs/exec11_arrival_-150mm.png     |  Bin 0 -> 209520 bytes
+ analysis/exec07/figs/exec11_arrival_-200mm.png     |  Bin 0 -> 213941 bytes
+ analysis/exec07/figs/exec11_arrival_-250mm.png     |  Bin 0 -> 211922 bytes
+ analysis/exec07/figs/exec11_arrival_-300mm.png     |  Bin 0 -> 212461 bytes
+ analysis/exec07/figs/exec11_arrival_-350mm.png     |  Bin 0 -> 210707 bytes
+ analysis/exec07/figs/exec11_arrival_-400mm.png     |  Bin 0 -> 206563 bytes
+ analysis/exec07/figs/exec11_arrival_-450mm.png     |  Bin 0 -> 203668 bytes
+ analysis/exec07/figs/exec11_arrival_-500mm.png     |  Bin 0 -> 218964 bytes
+ analysis/exec07/figs/exec11_arrival_-50mm.png      |  Bin 0 -> 212605 bytes
+ analysis/exec07/figs/exec11_arrival_-550mm.png     |  Bin 0 -> 211314 bytes
+ analysis/exec07/figs/exec11_arrival_-600mm.png     |  Bin 0 -> 212951 bytes
+ analysis/exec07/figs/exec11_arrival_-650mm.png     |  Bin 0 -> 218780 bytes
+ analysis/exec07/figs/exec11_arrival_-670mm.png     |  Bin 0 -> 215586 bytes
+ analysis/exec07/figs/exec11_arrival_-690mm.png     |  Bin 0 -> 210637 bytes
+ analysis/exec07/figs/exec11_arrival_0mm.png        |  Bin 0 -> 200866 bytes
+ analysis/exec07/figs/exec11_arrival_100mm.png      |  Bin 0 -> 211847 bytes
+ analysis/exec07/figs/exec11_arrival_150mm.png      |  Bin 0 -> 209003 bytes
+ analysis/exec07/figs/exec11_arrival_200mm.png      |  Bin 0 -> 214828 bytes
+ analysis/exec07/figs/exec11_arrival_250mm.png      |  Bin 0 -> 211524 bytes
+ analysis/exec07/figs/exec11_arrival_300mm.png      |  Bin 0 -> 213390 bytes
+ analysis/exec07/figs/exec11_arrival_350mm.png      |  Bin 0 -> 210134 bytes
+ analysis/exec07/figs/exec11_arrival_400mm.png      |  Bin 0 -> 207557 bytes
+ analysis/exec07/figs/exec11_arrival_450mm.png      |  Bin 0 -> 202812 bytes
+ analysis/exec07/figs/exec11_arrival_500mm.png      |  Bin 0 -> 218462 bytes
+ analysis/exec07/figs/exec11_arrival_50mm.png       |  Bin 0 -> 212680 bytes
+ analysis/exec07/figs/exec11_arrival_550mm.png      |  Bin 0 -> 211954 bytes
+ analysis/exec07/figs/exec11_arrival_600mm.png      |  Bin 0 -> 215138 bytes
+ analysis/exec07/figs/exec11_arrival_650mm.png      |  Bin 0 -> 215114 bytes
+ analysis/exec07/figs/exec11_arrival_670mm.png      |  Bin 0 -> 215273 bytes
+ analysis/exec07/figs/exec11_arrival_690mm.png      |  Bin 0 -> 209572 bytes
+ analysis/exec07/figs/exec12_tN_-400mm.png          |  Bin 0 -> 231084 bytes
+ analysis/exec07/figs/exec12_tN_-650mm.png          |  Bin 0 -> 231453 bytes
+ analysis/exec07/figs/exec12_tN_-690mm.png          |  Bin 0 -> 226734 bytes
+ analysis/exec07/figs/exec12_tN_0mm.png             |  Bin 0 -> 243099 bytes
+ analysis/exec07/figs/exec12_tN_400mm.png           |  Bin 0 -> 227468 bytes
+ analysis/exec07/figs/exec12_tN_650mm.png           |  Bin 0 -> 228512 bytes
+ analysis/exec07/figs/exec12_tN_690mm.png           |  Bin 0 -> 218651 bytes
+ analysis/exec07/figs/exec12_tN_summary.png         |  Bin 0 -> 83665 bytes
+ analysis/exec07/figs/fits_attenuation_velocity.png |  Bin 0 -> 241611 bytes
+ analysis/exec07/figs/tn_-400mm_endL.png            |  Bin 0 -> 165143 bytes
+ analysis/exec07/figs/tn_-400mm_endR.png            |  Bin 0 -> 167123 bytes
+ analysis/exec07/figs/tn_-400mm_top.png             |  Bin 0 -> 211696 bytes
+ analysis/exec07/figs/tn_-650mm_endL.png            |  Bin 0 -> 169859 bytes
+ analysis/exec07/figs/tn_-650mm_endR.png            |  Bin 0 -> 152217 bytes
+ analysis/exec07/figs/tn_-650mm_top.png             |  Bin 0 -> 213256 bytes
+ analysis/exec07/figs/tn_-690mm_endL.png            |  Bin 0 -> 183436 bytes
+ analysis/exec07/figs/tn_-690mm_endR.png            |  Bin 0 -> 147728 bytes
+ analysis/exec07/figs/tn_-690mm_top.png             |  Bin 0 -> 215803 bytes
+ analysis/exec07/figs/tn_0mm_endL.png               |  Bin 0 -> 154494 bytes
+ analysis/exec07/figs/tn_0mm_endR.png               |  Bin 0 -> 157716 bytes
+ analysis/exec07/figs/tn_0mm_top.png                |  Bin 0 -> 211362 bytes
+ analysis/exec07/figs/tn_400mm_endL.png             |  Bin 0 -> 163131 bytes
+ analysis/exec07/figs/tn_400mm_endR.png             |  Bin 0 -> 167738 bytes
+ analysis/exec07/figs/tn_400mm_top.png              |  Bin 0 -> 211693 bytes
+ analysis/exec07/figs/tn_650mm_endL.png             |  Bin 0 -> 148959 bytes
+ analysis/exec07/figs/tn_650mm_endR.png             |  Bin 0 -> 172589 bytes
+ analysis/exec07/figs/tn_650mm_top.png              |  Bin 0 -> 213813 bytes
+ analysis/exec07/figs/tn_690mm_endL.png             |  Bin 0 -> 145160 bytes
+ analysis/exec07/figs/tn_690mm_endR.png             |  Bin 0 -> 182420 bytes
+ analysis/exec07/figs/tn_690mm_top.png              |  Bin 0 -> 215230 bytes
+ analysis/exec07/fit_results_exec07.csv             |    3 +
+ analysis/exec07/make_beamer.py                     | 1318 +++
+ analysis/exec07/per_position_exec07.csv            |   32 +
+ analysis/exec07/poisson_diagnostics.csv            |  125 +
+ analysis/exec07/summary_exec07.csv                 | 3039 +++++++
+ analysis/exec07/tn_order_statistics.C              |  122 +
+ analysis/exec07/top_localization_gate.csv          |   32 +
+ analysis/exec07/validation_exec07.txt              |    1 +
+ analysis/exec07_photon_budget.py                   |  927 +++
+ analysis/exec13/exec13_core_resolution.csv         |    7 +
+ analysis/exec13/exec13_core_resolution.py          |  557 ++
+ analysis/exec13/exec13_f1_tn_histograms.csv        |  601 ++
+ analysis/exec13/exec13_f2_cluster_dispersion.csv   |  261 +
+ analysis/exec13/exec13_f3_npe_profile.csv          |  211 +
+ analysis/exec13/exec13_f4_timing_profile.csv       |  421 +
+ analysis/exec13/exec13_fixed_scale.py              | 1058 +++
+ analysis/exec13/exec13_gates.csv                   |   17 +
+ analysis/exec13/exec13_report.pdf                  |  Bin 0 -> 572558 bytes
+ analysis/exec13/exec13_report.tex                  |  244 +
+ analysis/exec13/exec13_resolution_macros.tex       |   59 +
+ analysis/exec13/exec13_tN_table.tex                |   25 +
+ .../exec13/figs/exec13_f1_t20pe_overlay_abs.pdf    |  Bin 0 -> 22225 bytes
+ .../exec13/figs/exec13_f1_t20pe_overlay_abs.png    |  Bin 0 -> 69006 bytes
+ .../exec13/figs/exec13_f1_t20pe_overlay_norm.pdf   |  Bin 0 -> 23403 bytes
+ .../exec13/figs/exec13_f1_t20pe_overlay_norm.png   |  Bin 0 -> 69698 bytes
+ analysis/exec13/figs/exec13_f1_t20pe_panels.pdf    |  Bin 0 -> 28853 bytes
+ analysis/exec13/figs/exec13_f1_t20pe_panels.png    |  Bin 0 -> 98237 bytes
+ .../exec13/figs/exec13_f1_t4pe_overlay_abs.pdf     |  Bin 0 -> 21633 bytes
+ .../exec13/figs/exec13_f1_t4pe_overlay_abs.png     |  Bin 0 -> 59303 bytes
+ .../exec13/figs/exec13_f1_t4pe_overlay_norm.pdf    |  Bin 0 -> 22701 bytes
+ .../exec13/figs/exec13_f1_t4pe_overlay_norm.png    |  Bin 0 -> 59164 bytes
+ analysis/exec13/figs/exec13_f1_t4pe_panels.pdf     |  Bin 0 -> 26904 bytes
+ analysis/exec13/figs/exec13_f1_t4pe_panels.png     |  Bin 0 -> 87889 bytes
+ analysis/exec13/figs/exec13_f2_cluster_+0mm.pdf    |  Bin 0 -> 31379 bytes
+ analysis/exec13/figs/exec13_f2_cluster_+0mm.png    |  Bin 0 -> 101220 bytes
+ analysis/exec13/figs/exec13_f2_cluster_-400mm.pdf  |  Bin 0 -> 31427 bytes
+ analysis/exec13/figs/exec13_f2_cluster_-400mm.png  |  Bin 0 -> 119255 bytes
+ analysis/exec13/figs/exec13_f2_cluster_-690mm.pdf  |  Bin 0 -> 27594 bytes
+ analysis/exec13/figs/exec13_f2_cluster_-690mm.png  |  Bin 0 -> 84995 bytes
+ analysis/exec13/figs/exec13_f3_npe_profile.pdf     |  Bin 0 -> 35863 bytes
+ analysis/exec13/figs/exec13_f3_npe_profile.png     |  Bin 0 -> 70775 bytes
+ analysis/exec13/figs/exec13_f4_timing_t20pe.pdf    |  Bin 0 -> 29501 bytes
+ analysis/exec13/figs/exec13_f4_timing_t20pe.png    |  Bin 0 -> 78724 bytes
+ analysis/exec13/figs/exec13_f4_timing_t4pe.pdf     |  Bin 0 -> 32277 bytes
+ analysis/exec13/figs/exec13_f4_timing_t4pe.png     |  Bin 0 -> 93581 bytes
+ analysis/exec13/figs/exec13_f5_t4_core.pdf         |  Bin 0 -> 33882 bytes
+ analysis/exec13/figs/exec13_f5_t4_core.png         |  Bin 0 -> 98639 bytes
+ analysis/exec14/README.md                          |   63 +
+ analysis/exec14/batch_runner.py                    |  128 +
+ analysis/exec14/datasets.py                        |   69 +
+ analysis/exec14/engine.py                          |  339 +
+ analysis/exec14/f1_sidecar.py                      |  319 +
+ analysis/exec14/f1_tof_probe.py                    |  504 ++
+ analysis/exec14/f2_new_sidecar.py                  |  468 ++
+ analysis/exec14/f2_sidecar.py                      |  254 +
+ analysis/exec14/f3_sidecar.py                      |  168 +
+ analysis/exec14/f4_sidecar.py                      |  251 +
+ analysis/exec14/f5_sidecar.py                      |  282 +
+ analysis/exec14/f6_sidecar.py                      |  251 +
+ analysis/exec14/f7_sidecar.py                      |  376 +
+ analysis/exec14/manifest_checker.py                |  253 +
+ analysis/exec14/outputs/.gitignore                 |    6 +
+ analysis/exec14/outputs/fig01_tof_probe.csv        |    5 +
+ analysis/exec14/outputs/fig01_tof_probe.meta.json  |  164 +
+ analysis/exec14/outputs/fig01a.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01a.meta.json           |  107 +
+ analysis/exec14/outputs/fig01b.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01b.meta.json           |  107 +
+ analysis/exec14/outputs/fig01c.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01c.meta.json           |  111 +
+ analysis/exec14/outputs/fig01d.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01d.meta.json           |  107 +
+ analysis/exec14/outputs/fig01e.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01e.meta.json           |  107 +
+ analysis/exec14/outputs/fig01f.csv                 | 1001 +++
+ analysis/exec14/outputs/fig01f.meta.json           |  111 +
+ analysis/exec14/outputs/fig02a.csv                 |   32 +
+ analysis/exec14/outputs/fig02a.meta.json           |   47 +
+ analysis/exec14/outputs/fig02b.csv                 |   32 +
+ analysis/exec14/outputs/fig02b.meta.json           |   47 +
+ analysis/exec14/outputs/fig03a.csv                 |  604 ++
+ analysis/exec14/outputs/fig03a.meta.json           |   22 +
+ analysis/exec14/outputs/fig03b.csv                 | 8736 ++++++++++++++++++++
+ analysis/exec14/outputs/fig03b.meta.json           |   22 +
+ analysis/exec14/outputs/fig03c.csv                 |  355 +
+ analysis/exec14/outputs/fig03c.meta.json           |   22 +
+ analysis/exec14/outputs/fig03d.csv                 | 8684 +++++++++++++++++++
+ analysis/exec14/outputs/fig03d.meta.json           |   22 +
+ analysis/exec14/outputs/fig04.csv                  |   32 +
+ analysis/exec14/outputs/fig04.meta.json            |  372 +
+ analysis/exec14/outputs/fig04_ej230.csv            |   32 +
+ analysis/exec14/outputs/fig04_ej230.meta.json      |  372 +
+ analysis/exec14/outputs/fig05a.csv                 |    4 +
+ analysis/exec14/outputs/fig05a.meta.json           |  112 +
+ analysis/exec14/outputs/fig05b.csv                 |    4 +
+ analysis/exec14/outputs/fig05b.meta.json           |  112 +
+ analysis/exec14/outputs/fig06.csv                  |    4 +
+ analysis/exec14/outputs/fig06.meta.json            |  109 +
+ analysis/exec14/outputs/fig06_ej230.csv            |    4 +
+ analysis/exec14/outputs/fig06_ej230.meta.json      |   90 +
+ analysis/exec14/outputs/fig06_ej230_macros.tex     |    5 +
+ analysis/exec14/outputs/fig07.csv                  |  361 +
+ analysis/exec14/outputs/fig07.meta.json            |   75 +
+ analysis/exec14/outputs/fig07_ej230.csv            |  361 +
+ analysis/exec14/outputs/fig07_ej230.meta.json      |   75 +
+ analysis/exec14/outputs/fig07_ej230_macros.tex     |    3 +
+ analysis/exec14/render_figures.py                  |  624 ++
+ analysis/grouped_resolution.C                      |   20 +-
+ analysis/grouped_resolution.py                     |   24 +-
+ analysis/high_stats_position_scan.C                |  545 ++
+ analysis/optim/make_summary_plots.py               |  210 +
+ analysis/optim/phase_ab.py                         |  202 +
+ analysis/optim/phase_cd.py                         |  197 +
+ analysis/optim/phase_e_pareto.py                   |  116 +
+ analysis/optim/phase_sparse_top.py                 |  203 +
+ analysis/optim/root_best_est/README.md             |  105 +
+ analysis/optim/root_best_est/REVISION_NOTES.md     |  177 +
+ analysis/optim/root_best_est/best_est_analysis.py  |  721 ++
+ analysis/optim/root_best_est/new_analysis_plots.C  |  355 +
+ analysis/optim/root_best_est/verification.json     |  250 +
+ analysis/preliminary_position_scan.C               |  328 +
+ analysis/resolution_vs_x.py                        |    2 +-
+ analysis/resolution_vs_x_fixed.py                  |    2 +-
+ analysis/tb_mirror_deep_dive.C                     |  202 +
+ analysis/tb_mirror_physical_fits.py                |  262 +
+ analysis/tb_mirror_sigma_vs_x.C                    |  335 +
+ audit/00_executive_summary.md                      |   95 +
+ audit/01_branch_inventory.txt                      |   96 +
+ audit/02_physics_per_branch.md                     |  217 +
+ audit/03_cross_branch_coherence.md                 |   50 +
+ audit/04_drift_classification.md                   |  177 +
+ audit/05_remediation_plan.md                       |  257 +
+ audit/exec07_geometry_wrapping.md                  |   59 +
+ audit/exec07_phase1_report.md                      |  110 +
+ audit/exec08b_window_dip.md                        |  151 +
+ audit/exec09_timing_mechanism.md                   |   63 +
+ audit/exec10_final_sweep.md                        |   30 +
+ audit/exec10_landau_analysis.md                    |   11 +
+ audit/exec10_veff_diagnosis.md                     |   16 +
+ audit/exec11_arrival.md                            |   62 +
+ audit/exec12_tN_check.md                           |   28 +
+ audit/sipm_model_check.md                          |   42 +
+ audit/sslg4_properties_check.md                    |   49 +
+ data/sipm/AFBR-S4N66P024M_pde.txt                  |   42 +
+ docs/branch_diagnosis/ORCHESTRATOR_AUDIT.md        |  256 +
+ docs/branch_diagnosis/REFLECTOR_LABEL.md           |   87 +
+ docs/branch_diagnosis/SYNC_STATUS.md               |  222 +
+ docs/branch_diagnosis/TALKV6_CONSISTENCY.md        |  169 +
+ .../exec14_qa/EXEC_14_guia_slide_por_slide.md      |  184 +
+ docs/branch_diagnosis/exec14_qa/PLAN_QA0.md        |  127 +
+ .../reflector_fix/MAIN_REFLECTOR_FIX_STRATEGY.md   |  107 +
+ .../REFLECTOR_SKIN_FIX_FINAL_REMOTE_CLOSURE.md     |  234 +
+ .../REFLECTOR_SKIN_FIX_RECOVERY_REPORT.md          |  458 +
+ .../REFLECTOR_SKIN_FIX_RECOVERY_STATUS.csv         |   17 +
+ include/DetectorConstruction.hh                    |   61 +-
+ include/Materials.hh                               |   37 +-
+ include/PrimaryGeneratorAction.hh                  |    5 +-
+ include/SiPMModel.hh                               |   19 +
+ include/SiPMSD.hh                                  |   14 +-
+ logs/scan_resume_2_20260609_2055.log               |   18 +
+ macros/edge_scan_smoke.mac                         |   16 +
+ macros/endtop_smoke_center.mac                     |   17 +
+ macros/endtop_smoke_edge.mac                       |   17 +
+ macros/event_display_top_3d.mac                    |    2 +-
+ macros/event_display_top_batch.mac                 |    2 +-
+ macros/event_display_top_lateral.mac               |    2 +-
+ macros/event_display_top_midpoint.mac              |    6 +-
+ macros/exec08b_run_a_window_center.mac             |   16 +
+ macros/exec08b_run_b_window_midpoint.mac           |   16 +
+ macros/exec08b_run_c1_window_mirror.mac            |   16 +
+ macros/exec08b_run_c2_window_exact_mirror.mac      |   16 +
+ macros/run.mac                                     |   11 +-
+ macros/scan.mac                                    |    9 +-
+ macros/scan_angle.mac                              |    6 +-
+ .../t0minidaq_scan_5000/endtop_5000_01_x-690mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_02_x-670mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_03_x-650mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_04_x-600mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_05_x-550mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_06_x-500mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_07_x-450mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_08_x-400mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_09_x-350mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_10_x-300mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_11_x-250mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_12_x-200mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_13_x-150mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_14_x-100mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_15_x-50mm.mac  |   18 +
+ macros/t0minidaq_scan_5000/endtop_5000_16_x0mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_17_x+50mm.mac  |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_18_x+100mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_19_x+150mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_20_x+200mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_21_x+250mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_22_x+300mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_23_x+350mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_24_x+400mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_25_x+450mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_26_x+500mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_27_x+550mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_28_x+600mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_29_x+650mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_30_x+670mm.mac |   18 +
+ .../t0minidaq_scan_5000/endtop_5000_31_x+690mm.mac |   18 +
+ main.cc                                            |    6 +
+ presentations/README.md                            |   38 +
+ presentations/best_est_2026-08-17/README.md        |   20 +
+ presentations/best_est_2026-08-17/talk.tex         |  659 ++
+ presentations/end_vikuiti_2026-08-16/README.md     |   20 +
+ presentations/end_vikuiti_2026-08-16/talk.tex      |  351 +
+ presentations/exec14/README.md                     |   42 +
+ presentations/exec14/exec14_deck.tex               |  615 ++
+ presentations/napkin_first_principles/README.md    |   34 +
+ presentations/napkin_first_principles/fig_gen.C    |  247 +
+ presentations/napkin_first_principles/fig_gen.py   |  194 +
+ presentations/napkin_first_principles/napkin.py    |  342 +
+ presentations/napkin_first_principles/tex/talk.tex |  556 ++
+ .../napkin_first_principles/tex/talk_v3.tex        |  840 ++
+ .../napkin_first_principles/values/convention.json |   30 +
+ .../napkin_first_principles/values/materials.yaml  |   37 +
+ .../values/napkin_macros.tex                       |   82 +
+ presentations/optim_2026-08-16/README.md           |   19 +
+ presentations/optim_2026-08-16/talk.tex            |  293 +
+ presentations/optim_2026-08-17/README.md           |   18 +
+ presentations/optim_2026-08-17/talk.tex            |  301 +
+ presentations/sim_status_2026-06-08/README.md      |   20 +
+ presentations/sim_status_2026-06-08/talk.tex       |  181 +
+ presentations/sim_status_hi_2026-06-08/README.md   |   19 +
+ .../sim_status_hi_2026-06-08/geometry_layout.pdf   |  Bin 0 -> 31793 bytes
+ presentations/sim_status_hi_2026-06-08/talk.tex    |  595 ++
+ presentations/summary_2026-08-16/README.md         |   20 +
+ presentations/summary_2026-08-16/talk.tex          |  349 +
+ presentations/v4/README.md                         |   16 +
+ presentations/v4/scripts/analysis_v4.py            | 1118 +++
+ presentations/v4/scripts/fig_materials.C           |   65 +
+ presentations/v4/scripts/fig_materials.py          |  171 +
+ presentations/v4/tables/summary_numbers.json       |   26 +
+ presentations/v4/talk_v4.tex                       | 1067 +++
+ presentations/v5/BUILD.md                          |   66 +
+ presentations/v5/FINAL_NUMBERS.md                  |  155 +
+ presentations/v5/README.md                         |   16 +
+ presentations/v5/REVISION_NOTES.md                 |  101 +
+ presentations/v5/scripts/analysis_v5.py            |  780 ++
+ presentations/v5/talk_v5.tex                       |  758 ++
+ presentations/v6/BUILD.md                          |   89 +
+ presentations/v6/CONFIGURATION_AUDIT.md            |  112 +
+ presentations/v6/CONTENT_AUDIT.md                  |  123 +
+ presentations/v6/FINAL_NUMBERS.md                  |  143 +
+ presentations/v6/README.md                         |   27 +
+ presentations/v6/REVISION_NOTES.md                 |  102 +
+ presentations/v6/talk_v6.tex                       | 1224 +++
+ .../analysis_sigma_vs_x_2026-06-10/METHODOLOGY.md  |   56 +
+ .../comparison_sim_vs_TB.md                        |   23 +
+ .../deep_dive/ablation_results.csv                 |    7 +
+ .../deep_dive/ablation_table.tex                   |    9 +
+ .../deep_dive/ablation_x0.png                      |  Bin 0 -> 55990 bytes
+ .../deep_dive/attenuation_effective.png            |  Bin 0 -> 109654 bytes
+ .../deep_dive/deltaT_fit_x0_End.png                |  Bin 0 -> 19603 bytes
+ .../deep_dive/deltaT_fit_x350_End.png              |  Bin 0 -> 20027 bytes
+ .../deep_dive/deltaT_fit_x690_End.png              |  Bin 0 -> 20810 bytes
+ .../deep_dive/event_metrics.csv                    |   32 +
+ .../deep_dive/fit_results.csv                      |    5 +
+ .../deep_dive/fit_summary.tex                      |   15 +
+ .../deep_dive/gaussianity.csv                      |   32 +
+ .../deep_dive/gaussianity_qa.png                   |  Bin 0 -> 107010 bytes
+ .../deep_dive/npe_landau_fit_x0_End.png            |  Bin 0 -> 18799 bytes
+ .../deep_dive/npe_landau_fit_x350_End.png          |  Bin 0 -> 19258 bytes
+ .../deep_dive/npe_landau_fit_x690_End.png          |  Bin 0 -> 19256 bytes
+ .../deep_dive/photo_scaling.png                    |  Bin 0 -> 104203 bytes
+ .../deep_dive/qa_metrics.csv                       |   32 +
+ .../deep_dive/qa_table.tex                         |   12 +
+ .../deep_dive/traceability_table.tex               |   11 +
+ .../deep_dive/velocity_effective.png               |  Bin 0 -> 75532 bytes
+ .../deltaT_vs_NPE_x0_End.png                       |  Bin 0 -> 28288 bytes
+ .../deltaT_vs_NPE_x350_End.png                     |  Bin 0 -> 28880 bytes
+ .../deltaT_vs_NPE_x690_End.png                     |  Bin 0 -> 26037 bytes
+ .../muon_0mm_End.png                               |  Bin 0 -> 26662 bytes
+ .../muon_350mm_End.png                             |  Bin 0 -> 27245 bytes
+ .../muon_690mm_End.png                             |  Bin 0 -> 24418 bytes
+ .../npe_vs_x_End.png                               |  Bin 0 -> 33099 bytes
+ .../sigma_vs_x_End.csv                             |   32 +
+ .../sigma_vs_x_End.png                             |  Bin 0 -> 36949 bytes
+ resume_scan_2.sh                                   |   80 +
+ scan_resume_2_audit.csv                            |   34 +
+ scripts/analyze_propagation_velocity.py            |  353 +
+ scripts/analyze_t0minidaq_endtop_corefit.py        |  775 ++
+ scripts/analyze_t0minidaq_endtop_simple_std.py     |  868 ++
+ scripts/post_end_vikuiti.sh                        |   72 +
+ scripts/run_analysis_t0minidaq_endtop_corefit.sh   |   49 +
+ .../run_analysis_t0minidaq_endtop_simple_std.sh    |   45 +
+ scripts/run_end_tir_scan.sh                        |   66 +
+ scripts/run_end_vikuiti_scan.sh                    |   97 +
+ scripts/run_exec07_scan.sh                         |   90 +
+ scripts/run_t0minidaq_endtop_scan_5000.sh          |  379 +
+ src/DetectorConstruction.cc                        |  418 +-
+ src/Materials.cc                                   |  309 +-
+ src/PrimaryGeneratorAction.cc                      |   12 +-
+ src/RunAction.cc                                   |  102 +-
+ src/SiPMModel.cc                                   |  104 +
+ src/SiPMSD.cc                                      |  113 +-
+ src/external/OPSimTool/CMakeLists.txt              |   25 +
+ src/external/OPSimTool/UPSTREAM_COPYING.txt        |  674 ++
+ src/external/OPSimTool/UPSTREAM_LICENCE.txt        |   18 +
+ src/external/OPSimTool/UPSTREAM_README.md          |   84 +
+ src/external/OPSimTool/include/FileReader.hh       |   34 +
+ .../OPSimTool/include/MaterialPropertiesTable.hh   |   69 +
+ .../include/MaterialPropertiesTableMessenger.hh    |   33 +
+ src/external/OPSimTool/include/OpticalSurface.hh   |   31 +
+ .../OPSimTool/include/OpticalSurfaceMessenger.hh   |   35 +
+ .../OPSimTool/include/ScintillatorBuilder.hh       |   65 +
+ src/external/OPSimTool/include/VMaterialBuilder.hh |   37 +
+ src/external/OPSimTool/include/VMaterialFactory.hh |   27 +
+ src/external/OPSimTool/src/FileReader.cc           |  120 +
+ .../OPSimTool/src/MaterialPropertiesTable.cc       |  269 +
+ .../src/MaterialPropertiesTableMessenger.cc        |  190 +
+ src/external/OPSimTool/src/OpticalSurface.cc       |   26 +
+ .../OPSimTool/src/OpticalSurfaceMessenger.cc       |  355 +
+ src/external/OPSimTool/src/ScintillatorBuilder.cc  |  127 +
+ src/external/OPSimTool/src/VMaterialBuilder.cc     |   37 +
+ src/external/OPSimTool/src/VMaterialFactory.cc     |   34 +
+ src/external/SSLG4/CMakeLists.txt                  |   48 +
+ src/external/SSLG4/UPSTREAM_COPYING.txt            |  674 ++
+ src/external/SSLG4/UPSTREAM_LICENCE.txt            |   18 +
+ src/external/SSLG4/UPSTREAM_README.md              |  207 +
+ src/external/SSLG4/data/README.txt                 |    1 +
+ src/external/SSLG4/data/iscnt/isc-1000/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-1000/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/iscnt/isc-1001/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-1001/scntComp1.txt        |   77 +
+ .../SSLG4/data/iscnt/isc-2000/absLength.txt        |   56 +
+ src/external/SSLG4/data/iscnt/isc-2000/rIndex.txt  |   13 +
+ .../SSLG4/data/iscnt/isc-2000/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/iscnt/isc-2001/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-2001/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/iscnt/isc-2002/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-2002/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/iscnt/isc-2003/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-2003/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/iscnt/isc-2004/rIndex.txt  |    2 +
+ .../SSLG4/data/iscnt/isc-2004/scntComp1.txt        |   77 +
+ .../SSLG4/data/iscnt/isc-3000/absLength.txt        |    3 +
+ src/external/SSLG4/data/iscnt/isc-3000/rIndex.txt  |  494 ++
+ .../SSLG4/data/iscnt/isc-3000/rsLength.txt         |  100 +
+ .../SSLG4/data/iscnt/isc-3000/scntComp1.txt        |   84 +
+ .../SSLG4/data/iscnt/isc-3000/scntComp2.txt        |   84 +
+ .../SSLG4/data/iscnt/isc-3001/aScntYield.txt       |    2 +
+ .../SSLG4/data/iscnt/isc-3001/absLength.txt        |    3 +
+ .../SSLG4/data/iscnt/isc-3001/eScntYield.txt       |    2 +
+ .../SSLG4/data/iscnt/isc-3001/iScntYield.txt       |    2 +
+ src/external/SSLG4/data/iscnt/isc-3001/rIndex.txt  |    3 +
+ .../SSLG4/data/iscnt/isc-3001/scntComp1.txt        |    3 +
+ .../SSLG4/data/iscnt/isc-3001/scntComp2.txt        |    3 +
+ .../SSLG4/data/iscnt/isc-3002/absLength.txt        |   36 +
+ src/external/SSLG4/data/iscnt/isc-3002/rIndex.txt  |   30 +
+ .../SSLG4/data/iscnt/isc-3002/scntComp1.txt        |   42 +
+ .../SSLG4/data/iscnt/isc-3002/scntComp2.txt        |   42 +
+ .../SSLG4/data/oscnt/olsc-100/absLength.txt        |   42 +
+ src/external/SSLG4/data/oscnt/olsc-100/rIndex.txt  |   42 +
+ .../SSLG4/data/oscnt/olsc-100/scntAlphaYield.txt   |   33 +
+ .../SSLG4/data/oscnt/olsc-100/scntCarbonYield.txt  |   33 +
+ .../SSLG4/data/oscnt/olsc-100/scntComp1.txt        |   42 +
+ .../SSLG4/data/oscnt/olsc-100/scntComp2.txt        |   42 +
+ .../SSLG4/data/oscnt/olsc-100/scntComp3.txt        |   42 +
+ .../data/oscnt/olsc-100/scntDeuteronYield.txt      |   33 +
+ .../data/oscnt/olsc-100/scntElectronYield.txt      |   33 +
+ .../SSLG4/data/oscnt/olsc-100/scntProtonYield.txt  |   33 +
+ .../SSLG4/data/oscnt/olsc-100/scntTritonYield.txt  |   33 +
+ .../SSLG4/data/oscnt/olsc-101/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/olsc-101/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-101/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-102/absLength.txt        |    5 +
+ src/external/SSLG4/data/oscnt/olsc-102/rIndex.txt  |    6 +
+ .../SSLG4/data/oscnt/olsc-102/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-103/absLength.txt        |    5 +
+ src/external/SSLG4/data/oscnt/olsc-103/rIndex.txt  |    6 +
+ .../SSLG4/data/oscnt/olsc-103/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-104/absLength.txt        |    5 +
+ src/external/SSLG4/data/oscnt/olsc-104/rIndex.txt  |    6 +
+ .../SSLG4/data/oscnt/olsc-104/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-105/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/olsc-105/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-105/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-106/absLength.txt        |    2 +
+ src/external/SSLG4/data/oscnt/olsc-106/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-106/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/olsc-107/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-107/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/olsc-108/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-108/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/olsc-109/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-109/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/olsc-110/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/olsc-110/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-111/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/olsc-111/rIndex.txt  |    3 +
+ .../SSLG4/data/oscnt/olsc-111/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-112/absLength.txt        |    6 +
+ src/external/SSLG4/data/oscnt/olsc-112/rIndex.txt  |    7 +
+ .../SSLG4/data/oscnt/olsc-112/scntComp1.txt        |   56 +
+ .../SSLG4/data/oscnt/olsc-113/absLength.txt        |    6 +
+ src/external/SSLG4/data/oscnt/olsc-113/rIndex.txt  |    7 +
+ .../SSLG4/data/oscnt/olsc-113/scntComp1.txt        |   56 +
+ src/external/SSLG4/data/oscnt/olsc-114/rIndex.txt  |    3 +
+ .../SSLG4/data/oscnt/olsc-114/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/olsc-200/absLength.txt        |  151 +
+ src/external/SSLG4/data/oscnt/olsc-200/rIndex.txt  |  200 +
+ .../SSLG4/data/oscnt/olsc-200/rsLength.txt         |  151 +
+ .../SSLG4/data/oscnt/olsc-200/scntComp1.txt        |  885 ++
+ .../SSLG4/data/oscnt/olsc-200/scntComp2.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-200/scntComp3.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-200/wlsComp1.txt         |  885 ++
+ .../SSLG4/data/oscnt/olsc-201/absLength.txt        |  151 +
+ src/external/SSLG4/data/oscnt/olsc-201/rIndex.txt  |  200 +
+ .../SSLG4/data/oscnt/olsc-201/rsLength.txt         |  151 +
+ .../SSLG4/data/oscnt/olsc-201/scntComp1.txt        |  885 ++
+ .../SSLG4/data/oscnt/olsc-201/scntComp2.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-201/scntComp3.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-201/wlsComp1.txt         |  885 ++
+ .../SSLG4/data/oscnt/olsc-202/absLength.txt        |  151 +
+ src/external/SSLG4/data/oscnt/olsc-202/rIndex.txt  |  200 +
+ .../SSLG4/data/oscnt/olsc-202/rsLength.txt         |  152 +
+ .../SSLG4/data/oscnt/olsc-202/scntComp1.txt        |  885 ++
+ .../SSLG4/data/oscnt/olsc-202/scntComp2.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-202/scntComp3.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-202/wlsComp1.txt         |  885 ++
+ .../SSLG4/data/oscnt/olsc-203/absLength.txt        |  151 +
+ src/external/SSLG4/data/oscnt/olsc-203/rIndex.txt  |  200 +
+ .../SSLG4/data/oscnt/olsc-203/rsLength.txt         |  152 +
+ .../SSLG4/data/oscnt/olsc-203/scntComp1.txt        |  885 ++
+ .../SSLG4/data/oscnt/olsc-203/scntComp2.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-203/scntComp3.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-203/wlsComp1.txt         |  885 ++
+ .../SSLG4/data/oscnt/olsc-204/absLength.txt        |  151 +
+ src/external/SSLG4/data/oscnt/olsc-204/rIndex.txt  |  200 +
+ .../SSLG4/data/oscnt/olsc-204/rsLength.txt         |  152 +
+ .../SSLG4/data/oscnt/olsc-204/scntComp1.txt        |  885 ++
+ .../SSLG4/data/oscnt/olsc-204/scntComp2.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-204/scntComp3.txt        |  201 +
+ .../SSLG4/data/oscnt/olsc-204/wlsComp1.txt         |  885 ++
+ .../SSLG4/data/oscnt/opsc-100/absLength.txt        |    4 +
+ src/external/SSLG4/data/oscnt/opsc-100/rIndex.txt  |    7 +
+ .../SSLG4/data/oscnt/opsc-100/scntComp1.txt        |   70 +
+ .../SSLG4/data/oscnt/opsc-101/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-101/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-101/scntComp1.txt        |   75 +
+ .../SSLG4/data/oscnt/opsc-102/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-102/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-102/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-103/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-103/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-103/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/oscnt/opsc-104/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-104/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-105/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-105/scntComp1.txt        |   76 +
+ .../SSLG4/data/oscnt/opsc-106/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-106/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-106/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-107/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-107/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-107/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-108/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-108/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-109/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-109/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-110/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-110/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-111/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-111/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-112/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-112/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-113/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-113/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-113/scntComp1.txt        |   76 +
+ .../SSLG4/data/oscnt/opsc-114/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-114/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-114/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-115/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-115/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-115/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-116/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-116/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-116/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-117/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-117/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-117/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-118/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-118/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/oscnt/opsc-119/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-119/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/oscnt/opsc-120/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-120/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/oscnt/opsc-121/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-121/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-122/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-122/scntComp1.txt        |   77 +
+ .../SSLG4/data/oscnt/opsc-123/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-123/rIndex.txt  |    3 +
+ .../SSLG4/data/oscnt/opsc-123/scntComp1.txt        |   69 +
+ .../SSLG4/data/oscnt/opsc-123/wlsAbsLength.txt     |  192 +
+ src/external/SSLG4/data/oscnt/opsc-123/wlsComp.txt |   69 +
+ .../SSLG4/data/oscnt/opsc-124/absLength.txt        |    3 +
+ src/external/SSLG4/data/oscnt/opsc-124/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-124/scntComp1.txt        |   76 +
+ src/external/SSLG4/data/oscnt/opsc-125/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-125/scntComp1.txt        |   75 +
+ src/external/SSLG4/data/oscnt/opsc-126/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-126/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-127/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-127/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-128/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-128/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-129/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-129/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-130/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-130/scntComp1.txt        |   74 +
+ src/external/SSLG4/data/oscnt/opsc-131/rIndex.txt  |    3 +
+ .../SSLG4/data/oscnt/opsc-131/scntComp1.txt        |   77 +
+ src/external/SSLG4/data/oscnt/opsc-132/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-132/scntComp1.txt        |   76 +
+ .../SSLG4/data/oscnt/opsc-133/absLength.txt        |  103 +
+ src/external/SSLG4/data/oscnt/opsc-133/rIndex.txt  |    4 +
+ .../SSLG4/data/oscnt/opsc-133/scntComp1.txt        |   86 +
+ src/external/SSLG4/data/oscnt/opsc-200/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-200/scntComp1.txt        |   69 +
+ src/external/SSLG4/data/oscnt/opsc-201/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-201/scntComp1.txt        |  150 +
+ src/external/SSLG4/data/oscnt/opsc-300/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-300/scntComp1.txt        |   76 +
+ .../SSLG4/data/oscnt/opsc-400/absLength.txt        |    2 +
+ src/external/SSLG4/data/oscnt/opsc-400/rIndex.txt  |    2 +
+ .../SSLG4/data/oscnt/opsc-400/scntComp1.txt        |   76 +
+ src/external/SSLG4/include/EJ426Builder.hh         |   31 +
+ .../SSLG4/include/InorganicScintillatorFactory.hh  |   60 +
+ .../SSLG4/include/OrganicScintillatorFactory.hh    |   80 +
+ src/external/SSLG4/macros/README.txt               |    1 +
+ src/external/SSLG4/macros/iscnt/isc-1000.mac       |   14 +
+ src/external/SSLG4/macros/iscnt/isc-1001.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-2000.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-2001.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-2002.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-2003.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-2004.mac       |   13 +
+ src/external/SSLG4/macros/iscnt/isc-3000.mac       |   24 +
+ src/external/SSLG4/macros/iscnt/isc-3001.mac       |   26 +
+ src/external/SSLG4/macros/iscnt/isc-3002.mac       |   16 +
+ src/external/SSLG4/macros/oscnt/olsc-100.mac       |   50 +
+ src/external/SSLG4/macros/oscnt/olsc-101.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-102.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-103.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-104.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-105.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-106.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/olsc-107.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/olsc-108.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/olsc-109.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/olsc-110.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/olsc-111.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/olsc-112.mac       |   14 +
+ src/external/SSLG4/macros/oscnt/olsc-113.mac       |   14 +
+ src/external/SSLG4/macros/oscnt/olsc-114.mac       |   14 +
+ src/external/SSLG4/macros/oscnt/olsc-200.mac       |   26 +
+ src/external/SSLG4/macros/oscnt/olsc-201.mac       |   27 +
+ src/external/SSLG4/macros/oscnt/olsc-202.mac       |   26 +
+ src/external/SSLG4/macros/oscnt/olsc-203.mac       |   26 +
+ src/external/SSLG4/macros/oscnt/olsc-204.mac       |   25 +
+ src/external/SSLG4/macros/oscnt/opsc-100.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/opsc-101.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-102.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-103.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-104.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-105.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-106.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-107.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-108.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-109.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-110.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-111.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-112.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-113.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-114.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-115.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-116.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-117.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-118.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-119.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-120.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-121.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-122.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-123.mac       |   15 +
+ src/external/SSLG4/macros/oscnt/opsc-124.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-125.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-126.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-127.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-128.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-129.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-130.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-131.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-132.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-133.mac       |   13 +
+ src/external/SSLG4/macros/oscnt/opsc-200.mac       |   16 +
+ src/external/SSLG4/macros/oscnt/opsc-201.mac       |   16 +
+ src/external/SSLG4/macros/oscnt/opsc-300.mac       |   16 +
+ src/external/SSLG4/macros/oscnt/opsc-400.mac       |   14 +
+ src/external/SSLG4/src/EJ426Builder.cc             |   91 +
+ .../SSLG4/src/InorganicScintillatorFactory.cc      |  206 +
+ .../SSLG4/src/OrganicScintillatorFactory.cc        |  869 ++
+ tests/check_endtop_balance.py                      |   48 +
+ tests/check_endtop_gdml.py                         |   72 +
+ tests/export_endtop_gdml.cc                        |   23 +
+ tests/physics_baseline_check.cc                    |   91 +
+ tests/readout_config_check.cc                      |  147 +
+ 743 files changed, 106765 insertions(+), 501 deletions(-)

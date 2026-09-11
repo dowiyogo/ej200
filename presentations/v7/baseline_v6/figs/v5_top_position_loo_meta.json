@@ -1,0 +1,92 @@
+{
+  "figure": "v5_top_position_loo.pdf",
+  "source_root_dir": "/home/rrios/ej200/results/scan_end_vik_sparse_top_v2",
+  "source_root_files": [
+    "photon_hits_ej230_ntop20_x-600.root",
+    "photon_hits_ej230_ntop20_x-500.root",
+    "photon_hits_ej230_ntop20_x-400.root",
+    "photon_hits_ej230_ntop20_x-300.root",
+    "photon_hits_ej230_ntop20_x-200.root",
+    "photon_hits_ej230_ntop20_x-100.root",
+    "photon_hits_ej230_ntop20_x0.root",
+    "photon_hits_ej230_ntop20_x100.root",
+    "photon_hits_ej230_ntop20_x200.root",
+    "photon_hits_ej230_ntop20_x300.root",
+    "photon_hits_ej230_ntop20_x400.root",
+    "photon_hits_ej230_ntop20_x500.root",
+    "photon_hits_ej230_ntop20_x600.root"
+  ],
+  "sha256": {
+    "photon_hits_ej230_ntop20_x-600.root": "7da8b5aae54b839f4df0556b06d646288d07c9738a96ac1ad7c1a2e904fb48b9",
+    "photon_hits_ej230_ntop20_x-500.root": "ddb5a43d53715455be8131878728564b7abae4cc8f19ebe2d21d19640c75888f",
+    "photon_hits_ej230_ntop20_x-400.root": "55f53e9a2944b4ccc8a3174e64d610446b6786a1084ec9c31a7ecaf7332e2f5c",
+    "photon_hits_ej230_ntop20_x-300.root": "4f036f1744c447a5cef511e915d7f53d61b3a3af178841e14090463ba772ede5",
+    "photon_hits_ej230_ntop20_x-200.root": "2c7df87953573f51e06cd16182b2be4e80e21f29ea77ecf014f35120da1117d2",
+    "photon_hits_ej230_ntop20_x-100.root": "1eda6ad09f066147d7b3d68f9d303048be3675f45ba6312aef760d42cd8a50e3",
+    "photon_hits_ej230_ntop20_x0.root": "f6fcc7138593208011c0314acc0d374773c2d04706225838f03e18bb3e9579d3",
+    "photon_hits_ej230_ntop20_x100.root": "f37b1b968f06ceaa9a1b75387dbe22aa4d3b5585140974885bd3d178f3e84ef8",
+    "photon_hits_ej230_ntop20_x200.root": "766071c6de75a96b6e9a9b50c00be7b994ba39b1b4bff5eb06832c9b7cc557e4",
+    "photon_hits_ej230_ntop20_x300.root": "13199156a8e6db941bcd4831596ce0c066106127f74a196d6d58449ca2565f0e",
+    "photon_hits_ej230_ntop20_x400.root": "bf95c763026f8caec096bc60cefd8aedaa7a3d4af0176c74307211abcdbf6b80",
+    "photon_hits_ej230_ntop20_x500.root": "037ad1cf5e070e7cf99b0c5ad79e1e8ef54e508c75169ca85a8cd596bc8f9202",
+    "photon_hits_ej230_ntop20_x600.root": "a050924e3c3605df1ee7c5d35ef46567811fe9f7834231eedaeec7a37db3418e"
+  },
+  "generating_script": "presentations/v5/scripts/analysis_v5.py (Section 4); re-run via scratchpad/fix_phase2_figs.py (Phase 2, EXEC_25)",
+  "generating_command": "python gen_v5_fig_sidecars.py  # this script",
+  "scintillator": "EJ-230",
+  "n_top": 20,
+  "x_positions": [
+    -600,
+    -500,
+    -400,
+    -300,
+    -200,
+    -100,
+    0,
+    100,
+    200,
+    300,
+    400,
+    500,
+    600
+  ],
+  "binning": "x_scan = range(-600, +600+1, 100) [13 positions]; LOO on 13 positions",
+  "calibration": {
+    "method": "linear (and cubic) fit: x = f(N_pe-weighted centroid), trained on 12/13 x positions",
+    "centroid": "N_pe-weighted centroid of 20 TOP SiPMs per event",
+    "centroid_weight": "raw hit count (N_pe) per SiPM local_id",
+    "top_sipm_positions": [
+      -664.3,
+      -594.3,
+      -524.3,
+      -454.3,
+      -384.4,
+      -314.4,
+      -244.4,
+      -174.4,
+      -104.5,
+      -34.5,
+      34.5,
+      104.5,
+      174.4,
+      244.4,
+      314.4,
+      384.4,
+      454.3,
+      524.3,
+      594.3,
+      664.3
+    ]
+  },
+  "summary": {
+    "mean_sigma_lin_mm": 17.2,
+    "mean_sigma_cub_mm": 18.4
+  },
+  "columns": {
+    "x": "held-out muon gun x position [mm]",
+    "sigma_lin_mm": "IQR-based sigma of (x_pred - median(x_pred)) from linear calibration [mm]",
+    "bias_lin_mm": "median(x_pred) - x_true [mm]",
+    "sigma_cub_mm": "IQR-based sigma from cubic calibration [mm]",
+    "bias_cub_mm": "bias from cubic calibration [mm]"
+  }
+}

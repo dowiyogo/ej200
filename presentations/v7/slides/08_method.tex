@@ -1,0 +1,48 @@
+\appendix
+\begin{frame}{Backup: verified path into main}
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+Commit & Verified implementation change\\
+\midrule
+\texttt{\GeneGap} & Explicit air gap; select a metal air--wrap reflector on that lineage.\\
+\texttt{\GeneGapPort} & Port the explicit-gap geometry to EndTop; retain the metal reflector.\\
+\texttt{\GeneRegression} & Select the dielectric \texttt{CreateBarSkinReflector()} at the air--wrap border.\\
+\texttt{\GeneMerge} & Merge the branch carrying that selection into main.\\
+\texttt{\GeneParameter} & Change the dielectric factory's input coefficient to $\MetalR$; surface type stays dielectric.\\
+\texttt{\ReflectorSha} & Restore the metal factory at the air--wrap border with input $\MetalR$.\\
+\bottomrule
+\end{tabularx}
+\begin{block}{Genealogy is not experimental validation}
+The explicit-gap commit did not introduce the wrong factory selection. The later factory switch did. Author comments and commit messages are checked against diffs.
+\end{block}
+\Source{Each SHA checked with \texttt{git show --stat}; source diffs and ancestry recorded in \ExecCurrent. Basis: \texttt{docs/DEFECTS\_AND\_CORRECTIONS.md}. No event sample applies to a Git ancestry claim.}
+\end{frame}
+
+\begin{frame}{Backup: earlier genealogy spans different branches}
+\begin{tabular}{lp{\WideWidth}}
+\toprule
+Commit & Verified change and qualification\\
+\midrule
+\texttt{\GeneAl} & Al-foil metal surface and explicit wrap/world borders.\\
+\texttt{\GeneTir} & Dielectric polished bar-skin design intended to preserve TIR; no surface MPT.\\
+\texttt{\GeneRefl} & Add a reflectivity property to that dielectric factory. The old non-TIR recovery interpretation is not established for the later gap geometry.\\
+\texttt{\GenePort} / \texttt{\GenePortOther} & Corresponding EndTop factory ports on different lineages, not two sequential main ancestors.\\
+\bottomrule
+\end{tabular}\par
+\vspace{\Gap}
+Earlier skin-only decisions and the later explicit air--wrap border are different model placements. A surface property cannot be interpreted independently of that placement.
+\Source{Verified SHA stat/diffs; branch qualifications follow \texttt{docs/DEFECTS\_AND\_CORRECTIONS.md}. Historical implementation intent is not a newly measured physical result.}
+\end{frame}
+
+\begin{frame}{Backup --- hypothesis: the installed boundary mechanism}
+For dielectric/dielectric, ordinary polished finish in the tested build:
+\begin{itemize}
+\item A draw above REFLECTIVITY + TRANSMITTANCE selects absorption.
+\item The intermediate interval selects direct transmission.
+\item The remaining ordinary-polished branch calls the dielectric/Fresnel calculation.
+\end{itemize}
+Thus the input coefficient is not directly an observed reflected fraction. The experimental check is the forward census, with nominal input $\MetalR$ but observed reflection $\OldReflection\%$ in \IdROne.
+\vspace{\Gap}
+This source reading is labeled \emph{hypothesis}; the measurement establishes the discrepancy. Repeated encounters are correlated, so no independent-Bernoulli significance is assigned.
+\Source{Geant4 \GeantVersion: installed \BoundaryFile\ source snapshot/hash under \texttt{sources/}. Experimental source: \IdROne, \texttt{\ShaROne}, \MaterialName, EndTop $N_{\rm TOP}=\TopCount$, $x=\Zero\mm$, $N=\GuardN$, seeds \Seeds; \texttt{sources/directional}.}
+\end{frame}

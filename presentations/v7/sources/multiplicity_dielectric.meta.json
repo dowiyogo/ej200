@@ -1,0 +1,87 @@
+{
+  "cell_id": "D3",
+  "arm": "D3",
+  "x_mm": 0,
+  "N": 2000,
+  "source_commit": "391fa4e867717088296f25c24efe15f216637817",
+  "binary_sha256": "5aaf1c4541904d111a0873a92c8b840aba238f620006bc08d04da45d1ed6b28a",
+  "Geant4": {
+    "version": "11.4.0",
+    "identity": "geant4-11-04 [MT], 5-December-2025",
+    "install_prefix": "/home/tdship/opt/geant4-v11.4.0-install"
+  },
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "threads": 12,
+  "eventModulo": 1,
+  "material": "EJ-204 / OPSC-101",
+  "readout": "End",
+  "N_TOP": 0,
+  "TOP_layout": {
+    "count": 0,
+    "global_ids": []
+  },
+  "gun": "mu- 1 GeV vertical x=0 mm",
+  "macro_sha256": "5f0ad50140c27176b6392bdef9f33ec3081ea85bec4aeba7ce6e81a66006cc15",
+  "command": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/d3/ej200_bar_sim -m /home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/D3/run.mac",
+  "cwd": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/D3",
+  "start_utc": "2026-09-10T15:52:49.995804+00:00",
+  "preregister_sha256": "d7ac0eca3043c823b6e356944b6e9e40a2058bdad997304658d08cf7a67ec68a",
+  "end_utc": "2026-09-10T16:12:28.197382+00:00",
+  "wall_s": 1178.2014224919258,
+  "exit_code": 0,
+  "rng_states": {
+    "rng_run0_thread-1_begin.rndm": "5adc16913fd73fbeeaceb380e8381a7a31b63758a90f41990636980eac860a95",
+    "rng_run0_thread-1_end.rndm": "6cce39575e2bc45faba50b5c2fc3a94d6482bb96fef28d6fd53e9be13f214220",
+    "rng_run0_thread0_begin.rndm": "0e9093bbfad394a725bbdab5f8ddf11f8944bfa983c4ccbe84157ca7abf05762",
+    "rng_run0_thread0_end.rndm": "4ae701c895efefadcdabab3120e200266eaa4e6fdfcdbb42fccc7e02a19f0ab8",
+    "rng_run0_thread10_begin.rndm": "50dd8fb14548089f68f7c41f84cfd6e1ca2834e62ef29c83394e0ba84807c111",
+    "rng_run0_thread10_end.rndm": "6d9cd3fb09d83b2f99e5ae8d4f34f6713a3dbecf2415ad0115db6fc58f3f9d78",
+    "rng_run0_thread11_begin.rndm": "c8ad8363100870473f299825b02eadd618efd49b5b446d0d15903450cd6308d9",
+    "rng_run0_thread11_end.rndm": "b40af21eecac28933ac0c47a1bbc9140ed9192ceed060c92a670fbd24658aad7",
+    "rng_run0_thread1_begin.rndm": "b6c1b5a824b79769d5f128ec867d79593b8661cec0f465378a7416ffb89976f0",
+    "rng_run0_thread1_end.rndm": "ffe4222aec59a79e03bffc42ad7de9dc3d7cf30a69869dc3107001bc43fb12b6",
+    "rng_run0_thread2_begin.rndm": "28415774cfea4fe73b7903cf2457065b8e8cefc196ec308549110fabe6b8e181",
+    "rng_run0_thread2_end.rndm": "a6d1e5145ddaf411af05e3daa7a4d83867aaf4f7f3d50492b881487749a34122",
+    "rng_run0_thread3_begin.rndm": "41cb2486cff8ea8a6b2c57b4b70773f98a0e609eac1d2655c240a84371ad4f35",
+    "rng_run0_thread3_end.rndm": "38f444fd57dae4bee2829e5856b92a721dedd8aa3ff358c8e131e939e8767631",
+    "rng_run0_thread4_begin.rndm": "84c61a617233bf0e2eff70b14b4adb0e9d47f1f17307938efe4f16a91a1bd43d",
+    "rng_run0_thread4_end.rndm": "5399a4b8c467e0f9e1ea6e236617939dbea4cd2f0bdf4859442c513e89cdaa29",
+    "rng_run0_thread5_begin.rndm": "98add654c3a0eb2af54ec6a4920cca3f53ef6f6e3d72547a8e84ca3f8b27ae96",
+    "rng_run0_thread5_end.rndm": "4ad248497cb0ed89abeb06911287331a5620d68ddc8a195408354eeab256d24e",
+    "rng_run0_thread6_begin.rndm": "33fce298e77693d6eeed70a15b925a2697a372b272289bc7e6908eea9bdcac17",
+    "rng_run0_thread6_end.rndm": "4ea4847d95c486efa350b803184103f97cfa7cb88df97e70ca8ace0fbc64ca1d",
+    "rng_run0_thread7_begin.rndm": "1d3219288ea9e7401786f901b9da98e1226742e1c552665aa5558b2674913c39",
+    "rng_run0_thread7_end.rndm": "7d19f84b71c9f205e9d5e21a38ec63b02487ffdf15b418a2fee36faa3d82a2c2",
+    "rng_run0_thread8_begin.rndm": "ada331f6c9556132b0815b577c282bc95de7e4930f989af3b4a2802d3c542294",
+    "rng_run0_thread8_end.rndm": "2bc334eae518360d038e80f705144414eae725f0aca3e58fb8f853a2648bcc93",
+    "rng_run0_thread9_begin.rndm": "336ca947477bf803e4d9b01f23fcedbe82e43351b3bbb7314fde5aa4ded9ecee",
+    "rng_run0_thread9_end.rndm": "10bb4117bae022da9a37e5dbd70b907cbfbdb12e2758d9463b84147f0673abf0"
+  },
+  "description": "All-optical encounters / all started optical photons is an unconditional mean (including tracks that never visit wrap). The scintillation-normalized ratio has a mixed numerator and is not a creator-selected mean. 0.98^mean is a fixed-encounter model, not measured ensemble survival or END detection efficiency.",
+  "row_count": 5,
+  "columns": {
+    "panel": "string",
+    "eligible_all_optical_encounters": "int64",
+    "started_optical": "int64",
+    "generated_scintillation": "int64",
+    "encounters_per_started_optical": "float64",
+    "encounters_per_generated_scintillation_mixed": "float64",
+    "R_input": "float64",
+    "fixed_mean_survival_all_optical": "float64",
+    "fixed_mean_survival_mixed_normalization": "float64"
+  },
+  "roundtrip_verified": true,
+  "sidecars": {
+    ".root": {
+      "path": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/D3/encounter_multiplicity.root",
+      "sha256": "ca2172dfd1f16dddbdd679822fdc10920a2ba99e5a7459a1491cbd4b175c704a"
+    },
+    ".csv": {
+      "path": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/cells/D3/encounter_multiplicity.csv",
+      "sha256": "35eee33ba0db0ca3ef0de7d51e670def40579a2163b9b7d520734a2429770125"
+    }
+  }
+}

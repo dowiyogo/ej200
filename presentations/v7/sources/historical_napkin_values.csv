@@ -1,0 +1,87 @@
+name,value,unit,description
+n_pvt,1.58,,PVT refractive index
+theta_c_deg,39.265247913879456,deg,Critical angle: arcsin(1/n)
+f_TIR,0.5484484742656233,,TIR fraction (slab): 2cos(θ_c)−1  [Knoll 8.15]
+f_TIR_per_end,0.27422423713281163,,TIR fraction toward one end: f_TIR/2
+v_group_mm_ns,189.74206202531644,mm/ns,Group velocity: c/n
+dE_MeV,2.0,MeV,Energy deposited: 1-GeV μ⁻ through H=10 mm
+R_vikuiti,0.95,,Vikuiti non-TIR reflectivity (Materials.cc)
+N_bounce,35.0,,Bounces to traverse L/2 along H-faces
+R_surv_bounce,0.16608338398760716,,Vikuiti bounce survival: R^N_bounce
+dEdx_MeV_cm,2.0,MeV/cm,MIP dE/dx in PVT (minimum ionising)
+L_mm,1400.0,mm,Bar length
+W_mm,60.0,mm,Bar width
+H_mm,10.0,mm,Bar height (thin direction)
+n_sipm_per_end,8.0,,SiPM per END face
+yield_ej200,10000.0,ph/MeV,EJ-200 scintillation yield
+tau_rise_ej200,0.9,ns,EJ-200 rise time
+tau_decay_ej200,2.1,ns,EJ-200 decay time
+latt_mm_ej200,3800.0,mm,EJ-200 attenuation length (mm)
+latt_cm_ej200,380.0,cm,EJ-200 attenuation length (cm)
+bulk_surv_ej200,0.8317606778818756,,EJ-200 bulk survival: exp(−700/3800)
+N_prod_ej200,20000.0,photons,EJ-200 photons produced: yield×dE
+Npe_sim_ej200,1310.8,pe,EJ-200 simulated Npe/end at x=0
+f_eff_ej200,0.06554,,EJ-200 collection×PDE: Npe_sim/N_produced
+sigma_sim_ej200,47.6,ps,EJ-200 simulated σ(T0) at x=0
+sigma_x_ej200,6.386391979758381,mm,EJ-200 position resolution: σ·v_g/√2
+yield_ej204,10400.0,ph/MeV,EJ-204 scintillation yield
+tau_rise_ej204,0.7,ns,EJ-204 rise time
+tau_decay_ej204,1.8,ns,EJ-204 decay time
+latt_mm_ej204,1600.0,mm,EJ-204 attenuation length (mm)
+latt_cm_ej204,160.0,cm,EJ-204 attenuation length (cm)
+bulk_surv_ej204,0.645648526427892,,EJ-204 bulk survival: exp(−700/1600)
+N_prod_ej204,20800.0,photons,EJ-204 photons produced: yield×dE
+Npe_sim_ej204,941.0,pe,EJ-204 simulated Npe/end at x=0
+f_eff_ej204,0.04524038461538461,,EJ-204 collection×PDE: Npe_sim/N_produced
+sigma_sim_ej204,52.1,ps,EJ-204 simulated σ(T0) at x=0
+sigma_x_ej204,6.99014752406327,mm,EJ-204 position resolution: σ·v_g/√2
+yield_ej230,9700.0,ph/MeV,EJ-230 scintillation yield
+tau_rise_ej230,0.5,ns,EJ-230 rise time
+tau_decay_ej230,1.5,ns,EJ-230 decay time
+latt_mm_ej230,1200.0,mm,EJ-230 attenuation length (mm)
+latt_cm_ej230,120.0,cm,EJ-230 attenuation length (cm)
+bulk_surv_ej230,0.5580351457700471,,EJ-230 bulk survival: exp(−700/1200)
+N_prod_ej230,19400.0,photons,EJ-230 photons produced: yield×dE
+Npe_sim_ej230,701.3,pe,EJ-230 simulated Npe/end at x=0
+f_eff_ej230,0.03614948453608247,,EJ-230 collection×PDE: Npe_sim/N_produced
+sigma_sim_ej230,49.6,ps,EJ-230 simulated σ(T0) at x=0
+sigma_x_ej230,6.654727777227221,mm,EJ-230 position resolution: σ·v_g/√2
+ratio_pred_ej204,0.8072928732276147,,EJ-204/EJ-200 Npe ratio (napkin prediction)
+ratio_obs_ej204,0.717882209337809,,EJ-204/EJ-200 Npe ratio (simulation)
+ratio_pred_ej230,0.6507810549248143,,EJ-230/EJ-200 Npe ratio (napkin prediction)
+ratio_obs_ej230,0.5350167836435764,,EJ-230/EJ-200 Npe ratio (simulation)
+veff_end_mm_ns,184.6,mm/ns,"Effective propagation velocity (END, EJ-230)"
+sigma_Dt_end_ps,111.5,ps,σ of (t_R−t_L) for END estimator
+sigma_x_end_mm,10.29145,mm,Position resolution: (veff/2)·σΔt
+beta_eff_end_deg,13.3693464935492,deg,Effective axial angle END: arccos(veff/vg)
+alpha_c_deg,50.734752086120544,deg,Angle from bar surface for ray just outside TIR
+tan_alpha_c,1.2232742946698425,,tan(α_c) for bounce counting formula
+N_bounce_H,85.62920062688897,,Bounces on H=10 mm face to reach L/2
+N_bounce_W,14.27153343781483,,Bounces on W=60 mm face to reach L/2
+L_half_mm,700.0,mm,Bar half-length: L/2 = 700 mm (center to END face)
+path_TIR_lim_mm,1106.0000000000002,mm,TIR-critical path to END: (L/2)/sin(theta_c)
+t_axial_END_ns,3.689218892891562,ns,Direct axial propagation time to END: (L/2)/v_group
+t_TIR_lim_ns,5.828965850768669,ns,TIR-critical propagation time to END
+R_vik_nap,0.98,,"Vikuiti reflectivity (napkin, manufacturer spec)"
+Lambda_refl_H_mm,404.63791864332876,mm,"Reflector attenuation length, H=10 mm face"
+Lambda_refl_W_mm,2427.8275118599727,mm,"Reflector attenuation length, W=60 mm face"
+Lambda_refl_H_mm_sim,159.37329698802753,mm,"Refl. att. length H face, R=0.95 (simulation)"
+Lambda_refl_W_mm_sim,956.2397819281653,mm,"Refl. att. length W face, R=0.95 (simulation)"
+sipm_active_mm2,288.0,mm2,Total SiPM active area per END face (8×36)
+end_face_mm2,600.0,mm2,END face area: W×H = 60×10
+f_coverage,0.48,,SiPM coverage fraction: 288/600
+PDE_napkin,0.4,,Assumed PDE for napkin budget
+N_tir_end_230,5319.950200376546,photons,EJ-230: TIR-guided toward one end
+N_bulk_surv_230,2968.719185556517,photons,EJ-230: after bulk attenuation (70 cm)
+N_at_sipm_230,1424.9852090671282,photons,EJ-230: reaching SiPM surface
+N_pe_napkin_230,569.9940836268513,pe,EJ-230: napkin Npe/end (TIR-only path)
+N_pe_LR_230,1139.9881672537026,pe,EJ-230: napkin Npe L+R total
+f_escape_cone,0.11288788143359418,,Escape cone fraction at END: (1−cosθ_c)/2
+npe_idx_match,569.9940836268513,pe,EJ-230 napkin Npe/end (index-matched coupling)
+npe_air_gap,234.64528592764225,pe,EJ-230 napkin Npe/end (air-gap escape cone only)
+ratio_vik_TIR_hi,2.429173385578353,,Napkin max Vikuiti/TIR ratio (air-gap case ≈ 2.4)
+sigma_END_best_ps,53.68,ps,"Best σ_END (m*=8): EJ-230 + Vikuiti, x=0"
+sigma_TOP_best_ps,15.2,ps,Best σ_TOP (k*=3): EJ-230 + 20 TOP SiPMs
+sigma_BLUE_best_ps,15.21,ps,Best σ_BLUE: BLUE combination at x=0
+w_TOP_best,0.987,,BLUE weight for TOP estimator
+w_END_best,0.013,,BLUE weight for END estimator

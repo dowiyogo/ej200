@@ -1,0 +1,33 @@
+\begin{frame}{Backup: the measured run configurations}
+\small
+All rows: \CommonSource\ $x=\Zero\mm$.
+\begin{tabular}{lllll}
+\toprule
+Run & Mode / $N_{\rm TOP}$ & N & Workers & Source commit\\
+\midrule
+\IdROne & EndTop / \TopCount & \GuardN & \One & \texttt{\ShaROne}\\
+\IdRTwo & EndTop / \TopCount & \GuardN & \One & \texttt{\ShaRTwo}\\
+\IdAZero & EndTop / \TopCount & \MainN & \One & \texttt{\ShaAZero}\\
+\IdBZero & EndTop / \TopCount & \MainN & \One & \texttt{\ShaBZero}\\
+\IdDZero & END-only / \NoTopCount & \MainN & \One & \texttt{\ShaDZero}\\
+\IdDOne & EndTop / \TopCount & \MainN & \One & \texttt{\ShaDOne}\\
+\IdDTwo & EndTop / \TopCount & \MainN & \One & \texttt{\ShaDTwo}\\
+\IdVOne & END-only / \NoTopCount & \MainN & \MetalWorkers & \texttt{\ShaVOne}\\
+\IdDThree & END-only / \NoTopCount & \MainN & \MetalWorkers & \texttt{\ShaDThree}\\
+\bottomrule
+\end{tabular}
+\Source{The multiworker rows use eventModulo \One; \ExecMtValidation\ validated \IdVOne\ against the one-worker END-only control. Source metadata, complete SHAs, commands, CWD, macro/binary hashes and sidecar copies: \texttt{sources/provenance.json}. No generic MT reproducibility claim is made.}
+\end{frame}
+
+\begin{frame}{Backup: definitions and a portable evidence register}
+\begin{block}{END light-yield convention}
+Per event, $N_{\rm pe/end}=\Half(N_L+N_R)$. Means and SEMs include zero-hit events. Ratio SEMs use the recorded zero-covariance approximation.
+\end{block}
+\begin{itemize}
+\item Forward reflection fractions count eligible air $\to$ wrap encounters; excluded bookkeeping statuses remain in the source tables.
+\item Multiplicities use all-optical encounters divided by started optical tracks. They are not track-by-track bounce histories.
+\item Position scan: EndTop $N_{\rm TOP}=\TopCount$, $N=\ScanN$/arm/position; $x=\pm\XNear,\pm\XMiddle,\pm\XFar\mm$; seeds \Seeds; one worker.
+\item Each figure has CSV, ROOT and metadata sidecars. The numeric macro file and the value register share a generator.
+\end{itemize}
+\Source{\NumericFile; \texttt{sources/value\_provenance.csv}; \texttt{sources/provenance.json}; \texttt{scripts/build\_evidence.py}. Per-cell source commits for the position arms: \texttt{\ShaAZero}/\texttt{\ShaBZero}.}
+\end{frame}
