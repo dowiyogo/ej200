@@ -1,0 +1,13 @@
+formula_bug,path_mm / v_eff_cm_ns * 1000  (v_eff_cm_ns != mm/ns)
+formula_fix,path_mm / (v_eff_cm_ns * 10) * 1000
+path_mm,1389.75
+v_eff_cm_ns,15.02
+v_eff_mm_ns,150.2
+pred_direct_ps,9252.66311584554
+pred_fullbar_ps,9320.905459387484
+obs_median_ps,9281.988451857129
+obs_mean_ps,9793.769924276996
+delta_pct_median,0.31693941132870057
+delta_pct_mean,5.848119634927478
+n_endl_hits_x690,326
+V5b_verdict,PASS

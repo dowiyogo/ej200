@@ -1,0 +1,5 @@
+metric,value
+observed_peak_nm,407.8
+predicted_peak_nm,408.8
+delta_nm,1.0
+n_hits,588443

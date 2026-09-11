@@ -1,0 +1,7 @@
+metric,value
+mpv_sum_eV,299.86216355400614
+mpv_n_photons,98.87373161871085
+skewness_nhits,3.7304046567598603
+frac_zero_hits,0.0
+predicted_photons_before_losses,20800.0
+photon_E_eV,3.0327788649706457

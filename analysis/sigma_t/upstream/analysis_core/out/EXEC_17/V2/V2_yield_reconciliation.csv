@@ -1,0 +1,16 @@
+edep_mpv_mev,2.0
+dedx_mev_per_cm,2.0
+path_cm,1.0
+LY_per_MeV,10400.0
+N_gen_expected_MPV,20800.0
+E_photon_eV,3.0327788649706457
+total_E_gen_expected_eV,63081.80039138943
+mpv_npe_observed,104.6875
+mean_npe_total,117.6886
+mean_npe_endl,0.374
+mean_npe_endr,0.378
+mean_npe_top,116.9366
+eta_global_pct,0.5033052884615385
+effective_yield_PE_MeV,52.34375
+cv_npe,0.29019189786755845
+aggregation_note,"N_PE summed over ALL 86 SiPMs per event; at x=0, TOP dominates (>99%)"

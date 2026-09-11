@@ -1,0 +1,56 @@
+{
+  "C1_ratio_nonpond_x0": 0.589427384855296,
+  "C1_ratio_pond_x0": 0.08402095969705996,
+  "C1_sigma_end_x0": 882.4754392154288,
+  "C1_sigma_et_nonpond_x0": 520.1551903357789,
+  "C1_sigma_et_pond_x0": 74.14643331196483,
+  "C1_benefit_nonpond_pct": 41.1,
+  "C1_benefit_pond_pct": 91.6,
+  "C3_optimal_N": {
+    "x-690_TOP_SUM4": 2,
+    "x-690_TOP_SUM8": 2,
+    "x0_TOP_SUM4": 3,
+    "x0_TOP_SUM8": 2,
+    "x690_TOP_SUM4": 2,
+    "x690_TOP_SUM8": 2
+  },
+  "C4_table": [
+    {
+      "estimator": "TOP_SUM4",
+      "N_eff": 4,
+      "sigma_int_ps": 72.63474672191887,
+      "SPTR_analog_ps": 106.0,
+      "tot_analog_ps": 128.8867969629058,
+      "SPTR_digital_ps": 53.0,
+      "tot_digital_ps": 90.46992003620487,
+      "SHiP_goal_ps": 100,
+      "goal_met_analog": "NO",
+      "goal_met_digital": "YES"
+    },
+    {
+      "estimator": "TOP_SUM8",
+      "N_eff": 8,
+      "sigma_int_ps": 74.40954640012696,
+      "SPTR_analog_ps": 106.0,
+      "tot_analog_ps": 129.89526779476088,
+      "SPTR_digital_ps": 37.5,
+      "tot_digital_ps": 83.91233875582688,
+      "SHiP_goal_ps": 100,
+      "goal_met_analog": "NO",
+      "goal_met_digital": "YES"
+    },
+    {
+      "estimator": "END_COMBINED_SUM8",
+      "N_eff": 8,
+      "sigma_int_ps": 882.4754392154288,
+      "SPTR_analog_ps": 106.0,
+      "tot_analog_ps": 888.8750760475084,
+      "SPTR_digital_ps": 37.5,
+      "tot_digital_ps": 883.3274595632494,
+      "SHiP_goal_ps": 100,
+      "goal_met_analog": "NO",
+      "goal_met_digital": "NO"
+    }
+  ],
+  "timestamp": "2026-06-20T15:42:28.926659"
+}

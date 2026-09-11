@@ -1,0 +1,11 @@
+n_pairs,138
+a_constrained_ps,757.3324342693021
+a_err_ps,7.106939194210505
+b_constrained_ps,1e-10
+b_err_constrained,0.0
+a_unconstrained_ps,757.3334753138998
+b_unconstrained_ps,0.07364366416509027
+b_err_unconstrained_ps,19552.36908601082
+b_upper_1sigma_ps,61.63773236032855
+r_squared,0.9552160703014901
+interpretation,b consistent with 0; upper limit 61.6 ps (1σ). Timing is Poisson-limited (b << sigma_t_SUM4~73ps).

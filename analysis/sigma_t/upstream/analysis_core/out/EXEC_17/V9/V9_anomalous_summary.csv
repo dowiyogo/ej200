@@ -1,0 +1,9 @@
+metric,value
+nearest_gid,50
+n_total_events,5000
+n_dead_events,0
+frac_dead,0.0
+n_anomalous_5sigma,3
+frac_anomalous,0.0006
+t_mean_ps,610.8450893729853
+t_std_ps,153.43006805385505

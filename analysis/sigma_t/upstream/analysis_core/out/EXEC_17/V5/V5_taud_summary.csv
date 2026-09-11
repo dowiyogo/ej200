@@ -1,0 +1,6 @@
+metric,value
+tau_d_fit_ns,1.8348073465481265
+tau_d_fit_err_ns,0.013063991822006111
+tau_d_config_ns,1.8
+predicted_far_end_bump_ps,93333.33333333333
+n_endl_hits_x690,326

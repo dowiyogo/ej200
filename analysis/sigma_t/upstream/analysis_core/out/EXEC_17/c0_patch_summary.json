@@ -1,0 +1,29 @@
+{
+  "C0_1_V5b": {
+    "formula_bug": "path_mm / v_eff_cm_ns * 1000  (v_eff_cm_ns != mm/ns)",
+    "formula_fix": "path_mm / (v_eff_cm_ns * 10) * 1000",
+    "pred_direct_ps": 9252.66311584554,
+    "obs_median_ps": 9281.988451857129,
+    "delta_pct_median": 0.31693941132870057,
+    "verdict": "PASS"
+  },
+  "C0_2_V7": {
+    "a_ps": 757.3324342693021,
+    "a_err_ps": 7.106939194210505,
+    "b_at_bound_ps": 1e-10,
+    "b_unconstrained_ps": 0.07364366416509027,
+    "b_err_unconstrained_ps": 19552.36908601082,
+    "b_upper_1sigma_ps": 61.63773236032855,
+    "r_squared": 0.9552160703014901
+  },
+  "C0_3_V2": {
+    "edep_mpv_mev": 2.0,
+    "N_gen_expected": 20800.0,
+    "mpv_npe_observed": 104.6875,
+    "eta_global_pct": 0.5033052884615385,
+    "effective_yield_PE_MeV": 52.34375,
+    "cv_npe": 0.29019189786755845,
+    "aggregation_note": "N_PE summed over ALL 86 SiPMs per event; at x=0, TOP dominates (>99%)"
+  },
+  "timestamp": "2026-06-20T15:39:30.323653"
+}

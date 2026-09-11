@@ -1,0 +1,32 @@
+{
+  "TOP_SUM4": {
+    "x0_sigma_ps": 72.6,
+    "x0_boot_ps": 1.6,
+    "x0_fit_err_ps": 0.9
+  },
+  "TOP_SUM8": {
+    "x0_sigma_ps": 74.4,
+    "x0_boot_ps": 1.7,
+    "x0_fit_err_ps": 1.0
+  },
+  "END_COMBINED_SUM4": {
+    "x0_sigma_ps": 866.0,
+    "x0_boot_ps": 376.4,
+    "x0_fit_err_ps": 140.6
+  },
+  "END_COMBINED_SUM8": {
+    "x0_sigma_ps": 882.5,
+    "x0_boot_ps": 101.0,
+    "x0_fit_err_ps": 60.7
+  },
+  "endtop_ratio_x0": 0.589,
+  "v_eff_cm_per_ns": -15.02,
+  "top_nearest_gid_x0": 50,
+  "top_nearest_npe_x0": 32.51,
+  "caveat": "Resoluci\u00f3n INTR\u00cdNSECA (sin SPTR\u2248106 ps ni jitter FastIC\u224810 ps; sin gate). Wrapping: reflector skin surface on BarLV (Mylar-equivalent). \u03c4_d=1.8 ns, \u03c4_r=0.7 ns, \u03bb_abs=160 cm (OPSC-101/EJ-204).",
+  "exec_id": "EXEC_16",
+  "material": "EJ-204",
+  "n_positions": 31,
+  "n_events_per_pos": 5000,
+  "timestamp": "2026-06-20T01:21:39.154283"
+}

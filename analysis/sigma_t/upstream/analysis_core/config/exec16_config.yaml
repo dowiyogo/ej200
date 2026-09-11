@@ -1,0 +1,145 @@
+# =============================================================================
+# exec16_config.yaml — EXEC_16 timing-fit pipeline configuration
+# All tunable constants live here; nothing is hardcoded in pipeline code.
+# Python interpreter: python3.12  (required for PyROOT compatibility)
+# =============================================================================
+
+# ─── Campaign identity ────────────────────────────────────────────────────────
+EXEC_TAG: "EXEC_16"
+ROLLBACK_TAG: "pre-exec16-fit-pipeline"   # git tag on ej200 created before any edits
+
+# ─── Materials and branches ───────────────────────────────────────────────────
+# SHAs are verified at runtime via `git rev-parse` (QA-0 gate aborts if mismatch).
+MATERIALS:
+  EJ-204:
+    branch: "feat/endtop-sslg4"
+    expected_sha: "a0368c4"
+    sslg4_code: "OPSC-101"
+    repo_path: "/home/reriosto/SHiP/ej200"
+    subdir: "ej204_endtop"
+    file_prefix: "ej204_endtop"
+    sha_tag: "a0368c4"
+  EJ-230:
+    branch: "feat/ej230-sslg4"
+    expected_sha: "ca2f1c3"
+    sslg4_code: "OPSC-106"
+    repo_path: "/home/reriosto/SHiP/ej200"
+    subdir: "ej230_endtop"
+    file_prefix: "ej230_endtop"
+    sha_tag: "ca2f1c3"
+
+# ─── Input data — raw sipm_hits ROOT files (62 total) ────────────────────────
+# Layout: {INPUT_ROOT_BASE}/{subdir}/{file_prefix}_x{sign}{abs_x}mm_300ev_{sha_tag}.root
+# Example: .../raw/ej230_endtop/ej230_endtop_xm690mm_300ev_ca2f1c3.root
+#          .../raw/ej230_endtop/ej230_endtop_xp0mm_300ev_ca2f1c3.root   (note: "xp0mm")
+INPUT_ROOT_BASE: "/home/reriosto/SHiP/t0minidaq/validation_skinfix_msi_300ev_31pos/raw"
+TTREE_NAME: "sipm_hits"
+
+# 31 scan positions in mm (used to enumerate file names)
+SCAN_POSITIONS_MM:
+  - -690
+  - -644
+  - -598
+  - -552
+  - -506
+  - -460
+  - -414
+  - -368
+  - -322
+  - -276
+  - -230
+  - -184
+  - -138
+  - -92
+  - -46
+  - 0
+  - 46
+  - 92
+  - 138
+  - 184
+  - 230
+  - 276
+  - 322
+  - 368
+  - 414
+  - 460
+  - 506
+  - 552
+  - 598
+  - 644
+  - 690
+
+# Expected TTree branches (QA-1 gate aborts if any are missing)
+REQUIRED_BRANCHES:
+  - event_id
+  - face_type
+  - global_id
+  - local_id
+  - time_ns
+  - energy_eV
+  - wl_nm
+  - pde
+  - x_mm
+  - y_mm
+  - z_mm
+  - gun_x_mm
+
+# ─── SiPM channel map ────────────────────────────────────────────────────────
+# face_type=0 → END_LEFT (global_id 0–7)
+# face_type=1 → END_RIGHT (global_id 8–15)
+# face_type=2 → TOP (global_id 16–85)
+CHANNEL_MAP:
+  END_LEFT:   {face_type: 0, global_id_range: [0,  7]}
+  END_RIGHT:  {face_type: 1, global_id_range: [8,  15]}
+  TOP:        {face_type: 2, global_id_range: [16, 85]}
+
+# ─── Groups to analyze ────────────────────────────────────────────────────────
+GROUPS:
+  - TOP_NEAREST    # single highest-hit-count TOP SiPM at each x position
+  - TOP_SUM4       # 4 highest-hit-count TOP SiPMs merged per event
+  - TOP_SUM8       # 8 highest-hit-count TOP SiPMs merged per event
+  - END_L_SUM4     # 4 highest-hit-count END-left SiPMs merged per event
+  - END_R_SUM4     # 4 highest-hit-count END-right SiPMs merged per event
+  - END_L_SUM8     # all 8 END-left SiPMs merged per event
+  - END_R_SUM8     # all 8 END-right SiPMs merged per event
+  - ENDS_SUM4PAIR  # END_L_SUM4 ∪ END_R_SUM4 merged per event
+  - ENDS_SUM8PAIR  # END_L_SUM8 ∪ END_R_SUM8 merged per event
+
+# Photon-multiplicity thresholds: t_N = time of N-th photon in merged group
+N_VALUES: [4, 20]
+
+# ─── Gaussian fit parameters ─────────────────────────────────────────────────
+# HOOK: change values here without touching code.
+FIT_WINDOW_SIGMAS: 2.0    # window = [peak - k*σ_MAD, peak + k*σ_MAD]
+FIT_OPTIONS: "R Q S 0"   # R=restrict to range, Q=quiet, S=TFitResult, 0=no auto-draw
+MIN_EVENTS_FOR_FIT: 30    # fewer events → nan + flag "insufficient_stats"
+CHI2_NDF_WARN: 3.0        # χ²/NDF above this → flag "core_not_gaussian" per point
+CORE_NOT_GAUSSIAN_FRACTION: 0.30  # >30% of positions in a group → group-level flag
+
+# ─── Efficiency gate ──────────────────────────────────────────────────────────
+EFFICIENCY_FLOOR: 0.05    # positions with eff < 5% → skip fit, report nan
+
+# ─── Bootstrap for empirical σ uncertainty ───────────────────────────────────
+N_BOOTSTRAP: 300
+RANDOM_SEED: 20260618
+
+# ─── Binning strategy ────────────────────────────────────────────────────────
+# "sqrt_n": n_bins = ceil(sqrt(n_events))  — default, robust for N ~ 30–300
+# "fd":     Freedman–Diaconis: width = 2*IQR / n^(1/3) — better for large N
+BINNING_STRATEGY: "sqrt_n"
+
+# ─── Output ──────────────────────────────────────────────────────────────────
+OUTPUT_DIR: "/home/reriosto/SHiP/analysis_core/outputs"
+
+# ─── Figure style ─────────────────────────────────────────────────────────────
+REPR_POSITIONS_MM: [-690, 0, 690]   # positions shown in overlay / histogram figures
+
+# ─── Physical sanity bounds for QA-2 (abort per point) ────────────────────────
+# Bar half-length = 700 mm, c/n = 18.97 cm/ns → max direct transit ≈ 3.69 ns
+QA2_MU_MIN_NS:    0.10    # no photon before ~0.1 ns
+QA2_MU_MAX_NS:   25.00    # very late photons → likely noise
+QA2_SIGMA_MAX_NS: 5.00    # σ_fit > 5 ns is unphysical for this geometry
+
+# ─── Hooks — stubs for future EXECs (do NOT implement here) ─────────────────
+HOOK_WALK: false    # leading-edge time-walk correction (future EXEC)
+HOOK_SPTR: false    # SPTR injection ~100 ps (EXEC_02b methodology, future)

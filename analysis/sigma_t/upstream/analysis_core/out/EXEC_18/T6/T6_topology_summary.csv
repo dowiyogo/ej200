@@ -1,0 +1,3 @@
+topology,n_channels,cluster_type,sigma_ps
+id//4 fixed cluster,4,co-localized fixed,72.1
+dynamic nearest-4,4,distributed dynamic,85.0

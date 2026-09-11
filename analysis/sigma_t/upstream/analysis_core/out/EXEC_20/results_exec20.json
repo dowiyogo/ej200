@@ -1,0 +1,15 @@
+{
+  "T1_sigma_END_tavg_x0_ps": "882.5",
+  "T1_sigma_END_tavg_xm690_ps": "609.4",
+  "T1_v_eff_cm_ns": "-14.70",
+  "T3_improvement_x0_pct": "86.2",
+  "T3_improvement_xm690_pct": "83.5",
+  "T3_improvement_mean_pct": "84.5",
+  "T3_sigma_top_x0_ps": "105.7",
+  "T3_sigma_endtop_x0_ps": "122.2",
+  "T5_dynamic4_sigma_ps": "69.4",
+  "T5_cluster4_sigma_ps": "76.4",
+  "scan_result": "Scan output at /home/reriosto/SHiP/ej200_endonly/output/endonly_mylar_msi_20260620_222723 (check run_metadata.txt for status)",
+  "binning_canonical": "sqrt_n",
+  "timestamp": "2026-06-20T22:34:53.346110"
+}

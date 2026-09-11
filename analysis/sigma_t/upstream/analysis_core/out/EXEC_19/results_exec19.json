@@ -1,0 +1,30 @@
+{
+  "T1_TOP_SUM4_x0_sig_int_A_ps": "?",
+  "T1_TOP_SUM4_x0_sig_tot_A_ps": "?",
+  "T1_TOP_SUM4_x0_sig_int_B_ps": "80.7",
+  "T1_TOP_SUM4_x0_N_eff": "3.15",
+  "T1_TOP_SUM4_x0_sig_tot_B_ps": "100.9",
+  "T1_TOP_SUM4_x0_goal_A": "NO",
+  "T1_TOP_SUM4_x0_goal_B": "NO",
+  "T1_TOP_SUM8_x0_sig_tot_B_ps": "97.8",
+  "T2_best_f": "0.0 (min=first photon; no CFD fraction better)",
+  "T2_sig_min_ps": 69.41281220400174,
+  "T2_sig_cfd_ps": 69.41281220400174,
+  "T3_npe_dynamic_total": 91.7328,
+  "T3_npe_cluster_total": 83.7208,
+  "canonical": {
+    "TOP_nearest_N1_x0": "105.7",
+    "TOP_nearest_N1_xm690": "118.2",
+    "END_L_SUM4_xm690": "30.5",
+    "END_L_SUM4_x0": "909.4"
+  },
+  "timestamp": "2026-06-20T20:14:16.956325",
+  "T1_TOP_SUM4_x0_sig_int_A_ps_corrected": "69.4",
+  "T1_TOP_SUM4_x0_sig_tot_A_ps_corrected": "127.1",
+  "note_chain_A": "T2 scan showed no CFD fraction beats min(t_first); Chain A canonical = N=1 (min)",
+  "T1_TOP_SUM4_x0_sig_int_A_cfd02_ps": "124.9",
+  "T1_TOP_SUM4_x0_sig_tot_A_cfd02_ps": "164.1",
+  "T1_TOP_SUM8_x0_sig_int_B_ps": "80.1",
+  "T1_TOP_SUM8_x0_N_eff": "3.69",
+  "T1_TOP_SUM8_x0_goal_B": "YES"
+}

@@ -1,0 +1,81 @@
+{
+  "exec_id": "EXEC_16",
+  "date": "2026-06-20",
+  "git": {
+    "branch": "feat/endtop-sslg4",
+    "tracked_files_dirty": false,
+    "untracked": ["GROUP_VELOCITY_AUDIT.md", "runs/"]
+  },
+  "paths": {
+    "REPO_DIR": "/home/reriosto/SHiP/ej200",
+    "ORCH_DIR": "/home/reriosto/SHiP/orchestrator",
+    "datasets_py_actual": "/home/reriosto/SHiP/orchestrator/analysis/datasets.py",
+    "DATA_DIR": "/home/reriosto/SHiP/t0minidaq/runs/t0minidaq_endtop_scan_20260618_204959",
+    "n_sim_root_files": 31,
+    "disk_size_GB": 1.9
+  },
+  "dataset_registry": {
+    "registered": false,
+    "note": "Known 2x2 gap: EJ-204 EndTop 2026-06-18 scan not in DATASETS",
+    "closest_entry": "exec07_endtop_2000"
+  },
+  "ttree_schema": {
+    "tree_name": "sipm_hits",
+    "branch_names_match": true,
+    "branches": {
+      "event_id": "int32",
+      "face_type": "int32",
+      "global_id": "int32",
+      "local_id": "int32",
+      "time_ns": "float64",
+      "energy_eV": "float64",
+      "wl_nm": "float64",
+      "pde": "float64",
+      "x_mm": "float64",
+      "y_mm": "float64",
+      "z_mm": "float64",
+      "gun_x_mm": "float64"
+    },
+    "entries_x0mm": 588443
+  },
+  "material": {
+    "code": "OPSC-101",
+    "name": "EJ-204",
+    "source_mac": "/home/reriosto/SHiP/ej200/src/external/SSLG4/macros/oscnt/opsc-101.mac",
+    "tau_d_ns": 1.8,
+    "tau_r_ns": 0.7,
+    "light_yield_per_MeV": 10400,
+    "abslength_cm": 160.0,
+    "abslength_source": "DetectorConstruction.cc override (lines 200-205)",
+    "taur_source": "DetectorConstruction.cc override (lines 208-215)",
+    "wrapping_declared": "Mylar",
+    "wrapping_actual": "reflector skin surface on BarLV (Mylar wrap volume removed)"
+  },
+  "positions": {
+    "n_positions": 31,
+    "events_per_position": 5000,
+    "x_mm_list": [-690, -670, -650, -600, -550, -500, -450, -400, -350, -300, -250, -200, -150, -100, -50, 0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 670, 690],
+    "x_range_mm": [-690, 690],
+    "avg_step_mm": 46.0,
+    "gun_x_constant_per_file": true,
+    "total_events": 155000
+  },
+  "channel_schema_ABORT": {
+    "status": "ABORT",
+    "reason": "face_type and global_id ranges do not match declared constants",
+    "face_type_declared": "implied 2 values (END/TOP)",
+    "face_type_found": [0, 1, 2],
+    "face_type_interpretation": {
+      "0": "END_LEFT, global_id 0..7, 8 channels",
+      "1": "END_RIGHT, global_id 8..15, 8 channels",
+      "2": "TOP, global_id 16..85, 70 channels"
+    },
+    "END_IDS_declared": "range(0,16)",
+    "END_IDS_actual": "0..15 (correct range, but split across face_type 0 and 1)",
+    "TOP_IDS_declared": "range(16,36) — 20 channels",
+    "TOP_IDS_found": "range(16,86) — 70 channels",
+    "total_channels_declared": 36,
+    "total_channels_found": 86,
+    "consistent_with": ["exec07_endtop_2000.n_channels=86", "ej230_endtop.max_gid=85"]
+  }
+}

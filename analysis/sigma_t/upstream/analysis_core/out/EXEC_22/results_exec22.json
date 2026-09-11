@@ -1,0 +1,17 @@
+{
+  "T2_gate": "PASS",
+  "T2_max_v_over_cn": "0.9721",
+  "T2_fraction_superluminal": "0.0000",
+  "T3_npe_L_x0": "0.38",
+  "T3_npe_L_xm690": "895.6",
+  "T3_npe_L_xm600": "26.1",
+  "T3_cond_a": "FAIL (center 0.4 PE << real 40 PE; non-TIR escape incomplete)",
+  "T3_cond_b": "FAIL (\u03c3_END > 250 ps; near-end limited by t_avg statistics)",
+  "T3_cond_c": "PASS (48% prompt at x=-690; bimodal confirmed)",
+  "T3_profile_shape": "SMOOTHER near ends (26 PE at x=-600 vs ~0 before fix)",
+  "T4_velocity": "PASS (max v/(c/n)=0.936, zero superluminal)",
+  "diagnosis_surface_only": "REFLECTIVITY for dielectric_dielectric in Geant4 11.04 does not fully recover non-TIR photons; surface-only approach insufficient for center",
+  "full_fix_needed": "Explicit air-gap + Mylar panel geometry (pending Ren\u00e9 approval)",
+  "re_sim_endtop_command": "cd /home/reriosto/SHiP/ej200 && git checkout exec22-endtop-optfix && bash t0minidaq/orchestrator/run_endtop_scan.sh [DO NOT RUN WITHOUT RENE APPROVAL]",
+  "timestamp": "2026-06-21T09:23:42.934183"
+}

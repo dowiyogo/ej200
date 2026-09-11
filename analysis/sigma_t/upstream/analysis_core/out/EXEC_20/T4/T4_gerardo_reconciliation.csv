@@ -1,0 +1,7 @@
+sigma_END_tavg_x0_ps,882.4754392154288
+sigma_END_tavg_xm690_ps,609.3712016947497
+sigma_END_L_xm690_canonical_ps,30.5
+npe_L_x0,0.374
+npe_R_x0,0.378
+note_gerardo,"Confirm estimator: channels, combination, position evaluated"
+note_methodology,"t_avg requires BOTH ends to fire; near-end, END_R fires rarely → low efficiency. Single-end inv-var is better near ends but loses position-independence."

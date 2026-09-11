@@ -1,0 +1,6 @@
+estimator,form,sigma_raw_ps,sigma_corr_ps,delta_sigma_ps,r_raw,r_corr,status,converged
+TOP_nearest_N1,parametric,116.8,107.8,-9.0,-0.249,-0.035,ok,True
+TOP_SUM4_N1,parametric,85.0,69.2,-15.7,-0.325,-0.040,ok,True
+TOP_SUM8_N1,parametric,84.2,68.1,-16.1,-0.330,-0.029,ok,True
+END_L_SUM4_N1,none,944.2,944.2,0.0,-0.173,-0.173,walk_failed,False
+END_R_SUM4_N1,none,1061.3,1061.3,0.0,-0.204,-0.204,walk_failed,False
