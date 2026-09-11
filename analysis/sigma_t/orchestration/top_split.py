@@ -86,6 +86,8 @@ def fit(values, denominator, cfg, name, state, root_file=None):
         with frozen_fit_construction(state):
             result = fit_engine.fit_core_gaussian(values, cfg, name)
     histogram, function = result.pop('h_root', None), result.pop('f_root', None)
+    result['ndf'] = int(function.GetNDF()) if function else 0
+    result['chi2'] = float(function.GetChisquare()) if function else float('nan')
     if root_file is not None:
         root_file.cd()
         if histogram: histogram.Write()

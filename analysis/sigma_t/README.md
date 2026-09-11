@@ -1,147 +1,160 @@
-# sigma_t — unchanged upstream pipelines and EXEC_33 decision gate
+# EXEC34 intrinsic timing pipeline — two independent arms
 
-**Status: inventory/import complete; estimator choice pending. No pilot has been run.** TOP and END are independent arms. This package does not apply BLUE, combine their resolutions, or adopt a historical sigma as a reference.
+The imported source under `upstream/` is unchanged. New orchestration lives in
+`orchestration/`. EXEC34A closes the estimator choices; it stops after the pilot
+and its handoff. It never starts the grid automatically.
 
-- [INVENTORY.md](INVENTORY.md): scripts, execution order, dependencies, inputs/outputs and path constraints.
-- [ESTIMATORS.md](ESTIMATORS.md): exact definitions, source lines, reporting procedures (a/b/c), EXEC_18/19 conflict and electronics versions.
-- [provenance/import_manifest.json](provenance/import_manifest.json): byte-identical MSI source import, commit and hashes.
-- [provenance/related_import_manifest.json](provenance/related_import_manifest.json): unchanged END/EXEC_12T/optimization/electronics sources and historical CSV.
-- [upstream/analysis_core/README.md](upstream/analysis_core/README.md): original upstream documentation, preserved verbatim.
+## End-to-end command
 
-## Mandatory decisions before any pilot
+On t0minidaq the checked runtime is `/usr/bin/python` 3.9.25 with PyROOT 6.40.02,
+NumPy 1.23.5, uproot 5.6.9, SciPy 1.13.1, PyYAML and Matplotlib. On MSI use
+`python3.12` explicitly, with a compatible PyROOT; do not use unqualified python3.
+The EXEC34 pilot runs locally. No dependency installation is required.
 
-René must explicitly choose all three:
-
-1. **TOP photon-index range**, and the applicable grouping from the inventory (TOP_SUM4 is the merged stream of the four highest-count TOP channels at each position; it is not an absolute four-PE waveform threshold).
-2. **TOP reporting procedure:** (a) one fixed global index, including how/where it is chosen; (b) per-position minimum on the same sample, labeled selection-biased; or (c) index chosen on training events and evaluated on independent events, with split and selection rule. No c-style TOP selector exists in the imported source; bootstrap and leave-one-position-out position calibration are not substitutes.
-3. **END parameters:** fixed SUM4 map and first-crossing reduction; pulse shape/rise/fall, amplitude threshold, fit variant (`FitCore` or `tbmirror::FitPeakSeeded`), any NPE/ToT/walk cuts, jitter/electronics choice, and whether the reported END width is sigma(ΔT_LR) or sigma(ΔT_LR)/sqrt(2). The live provisional response is rise=0.5 ns, fall=5 ns, threshold=4 PE-equivalent, no injected SPTR, no walk/ToT correction; it is not automatically approved.
-
-These choices are deliberately **unset** in [decision_pending.json](decision_pending.json). The gate in the EXEC_33 request is the reason the selected two-arm pilot command is not executed or labeled validated here. Implementing a new selector or silently changing upstream constants before the choice would violate the unchanged-import requirement.
-
-## Runtime
-
-On MSI, use `/usr/bin/python3.12` with ROOT/PyROOT 6.36.10. Unqualified `python3` is 3.9.25 and fails against that ROOT build. Python 3.12, ROOT, NumPy, uproot, SciPy, Matplotlib and PyYAML imports and the primary CLI `--help` were checked successfully. Pandas is used by auxiliary scripts. See the inventory for the observed versions.
+From a new output directory, this one command runs simulation, reads the native
+ROOT, applies the versioned TOP/END primitives, writes the three sidecars and
+evaluates G-P. Exit 0 means PASS; exit 34 means G-P FAIL. Other nonzero codes
+mean a failed implementation/runtime stage. No failed stage starts a grid.
 
 ```bash
-ssh -p 9022 -o BatchMode=yes -o ConnectTimeout=5 reriosto@localhost 'echo OK'
+/usr/bin/python /home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/run_cell.py \
+  --binary /home/rrios/exec33_20260911/build_off/ej200_bar_sim \
+  --output /home/rrios/exec34a_20260911/pilot \
+  --workers 24 --material EJ-204 --opsc OPSC-101 --x 0
 ```
 
-Use a committed checkout/archive on MSI, not edits through an SSH pipe. The source imports retain upstream absolute paths. Paths below refer to the t0minidaq worktree; when using MSI, set `SIGMA_REPO` to the actual committed checkout location there.
-
-## Exact native commands: ROOT → TOP sigma with uncertainties
-
-This is the **existing fixed-index-curve entry point**, not an approved choice of (a/b/c). It computes each configured N separately; it does not choose the winning N.
+The pilot simulation was launched first with `run_simulation.py` using exactly
+these defaults, while the adapter was implemented. To finish or resume that
+existing cell use the same command with `--resume`. Resume verifies the native
+ROOT hash, the cell parameters and analysis script hashes, and does not simulate
+again when its simulation stage is complete. It refuses to overwrite an existing
+incomplete stage. To replay only analysis on the SAME ROOT, use a fresh directory:
 
 ```bash
-SIGMA_REPO=/home/rrios/ej200_exec33_20260911
-SIGMA_PACKAGE="$SIGMA_REPO/analysis/sigma_t"
-SIGMA_CONFIG=/absolute/path/to/reviewed_top_config.yaml
-SIGMA_TOP_OUT=/absolute/path/to/new/top_output
-python3.12 "$SIGMA_PACKAGE/upstream/analysis_core/timing_fit_pipeline.py" \
-  --config "$SIGMA_CONFIG" --materials EJ-204 --outdir "$SIGMA_TOP_OUT"
+/usr/bin/python /home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/run_cell.py \
+  --binary /home/rrios/exec33_20260911/build_off/ej200_bar_sim \
+  --output /home/rrios/exec34a_20260911/pilot \
+  --resume --analysis-output /home/rrios/exec34a_20260911/pilot_analysis_replay
 ```
 
-`reviewed_top_config.yaml` is a new configuration, not an edit to imported source. It must make every active parameter explicit:
-
-```yaml
-EXEC_TAG: EXEC_33
-ROLLBACK_TAG: pre-exec33-20260911
-MATERIALS:
-  EJ-204:
-    branch: REVIEWED_SIMULATION_REF
-    expected_sha: REVIEWED_SIMULATION_SHORT_SHA
-    sslg4_code: OPSC-101
-    repo_path: /absolute/path/to/simulation/repository
-    subdir: REVIEWED_INPUT_SUBDIRECTORY
-    file_prefix: REVIEWED_INPUT_PREFIX
-    sha_tag: REVIEWED_INPUT_SHA_TAG
-INPUT_ROOT_BASE: /absolute/path/to/input/root/directory
-TTREE_NAME: sipm_hits
-SCAN_POSITIONS_MM: [0]
-GROUPS: [TOP_SUM4]
-N_VALUES: null  # mandatory gate choice; no default is silently adopted
-REQUIRED_BRANCHES: [event_id, face_type, global_id, time_ns, gun_x_mm]
-FIT_WINDOW_SIGMAS: 2.0
-FIT_OPTIONS: R Q S 0
-MIN_EVENTS_FOR_FIT: 30
-CHI2_NDF_WARN: 3.0
-CORE_NOT_GAUSSIAN_FRACTION: 0.30
-EFFICIENCY_FLOOR: 0.05
-N_BOOTSTRAP: 300
-RANDOM_SEED: 20260618
-BINNING_STRATEGY: sqrt_n
-OUTPUT_DIR: /absolute/path/to/new/top_output
-REPR_POSITIONS_MM: [0]
-QA2_MU_MIN_NS: 0.10
-QA2_MU_MAX_NS: 25.00
-QA2_SIGMA_MAX_NS: 5.00
-HOOK_WALK: false
-HOOK_SPTR: false
-```
-
-These fit settings show the imported YAML defaults, not a new estimator selection. With approved N_VALUES, each input ROOT must match the exact legacy builder:
-
-```text
-INPUT_ROOT_BASE/subdir/file_prefix_xp0mm_300ev_sha_tag.root
-```
-
-The `_300ev_` token is hard-coded at `timing_fit_pipeline.py:74`; it does not read N from the filename. **Do not relabel a new N=10000 pilot as a historical 300-event run.** A separately versioned path/metadata adapter is needed after the gate for native `photon_hits_run000.root` naming and an explicit generated-event denominator. This constraint is documented rather than hidden by a misleading symlink/rename. Likewise QA-0 checks a branch tip: the pilot metadata must independently identify the simulation binary/source, not assume that a currently checked-out analysis branch produced an old ROOT.
-
-Outputs: per-group results CSV contains `sigma_fit_ps`, `sigma_fit_err_ps`, `bootstrap_err_ps`, `chi2_ndf`, `fit_status`, event count and efficiency. `sigma_fit_ps` is sigma_TOP of the selected order-statistic timestamp distribution, with the ROOT covariance error and bootstrap error recorded separately. The `.root` sidecar stores histograms, functions and graphs; graph error bars use the maximum of fit and bootstrap error (`lib/sidecar.py:75`). Metadata uses the upstream naming convention `*_metadata.json`; the pilot contract requires a normalized `.meta.json` in a separate adapter. No min across N is taken by this entry point.
-
-## Exact native commands: ROOT → END sigma with uncertainty
-
-Two live END fit variants exist. Their waveform/map constants are compile-time values, **not CLI arguments**. The commands below document their actual interfaces; they were not run on an EXEC_33 sample.
-
-**Congruent SUM4 fit**, accepting the native sequential Geant4 ROOT filename and N:
+The binary comes from simulation `420addf`, Release, Geant4 11.4.0,
+`EJ200_ENABLE_DIAGNOSTICS=OFF`. Rebuild if necessary:
 
 ```bash
-SIGMA_REPO=/home/rrios/ej200_exec33_20260911
-SIGMA_INPUT=/absolute/path/containing/photon_hits_run000.root
-SIGMA_END_OUT=/absolute/path/to/new/end_congruent_output
-root -l -b -q \
-  "$SIGMA_REPO/analysis/sigma_t/upstream/related/420addf/analysis/congruent_sum4_timing.C(\"$SIGMA_INPUT\",\"$SIGMA_END_OUT\",10000)"
+cmake -S /home/rrios/ej200_exec33_20260911 -B /absolute/new/build-directory \
+  -DCMAKE_BUILD_TYPE=Release -DEJ200_ENABLE_DIAGNOSTICS=OFF \
+  -DGeant4_DIR=/home/tdship/opt/geant4-v11.4.0-install/lib64/cmake/Geant4
+cmake --build /absolute/new/build-directory -j24
 ```
 
-`summary.csv` contains `sigma_lr_end_ps ± sigma_lr_end_err_ps`, and their division by sqrt(2) as `sigma_single_end_ps ± sigma_single_end_err_ps`; check `fit_used_end`, `chi2_ndf_end`, `n_eff_end`. The full legacy main also computes a TOP split-waveform diagnostic and plots a historical 88-ps line. **That full main is not an acceptable EXEC_33 pilot entry point:** its TOP definition is different and the pilot forbids historical comparisons. A later adapter must call the unchanged END primitives only, not this plotting main.
+The runner fixes EndTop, 70 TOP, vertical mu- 1 GeV, 10000 generated events,
+seeds 26092601/8349041, eventModulo=1, zero injected jitter. It accepts native
+`photon_hits_run000.root`; no historical `_300ev_` alias is created. All event
+IDs must be in [0,10000); generated events with no hits remain in denominators.
 
-**Test-beam mirror fit**, the entry point corresponding to the peak-seeded fit description:
+## TOP parameters and frozen selection
+
+TOP_SUM4 means four TOP channels with highest aggregate hit counts. All N=1..20
+are evaluated. Canonical TRAIN is even event_id, EVAL odd; both denominators
+are 5000. A second execution of the split orchestration reverses these parities
+on the same ROOT. Neither orientation depends on ROOT hit order.
+
+In TRAIN, preserved `best_gids_by_count`, `compute_tN` and
+`fit_core_gaussian` learn the channels, curve and minimum. Lowest N breaks an
+exact sigma tie; only finite, positive, status=0 fits can win. EFFICIENCY_FLOOR
+is evaluated by G-P, not used to change the optimum. For every N, freeze
+TRAIN-derived peak/amplitude/MAD seeds, histogram axes/bin count, fit window
+and configuration. Bootstrap seed is fixed, not learned. EVAL receives this
+construction through a scoped dependency-injection wrapper; upstream files
+and function bodies are unchanged. EVAL fits its Gaussian parameters to
+measure its sigma; it does not reconstruct seeds/windows, rank channels or
+optimize N. The complete model and a before/after fingerprint are persisted.
+No walk or other data-driven calibration exists in this configuration.
+
+Fit configuration: sqrt_n binning, window peak +/-2 MAD-sigma, ROOT options
+`R Q S 0`, MIN_EVENTS_FOR_FIT=30, N_BOOTSTRAP=300, RANDOM_SEED=20260618,
+EFFICIENCY_FLOOR=0.05. These are the imported defaults. The reported uncertainty
+is max(ROOT covariance error, fixed-estimator bootstrap error); both components
+are retained. It is conditional on the learned TRAIN estimator, not the
+unconditional uncertainty of the training-selection procedure.
+
+(a) All twenty fixed-N results are reported separately for TRAIN/EVAL in each
+orientation. EVAL curves are diagnostic only. (b) The full 10000-event sample
+has its own ranking and same-sample minimum, explicitly `biased by selection`.
+(c) Primary result is EVAL sigma at the TRAIN winner using all frozen state.
+`b_minus_c` means full-sample (b) minus canonical EVAL (c). The internal diagnostic
+is TRAIN sigma at its winner minus EVAL sigma at the SAME winner. Full-sample
+(b) overlaps both halves, so these two bias estimates are correlated. Any sign
+or order mismatch is explicitly reported as the requested implementation
+warning, not reinterpreted as physics or added to the five gate conditions.
+
+Every sigma row includes efficiency, n_eff, missing-hit discards, fit_status,
+chi2/ndf, fit and bootstrap error, window count and histogram overflow. Sigma(N)
+is conditional: **events with fewer than N hits are omitted**. The generated
+partition denominator is never inferred from np.unique(event_id).
+
+Symmetry diagnostic: canonical minus reversed sigma(c), quadrature conditional
+error and significance; <=2 sigma is the stated compatibility convention.
+No average is formed. Adjacent-point variation <= one quadrature uncertainty
+marks a flat/noise-dominated minimum; a boundary has only its available neighbor,
+and no N=0 or N=21 result is invented. Cross-index covariance is not estimated.
+These diagnostics are not numerical sigma acceptance gates.
+
+## END parameters
+
+`end_bridge.h` includes preserved sources and calls ONLY END primitives. No
+imported plotting main, BLUE calculation or historical comparison is executed.
+Fixed left clusters {0,1,2,3}/{4,5,6,7}; right {8,9,10,11}/{12,13,14,15}.
+Normalized difference-of-exponential pulse, rise=.5 ns, fall=5 ns; threshold
+4 PE-equivalents of summed amplitude. Earliest finite cluster crossing per
+end, and both ends must be finite. No SPTR, walk correction or ToT cut.
+
+Primary: `FitCore` from congruent_sum4_timing.C:110, four iterative +/-2 sigma
+fits, minimum 20. RMS fallback is preserved but `fit_used_end=false` fails G-P.
+Systematic: `tbmirror::FitPeakSeeded`, tb_mirror_sigma_vs_x.C:105, peak +/-2 ns;
+its returned struct lacks fit status (zero failure fields are documented).
+Systematic sign is **FitPeakSeeded - FitCore** on sigma(DeltaT_LR).
+
+Always report sigma(DeltaT_LR) and sigma(DeltaT_LR)/sqrt(2), both with their
+fit errors. The latter assumes "equal and statistically independent timing
+contributions from the two ends"; that assumption is NOT verified here.
+
+**INTRINSIC timing resolution — electronics not included.** At least four live
+electronics variants and FWHM/sigma ambiguity remain; SPTR_PROVENANCE.md does
+not establish sqrt(kN) propagation for order statistics. No TOP/END combination.
+
+## Outputs, provenance, validation
+
+`<output>/simulation.meta.json`, `run.mac`, `stdout.log`, `resource_usage.txt`,
+`photon_hits_run000.root` preserve the simulation. `<output>/analysis/` contains:
+
+- `analysis.root`: per-N histograms/functions, numeric results, END times and
+  hit counts for ALL generated events, exact END fit histogram definitions.
+- `analysis.csv`: all TOP curve rows, primary/biased results, both END fits.
+- `analysis.meta.json`: full results and frozen models, uncertainties,
+  diagnostics, source/analysis/orchestration commits, script/input/PDE hashes,
+  commands, UTC timestamps, exit codes, runtime versions and RNG information.
+- `gate.json`: literal G-P criterion, five PASS/FAIL decisions with numeric
+  evidence, sidecar hashes. Diagnoses do not silently add gate conditions.
+
+`run_cell.py` writes unique invocation journals with subprocess commands and
+actual exit codes. The simulator measures process peak RSS with GNU time -v,
+startup through the pre-beam initialization marker and total wall time.
+Analysis records its own getrusage peak RSS for the later concurrency budget.
 
 ```bash
-SIGMA_REPO=/home/rrios/ej200_exec33_20260911
-SIGMA_AUDIT=/absolute/path/to/reviewed_end_input.csv
-SIGMA_END_OUT=/absolute/path/to/new/end_mirror_output
-root -l -b -q \
-  "$SIGMA_REPO/analysis/sigma_t/upstream/related/420addf/analysis/tb_mirror_sigma_vs_x.C(\"$SIGMA_AUDIT\",\"$SIGMA_END_OUT\")"
+/usr/bin/python -m unittest discover \
+  -s /home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration -p 'test_*.py' -v
+ctest --test-dir /home/rrios/exec33_20260911/build_off --output-on-failure
 ```
 
-The exact positional CSV input schema consumed by `ReadAudit` is:
+The EXEC34A handoff outside the repository records actual results and the exact
+EXEC34B start/resume commands. G-P PASS prepares that handoff; **it does not
+launch the grid**. The eventual grid uses the same even-TRAIN orientation.
 
-```csv
-x_mm,unused1,root_path,unused3,unused4,unused5,status
-0,,/absolute/path/to/photon_hits_run000.root,,,,OK
-```
+## Preserved EXEC33 inventory
 
-The main has a fixed capacity of 10000 event IDs. `sigma_vs_x_End.csv` contains `sigma_LR_ps`, `err_sigma_LR_ps`, `sigma_single_ps`, `err_sigma_single_ps`, chi-square diagnostics, and alternative NPE-cut widths. This fit uses a peak±2 ns window, whereas `FitCore` iterates a ±2-sigma window. These are different fits. Neither full macro provides the complete pilot `.root/.csv/.meta.json` contract by itself.
-
-## End-to-end pilot contract after the gate
-
-The exact native commands above establish what the imported source can execute. They **do not yet constitute a validated, selected two-arm pilot command**. No such existing command was found: the TOP selector choice is pending, (c) is absent, ROOT naming/denominator metadata need an adapter, and the native END mains include extra historical output or lack complete sidecars. Reporting an already-reproducible pilot command now would be false.
-
-After the explicit decisions, a separate commit must provide only the required orchestration/configuration around the preserved primitives, with any new selection procedure clearly distinguished from imported code. Its command must record the approved choices and the following simulation stage, then produce the two independent arm results:
-
-```text
-EndTop; N_TOP=70; EJ-204/OPSC-101; mu- 1 GeV vertical; x=0 mm
-N=10000; simulation seeds 26092601 8349041; workers selected from S1–S4
-EJ200_ENABLE_DIAGNOSTICS=OFF; simulation SiPM jitter=0 ns unless explicitly revised
-simulation command: <verified-binary> -m <archived-pilot.mac>
-input: photon_hits_run000.root / sipm_hits
-TOP stage: approved grouping + photon-index range + reporting procedure + fit/error model
-END stage: approved SUM4/map + pulse + leading-edge threshold + reduction + fit/normalization
-outputs: separate sigma_TOP ± error and sigma_END ± error; selected/discarded events,
-         fit validity/quality, and .root/.csv/.meta.json for each result
-```
-
-All NPE values must include generated zero-hit events; historical `np.unique(event_id)` denominators are explicitly insufficient to establish that denominator. The pilot metadata must carry simulation and analysis commits, Geant4 version, N/seeds, material/code, geometry/TOP layout, position/workers/eventModulo, PDE path/hash and every stage command. Fit error is not a substitute for selection uncertainty, and a zero-valued failure field is not a resolution.
-
-**Stop here.** No selected estimator, pilot sigma, BLUE correction or 21-cell campaign is authorized by this README. René's three decisions are required first; the full grid later requires new approval even after a successful pilot.
+[INVENTORY.md](INVENTORY.md), [ESTIMATORS.md](ESTIMATORS.md) and manifests under
+`provenance/` document the unchanged imported workflows, historical conflicts
+and electronics variants. Their original pending-choice statements describe
+EXEC33; the choices above supersede them specifically for EXEC34.
