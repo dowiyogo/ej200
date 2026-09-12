@@ -1,0 +1,41 @@
+{
+  "schema": "EXEC35 preregistration v1",
+  "declared_utc": "2026-09-12T21:46:12+00:00",
+  "declaration_order": "Published before reading EXEC35 distribution results or applying this rule to any cell",
+  "primary": "sigma_core = (q84.135 - q15.865)/2",
+  "justification": "Central 68.27 percent quantile half-width: distribution-free, explicit coverage, independent of a Gaussian shape or histogram tuning",
+  "comparators": ["existing sigma_gauss", "sigma_IQR = IQR/1.349", "histogram FWHM/2.355", "raw quantiles and central asymmetry"],
+  "frozen_selection": "Use EXEC34C canonical TRAIN even/EVAL odd channels and every N=1..20 unchanged; b uses its existing full-sample channels and existing winning N; c uses its existing TRAIN-selected channels and N. Do not reselect either winner with robust widths.",
+  "quantile_method": "numpy linear interpolation (Hyndman-Fan type 7)",
+  "core_reuse": "AST-load unchanged EXEC12T robust function; a scoped numpy proxy maps its [.16,.84] quantile request to [.15865,.84135]. Original imported bytes remain unchanged; the level difference is explicit, not silently treated as identical.",
+  "iqr_reuse": "AST-load unchanged phase_ab.rsigma function only; never execute that file's top-level campaign or plots",
+  "bootstrap": {
+    "replicates": 500,
+    "seed": 35091201,
+    "generator": "numpy.default_rng PCG64",
+    "unit": "generated event within the fixed partition; resample event IDs with replacement, retain fixed channel IDs/N/calibrations, omit nonfinite timestamps after each resample",
+    "error": "sample standard deviation of finite bootstrap estimates, ddof=1; also save percentile 2.5/97.5 confidence limits",
+    "pairing": "Reset the same stream for each same-length partition/distribution/cell, aligning event-index bootstrap draws; do not claim independent cells",
+    "gaussian_TOP": "Reuse the existing EXEC34C Gaussian point and its recorded 300-replicate, seed-20260618 bootstrap error; do not refit or alter it. Accepted-fit fraction was not archived and is unverified.",
+    "gaussian_END": "Keep existing FitCore and FitPeakSeeded points; bootstrap their unchanged primitives with the 500 event resamples to obtain Gaussian comparison errors"
+  },
+  "histogram": {
+    "bins": "ceil(sqrt(n_finite)) equal-width bins over observed min..max, fixed for bootstrap",
+    "peak": "first maximum-count bin",
+    "crossing": "first outward crossing of half the maximum on each side of that peak, linear interpolation between bin centers; zero-count ghost bin one bin-width beyond either boundary",
+    "interpretation": "Contiguous peak-local FWHM; no smoothing, adaptive retry or tuning; ghosts are a declared boundary convention, not measured density beyond support"
+  },
+  "validity": {
+    "n_eff_min": 200,
+    "efficiency_min": 0.05,
+    "bootstrap_finite_fraction_min": 0.95,
+    "bootstrap_relative_se_max": 0.25,
+    "gaussian_chi2_ndf_max": 2.0,
+    "gaussian": "VALID only if fit_status=0 (END FitCore usedFit true; Peak success branch positive), 0<=chi2/ndf<=2, n_eff>=200, efficiency>=0.05, finite positive width and bootstrap SE with SE/width<=0.25. For new END bootstraps at least 95 percent estimates must be successful finite fits. Existing TOP accepted-bootstrap fraction is unverified, never fabricated. Failures are recorded by reason; no refit.",
+    "robust_primary": "VALID independently of Gaussian verdict if provenance/frozen selection verified, n_eff>=200, efficiency>=0.05, finite strictly positive sigma_core, at least 95 percent finite bootstrap estimates, and finite positive bootstrap SE with SE/sigma_core<=0.25. Gaussian model adequacy is not a prerequisite for a nonparametric width.",
+    "cell_bias": "Include a cell in primary b-c only if both frozen b and c robust-primary widths are VALID; retain all 21 rows, marking exclusions. Histogram/IQR failures do not veto a valid primary.",
+    "END_gaussian_compatibility": "Call END consistent with these Gaussian diagnostics only if its Gaussian validity passes, central asymmetry is within 3 bootstrap SE of zero, and sigma_core versus existing sigma_gauss agrees within 3 quadrature bootstrap SE. This is a limited descriptive diagnostic, not proof of normality; same-event covariance is not estimated."
+  },
+  "bias_sign_test": "Two-sided exact binomtest(n_positive,n_nonzero,p=0.5); exclude exact ties and invalid robust b/c. Report as nominal iid-sign p-value only: shared-seed paired cells are correlated, so it is not a calibrated significance for this grid.",
+  "prohibited": ["new simulation", "Geant4 launch", "new channel ranking", "new index argmin", "BLUE", "combined arms", "electronics injection", "historical timing comparison", "deck edit"]
+}
