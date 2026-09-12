@@ -11,10 +11,30 @@ import json
 import os
 from pathlib import Path
 import shlex
+import signal
 import subprocess
 import sys
+import time
 
 from run_simulation import now, sha, memory
+
+
+def run_with_timeout(command, log, env, timeout_s):
+    """Run one cell in its own process group and terminate the whole group."""
+    process=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,
+                             env=env,start_new_session=True)
+    try:
+        return process.wait(timeout=timeout_s),False
+    except subprocess.TimeoutExpired:
+        try: os.killpg(process.pid,signal.SIGTERM)
+        except ProcessLookupError: pass
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            try: os.killpg(process.pid,signal.SIGKILL)
+            except ProcessLookupError: pass
+            process.wait()
+        return 124,True
 
 
 def append_manifest(path, record):
@@ -89,11 +109,24 @@ def main(args):
         env=os.environ.copy()
         env.update(OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1',MKL_NUM_THREADS='1')
         logfile=output/'logs'/(cell['cell_id']+'_'+now().replace(':','')+'.log')
+        started=time.monotonic()
+        timed_out=False
         with logfile.open('w') as log:
-            rc=subprocess.call(command(config,cell,args.resume),stdout=log,stderr=subprocess.STDOUT,env=env)
-        return dict(cell_id=cell['cell_id'],status='PASS' if rc==0 and verified_pass(cell['output']) else 'FAIL',
-                    exit_code=rc,output=cell['output'],log=str(logfile),
-                    gate=str(Path(cell['output'])/'analysis/gate.json'))
+            rc,timed_out=run_with_timeout(command(config,cell,args.resume),log,env,
+                                          config['cell_timeout_s'])
+            if timed_out:
+                log.write(f'EXEC34B TIMEOUT after {config["cell_timeout_s"]} seconds\n')
+                log.flush(); os.fsync(log.fileno())
+        elapsed=time.monotonic()-started
+        if timed_out:
+            status='FAILED — TIMEOUT'
+        else:
+            status='PASS' if rc==0 and verified_pass(cell['output']) else 'FAILED'
+        return dict(cell_id=cell['cell_id'],status=status,
+                    exit_code=rc,elapsed_s=elapsed,timeout_s=config['cell_timeout_s'],
+                    output=cell['output'],log=str(logfile),
+                    gate=str(Path(cell['output'])/'analysis/gate.json'),
+                    partial_output_preserved=status!='PASS')
     failure=False; iterator=iter(todo)
     with ThreadPoolExecutor(max_workers=concurrency) as pool:
         active={}
@@ -113,11 +146,12 @@ def main(args):
                 except Exception as error: result=dict(cell_id=cell['cell_id'],status='FAIL',exit_code=-1,error=str(error))
                 append_manifest(config['manifest'],result)
                 if result['status']!='PASS': failure=True
-            if not failure:
-                for _ in finished: launch()
-            # After the first failure: no new cells. Existing processes finish;
-            # their evidence is retained, with no kill/delete or physics retry.
-    return 34 if failure else 0
+            # A failed or timed-out cell never blocks the other grid cells.
+            # No automatic retry or physics change is made.
+            for _ in finished: launch()
+    rc=34 if failure else 0
+    lock.close()
+    return rc
 
 
 if __name__=='__main__':

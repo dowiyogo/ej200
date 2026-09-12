@@ -3,6 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import subprocess
 import grid
 
 
@@ -33,6 +34,31 @@ class GridTests(unittest.TestCase):
             gate=Path(directory)/'gate.json';gate.write_text('{"gate_status":"FAIL"}')
             with self.assertRaises(AssertionError):
                 grid.plan(dict(canonical_train_parity='even',workers_per_process=1,pilot_gate=str(gate)),False)
+
+    def test_timeout_status_and_later_cells_continue(self):
+        with tempfile.TemporaryDirectory() as directory:
+            d=Path(directory); (d/'logs').mkdir()
+            config=dict(output_directory=str(d),cell_timeout_s=.01,
+                        manifest=str(d/'manifest.jsonl'),
+                        python='python',run_cell='cell.py',binary='binary')
+            cells=[dict(cell_id='slow',output=str(d/'slow'),material='EJ-204',opsc='OPSC-101',x_mm=0),
+                   dict(cell_id='later',output=str(d/'later'),material='EJ-204',opsc='OPSC-101',x_mm=200)]
+            calls=[]
+            def fake_run(command,*args):
+                calls.append(command[-1])
+                return (124,True) if command[-1]=='0' else (1,False)
+            args=type('Args',(),dict(config='unused',resume=False,execute=True))()
+            with patch.object(grid.json,'loads',return_value=config), \
+                 patch.object(grid.Path,'read_text',return_value='{}'), \
+                 patch.object(grid,'plan',return_value=(cells,[],1)), \
+                 patch.object(grid,'run_with_timeout',side_effect=fake_run), \
+                 patch.object(grid,'append_manifest') as append:
+                rc=grid.main(args)
+            self.assertEqual(rc,34)
+            self.assertEqual(calls,['0','200'])
+            finished=[x.args[1] for x in append.call_args_list if x.args[1].get('exit_code') is not None]
+            self.assertEqual(finished[0]['status'],'FAILED — TIMEOUT')
+            self.assertEqual(finished[1]['status'],'FAILED')
 
 
 if __name__=='__main__': unittest.main()
