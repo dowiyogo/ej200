@@ -1,0 +1,28 @@
+{
+  "schema": "EXEC37 preregistration v1",
+  "declared_date": "2026-09-13",
+  "declaration_order": "Before calculating any EXEC37 timing distribution; manifests/ROOT existence and hashes already verified read-only",
+  "cells": {
+    "D0": {"manifest": "/home/rrios/ej200_exec26_20260909/build_exec29_20260910/manifest.meta.json", "commit": "2ddf20592406058c0ad741bd7cdd0f2ce7780acf", "reflector": "dielectric_metal, R=0.98"},
+    "D3": {"manifest": "/home/rrios/ej200_exec26_20260909/build_exec30_20260910/manifest.meta.json", "commit": "391fa4e867717088296f25c24efe15f216637817", "reflector": "original dielectric_dielectric factory"}
+  },
+  "observable": "V2 same_end_T1_minus_T2, CH1 low cluster minus CH5 high cluster; both finite crossings required",
+  "groups": {"left": [[0,1,2,3],[4,5,6,7]], "right": [[8,9,10,11],[12,13,14,15]]},
+  "primary_end": "left; right reported independently",
+  "N_generated": 2000,
+  "x_mm": 0,
+  "N_TOP": 0,
+  "material": "EJ-204 / OPSC-101",
+  "rise_ns": 0.5,
+  "fall_ns": 5.0,
+  "threshold_PE": 4.0,
+  "primary_width": "sigma_core=(q84.135-q15.865)/2, unchanged EXEC35",
+  "normalization": "Report raw width and width/sqrt(2); equal independent group contributions is the test-beam assumption, not verified",
+  "bootstrap": {"replicates": 500, "seed": 35091201, "generator": "numpy.default_rng PCG64", "unit": "generated event, all IDs 0..1999; preserve missing crossings before resampling", "SE": "sample standard deviation ddof=1, plus percentile intervals"},
+  "validity": "Apply unchanged EXEC35 width validity independently for robust/Gaussian; do not alter the EXEC36 historical sanity guard. EXEC37 C1 is a new centre-only criterion, not retroactive experimental calibration.",
+  "C1": {"bound_ps": 88.4, "quantity": "sigma_core(T1-T2)/sqrt(2)", "pass": "VALID primary width and point estimate <=88.4 ps", "fail": "VALID primary width and point estimate >88.4 ps; under the task criterion report an unidentified residual light deficit", "invalid": "Invalid primary width yields INVALID, not a physical pass/fail", "uncertainty": "Report bootstrap SE, interval and crossing fraction; do not change the point-estimate rule after results"},
+  "C2": {"numerator": "EXEC36 EJ204_xp0 V2, matching end, baseline pulse and threshold, N=10000", "denominator": "D0 or D3 matching-end normalized core width, N=2000", "benchmark_quoted": 1.719, "benchmark_expression": "sqrt(1173.34/397.15); retain exact original EXEC29 manifest yields too", "decision": "No PASS/FAIL; report ratio, difference and percentage departure from benchmark", "uncertainty": "Delta-method ratio SE with zero cross-run covariance approximation, explicitly not established independence; shared seeds and different sample sizes prevent claiming calibrated independent errors"},
+  "C3": {"when": "Only if canonical C1 passes", "quantity_ps": "sqrt(88.4^2-(sigma_core/sqrt(2))^2)", "uncertainty": "Transform the existing event-bootstrap width replicas only when inside the real domain; report valid-domain fraction and conditional SE/percentile interval; no test-beam uncertainty was supplied", "interpretation": "Indirect quadrature-equivalent residual, not measured electronics/SPTR. Quantile widths are not variances; quadrature is an additional modelling assumption.", "references_ps_sigma": {"Lee_intrinsic": 58.2, "Lee_detector": 73.0, "bank_range": [85.0,92.0]}},
+  "scope": "Only centre x=0 and N=2000 END-only; no position scan; sensor/PDE, time reference and quantization discrepancies persist. Mylar is a legacy name for physical Vikuiti 3M ESR, not a hardware discrepancy.",
+  "prohibited": ["simulation", "Geant4 launch", "parameter tuning", "electronics injection", "BLUE", "push", "merge", "deck edit"]
+}
