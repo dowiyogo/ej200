@@ -29,20 +29,29 @@ V1 retains local IDs 0,2 and 4,6, leaving 1,3,5,7 unused. Right adds 8.
 `src/DetectorConstruction.cc:407–419` establishes the local-ID ordering along Y
 and negative/positive-X ends; no measured cable map is inferred from geometry.
 
-## Four discrepancies, recorded without correction
+## Three discrepancies, recorded without correction
 
 | Issue | Test-beam statement supplied in task | Simulation / local documentary evidence | Consequence and status |
 | --- | --- | --- | --- |
-| Sensor / PDE | “FBK NUV-MT 14M”, OV=10 V; meeting record mixes manufacturers | `data/sipm/AFBR-S4N66P024M_pde.txt:1–4` explicitly says Broadcom AFBR-S4N66P024M, curve at 12 V above breakdown; `ELECTRONICS_PROVENANCE.md` records related device/OV conflicts | Photon budget is not configuration-matched. Manufacturer/device/OV identification remains unresolved; do not silently relabel or change PDE |
-| Wrap | Mylar/aluminium with exterior black film; Vikuiti only in laboratory; task quotes Mylar approximately 0.85–0.90 | `src/DetectorConstruction.cc:313` calls CreateMylarReflector(0.98); `src/Materials.cc:281–288` implements dielectric_metal. R=0.98 is the task's Vikuiti ESR specification, despite the Mylar factory name | Label/material-response mismatch remains. EXEC30 measured END-only factory gain 1.09895552 ±0.00852071, a different tested configuration; it is not a new sensitivity test of these timing ROOTs |
+| Sensor / PDE | “FBK NUV-MT 14M”, OV=10 V; meeting wording is “SiPMs Broadcom (FBK NUV-MT 14M)” | `data/sipm/AFBR-S4N66P024M_pde.txt:1–4` explicitly says Broadcom AFBR-S4N66P024M, curve at 12 V above breakdown; `ELECTRONICS_PROVENANCE.md` records related device/OV conflicts | Manufacturer/device/OV identification remains unresolved. This directly affects the photon budget predicted by the simulation; no PDE is changed |
 | Time reference | Older CH8 FastIC trigger included 20–50 ps paddle jitter; recent Constanza analyses use detector channel differences | New same-end observable uses T1−T2 without CH8; isolated-SiPM control uses gun t=0 | Common-reference cancellation is part of the observable definition; no trigger jitter is injected or subtracted numerically |
-| Quantization | 24.4 ps TDC LSB; 24.4/sqrt(12) approximately 7.0 ps per-channel uniform-quantization sigma | No quantization in the preserved END primitive; `congruent_sum4_timing.C:50–51` has a different 24 ps metadata-only label. Earlier electronics docs also retain a 25 ps label | Record all versions, do not unify. The per-channel 7 ps is not automatically the raw two-channel difference contribution; independence would be an additional assumption |
+| Quantization | 24.4 ps TDC LSB; 24.4/sqrt(12) approximately 7.0 ps in quadrature for each timestamp | No quantization in the preserved END primitive; `congruent_sum4_timing.C:50–51` has a different 24 ps metadata-only label. Earlier electronics docs also retain a 25 ps label | Record all versions, do not unify or inject quantization. The per-timestamp term is not automatically the raw two-channel difference contribution |
 
-The EXEC30 ratio is quoted from `/home/rrios/REPORT_EXEC30_20260910.md:251,268`
-with its original N=2000, seeds 26092601/8349041 and underlying command/sidecar
-references retained there. It supports a roughly 1.10 END-only photon-yield
-effect in that control; it does not quantify the effect of substituting R=0.85–0.90
-on the present same-end timing observable.
+## Reflector nomenclature — not a configuration discrepancy
+
+René's subsequent clarification supersedes the original task's wrap description:
+the physical reflector is, and always was, **Vikuiti 3M ESR**. “Mylar” is an
+inherited code name: volumes are `Vikuiti<panel>LV/PV` and the factory is
+`CreateMylarReflector`. **R=0.98 is the correct specification of the real
+reflector**, retained at `src/DetectorConstruction.cc:313`. This is a naming
+clarification, not a simulation/test-beam material discrepancy.
+
+Commit `522a1d0816e606d548f7042d992f71136c3450d4` documents the historical
+divergence between volume names and the then-current model in comments. Its
+description of that older implementation is not a statement about today's
+reflectivity. The physical-material identification above follows René's explicit
+clarification. No reflectivity, physics, data or numerical analysis is changed;
+the earlier wrap discrepancy and proposed Mylar reflectivity comparison are withdrawn.
 
 ## Sensitivity study is not electronics injection
 
