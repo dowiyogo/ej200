@@ -1,9 +1,9 @@
 {
   "schema": "ej200.physical_transport_acceptance.v1",
   "created_utc": "2026-09-13T14:42:44.924098+00:00",
-  "title": "EXEC38 golden reference with EXEC40 single-cell observations",
+  "title": "EXEC38 golden reference with EXEC40 and corrected EXEC41 single-cell observations",
   "ready_for_acceptance": false,
-  "overall_status": "INCOMPLETE_WITH_FAILED_HYPOTHESES_AND_INCIDENT_CLOSURE",
+  "overall_status": "INCOMPLETE_SINGLE_CELL_V2_CORRECTED_V5_MATCHED_V1_EXPLAINED",
   "fail_closed_rule": "Every required test must be evaluable and pass its applicable physical hypothesis; null or unresolved applicability cannot count as PASS.",
   "interpretation": "This freezes the attempted contract, not a certification of Geant4 or an assertion that these hypotheses universally test every geometry. Do not retune tolerances using this baseline.",
   "preregistration": {
@@ -6730,5 +6730,440 @@
       "numerical_hypothesis_status": "FAIL"
     }
   },
-  "updated_utc": "2026-09-13T19:51:57.580478+00:00"
+  "updated_utc": "2026-09-13T20:59:01.716324+00:00",
+  "exec41_single_cell": {
+    "scope": "EJ-204 x=0 EndTop70, N=2000 existing EXEC40 ROOT only; no simulation and no grid extension",
+    "source_parent_commit": "aa7ac1b",
+    "preregistration_path": "/home/rrios/ej200_exec40_20260913/analysis/validation/EXEC41_PREREGISTRATION.md",
+    "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "superseded_interpretation_only": "exec40_single_cell.V2 p(mu)=2mu and 0.36-0.40 expectation",
+    "report_path": "/home/rrios/REPORT_EXEC41_20260913.md",
+    "ready_for_acceptance": false,
+    "V1": {
+      "status": "EXPLAINED_BY_OPTICAL_PHOTON_ENERGY_RESCINTILLATION",
+      "total_denominator_ratio": {
+        "value": 1.0002569144787312,
+        "se": 0.00015948052665513168,
+        "numerator": 40039535.0,
+        "denominator": 40029250.905869514
+      },
+      "nonoptical_denominator_ratio": {
+        "value": 1.0163185895027926,
+        "se": 0.0001644689901945202,
+        "numerator": 40039535.0,
+        "denominator": 39396637.445732735
+      },
+      "effective_yield_photons_per_MeV": {
+        "value": 10569.713330829045,
+        "se": 1.7104774980230946,
+        "numerator": 40039535.0,
+        "denominator": 3788.13821593584
+      },
+      "nominal_yield_photons_per_MeV": 10400,
+      "excess_fraction": 0.016318589502792635,
+      "total_edep_MeV": 3848.966433256684,
+      "optical_edep_MeV": 60.82821732084396,
+      "nonoptical_edep_MeV": 3788.13821593584,
+      "photon_equivalent_energy_MeV": 3849.9552884615387,
+      "unexplained_equivalent_energy_vs_nonoptical_MeV": 61.81707252569868,
+      "optical_fraction_of_equivalent_excess": 0.9840035258149175,
+      "excess_photons_over_nonoptical_expectation": 642897.5542672649,
+      "photons_expected_from_optical_edep": 632613.4601367773,
+      "fluctuation_residual_photons": 10284.094130487647,
+      "effective_yield_against_all_model_eligible_edep": 10402.671910578805,
+      "bookkeeping_max_abs_error_MeV": 0.0,
+      "nonionizing_edep_MeV": 0.0,
+      "produced_counter_matches_run_summary": true,
+      "diagnosis": "RESOLVED_OPTICAL_PHOTON_ENERGY_RESCINTILLATION",
+      "evidence": "Geant4 11.4 registers G4Scintillation for optical photons; their measured deposited energy accounts for 98.4004% of the excess over the non-optical denominator. The remaining count is compatible with RESOLUTIONSCALE=1 fluctuations.",
+      "excluded_causes": [
+        "configured yield differs from 10400",
+        "active Birks coefficient",
+        "particle-dependent yield enabled by a macro",
+        "duplicate produced-photon count"
+      ],
+      "code_path": "G4Scintillation::IsApplicable accepts every non-short-lived particle at G4Scintillation.cc:150-153; G4OpticalPhysics.cc:172-175 therefore attaches it to opticalphoton.",
+      "EXEC40_reported_nonoptical_ratio_se": 0.0001603379137171514
+    },
+    "V2": {
+      "status": "CORRECTED_H1_PASS_H2_DESCRIPTIVE",
+      "H1": {
+        "value": 0.2568982359252689,
+        "se": 7.075999152758862e-05,
+        "numerator": 10140104,
+        "denominator": 39471287,
+        "lower_3se": 0.2566859559506861,
+        "lower_bound": 0.226172,
+        "status": "PASS"
+      },
+      "faces": [
+        {
+          "value": 0.22599375259431062,
+          "se": 0.00011932092705887678,
+          "numerator": 3991875,
+          "denominator": 17663652,
+          "face": "+Z",
+          "encounter_share": 0.4475063607629516,
+          "encounter_share_se": 0.0001609835213355923,
+          "escape_contribution_to_all_encounters": 0.10113364177864279,
+          "escape_share": 0.39367199784144224,
+          "compatible_with_0p226172_3se": true
+        },
+        {
+          "value": 0.22541357939143275,
+          "se": 0.00011829416415118756,
+          "numerator": 3996317,
+          "denominator": 17728821,
+          "face": "-Z",
+          "encounter_share": 0.4491574090300121,
+          "encounter_share_se": 0.0001690141120340135,
+          "escape_contribution_to_all_encounters": 0.10124617927963686,
+          "escape_share": 0.3941100604096368,
+          "compatible_with_0p226172_3se": false
+        },
+        {
+          "value": 0.5773081492181519,
+          "se": 0.00033820182109559494,
+          "numerator": 1170199,
+          "denominator": 2026992,
+          "face": "-Y",
+          "encounter_share": 0.051353582668839756,
+          "encounter_share_se": 4.391552973902191e-05,
+          "escape_contribution_to_all_encounters": 0.02964684176626924,
+          "escape_share": 0.11540305701006617,
+          "compatible_with_0p226172_3se": false
+        },
+        {
+          "value": 0.0,
+          "se": 0.0,
+          "numerator": 0,
+          "denominator": 1465,
+          "face": "-X_SENSOR",
+          "encounter_share": 3.711558733820866e-05,
+          "encounter_share_se": 1.0111747355891623e-06,
+          "escape_contribution_to_all_encounters": 0.0,
+          "escape_share": 0.0,
+          "compatible_with_0p226172_3se": false
+        },
+        {
+          "value": 0.0,
+          "se": 0.0,
+          "numerator": 0,
+          "denominator": 1470,
+          "face": "+X_SENSOR",
+          "encounter_share": 3.724226169772473e-05,
+          "encounter_share_se": 1.0296461056135347e-06,
+          "escape_contribution_to_all_encounters": 0.0,
+          "escape_share": 0.0,
+          "compatible_with_0p226172_3se": false
+        },
+        {
+          "value": 0.0,
+          "se": 0.0,
+          "numerator": 0,
+          "denominator": 375004,
+          "face": "+Y_SENSOR",
+          "encounter_share": 0.0095006783031929,
+          "encounter_share_se": 2.155967119501335e-05,
+          "escape_contribution_to_all_encounters": 0.0,
+          "escape_share": 0.0,
+          "compatible_with_0p226172_3se": false
+        },
+        {
+          "value": 0.5864884224285688,
+          "se": 0.0005344090840399566,
+          "numerator": 981713,
+          "denominator": 1673883,
+          "face": "OPEN_+Y_OR_+/-X_UNRESOLVED",
+          "encounter_share": 0.04240761138596773,
+          "encounter_share_se": 7.470630491061459e-05,
+          "escape_contribution_to_all_encounters": 0.024871573100720024,
+          "escape_share": 0.09681488473885475,
+          "compatible_with_0p226172_3se": false
+        }
+      ],
+      "mechanism": {
+        "nearest_Z_escaped": 7988192,
+        "other_faces_escaped": 2151912,
+        "other_faces_share_of_escaped": 0.21221794174892092,
+        "aggregate_excess_over_bound": 0.03072623592526888,
+        "interpretation": "Arithmetic decomposition only; unresolved WorldPV rows are not assigned to +Y or +/-X."
+      },
+      "H2": {
+        "status": "DESCRIPTIVE_NO_PASS_FAIL",
+        "uniform": {
+          "chi_square_event_bootstrap": 4251944.444882358,
+          "rank": 19,
+          "p_value": 0.0
+        },
+        "old_flux_p_2mu": {
+          "chi_square_event_bootstrap": 4249308.52761883,
+          "rank": 19,
+          "p_value": 0.0
+        },
+        "low_mu": {
+          "range": [
+            0.0,
+            0.2
+          ],
+          "observed_probability": 0.10358314386860504,
+          "uniform_probability": 0.2,
+          "difference": -0.09641685613139497,
+          "bootstrap_se": 5.695359433144309e-05
+        },
+        "mean_cosine_binned": 0.5734322426578085,
+        "photons": 39471287
+      },
+      "old_EXEC40_hypothesis_retained": {
+        "escape_fraction": 0.2568982359252689,
+        "escape_se": 7.075999152758862e-05,
+        "expected_interval": [
+          0.36,
+          0.4
+        ],
+        "status": "FAIL_RETAINED_HYPOTHESIS_PHYSICALLY_INAPPROPRIATE",
+        "p_2mu": {
+          "chi_square_event_bootstrap": 4249308.52761883,
+          "rank": 19,
+          "p_value": 0.0
+        }
+      },
+      "face_resolution_limitation": "BarPV->WorldPV cannot distinguish open +Y from +/-X without position or normal components."
+    },
+    "V5": {
+      "status": "MATCHED_BOUNDARY_POPULATION_PASS_WITH_SEPARATE_SD_ACCOUNTING_GAP",
+      "matched_detection_over_incident": {
+        "value": 0.6123978693593988,
+        "se": 0.00011394964849321186,
+        "numerator": 10930286.0,
+        "denominator": 17848341.0
+      },
+      "incident_spectrum_expected_PDE": {
+        "value": 0.612462602315513,
+        "se": 2.6651638199402755e-05,
+        "numerator": 10931441.375874665,
+        "denominator": 17848341.0
+      },
+      "difference": -6.47329561141996e-05,
+      "legacy_SD_gap": {
+        "total": 169139,
+        "fraction_of_SD_hits": {
+          "value": 0.01523853713142798,
+          "se": 3.8819796643345647e-05,
+          "numerator": 169139.0,
+          "denominator": 11099425.0
+        },
+        "sensor_fraction_min": 0.014114930171907507,
+        "sensor_fraction_max": 0.016457352171637886,
+        "sensor_count_correlation_orphan_vs_detected": 0.9997422716127529,
+        "event_orphan_min": 46,
+        "event_orphan_max": 377,
+        "event_orphan_median": 79.0,
+        "event_correlation_orphan_vs_detected": 0.9311260713447136,
+        "EXEC27_R1_TOP": {
+          "N": 500,
+          "hits": 831825,
+          "boundary_detection": 819232,
+          "gap": 12593,
+          "fraction": 0.015139001592883118
+        },
+        "track_level_characterization": "IMPOSSIBLE_FROM_PERSISTED_SCHEMA",
+        "reason": "sipm_hits has no track_id or boundary fields; sipm_event_counts stores only event/sensor aggregates.",
+        "energy_or_volume_pair_of_orphans": "NOT_IDENTIFIABLE"
+      },
+      "cause": {
+        "classification": "PREEXISTING_STANDARD_SENSITIVE_VOLUME_CALLBACK_PATH",
+        "evidence": "Matched detections exactly equal all OpBoundary Detection rows; every remaining SD hit must use Geant4's standard pre-volume sensitive callback, the only other invocation path.",
+        "excluded_legitimate_boundary_status": "NONE_OBSERVED_OR_IDENTIFIED; sensor-directed censuses contain only Absorption and Detection, and the criterion includes both.",
+        "why_SiPMSD_accepts_it": "pre-step fGeomBoundary is sufficient and fallback selects track->GetVolume; no boundary status is checked before writing a detection.",
+        "repair_status": "NOT_APPLIED",
+        "proposal": "First record callback mode, creator, track ID, pre/post volumes and both step statuses. Then either restrict detected hits to OpBoundary Detection or define a separately named sensitive-volume-entry population; do not silently add it to the independent incident denominator.",
+        "too_narrow_incident_alternative_estimate": {
+          "maximum_callbacks_absorbed": 169139,
+          "qualification": "An SD-union rule would absorb all aggregate orphans by construction, but existing data cannot prove that all are legitimate external arrivals, so it is not proposed as the accepted criterion."
+        }
+      },
+      "spectral_filtering": {
+        "emitted_energy_density": {
+          "mean_wavelength_nm": 417.63711795123925,
+          "mean_pde": 0.61939720549195
+        },
+        "transported_incident": {
+          "left": {
+            "mean_wavelength_nm": {
+              "value": 419.5519871447991,
+              "se": 0.031547027621997965,
+              "numerator": 534977032.0881405,
+              "denominator": 1275115.0
+            },
+            "mean_surface_pde": {
+              "value": 0.6136485889875647,
+              "se": 4.514748253752638e-05,
+              "numerator": 782472.5205468786,
+              "denominator": 1275115.0
+            }
+          },
+          "right": {
+            "mean_wavelength_nm": {
+              "value": 419.5381396386143,
+              "se": 0.03186344315505009,
+              "numerator": 535067615.76531845,
+              "denominator": 1275373.0
+            },
+            "mean_surface_pde": {
+              "value": 0.6136781365481169,
+              "se": 4.513687371798876e-05,
+              "numerator": 782668.5260437814,
+              "denominator": 1275373.0
+            }
+          },
+          "top": {
+            "mean_wavelength_nm": {
+              "value": 420.0083395023445,
+              "se": 0.012976045099854689,
+              "numerator": 6425225836.480959,
+              "denominator": 15297853.0
+            },
+            "mean_surface_pde": {
+              "value": 0.6122624089330707,
+              "se": 2.757920601421869e-05,
+              "numerator": 9366300.329284003,
+              "denominator": 15297853.0
+            }
+          },
+          "all": {
+            "mean_wavelength_nm": {
+              "value": 419.94213828245546,
+              "se": 0.012280763624646383,
+              "numerator": 7495270484.334419,
+              "denominator": 17848341.0
+            },
+            "mean_surface_pde": {
+              "value": 0.612462602315513,
+              "se": 2.6651638199402755e-05,
+              "numerator": 10931441.375874665,
+              "denominator": 17848341.0
+            }
+          }
+        },
+        "all_mean_wavelength_shift_nm": 2.3050203312162125,
+        "all_PDE_shift": -0.006934603176437015,
+        "interpretation": "Measured transport spectral filtering; incident mean wavelength is redder and its PDE lower than the emitted-spectrum reference.",
+        "spectrum_sha256": "7b83d48b7ffda869c8695bdd16d6fa789d4a97704a9d03b6c31d7c1e509082e8",
+        "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7"
+      }
+    },
+    "storage": {
+      "metadata": {
+        "created_utc": "2026-09-13T20:53:50.299541+00:00",
+        "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+        "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+        "filtered_root": "/home/rrios/exec41_20260913/first_bar_encounters_production.root",
+        "filtered_root_sha256": "fb708ff003cf064561f2a0e582eade8a7f8d9aa25a9e6224eeac5ff260078567",
+        "N": 2000,
+        "seeds": [
+          26092601,
+          8349041
+        ],
+        "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+        "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+        "script_sha256": "b4524de83f0c48ee3315f7083ad46200423b788d0ed888fbf284396d0c98e230",
+        "volume_dictionary": {
+          "0": "unknown",
+          "1": "BarPV",
+          "2": "AirGapYMinusPV",
+          "3": "AirGapZPlusPV",
+          "4": "AirGapZMinusPV",
+          "5": "EndSiPMLeft_PV",
+          "6": "EndSiPMRight_PV",
+          "7": "TopSiPMPV",
+          "8": "WorldPV"
+        },
+        "full_size_method": "estimate: reduced encounter file bytes plus original compressed bytes of unchanged trees"
+      },
+      "schema": {
+        "production_columns": [
+          "event_id",
+          "track_id",
+          "source",
+          "pre_copy",
+          "post_copy",
+          "pre_volume_id",
+          "post_volume_id",
+          "outcome",
+          "exiting_bar",
+          "cos_incidence"
+        ],
+        "diagnostic_only_columns": [
+          "boundary_status",
+          "normal_valid",
+          "normal_orientation_valid",
+          "normal_norm",
+          "energy_eV"
+        ],
+        "cosine_root_type": "float"
+      },
+      "rows": 41695454,
+      "selected_V2_rows": 39471287,
+      "max_absolute_cosine_float32_rounding": 2.9802322054628405e-08,
+      "cosine_bin_changes": 18,
+      "max_escape_fraction_shift": 0.0,
+      "max_cosine_bin_probability_shift": 7.600461570528294e-08,
+      "V1_unchanged_input_bit_identical": true,
+      "V5_unchanged_input_bit_identical": true,
+      "source_root_unchanged": true,
+      "storage": {
+        "original_full_bytes": 2380261978,
+        "original_encounter_compressed_bytes": 1660711667,
+        "filtered_encounter_file_bytes": 270101248,
+        "unchanged_tree_compressed_bytes": 717778275,
+        "estimated_reduced_full_bytes": 987879523,
+        "encounter_reduction_factor": 6.148478318026876,
+        "full_file_reduction_factor": 2.4094658534591367,
+        "estimated_21_cells_10000_events_bytes": 103727349915
+      },
+      "acceptance": "PASS"
+    },
+    "analysis_commands": {
+      "V2": "analysis/validation/analyze_exec41_v2.py --root /home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root --out /home/rrios/exec41_20260913 --preregistration analysis/validation/EXEC41_PREREGISTRATION.md",
+      "diagnosis": "analysis/validation/diagnose_exec41.py --root /home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root --out /home/rrios/exec41_20260913 --repo /home/rrios/ej200_exec40_20260913 --exec27-summary /home/rrios/ej200_exec26_20260909/build_exec27_20260910/audit/analysis_summary.json --exec27-top-states /home/rrios/ej200_exec26_20260909/build_exec27_20260910/run500/tables/top_boundary_states.csv --preregistration analysis/validation/EXEC41_PREREGISTRATION.md",
+      "storage": "analysis/validation/validate_exec41_storage.py --root /home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root --filtered-root /home/rrios/exec41_20260913/first_bar_encounters_production.root --out /home/rrios/exec41_20260913 --v2-face-csv /home/rrios/exec41_20260913/v2_face_decomposition.csv --v2-cosine-csv /home/rrios/exec41_20260913/v2_uniform_cosine.csv --preregistration analysis/validation/EXEC41_PREREGISTRATION.md"
+    },
+    "artifact_hashes": {
+      "/home/rrios/exec41_20260913/v2_results.json": "87b87650e43d6a9bf26168b049b03095575ad050bb6670b8d5767162d51e1602",
+      "/home/rrios/exec41_20260913/v2_face_decomposition.csv": "03a509701b0d411df4f6544ea3eede064eae14cfcf596403e2b92e9b5a3a0dbf",
+      "/home/rrios/exec41_20260913/v2_face_decomposition.root": "5d03cffe1f36590117eaf3d0b9e06a18c62dc148f0c85d9a78c05f4a89344501",
+      "/home/rrios/exec41_20260913/v2_face_decomposition.meta.json": "eef40c7349eab0f842f459d946565697149f94e6ed9a7e03e80a873a0b9e8b85",
+      "/home/rrios/exec41_20260913/v2_uniform_cosine.csv": "8d68a15ba1a6aa2b8ba27284ca692f1886b1242bca48397c230f4778bb17a845",
+      "/home/rrios/exec41_20260913/v2_uniform_cosine.root": "c1a44b35f0419d73463be25cfa8aa43e3822110c4f9bc97b57a59930ccbf4193",
+      "/home/rrios/exec41_20260913/v2_uniform_cosine.meta.json": "54d703859fae15bd11e9689a47357b40108ad2d576fbfba4d478187b93ca61d6",
+      "/home/rrios/exec41_20260913/v2_face_events.csv": "a8e0bcdd06c62fd13d3856c1b91cedc362ab72baaafe84e1b5d7734d69ea1ac3",
+      "/home/rrios/exec41_20260913/v2_face_events.root": "d257365063cc3b54a098ae9256575b4625b7bc5a5a2010a75e6f3fa920dddc6c",
+      "/home/rrios/exec41_20260913/v2_face_events.meta.json": "3282f466b099b6c9b5b1364878edfbc7eab0c66f04f48c71530a5e58f167f0fb",
+      "/home/rrios/exec41_20260913/diagnosis_results.json": "d7a49dccf515077d423ece1d1ae8557583b2da86a844b3c8a38c5367fd55188c",
+      "/home/rrios/exec41_20260913/detection_gap_by_sensor.csv": "ec0be78dfdfb160a08f1fe8adf26f582d18fb7f12025316800ff88407adb4444",
+      "/home/rrios/exec41_20260913/detection_gap_by_sensor.root": "c669cc733564f2eb89a4ce8f3c7d01470ce568c524d2ea42229cbc8ab136d0f5",
+      "/home/rrios/exec41_20260913/detection_gap_by_sensor.meta.json": "ff7bf486f031f5303a5093eb8cee249588bf6e3a0afb5c8022337748963b9a43",
+      "/home/rrios/exec41_20260913/detection_gap_by_event.csv": "2d063ecb11a867afd7fc1af52f1b242018187a32dbbb994c1a5362c54df88792",
+      "/home/rrios/exec41_20260913/detection_gap_by_event.root": "ad7cc24942addc509c7566ee1829275b9deb9f3f5d18e97b8b94bdfcde7848cd",
+      "/home/rrios/exec41_20260913/detection_gap_by_event.meta.json": "2f3daaaa55f1e370751d21234fc522a310c7160953020c642d7685939de917f0",
+      "/home/rrios/exec41_20260913/detection_gap_by_arm.csv": "f5c65d6588d96c62883a9219972e368d6efabdb522a6788afbf75ae0064cff6c",
+      "/home/rrios/exec41_20260913/detection_gap_by_arm.root": "1e5e8ff94b8cfaff7552d5a59a42d05abc0b16eb18b15311cea347a1444eef20",
+      "/home/rrios/exec41_20260913/detection_gap_by_arm.meta.json": "9875c4bebec70af3331b9921e81d8f49e849860672e9ae96f3db25f60f8b3137",
+      "/home/rrios/exec41_20260913/v1_event_accounting.csv": "625b9051829302d2f73c9164e48409f63909c80e803ebc5c5a5cd9249f847274",
+      "/home/rrios/exec41_20260913/v1_event_accounting.root": "9dcf614b22da72ccd59975868e0c0511cf21d085ed54ad0e43ac4b22c242ee18",
+      "/home/rrios/exec41_20260913/v1_event_accounting.meta.json": "05ea85f11e5a25bcb02f9d4f3c3c01a20c7be3409ff4656d5a9cbbb1b9dd6468",
+      "/home/rrios/exec41_20260913/code_path_audit.csv": "db7e12ca5a551a80c62e9cdb19744c47ed7803911d86b4040cc6182be04f296a",
+      "/home/rrios/exec41_20260913/code_path_audit.root": "357012bdbe699a002691305d3aca2e2c4ed95d8cac44b32d51ca0242be7e6d58",
+      "/home/rrios/exec41_20260913/code_path_audit.meta.json": "1f929886a29e97a1d343195deaafe17c4be6800efad3bf0fb5f74e56cb676649",
+      "/home/rrios/exec41_20260913/storage_results.json": "68a89d82b13a0438ec024a05b80e8caebca74c72cc5171050ce8e9d04391fd86",
+      "/home/rrios/exec41_20260913/storage_validation.csv": "477bb92666f695d5af3d7cefd4c663354021b7ee4b75bcaf807913f11b32bb2c",
+      "/home/rrios/exec41_20260913/storage_validation.root": "c17d0ba6733d1a6fbb0075fe77a990f01804215b7c5b177281e3c77d8c390e08",
+      "/home/rrios/exec41_20260913/storage_validation.meta.json": "21154cf707526ceb140467d826aba20708b311b949a2265b7ded25a131d9f28f",
+      "/home/rrios/exec41_20260913/storage_projection.csv": "ef81a2a680384ec01bb8405936cdc8555c46fb7df29c120b9b763986e8fd0d1f",
+      "/home/rrios/exec41_20260913/storage_projection.root": "647e52ca6412a586a6852fec933712f06b69e279e350dc6f1ca190988cc2e7b4",
+      "/home/rrios/exec41_20260913/storage_projection.meta.json": "319436221f54c09e9e170157557a3e53d467075a834ec0fc5daface3ade0be32",
+      "/home/rrios/exec41_20260913/first_bar_encounters_production.root": "fb708ff003cf064561f2a0e582eade8a7f8d9aa25a9e6224eeac5ff260078567"
+    }
+  }
 }
