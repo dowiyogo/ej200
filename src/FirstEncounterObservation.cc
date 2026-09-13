@@ -4,11 +4,9 @@
 #include "G4Event.hh"
 #include "G4EventManager.hh"
 #include "G4LogicalVolume.hh"
-#include "G4Navigator.hh"
 #include "G4Step.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4TouchableHistory.hh"
-#include "G4TransportationManager.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4VSolid.hh"
 
@@ -17,10 +15,10 @@ void EventAction::BookFirstEncounters() {
     am->CreateNtuple("first_bar_encounters", "One first physical bar encounter per optical track");
     for (const auto* name : {"event_id", "track_id", "source", "pre_copy", "post_copy",
                             "boundary_status", "outcome", "exiting_bar", "normal_valid",
-                            "navigator_valid"}) am->CreateNtupleIColumn(name);
+                            "normal_orientation_valid"}) am->CreateNtupleIColumn(name);
     am->CreateNtupleSColumn("pre_volume");
     am->CreateNtupleSColumn("post_volume");
-    for (const auto* name : {"cos_incidence", "normal_norm", "normal_dot_navigator", "energy_eV"})
+    for (const auto* name : {"cos_incidence", "normal_norm", "energy_eV"})
         am->CreateNtupleDColumn(name);
     am->FinishNtuple();
 }
@@ -50,23 +48,24 @@ void EventAction::ObserveFirstEncounter(const G4Step* step, G4int status) {
     auto localNormal = solid->SurfaceNormal(localPoint);
     if (intoDaughter) localNormal = -localNormal;
     const auto normal = transform.Inverse().TransformAxis(localNormal);
-    // No navigator relocation and no normal sign correction: read-only cross-check.
-    G4bool navigatorValid = false;
-    const auto navigatorNormal = G4TransportationManager::GetTransportationManager()
-        ->GetNavigatorForTracking()->GetGlobalExitNormal(post->GetPosition(), &navigatorValid);
+    // Geometric sign check using points on either side of the actual solid.
+    // Do not call GetGlobalExitNormal: it writes navigator caches in Geant4 11.4.
+    const auto outward = intoDaughter ? -localNormal : localNormal;
+    constexpr G4double probe = 1.e-5*mm;
+    const bool orientationValid = solid->Inside(localPoint+probe*outward) != kInside &&
+                                  solid->Inside(localPoint-probe*outward) != kOutside;
     const bool valid = solid->Inside(localPoint) == kSurface;
     const auto cosine = pre->GetMomentumDirection().dot(normal);
     auto* am = G4AnalysisManager::Instance();
     const int vals[] = {G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID(),
         step->GetTrack()->GetTrackID(), PhysicalObservation::Source(step->GetTrack()),
         prePV->GetCopyNo(), postPV->GetCopyNo(), status, PhysicalObservation::Outcome(status),
-        exiting, valid, navigatorValid};
+        exiting, valid, orientationValid};
     for (int i = 0; i < 10; ++i) am->FillNtupleIColumn(2, i, vals[i]);
     am->FillNtupleSColumn(2, 10, prePV->GetName());
     am->FillNtupleSColumn(2, 11, postPV->GetName());
     am->FillNtupleDColumn(2, 12, cosine);
     am->FillNtupleDColumn(2, 13, normal.mag());
-    am->FillNtupleDColumn(2, 14, navigatorValid ? normal.dot(navigatorNormal) : -2.);
-    am->FillNtupleDColumn(2, 15, pre->GetKineticEnergy()/eV);
+    am->FillNtupleDColumn(2, 14, pre->GetKineticEnergy()/eV);
     am->AddNtupleRow(2);
 }

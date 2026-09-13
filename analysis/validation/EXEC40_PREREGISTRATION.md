@@ -38,8 +38,11 @@ Cosine goodness of fit: 20 equal bins on [0,1], null p(mu)=2*mu; compare
 normalized histogram with bin probabilities b^2-a^2, using covariance of
 event-bootstrap histograms, pseudoinverse chi-square and its numerical rank;
 require p>=0.01. Report conventional photon Pearson chi-square separately.
-Check signed cosines in [-1e-9,1+1e-9], normal norm, and geometric versus
-navigator normal agreement; never abs() or flip a normal to force this check.
+Check signed cosines in [-1e-9,1+1e-9], normal norm, and inward/outward solid
+probes displaced 1e-5 mm from the surface; never abs() or flip a normal to force
+this check. Pre-run implementation review replaces the navigator cross-check:
+GetGlobalExitNormal writes navigator caches in 11.4, so use equivalent solid
+normals only, without querying or modifying the transport navigator.
 Exclude nonphysical StepTooSmall/NotAtBoundary/Undefined bookkeeping steps.
 The literal flux-isotropy hypothesis is retained, but first hits from a localized
 source in a finite bar need not have the equilibrium isotropic-flux law.
