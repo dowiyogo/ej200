@@ -115,6 +115,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
 
     if (track->GetDefinition() != G4OpticalPhoton::Definition()) return;
     if (event) event->ObserveFirstEncounter(step, static_cast<G4int>(boundary_status));
+    if (event) event->ObserveSiPMIncident(step, static_cast<G4int>(boundary_status));
 
     // ── Diagnóstico: contar fotones de centelleo en su primer step ───────────
     // Solo en step 1 para contar cada fotón exactamente una vez.

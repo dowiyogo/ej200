@@ -146,6 +146,7 @@ RunAction::RunAction() {
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
     EventAction::BookFirstEncounters();
+    EventAction::BookSiPMObservations();
 }
 
 void RunAction::BeginOfRunAction(const G4Run* run) {

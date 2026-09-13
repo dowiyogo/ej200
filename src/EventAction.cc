@@ -20,6 +20,7 @@ void EventAction::BeginOfEventAction(const G4Event* event) {
     fEdep = fNonIonizing = fOpticalEdep = 0.;
     fProducedScint = fProducedOptical = 0;
     fFirstEncounterTracks.clear();
+    BeginSiPMObservations();
 
     // Extraer posicion x del vertice primario.
     // G4ParticleGun siempre crea exactamente un G4PrimaryVertex, por lo
@@ -38,6 +39,7 @@ void EventAction::EndOfEventAction(const G4Event* event) {
                               (fEdep-fNonIonizing)/MeV, fOpticalEdep/MeV, fGunXmm};
     for (G4int i = 0; i < 5; ++i) am->FillNtupleDColumn(1, 6+i, values[i]);
     am->AddNtupleRow(1);
+    EndSiPMObservations(event->GetEventID());
     if (!fRunAction) return;
 
     // Flush per-event counters (incremented by SiPMSD) into run accumulables.
