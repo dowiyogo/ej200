@@ -1,0 +1,34 @@
+{
+  "schema": "EXEC36 preregistered observable configuration",
+  "declared_date": "2026-09-13",
+  "declaration_order": "Before calculating any EXEC36 single-SiPM or grouped timestamp distribution",
+  "primary_width": "sigma_core = (q84.135 - q15.865)/2, inherited EXEC35",
+  "primary_end": "left: face_type=0, negative X",
+  "symmetry_end": "right: face_type=1, positive X",
+  "single_ids": {"left": [0], "right": [8]},
+  "groups": {
+    "V2": {"left": [[0,1,2,3],[4,5,6,7]], "right": [[8,9,10,11],[12,13,14,15]]},
+    "V1": {"left": [[0,2],[4,6]], "right": [[8,10],[12,14]]}
+  },
+  "mapping_convention": "Low cluster -> CH1 (inputs 0+2); high cluster -> CH5 (inputs 4+6). V2 assigns two adjacent physical IDs per input, matching GroupIndex. V1 retains the first physical ID of each such input pair; right adds 8. This is an explicit simulation wiring convention, not confirmed hardware mapping. V1 excludes local IDs 1,3,5,7.",
+  "baseline": {"rise_ns": 0.5, "fall_ns": 5.0, "threshold_PE": 4.0},
+  "sensitivity_cell": "EJ204_xp0",
+  "sensitivity_pulses_ns": [[0.5,5.0],[2.0,3.0]],
+  "sensitivity_thresholds_PE": [2.0,3.0,4.0],
+  "sensitivity_shape": "Same peak-normalized difference-of-exponentials Pulse and unchanged LeadingEdgeTime function bodies, with only their three constants parameterized. Do not substitute the different dCFD product kernel.",
+  "sanity": {
+    "width": "canonical sigma_core of single-SiPM leading edge relative to gun t=0, before any grouping",
+    "pass_ps_inclusive": [150.0,350.0],
+    "extreme_low_ps_exclusive": 100.0,
+    "extreme_high_ps_exclusive": 500.0,
+    "intermediate": "100<=width<150 or 350<width<=500: INDETERMINATE, not a pass; no tuning",
+    "invalid": "Invalid EXEC35 robust width is INDETERMINATE",
+    "campaign_guard": "Any extreme single-SiPM failure in the baseline 21-cell/two-end census makes ALL grouped results NOT COMPARABLE with test beam until discriminator calibration. Otherwise retain each cell/end sanity status; passing this check does not resolve the documented hardware differences."
+  },
+  "bootstrap": {"replicates": 500, "seed": 35091201, "generator": "numpy.default_rng PCG64", "unit": "generated event (10000 IDs), including NaNs before resampling; joint T1/T2 acceptance fixed per event", "uncertainty": "standard deviation ddof=1; percentile 95% intervals; fixed group mapping and discriminator parameters"},
+  "validity": "Unchanged analysis/sigma_t/validity_exec35.json. New FitCore points and event-bootstrap errors; successful fits required for Gaussian bootstrap replicas.",
+  "normalization": "Report raw sigma(T1-T2) and sigma/sqrt(2); the latter assumes equal independent group contributions, inherited test-beam assumption, not verified",
+  "paired_design": "All 21 cells share simulation seeds 26092601 and 8349041; points within material are correlated; no fit sigma(x), BLUE or combined arms",
+  "test_beam_reference_source": "User EXEC36 attachment; quoted reference values and hardware statements are not newly measured or independently verified in this analysis",
+  "prohibited": ["new simulation", "Geant4 launch", "SPTR injection", "electronics jitter", "TDC quantization", "pulse/threshold tuning to pass sanity", "push", "merge", "deck edit"]
+}
