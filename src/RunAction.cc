@@ -1,4 +1,5 @@
 #include "RunAction.hh"
+#include "EventAction.hh"
 #ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "TrackingAction.hh"
 #endif
@@ -143,6 +144,7 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("z_mm");
     am->CreateNtupleDColumn("gun_x_mm");
     am->FinishNtuple();
+    EventAction::BookEnergyObservations();
 }
 
 void RunAction::BeginOfRunAction(const G4Run* run) {
