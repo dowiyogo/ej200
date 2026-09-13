@@ -19,6 +19,7 @@ void EventAction::BeginOfEventAction(const G4Event* event) {
     fNTop      = 0;
     fEdep = fNonIonizing = fOpticalEdep = 0.;
     fProducedScint = fProducedOptical = 0;
+    fFirstEncounterTracks.clear();
 
     // Extraer posicion x del vertice primario.
     // G4ParticleGun siempre crea exactamente un G4PrimaryVertex, por lo

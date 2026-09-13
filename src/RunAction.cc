@@ -145,6 +145,7 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("gun_x_mm");
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
+    EventAction::BookFirstEncounters();
 }
 
 void RunAction::BeginOfRunAction(const G4Run* run) {

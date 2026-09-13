@@ -1,6 +1,7 @@
 #pragma once
 #include "G4UserEventAction.hh"
 #include "globals.hh"
+#include <unordered_set>
 
 class RunAction;
 class G4Step;
@@ -30,6 +31,8 @@ class EventAction : public G4UserEventAction {
     // Passive production observations; no RNG or tracking mutations.
     static void BookEnergyObservations();
     void ObserveEnergy(const G4Step*);
+    static void BookFirstEncounters();
+    void ObserveFirstEncounter(const G4Step*, G4int boundaryStatus);
 
   private:
     RunAction* fRunAction = nullptr;
@@ -39,4 +42,5 @@ class EventAction : public G4UserEventAction {
     G4double   fGunXmm    = 0.0;
     G4double fEdep = 0., fNonIonizing = 0., fOpticalEdep = 0.;
     G4int fProducedScint = 0, fProducedOptical = 0;
+    std::unordered_set<G4int> fFirstEncounterTracks;
 };
