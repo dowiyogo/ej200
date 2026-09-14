@@ -1,0 +1,42 @@
+{
+  "schema": "ej200.exec40_43.nonroot_archive.v1",
+  "created_utc": "2026-09-14T10:36:15.427358+00:00",
+  "measurement_command": "du -sh --exclude='*.root' /home/rrios/exec4[0-3]_2026*/",
+  "selection": "All CSV, JSON/metadata, PNG, PDF, and SVG files under each campaign root, plus published Markdown reports.",
+  "excluded": {
+    "ROOT": "Excluded from git; the transport and analysis ROOT corpus is approximately 147 GB.",
+    "other_nonroot": "Build products, source mirrors, macros, and logs are outside the requested reports/analysis-output set."
+  },
+  "campaigns": {
+    "exec40": {
+      "source_root": "/home/rrios/exec40_20260913",
+      "nonroot_disk_file_count": 1098,
+      "nonroot_disk_bytes": 34494575,
+      "archived_file_count": 28,
+      "archived_bytes": 17547093
+    },
+    "exec41": {
+      "source_root": "/home/rrios/exec41_20260913",
+      "nonroot_disk_file_count": 24,
+      "nonroot_disk_bytes": 636488,
+      "archived_file_count": 24,
+      "archived_bytes": 647268
+    },
+    "exec42": {
+      "source_root": "/home/rrios/exec42_20260913",
+      "nonroot_disk_file_count": 326,
+      "nonroot_disk_bytes": 29868219,
+      "archived_file_count": 211,
+      "archived_bytes": 29190015
+    },
+    "exec43": {
+      "source_root": "/home/rrios/exec43_20260914",
+      "nonroot_disk_file_count": 135,
+      "nonroot_disk_bytes": 27213033,
+      "archived_file_count": 135,
+      "archived_bytes": 27221808
+    }
+  },
+  "nonroot_disk_total_bytes": 92212315,
+  "archived_total_bytes": 74606184
+}

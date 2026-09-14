@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-09-14T08:39:29.465371+00:00",
+  "N_cells": 21,
+  "N_per_cell": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 43091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "inventory": "/home/rrios/exec42_20260913/analysis/input_inventory.csv",
+  "inventory_sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7",
+  "exec42_results": "/home/rrios/exec42_20260913/analysis/contract_results.json",
+  "exec42_results_sha256": "ba99f05cbf254ddf52eb7f620e8e401ee0708dcd6d8f76d7401c5dc368a660f3",
+  "preregistration": "analysis/validation/EXEC43_PREREGISTRATION.md",
+  "preregistration_sha256": "159ca702a34836bf9e94dac01e5a8e1af02e294d76bbd15087a552b78a15f96e",
+  "script_sha256": "7af7b3f2c86dcf3a87f916c7fc5da93f4f7f82512daf2300559efdc5ddd87de1",
+  "columns": [
+    "material_a",
+    "material_b",
+    "arithmetic_mean_difference",
+    "GLS_constant",
+    "minimum_difference",
+    "maximum_difference",
+    "peak_to_peak",
+    "fractional_peak_to_peak",
+    "chi_square",
+    "covariance_rank",
+    "dof",
+    "p_value",
+    "position_dependence"
+  ],
+  "rows": 3,
+  "csv_sha256": "b370df6fd6e88277e2c5949185366fe99c08cb5687fea536d3e1a0f15efa4d6b",
+  "root_sha256": "b95bcc2ca3330a80b85a309700b565c62ea04e6ec7e3b638927fc916960a0f81"
+}

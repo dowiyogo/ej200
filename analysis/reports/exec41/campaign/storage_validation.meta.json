@@ -1,0 +1,38 @@
+{
+  "created_utc": "2026-09-13T20:53:50.299541+00:00",
+  "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+  "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+  "filtered_root": "/home/rrios/exec41_20260913/first_bar_encounters_production.root",
+  "filtered_root_sha256": "fb708ff003cf064561f2a0e582eade8a7f8d9aa25a9e6224eeac5ff260078567",
+  "N": 2000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+  "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+  "script_sha256": "b4524de83f0c48ee3315f7083ad46200423b788d0ed888fbf284396d0c98e230",
+  "volume_dictionary": {
+    "0": "unknown",
+    "1": "BarPV",
+    "2": "AirGapYMinusPV",
+    "3": "AirGapZPlusPV",
+    "4": "AirGapZMinusPV",
+    "5": "EndSiPMLeft_PV",
+    "6": "EndSiPMRight_PV",
+    "7": "TopSiPMPV",
+    "8": "WorldPV"
+  },
+  "full_size_method": "estimate: reduced encounter file bytes plus original compressed bytes of unchanged trees",
+  "columns": [
+    "metric",
+    "old_value",
+    "new_value",
+    "absolute_shift",
+    "original_one_se",
+    "accepted"
+  ],
+  "rows": 27,
+  "csv_sha256": "477bb92666f695d5af3d7cefd4c663354021b7ee4b75bcaf807913f11b32bb2c",
+  "root_sha256": "c17d0ba6733d1a6fbb0075fe77a990f01804215b7c5b177281e3c77d8c390e08"
+}

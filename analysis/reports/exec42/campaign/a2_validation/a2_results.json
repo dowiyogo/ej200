@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "created_utc": "2026-09-13T21:23:47.174421+00:00",
+    "candidate": "/home/rrios/exec42_20260913/a2_validation/photon_hits_run000.root",
+    "candidate_sha256": "8608285fea6f12a5675f7821ebb5c39a45cd53535ac814df59b69b98036ba59d",
+    "reference": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+    "reference_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+    "N": 2000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "workers": 4,
+    "eventModulo": 1,
+    "script_sha256": "c9e21c350f0835aec8e1b7e2ad5fb047fbe9b45a933e405108d2dd0942df8548"
+  },
+  "G_P_1": {
+    "status": "PASS",
+    "npe_end": 397.1525,
+    "reference_npe_end": 397.1525,
+    "exact_difference": 0.0,
+    "events_with_different_counts": {
+      "event_id": 0,
+      "produced_scint": 0,
+      "produced_optical": 0,
+      "detected_left": 0,
+      "detected_right": 0,
+      "detected_top": 0
+    },
+    "totals": {
+      "produced_scint": 40039535,
+      "produced_optical": 42213806,
+      "detected_left": 794729,
+      "detected_right": 793881,
+      "detected_top": 9510815
+    }
+  },
+  "G_P_2": {
+    "status": "PASS",
+    "comparisons": {
+      "V1_total": {
+        "candidate": 1.0002569144787312,
+        "reference": 1.0002569144787312,
+        "tolerance": 0.00015948052665513168,
+        "absolute_difference": 0.0,
+        "status": "PASS"
+      },
+      "V1_nonoptical": {
+        "candidate": 1.0163185895027926,
+        "reference": 1.0163185895027926,
+        "tolerance": 0.0001644689901945202,
+        "absolute_difference": 0.0,
+        "status": "PASS"
+      },
+      "V2_H1": {
+        "candidate": 0.2568982359252689,
+        "reference": 0.2568982359252689,
+        "tolerance": 7.075999152758862e-05,
+        "absolute_difference": 0.0,
+        "status": "PASS"
+      },
+      "V5_matched": {
+        "candidate": 0.6123978693593988,
+        "reference": 0.6123978693593988,
+        "tolerance": 0.00011394964849321186,
+        "absolute_difference": 0.0,
+        "status": "PASS"
+      },
+      "V5_expected": {
+        "candidate": 0.6124626023155131,
+        "reference": 0.612462602315513,
+        "tolerance": 2.6651638199402755e-05,
+        "absolute_difference": 1.1102230246251565e-16,
+        "status": "PASS"
+      }
+    },
+    "face_counts": [
+      [
+        17663652,
+        3991875
+      ],
+      [
+        17728821,
+        3996317
+      ],
+      [
+        2026992,
+        1170199
+      ],
+      [
+        1465,
+        0
+      ],
+      [
+        1470,
+        0
+      ],
+      [
+        375004,
+        0
+      ],
+      [
+        1673883,
+        981713
+      ]
+    ],
+    "cosine_hist": [
+      365808,
+      891714,
+      1270513,
+      1560525,
+      1792343,
+      1961616,
+      2038375,
+      2052832,
+      2073189,
+      2092217,
+      2103292,
+      2125211,
+      2148639,
+      2181779,
+      2200487,
+      2243337,
+      2295804,
+      2380511,
+      2545024,
+      3148071
+    ]
+  },
+  "G_P_3": {
+    "status": "MEASURED_ESTIMATE_UNDERSHOT",
+    "actual_root_bytes": 1545540402,
+    "EXEC41_estimated_bytes": 987879523,
+    "actual_over_estimate": 1.5645029237031771,
+    "actual_over_D1": 2.1832088669124774,
+    "D1_bytes": 707921457,
+    "tree_compressed_bytes": {
+      "sipm_hits": 707601425,
+      "event_observables": 109160,
+      "first_bar_encounters": 826487743,
+      "sipm_event_counts": 10072869
+    }
+  },
+  "grid_preparation_allowed": true
+}

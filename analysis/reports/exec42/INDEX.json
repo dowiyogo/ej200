@@ -1,0 +1,1275 @@
+{
+  "source_root": "/home/rrios/exec42_20260913",
+  "nonroot_disk_file_count": 326,
+  "nonroot_disk_bytes": 29868219,
+  "archived_file_count": 211,
+  "archived_bytes": 29190015,
+  "files": [
+    {
+      "source": "/home/rrios/exec42_20260913/a2_validation/a2_results.json",
+      "archived": "analysis/reports/exec42/campaign/a2_validation/a2_results.json",
+      "bytes": 3469,
+      "sha256": "1ecd594cb7203f30e8c86bd3e5b42d76bd9f482e70e183d5c1f109fd0a86c985"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/a2_validation/a2_validation.csv",
+      "archived": "analysis/reports/exec42/campaign/a2_validation/a2_validation.csv",
+      "bytes": 534,
+      "sha256": "294066407c902c62c7dbf9e73114f4e7c06ca6112fbd3d5314f8df1d2ddb64ea"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/a2_validation/a2_validation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/a2_validation/a2_validation.meta.json",
+      "bytes": 767,
+      "sha256": "6d56d71d6ec7bcac6feb5adb1eafbf3a9694fb34e5d444fa585e9a089d522f83"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/a2_validation/invocation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/a2_validation/invocation.meta.json",
+      "bytes": 1554,
+      "sha256": "623cd0d29ee869b1c23a15bd4f9937d641806a8ee41dbb236c2a0b453d0c162f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/H3_material_invariance.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/H3_material_invariance.csv",
+      "bytes": 3278,
+      "sha256": "e1988168ae5ca533df20d37f6aa8ff31dd644b86318d59d640c614dcce39858f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/H3_material_invariance.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/H3_material_invariance.meta.json",
+      "bytes": 1011,
+      "sha256": "cd60e027b1478f7a18b2ef52cc6544086fe0751c27dec1fa679e136d75a6143f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/angular_distribution.csv",
+      "bytes": 2017,
+      "sha256": "784a655b9a63fa9db194027a21d1d6a7220ffca4790c7671de090653ca0a783a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "c181df526f3073fd8d329476a07aaabe1080e238976abbcf2d779b6f8a84f509"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/cell_results.json",
+      "bytes": 5513,
+      "sha256": "2eb0e4456004b16ccb2a60f0a3eba2b390b80c1ae1ac67fb696b26b06b2067b8"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/event_metrics.csv",
+      "bytes": 1356578,
+      "sha256": "1341bd51cc82390cd22801fd4bd728ee3871719718acefd2968deda0bcdd316c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "c93933febab6a84aad4ecbb4adb35a14e12d89834de68cab09fbdc8f28c5cf69"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/face_decomposition.csv",
+      "bytes": 887,
+      "sha256": "c87d2024e1078372ca2e4e35fb53e20272ee54bc4fd56dcae6cd2f625c3b97dc"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "d91af22eff08b68ea4cb453ffa0c64752c2d8be7699cdd1e0dac15875025e392"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/angular_distribution.csv",
+      "bytes": 2011,
+      "sha256": "324db0971057a1a347415e5b36b9905eccf9c360c039db9a8da9098c159a361d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "c7fce364c2ee8437c4cbb2919257e47a1eac4ce6b604cac80c512545d9da06cd"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/cell_results.json",
+      "bytes": 5520,
+      "sha256": "954c6e760888ea4106c44de3e7a5c7a7c59c8469dde0cc6dc5592ce67767ee36"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/event_metrics.csv",
+      "bytes": 1365982,
+      "sha256": "6ebd9bf1073e50c02decfa135fc8087f5c3bd4ba2163e2046ed6d78f3ac31af2"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "5f14665a5a4d6c2ccbd90e7cc20322b3950c70b63595864a60730cc8a38d75be"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/face_decomposition.csv",
+      "bytes": 894,
+      "sha256": "35a94808fa57cb4b6dfef3a0d096e96674047129567e2001e29898da46b3cef3"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "b0df53be212b34224cbd26491ad5092c59825220042df4c2c054e733b8cafc82"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/angular_distribution.csv",
+      "bytes": 2013,
+      "sha256": "b3c4e3fe2d38c89316022d90e7640ceb5eb201eaf4a212bdd3e1c0e724b4fc30"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "c242a9941a2f317c27a1b3bf4dc48c5f21554d2dc8ffa0f9ae1d5f0969ef00c5"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/cell_results.json",
+      "bytes": 5520,
+      "sha256": "36d1d99d70337559fa09804df5978768dc608a826a0ed6903d745fc5ddbeca92"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/event_metrics.csv",
+      "bytes": 1368836,
+      "sha256": "0f8b3b8b88a8d82cd994a47422a2aef592f90b081efd46f4e4ff8be4febb53ef"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "e203934da56de940d1671715dd2fab570b048435c98f90b788ecbaa1eb29bb4d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/face_decomposition.csv",
+      "bytes": 891,
+      "sha256": "7bee3f25af08ada81b6ff569c96ff1efa9e9f809a4a530752dbc6b0afbbd2d60"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xm650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xm650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "b04fd9c90da699e3d9704d75af5a5e6473455904ff513d9006e9dccf4b6a7aaf"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/angular_distribution.csv",
+      "bytes": 2017,
+      "sha256": "83f61aaf37e3aeb64768d8d3c44ec9049a4b6300bb8878a36ec7184535ceecd0"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/angular_distribution.meta.json",
+      "bytes": 1131,
+      "sha256": "4b59497833e7589b25a1acf597e78815c8bbae2b4e27094f9e15240dee89211e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/cell_results.json",
+      "bytes": 5506,
+      "sha256": "07359350eb97c20766f708633e598d2909660f30e62856a8209a7e32fecc7088"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/event_metrics.csv",
+      "bytes": 1355544,
+      "sha256": "d55f97820c00b178aaec9b8fda5b208f0ef3983d82b7aba8d55a04917a644f56"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/event_metrics.meta.json",
+      "bytes": 1274,
+      "sha256": "a9848099a50a2d87d5694481e01e8370be3ef39d10a7cb8ec7749ae86d49ead4"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/face_decomposition.csv",
+      "bytes": 888,
+      "sha256": "b968e34b6e8a9989b9398d5141a94d30d80bed0acdfbfa1b3a6300eaa95f953b"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp0/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp0/face_decomposition.meta.json",
+      "bytes": 1156,
+      "sha256": "fb6a06574cee125cfc008dbadf532478d730a057389e89f003c57cc2db468940"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/angular_distribution.csv",
+      "bytes": 2013,
+      "sha256": "2e8f82633a57a079b147df63667a961df0b256c2711ba60e0c04450c5ed7c935"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "31af364605365372b6263d66715d6305b45700d2dbd18b0aa04d89d48d81a2d7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/cell_results.json",
+      "bytes": 5509,
+      "sha256": "9e13beaa870ad20394c850b34141d160db8d7561de5b38cd8f686d3305c5eedc"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/event_metrics.csv",
+      "bytes": 1356263,
+      "sha256": "579a482bd4d5a0c50e2eacd68e0a4c63fc0e3e36942412cb8d634f30f6cf026e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "95c359e35f839f04ee8be6fa8f49e32b1fa98cec20c87fffabcfe66fb02e0ead"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/face_decomposition.csv",
+      "bytes": 889,
+      "sha256": "b6fa2aa1cc065d1401b539d5fb810b8a9d1acb4c327ce30902bc42eb89ad1378"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "3a1922d8d81642669478b43695535362fef8138e8563b4f931ee5ef0335b8466"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/angular_distribution.csv",
+      "bytes": 2019,
+      "sha256": "857c67ca05c4eb7609c023a4eed66f2849ae3edc7cba312da1cf9f4528d75c13"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "757b4ba1f5ed2c9773eb3b991ec4e0760f24beebcb91f191ec586f1822c986bb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/cell_results.json",
+      "bytes": 5515,
+      "sha256": "95ea78af5a6daeb233e46804fcd0877b6f23e424adbf5e274a07b04e562d56c1"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/event_metrics.csv",
+      "bytes": 1365764,
+      "sha256": "6083dfd7dfc903c709efac63995c6b07ea4f702b5eed199237012cba8cf4aa60"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "a22614c389c44b23d61cb68718f0582d039fbf6bcca676a8ece8e95f046bc516"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/face_decomposition.csv",
+      "bytes": 889,
+      "sha256": "77611455eeae3e180cc1ae112ac7b17091d59af73683cafe646be10c2b24f211"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "a4ee07da2f619d772dde08d95087b773fa207254aeeb785aadcdd1b1caf62ee1"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/angular_distribution.csv",
+      "bytes": 2017,
+      "sha256": "ff0f2c74d394344de743652dea293a0bc527b40c94440088549449047e4b604c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "0bf70a24fc314aa230ea1d51021eeaae8114ec48adaf15848f813f72518b50c6"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/cell_results.json",
+      "bytes": 5518,
+      "sha256": "e634ee9c756cb71178332b4c767a988ca7f90cab0415e4baf715e53f39b7144c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/event_metrics.csv",
+      "bytes": 1368724,
+      "sha256": "df9255b317b2665ace2bc52b20429fb75dc4fcafebc688f1e271fd06b799c220"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "be2da96bf602f79e9e07d08678840e7a8d89e403becd05d65b9207abd9bcf3f7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/face_decomposition.csv",
+      "bytes": 895,
+      "sha256": "c28008730d5d476e8f2b891483578aa98708b0b7146214381c65fc548da0141a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ200_xp650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ200_xp650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "6f056d1746b4029ad454a6ba22f67578d6c2ba3bdd9a1e55194540915805e181"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/angular_distribution.csv",
+      "bytes": 2013,
+      "sha256": "8683ce128eb0536094b1c99a5e87028f4ab9bd1923fa765cce6282b598f002fc"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "016146c2aa1ff11cb927c73948f486429f17c1fa01e88edcb38a2923598e5ce0"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/cell_results.json",
+      "bytes": 5519,
+      "sha256": "186b0ce3c6e8b77d932dca83237fb6a87e9edd5023590509af08bff8e2d02929"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/event_metrics.csv",
+      "bytes": 1352429,
+      "sha256": "1f79ac93332e39d756feb9b4da607f736bf4b4b6893add6cee228dedb432440e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "18d5061d74fa3e47251bdbf50c6a118d88a215f8e744ebc0b4747b5747741c49"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/face_decomposition.csv",
+      "bytes": 892,
+      "sha256": "394bd7527eb751383cb2737cecb4e1787eec17823c821f2052d707059a54dfe2"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "308852f621eb856a34dbfdf360d06adba3f9d2fc7c6cc0ac0a2d96511553c631"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/angular_distribution.csv",
+      "bytes": 2016,
+      "sha256": "1d3ccb92791d4319c119af47b4b30c0715a281b3578fd23ac79f9a98e37058d5"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "7711c238c8b65778f3a2d4ac53555adc55310c8b98813d092f6df4fe3f4a460a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/cell_results.json",
+      "bytes": 5520,
+      "sha256": "424e5cdabd6f4e3817d0d1878caeae9a934025571fd136e67a7018af050b1a7d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/event_metrics.csv",
+      "bytes": 1362808,
+      "sha256": "80b9005475a0d47b7600d3b7fa40a29f5c8a308c5eb41e63bd33f21e30c77cd3"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "0626ffcfee297b4a59b590b424375da0f7c20a922d07bfa454e9df764aea9e1f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/face_decomposition.csv",
+      "bytes": 892,
+      "sha256": "6c00db01057347e2d48fc281b48000dbf92c73d1f121f929a3c80e498fb57c84"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "b194e32606f1585e612d3ac28098dbdcff576011b91551cd2abbe4209bb504db"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/angular_distribution.csv",
+      "bytes": 2016,
+      "sha256": "11ed8feeb946ca4843d82c5fe5342f49e404624f8f256aafb12fac2b76b7303a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "7ac54b3c2c614ce2e5640d14d7abeaadc3bafb77bc1c7ae092e0714280129339"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/cell_results.json",
+      "bytes": 5516,
+      "sha256": "f8896fa204252abaecc8cee33d14922712ea0a06b1791053d740cb260fa4e495"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/event_metrics.csv",
+      "bytes": 1365799,
+      "sha256": "ea381232b9247c8c25f5ed33b61aa878cc92542e129fdf0eb57ef7a95c664e72"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "64aaacfbb917b03cbcda75d1bb1ff0a53e73ec6110b8885cddf9274839ab3951"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/face_decomposition.csv",
+      "bytes": 885,
+      "sha256": "d4db56c417808f98767308c780e56bb8b84e74973c6d46d645b58df18724307c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xm650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xm650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "baf7aa647497fab0a8edff24a6ccc3178b320bd3477d3f78ecabfdc55e1816d8"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/angular_distribution.csv",
+      "bytes": 2014,
+      "sha256": "d1700abc0492f536ed2c0c4bd3af7976c68e4a2ff4cea8a5baa91a2f6aabab09"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/angular_distribution.meta.json",
+      "bytes": 1131,
+      "sha256": "24cdd3083531b0be506ff4320f46f936fcded39d6037e3062dfc865d600ce9b1"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/cell_results.json",
+      "bytes": 5498,
+      "sha256": "4340723e87c46538a49b61e13fd51fac4457160060d3a22223be10576ef58c54"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/event_metrics.csv",
+      "bytes": 1351964,
+      "sha256": "2a98a49a96df40e54b67a9bbf8279eaab553b1ee172655fa8a764e3cfaa364cc"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/event_metrics.meta.json",
+      "bytes": 1274,
+      "sha256": "37d5bcac600e61fffe3e2111b8ea489c3522ea8ba2a30b2512be6b822a875713"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/face_decomposition.csv",
+      "bytes": 891,
+      "sha256": "22120f6d3f897b91512b5688c90d5c2d42e2ee6422d5af00248b9649ba9b52b7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp0/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp0/face_decomposition.meta.json",
+      "bytes": 1156,
+      "sha256": "c3b31f5cd820be2abeabec0549228e47df2b0b0b1808a52ec141d8ae613dc037"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/angular_distribution.csv",
+      "bytes": 2020,
+      "sha256": "5061e3d87b7d0498e04cbda3010413f788afa765102d9cc66573bb55e5913ac4"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "82898baaba40cfd2e7134127434f0e8a6678a102521058b381632b67796e3332"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/cell_results.json",
+      "bytes": 5509,
+      "sha256": "9820cf813a54db1f5290904507a3c7303d3b65a1578042a70b7e01d985b19635"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/event_metrics.csv",
+      "bytes": 1352193,
+      "sha256": "dfd27ccdad74f1c564b04fbb8cf155e80368dfb01b08251914327576832b6177"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "151aa018929e1cc331896d0f64564ad8394f1d6918e7d278100f00b99a5fba73"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/face_decomposition.csv",
+      "bytes": 885,
+      "sha256": "ca043cc07150b175b25018ef9baa907257a623e63de25be4ac2ae5bde25e3016"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "d2bc85f0f04dabc40bee297fd9abea433769b404fd767b5b877439e173314ec5"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/angular_distribution.csv",
+      "bytes": 2021,
+      "sha256": "bdb5d4bbfebe23e321b62c10c3df95eb8c9112709824d955b52241eb75fc4ada"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "1e7e01b187363b2a6c5f3d7c45b00d1119869892162a4bb052fb740a1a5d17c4"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/cell_results.json",
+      "bytes": 5516,
+      "sha256": "213cc41277b795138a0e51954943c03ffb8a968c2f7a39d21595ffd99739dada"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/event_metrics.csv",
+      "bytes": 1362899,
+      "sha256": "d3231209c75c29f1fe8088283aa600cc5bc9ca3912ec8576b934914b9d28c036"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "8a8b33e1b144883d49cd0c3501e391eeb5bfcd842d81e66577f8837b6297d407"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/face_decomposition.csv",
+      "bytes": 892,
+      "sha256": "ecd69efb2675f619649f5d78974aeec7fd51ebe88e03baa5969c77e4a1f35569"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "a8ea4c26826f97e3eff3c9c28ef2834f45ec28619ad3fb11b53d8efded6372a7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/angular_distribution.csv",
+      "bytes": 2018,
+      "sha256": "44515bb25bb90ca930032b342dc73fab93c70a83ae2a8512606ab9247d79be5e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "b439e4f5cf5d5c4ae1b3bea472abebd0d0d588bfeb42731e682a9944e8d63b90"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/cell_results.json",
+      "bytes": 5525,
+      "sha256": "059d9989f993b57923b993cdafe3935bcb2735db028385db482945e84013ab12"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/event_metrics.csv",
+      "bytes": 1365466,
+      "sha256": "064a0156c84e3f4ff81f504d2c121a500606a97ef089724ecf8d5acb5ffcafe2"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "9c46305d03e4d965faa66be9ab0720d4141bed50780a150f21d4318c85c28f1e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/face_decomposition.csv",
+      "bytes": 895,
+      "sha256": "fa1a2a7794cae0c533a3e09793a4e794f12e148b9e635743181b64a0ffe1147d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ204_xp650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ204_xp650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "295ef5bc8e2637b1a6bde6ba230bc847046b3b5fb26d00080af2589782693c8a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/angular_distribution.csv",
+      "bytes": 2010,
+      "sha256": "1e768742e6bdc635af36e10331dbaef6279e34a2dcc7605cd15249a17cbb1e0a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "ee769eeac149684d427c4382ba35146e15b7a312c776dbc4f07123536f4f9bce"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/cell_results.json",
+      "bytes": 5514,
+      "sha256": "24e14ed65931910ed3fd2397a575a4e28f5ebc81706dc23442ee39632b1a821b"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/event_metrics.csv",
+      "bytes": 1351197,
+      "sha256": "8fe1340fe95cbb03d0d64c7aba7b9ec8ae94059004d069d404b6a677fc3dada2"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "68cda4ef69212a6507587ba14ff4a06cdcc49c51432b32745d52405941d37a13"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/face_decomposition.csv",
+      "bytes": 892,
+      "sha256": "d9c1c14dcfef1449c8e671d0d7d3c14148ef07a9673302272bfbeb1655afb8c0"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "a1a2a8637ee8873d5ee0a6f9c18a293b322fabce79bf66d71416e4fad1d450f6"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/angular_distribution.csv",
+      "bytes": 2016,
+      "sha256": "8356f62e72cc24042eac551247d905d6c8b1bc9d8bb7919ebe2ab15a727e7354"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "9c72369c6bce2fb40bd2a7ec19c762abfd3f6bd6b741c41ee0b4bceaaf8c2aeb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/cell_results.json",
+      "bytes": 5510,
+      "sha256": "475721a4ad782124b2988b4c6384740ebe25d3717f92f6b611da0eacb17ada8c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/event_metrics.csv",
+      "bytes": 1353799,
+      "sha256": "9a6afbb41df8a04de57a878a6ec70327f67c7708274e943fc73e950f33d39b63"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "d62d87c2f8bbae8eec2e27a71a3d3c224368eb8c369a10a452e02cbff2a1f53c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/face_decomposition.csv",
+      "bytes": 892,
+      "sha256": "9931b83ff71324d86f56d50a8714736415a8bddc3848748b63c8e466cfe4cd50"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "5f189ee9cceafdfa05ba65583143036301e2f33217b01bc7bfe8ed9be429a843"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/angular_distribution.csv",
+      "bytes": 2008,
+      "sha256": "fda33264a15645571a698f647f1903543d3bfae09954a6c97673a57d20c13f1f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "c8402d125b8c354666ab8236b605d7b514899f07c00710d1a11c8f3c004994ce"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/cell_results.json",
+      "bytes": 5514,
+      "sha256": "3a6f0982afe3164ca6089fbae96cd66a69ed64ea71b258c52f160e5e26c6ebb4"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/event_metrics.csv",
+      "bytes": 1353952,
+      "sha256": "9ab508ba3db49f17f796466cf2c7180e00efc930ed62d0ad5dcf0e14278d3db7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "169ff2bec51257b4458d3c915b93f560b26507329218e3c7954f269ed800dd02"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/face_decomposition.csv",
+      "bytes": 890,
+      "sha256": "413b69f78d538f3b04a53ac5d8b08271c9a0a15422a4b68d9c22433c0cdfd687"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xm650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xm650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "2e7e746ec858a72681df631c7ffafb2aeb939db890ab1cb0454cca8313849182"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/angular_distribution.csv",
+      "bytes": 2012,
+      "sha256": "16cabd729ac56eb53098bf84f6d9b5c76de0ab5515a7692108c7dc83ce360141"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/angular_distribution.meta.json",
+      "bytes": 1131,
+      "sha256": "5e39bd2814171ab314849dc489e008bbd5a141de4809e0e37588054b03d66aec"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/cell_results.json",
+      "bytes": 5502,
+      "sha256": "5fe03dd402438f13a8e548609428110ae0be31ed17dade2da8e32384ac532cc8"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/event_metrics.csv",
+      "bytes": 1351096,
+      "sha256": "93de617578855fe7272e8674c15acdfe120fc3d0160d60a4e022b2c64e71a4cd"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/event_metrics.meta.json",
+      "bytes": 1274,
+      "sha256": "7de1c2c7ef4f4d335ce36f551421a67c9b00b449c09d084f5977aea88db8e8c7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/face_decomposition.csv",
+      "bytes": 890,
+      "sha256": "38de7ee0af2967c4bbc69919057f9f1da7f5623103696ac1aeef4bff861f833e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp0/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp0/face_decomposition.meta.json",
+      "bytes": 1156,
+      "sha256": "433f686f54eaedae6296307c046b36dce4df25005e36888154a1aed3c3c53c43"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/angular_distribution.csv",
+      "bytes": 2012,
+      "sha256": "c3fa73879b351612e9946d5bc39bde8c9ac2d3c509bed0b1afba1ccf774accea"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "152038aee93ff03db671a6349c1fbdf0581549ed78bb27ec2dd6c4614d1d7cae"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/cell_results.json",
+      "bytes": 5507,
+      "sha256": "34a193094715afb8f4b8a52afcb8897be3dda5ac13cecbe0e64c377039fcb9a7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/event_metrics.csv",
+      "bytes": 1351092,
+      "sha256": "791b4bb2130ec352d77852eee38a49dd196089dca8a8473ba24a316bf428388d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "167960a6e1433363946923c974064c5d65cb299789b14d6517504c7f55d9b620"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/face_decomposition.csv",
+      "bytes": 887,
+      "sha256": "99b4d8a14c453220a14edde39c657be84e4c0f5f357cc6b14732948bc7a3995c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp200/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp200/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "17e4074b805660ad13f74c843c7a21be069d26c51614448fa132268e790e6279"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/angular_distribution.csv",
+      "bytes": 2012,
+      "sha256": "2d651d5773e4eaf67001918b75de19346bd0dece095c82b6d3b9329441a8ec1f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "759362bf2be5ec42e17c0cb565c3c76ce3a4e1eb303750a9a079a3259bf040f9"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/cell_results.json",
+      "bytes": 5512,
+      "sha256": "0e502e744fa79d32906a72a33293a5a81247eeda03aac8e8b523f09bf1b5e436"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/event_metrics.csv",
+      "bytes": 1353783,
+      "sha256": "5218b712eebb76f104ff8ee22dabd1bdc870c4529783216af5fabbedc1e8cb34"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "05c259b2d0b9ef8455d5c49ee04278443b1c01140264d5704d6b71d7855276d2"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/face_decomposition.csv",
+      "bytes": 889,
+      "sha256": "da49a8dffab1636b5652499bf45ac768bca9f11f628b8d3f34882549772b9378"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp500/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp500/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "e30b7852c8cfa6d5cc7fe5ae5b2f6f6f6d855807ec3e80897b4fc79567a85403"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/angular_distribution.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/angular_distribution.csv",
+      "bytes": 2011,
+      "sha256": "be15a0f28eeb2d857f37f046decdbe81c566b1fc8d346ec2738794b9a3701c8e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/angular_distribution.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/angular_distribution.meta.json",
+      "bytes": 1135,
+      "sha256": "90bee7524a7c16196364d496b8cfc513f0f83821eba3f8c3c7eccbb7fa015847"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/cell_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/cell_results.json",
+      "bytes": 5508,
+      "sha256": "ef396bcef17fbd12888c2ce4ef761c3c9f7ddac2082bfffe71904530375553f3"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/event_metrics.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/event_metrics.csv",
+      "bytes": 1353958,
+      "sha256": "52a62715d3017046a7dbec6ae954eeb56cf8c91516a87dc55c92b9aacedfa903"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/event_metrics.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/event_metrics.meta.json",
+      "bytes": 1278,
+      "sha256": "225a96141ef77a8c88158ba65af691be603e2b1038269dc1d61e3ab6bd4c0561"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/face_decomposition.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/face_decomposition.csv",
+      "bytes": 889,
+      "sha256": "fb2eef210dc1929f5efb86111ba49a510703eb050546ba9e9ce9b33a7ed0d05c"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/cells/EJ230_xp650/face_decomposition.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/cells/EJ230_xp650/face_decomposition.meta.json",
+      "bytes": 1160,
+      "sha256": "665cfe6e5badb035c4fc5cc83ee76082f59fe6c0a19c7002397a6c07f6b50deb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/contract_cells.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/contract_cells.csv",
+      "bytes": 6867,
+      "sha256": "5e6e0f07914fd5e2229d245e191aa793328f5a949027be6ae5e93ac72096c5bb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/contract_cells.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/contract_cells.meta.json",
+      "bytes": 1182,
+      "sha256": "673fd4133d08999c9ebe22b8630a70a52d60e58439fa87b1a6dfadf917583718"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/contract_results.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/contract_results.json",
+      "bytes": 140465,
+      "sha256": "ba99f05cbf254ddf52eb7f620e8e401ee0708dcd6d8f76d7401c5dc368a660f3"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/escape_profiles.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/escape_profiles.csv",
+      "bytes": 1418,
+      "sha256": "2e67a3d78f7ba95dacefb9fc593ebd51098edd995aa28051244c7ad96414dae0"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/escape_profiles.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/escape_profiles.meta.json",
+      "bytes": 898,
+      "sha256": "bbb9c1d5eedb77f549ebcd4e74c8f21adb653c2bcbe1487f9c887f03654cd049"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/input_inventory.csv",
+      "archived": "analysis/reports/exec42/campaign/analysis/input_inventory.csv",
+      "bytes": 9361,
+      "sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/input_inventory.meta.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/input_inventory.meta.json",
+      "bytes": 863,
+      "sha256": "b23dc5d6b0613de30e2580918ae9c2e5c29775f61d2e4f69aba08d55f74b0335"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/analysis/input_verification.json",
+      "archived": "analysis/reports/exec42/campaign/analysis/input_verification.json",
+      "bytes": 1709,
+      "sha256": "1d461a01312ad9572ec6e0f58d664a249d0c300c5b5a58e6b5cd077c3a1aac5d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/campaign.json",
+      "archived": "analysis/reports/exec42/campaign/grid/campaign.json",
+      "bytes": 14211,
+      "sha256": "4a06fdd4bcc616b0e0827cbc189276496ca52c5820f500cb544a28d56f3e884e"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm200/attempts/3e6fc705cc0f4c38aa7638cb71f7b2ef/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm200/attempts/3e6fc705cc0f4c38aa7638cb71f7b2ef/simulation.meta.json",
+      "bytes": 4666,
+      "sha256": "e0581b6abdb2dee21d0ad47de026facb2947690d0d3efd24dc5f0566e7ed8e82"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm200/state.json",
+      "bytes": 4666,
+      "sha256": "e0581b6abdb2dee21d0ad47de026facb2947690d0d3efd24dc5f0566e7ed8e82"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm500/attempts/1abedbd37a404c8d9aad684ed46c5995/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm500/attempts/1abedbd37a404c8d9aad684ed46c5995/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "41a561f1774d0db4b815c6906d5c3882d973887005c7f6b6423dbaee705ba4ca"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm500/state.json",
+      "bytes": 4668,
+      "sha256": "41a561f1774d0db4b815c6906d5c3882d973887005c7f6b6423dbaee705ba4ca"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm650/attempts/8b4b3f0204f2400292bde4dee8fb82b3/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm650/attempts/8b4b3f0204f2400292bde4dee8fb82b3/simulation.meta.json",
+      "bytes": 4669,
+      "sha256": "bd5e77e721184140f12d79695797ded76fc9239411c3fc1ef2fbef3babc4da10"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xm650/state.json",
+      "bytes": 4669,
+      "sha256": "bd5e77e721184140f12d79695797ded76fc9239411c3fc1ef2fbef3babc4da10"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp0/attempts/da248c5a214145babc620a23b1328606/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp0/attempts/da248c5a214145babc620a23b1328606/simulation.meta.json",
+      "bytes": 4648,
+      "sha256": "370623c3a867c868a4d57aeea45a4e6fc4293bd0202b3b768d0772ab27d1179a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp0/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp0/state.json",
+      "bytes": 4648,
+      "sha256": "370623c3a867c868a4d57aeea45a4e6fc4293bd0202b3b768d0772ab27d1179a"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp200/attempts/34bd901a9a924a379c53289da2d61f61/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp200/attempts/34bd901a9a924a379c53289da2d61f61/simulation.meta.json",
+      "bytes": 4666,
+      "sha256": "5b65eaa43fd50431e5f9ce011d4f229d14e7e293bfdcb0aceed53c4b2eb55e7f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp200/state.json",
+      "bytes": 4666,
+      "sha256": "5b65eaa43fd50431e5f9ce011d4f229d14e7e293bfdcb0aceed53c4b2eb55e7f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp500/attempts/cda73935717c4441a2364ad7b7f0797b/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp500/attempts/cda73935717c4441a2364ad7b7f0797b/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "a4e18cc1b9cdb1f14b7c562ba2e386f2ea4b9f0df89b70f49396e09bbe82f252"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp500/state.json",
+      "bytes": 4668,
+      "sha256": "a4e18cc1b9cdb1f14b7c562ba2e386f2ea4b9f0df89b70f49396e09bbe82f252"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "66a0edd98ef21c9eefd022313f48db707c6a078e2002228df9335fd7c5f4bd43"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ200_xp650/state.json",
+      "bytes": 4668,
+      "sha256": "66a0edd98ef21c9eefd022313f48db707c6a078e2002228df9335fd7c5f4bd43"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm200/attempts/58bcff04de5249c482e63f2881db132d/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm200/attempts/58bcff04de5249c482e63f2881db132d/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "b62ddc748470ba3207a5bd591ef3ec937f87f29be6988b3d13f3f26c0bbc6c6f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm200/state.json",
+      "bytes": 4668,
+      "sha256": "b62ddc748470ba3207a5bd591ef3ec937f87f29be6988b3d13f3f26c0bbc6c6f"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm500/attempts/89c90fe0f09f470690a6cb4aa3b69e6b/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm500/attempts/89c90fe0f09f470690a6cb4aa3b69e6b/simulation.meta.json",
+      "bytes": 4669,
+      "sha256": "78637df7f80843f2adf11564b8561c8f6c5164583958d33f03c679d4da21bb4b"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm500/state.json",
+      "bytes": 4669,
+      "sha256": "78637df7f80843f2adf11564b8561c8f6c5164583958d33f03c679d4da21bb4b"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm650/attempts/7d7319c8b6844419a1b58618d1e69d0d/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm650/attempts/7d7319c8b6844419a1b58618d1e69d0d/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "72e8d606cb0456f6032e81c4e8706b6560650cfcd36e3e6228debdd1f952c748"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xm650/state.json",
+      "bytes": 4668,
+      "sha256": "72e8d606cb0456f6032e81c4e8706b6560650cfcd36e3e6228debdd1f952c748"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp0/attempts/a64237bbbbc1415dbbf2b50155884a7e/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp0/attempts/a64237bbbbc1415dbbf2b50155884a7e/simulation.meta.json",
+      "bytes": 4646,
+      "sha256": "cab2f7ea3cb521309c2b8e2d0ffdb96748801b590de690d8d10b709d66e26641"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp0/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp0/state.json",
+      "bytes": 4646,
+      "sha256": "cab2f7ea3cb521309c2b8e2d0ffdb96748801b590de690d8d10b709d66e26641"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp200/attempts/5543a9159de548839176478a553965e5/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp200/attempts/5543a9159de548839176478a553965e5/simulation.meta.json",
+      "bytes": 4667,
+      "sha256": "bd040a5d20a8bebcd0de4c73603cb87ecf25d434c60dbfbc8e6a31a15e3347fa"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp200/state.json",
+      "bytes": 4667,
+      "sha256": "bd040a5d20a8bebcd0de4c73603cb87ecf25d434c60dbfbc8e6a31a15e3347fa"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp500/attempts/0adfe01a664e4b2691f2604f68be7b9f/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp500/attempts/0adfe01a664e4b2691f2604f68be7b9f/simulation.meta.json",
+      "bytes": 4667,
+      "sha256": "12abe0e31870ab106d44a6465dc17f72636d5dea018854f95128cfcaabda1f4d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp500/state.json",
+      "bytes": 4667,
+      "sha256": "12abe0e31870ab106d44a6465dc17f72636d5dea018854f95128cfcaabda1f4d"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp650/attempts/e8790d8e89c643939a692412d0f38013/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp650/attempts/e8790d8e89c643939a692412d0f38013/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "5cb0f88dc74175da42fe5b219ff39ccc6e88d3c8a4ae52845812a2f398aa5160"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ204_xp650/state.json",
+      "bytes": 4668,
+      "sha256": "5cb0f88dc74175da42fe5b219ff39ccc6e88d3c8a4ae52845812a2f398aa5160"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm200/attempts/e5c24a02cdaf4532bc14b955af131fbd/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm200/attempts/e5c24a02cdaf4532bc14b955af131fbd/simulation.meta.json",
+      "bytes": 4666,
+      "sha256": "14568295dbed4877718c4a0c8773fecaf10ffd0fdad1b6811a2b228831937741"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm200/state.json",
+      "bytes": 4666,
+      "sha256": "14568295dbed4877718c4a0c8773fecaf10ffd0fdad1b6811a2b228831937741"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm500/attempts/9bc1c72e154b4f6e97c899e83ee58287/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm500/attempts/9bc1c72e154b4f6e97c899e83ee58287/simulation.meta.json",
+      "bytes": 4667,
+      "sha256": "313a44068d60db781a7c4177096296c093f7efb63f4acd76a88ef9c89e6a96fb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm500/state.json",
+      "bytes": 4667,
+      "sha256": "313a44068d60db781a7c4177096296c093f7efb63f4acd76a88ef9c89e6a96fb"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm650/attempts/e34efc3371b24d3eac656cc5e65fe6e8/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm650/attempts/e34efc3371b24d3eac656cc5e65fe6e8/simulation.meta.json",
+      "bytes": 4669,
+      "sha256": "ef72ccb8186cb44fc2a458ee527c854e452ed9cf1f645a8325490f31ea3cab36"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xm650/state.json",
+      "bytes": 4669,
+      "sha256": "ef72ccb8186cb44fc2a458ee527c854e452ed9cf1f645a8325490f31ea3cab36"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp0/attempts/795feccaf2d84780adb07a792b2ca261/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp0/attempts/795feccaf2d84780adb07a792b2ca261/simulation.meta.json",
+      "bytes": 4649,
+      "sha256": "3433b0ffeb672671c41d1a9ed9ed6208d1a7b341612c52824af570791fb66a97"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp0/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp0/state.json",
+      "bytes": 4649,
+      "sha256": "3433b0ffeb672671c41d1a9ed9ed6208d1a7b341612c52824af570791fb66a97"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp200/attempts/770803007b974cc1aa829e3f18ae3b9e/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp200/attempts/770803007b974cc1aa829e3f18ae3b9e/simulation.meta.json",
+      "bytes": 4666,
+      "sha256": "96484802b31c0ba258e04379c470c43884ff7c9f564756e4e07a2e5ddbb17a91"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp200/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp200/state.json",
+      "bytes": 4666,
+      "sha256": "96484802b31c0ba258e04379c470c43884ff7c9f564756e4e07a2e5ddbb17a91"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp500/attempts/c211256bc6af4dbfaf338daef7d1ea6c/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp500/attempts/c211256bc6af4dbfaf338daef7d1ea6c/simulation.meta.json",
+      "bytes": 4668,
+      "sha256": "fbdf03ee34a16716bb94dd3a386151a5427557472d7e3b987355464fa742b268"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp500/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp500/state.json",
+      "bytes": 4668,
+      "sha256": "fbdf03ee34a16716bb94dd3a386151a5427557472d7e3b987355464fa742b268"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp650/attempts/916a2d83686048cfa80daa2460f0cde5/simulation.meta.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp650/attempts/916a2d83686048cfa80daa2460f0cde5/simulation.meta.json",
+      "bytes": 4667,
+      "sha256": "859ffed300e28b607bc49331248bf2b29a037aefb24cd4bf29db6bbe22a7c831"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp650/state.json",
+      "archived": "analysis/reports/exec42/campaign/grid/cells/EJ230_xp650/state.json",
+      "bytes": 4667,
+      "sha256": "859ffed300e28b607bc49331248bf2b29a037aefb24cd4bf29db6bbe22a7c831"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/driver.json",
+      "archived": "analysis/reports/exec42/campaign/grid/driver.json",
+      "bytes": 267,
+      "sha256": "147614d9d9675a2d72919e0fefaa434d15f86c4d4d56aee94c7fb374398789f8"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/exec42_handoff.json",
+      "archived": "analysis/reports/exec42/campaign/grid/exec42_handoff.json",
+      "bytes": 3257,
+      "sha256": "3ea359eca430aff333bd6ee36b901cab80e041efac76a03365a4f1c1ea2d4caf"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/preflight.json",
+      "archived": "analysis/reports/exec42/campaign/grid/preflight.json",
+      "bytes": 684,
+      "sha256": "7f64d489b15aff300174167bb9192a0ff513a1d18f823190152443b212d95255"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/preflight_dry_run.json",
+      "archived": "analysis/reports/exec42/campaign/grid/preflight_dry_run.json",
+      "bytes": 684,
+      "sha256": "878bdaf7969910007142a5f4f8b453471ce8d3c35f35591b829d86e499384fb0"
+    },
+    {
+      "source": "/home/rrios/exec42_20260913/grid/status_before_launch.json",
+      "archived": "analysis/reports/exec42/campaign/grid/status_before_launch.json",
+      "bytes": 724,
+      "sha256": "d778090c7dac43ae1abb2c03212728a062f636b55de6a2b1659070645153d47b"
+    },
+    {
+      "source": "/home/rrios/REPORT_EXEC42A_20260913.md",
+      "archived": "analysis/reports/exec42/REPORT_EXEC42A_20260913.md",
+      "bytes": 11226,
+      "sha256": "9cb96156bb86d9423f32d39417e7b8441a643903aec1f24ccfa89c0f45831fd5"
+    },
+    {
+      "source": "/home/rrios/REPORT_EXEC42_20260914.md",
+      "archived": "analysis/reports/exec42/REPORT_EXEC42_20260914.md",
+      "bytes": 17776,
+      "sha256": "4baa869db5ac99e81f8f937c2bf49c894911a8cf8ae979c983f9b1316772b072"
+    }
+  ]
+}

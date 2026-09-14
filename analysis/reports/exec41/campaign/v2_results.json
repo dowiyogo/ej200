@@ -1,0 +1,176 @@
+{
+  "metadata": {
+    "created_utc": "2026-09-13T20:32:55.657129+00:00",
+    "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+    "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+    "N": 2000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "bootstrap_seed": 41091301,
+    "bootstrap_replicates": 500,
+    "bootstrap_unit": "generated event",
+    "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+    "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "script_sha256": "60c6a93eea509d651ecc4c71c280a3a3aea5073bb5583465a6bc9a38642af893"
+  },
+  "H1": {
+    "value": 0.2568982359252689,
+    "se": 7.075999152758862e-05,
+    "numerator": 10140104,
+    "denominator": 39471287,
+    "lower_3se": 0.2566859559506861,
+    "lower_bound": 0.226172,
+    "status": "PASS"
+  },
+  "faces": [
+    {
+      "value": 0.22599375259431062,
+      "se": 0.00011932092705887678,
+      "numerator": 3991875,
+      "denominator": 17663652,
+      "face": "+Z",
+      "encounter_share": 0.4475063607629516,
+      "encounter_share_se": 0.0001609835213355923,
+      "escape_contribution_to_all_encounters": 0.10113364177864279,
+      "escape_share": 0.39367199784144224,
+      "compatible_with_0p226172_3se": true
+    },
+    {
+      "value": 0.22541357939143275,
+      "se": 0.00011829416415118756,
+      "numerator": 3996317,
+      "denominator": 17728821,
+      "face": "-Z",
+      "encounter_share": 0.4491574090300121,
+      "encounter_share_se": 0.0001690141120340135,
+      "escape_contribution_to_all_encounters": 0.10124617927963686,
+      "escape_share": 0.3941100604096368,
+      "compatible_with_0p226172_3se": false
+    },
+    {
+      "value": 0.5773081492181519,
+      "se": 0.00033820182109559494,
+      "numerator": 1170199,
+      "denominator": 2026992,
+      "face": "-Y",
+      "encounter_share": 0.051353582668839756,
+      "encounter_share_se": 4.391552973902191e-05,
+      "escape_contribution_to_all_encounters": 0.02964684176626924,
+      "escape_share": 0.11540305701006617,
+      "compatible_with_0p226172_3se": false
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0,
+      "denominator": 1465,
+      "face": "-X_SENSOR",
+      "encounter_share": 3.711558733820866e-05,
+      "encounter_share_se": 1.0111747355891623e-06,
+      "escape_contribution_to_all_encounters": 0.0,
+      "escape_share": 0.0,
+      "compatible_with_0p226172_3se": false
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0,
+      "denominator": 1470,
+      "face": "+X_SENSOR",
+      "encounter_share": 3.724226169772473e-05,
+      "encounter_share_se": 1.0296461056135347e-06,
+      "escape_contribution_to_all_encounters": 0.0,
+      "escape_share": 0.0,
+      "compatible_with_0p226172_3se": false
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0,
+      "denominator": 375004,
+      "face": "+Y_SENSOR",
+      "encounter_share": 0.0095006783031929,
+      "encounter_share_se": 2.155967119501335e-05,
+      "escape_contribution_to_all_encounters": 0.0,
+      "escape_share": 0.0,
+      "compatible_with_0p226172_3se": false
+    },
+    {
+      "value": 0.5864884224285688,
+      "se": 0.0005344090840399566,
+      "numerator": 981713,
+      "denominator": 1673883,
+      "face": "OPEN_+Y_OR_+/-X_UNRESOLVED",
+      "encounter_share": 0.04240761138596773,
+      "encounter_share_se": 7.470630491061459e-05,
+      "escape_contribution_to_all_encounters": 0.024871573100720024,
+      "escape_share": 0.09681488473885475,
+      "compatible_with_0p226172_3se": false
+    }
+  ],
+  "mechanism": {
+    "nearest_Z_escaped": 7988192,
+    "other_faces_escaped": 2151912,
+    "other_faces_share_of_escaped": 0.21221794174892092,
+    "aggregate_excess_over_bound": 0.03072623592526888,
+    "interpretation": "Arithmetic decomposition only; unresolved WorldPV rows are not assigned to +Y or +/-X."
+  },
+  "H2": {
+    "status": "DESCRIPTIVE_NO_PASS_FAIL",
+    "uniform": {
+      "chi_square_event_bootstrap": 4251944.444882358,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "old_flux_p_2mu": {
+      "chi_square_event_bootstrap": 4249308.52761883,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "low_mu": {
+      "range": [
+        0.0,
+        0.2
+      ],
+      "observed_probability": 0.10358314386860504,
+      "uniform_probability": 0.2,
+      "difference": -0.09641685613139497,
+      "bootstrap_se": 5.695359433144309e-05
+    },
+    "mean_cosine_binned": 0.5734322426578085,
+    "photons": 39471287
+  },
+  "old_EXEC40_hypothesis": {
+    "escape_fraction": 0.2568982359252689,
+    "escape_se": 7.075999152758862e-05,
+    "expected_interval": [
+      0.36,
+      0.4
+    ],
+    "status": "FAIL_RETAINED_HYPOTHESIS_PHYSICALLY_INAPPROPRIATE",
+    "p_2mu": {
+      "chi_square_event_bootstrap": 4249308.52761883,
+      "rank": 19,
+      "p_value": 0.0
+    }
+  },
+  "geometry_mm": {
+    "source_x": 0,
+    "source_y": 0,
+    "source_z_range": [
+      -5,
+      5
+    ],
+    "nearest_Z_distance_range": [
+      0,
+      5
+    ],
+    "minus_Y_distance": 30,
+    "plus_Y_plane_distance": 30,
+    "minus_X_distance": 700,
+    "plus_X_distance": 700
+  },
+  "face_resolution_limitation": "BarPV->WorldPV cannot distinguish open +Y from +/-X without position or normal components."
+}

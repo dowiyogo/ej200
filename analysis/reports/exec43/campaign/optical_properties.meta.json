@@ -1,0 +1,41 @@
+{
+  "created_utc": "2026-09-14T08:39:29.465371+00:00",
+  "N_cells": 21,
+  "N_per_cell": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 43091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "inventory": "/home/rrios/exec42_20260913/analysis/input_inventory.csv",
+  "inventory_sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7",
+  "exec42_results": "/home/rrios/exec42_20260913/analysis/contract_results.json",
+  "exec42_results_sha256": "ba99f05cbf254ddf52eb7f620e8e401ee0708dcd6d8f76d7401c5dc368a660f3",
+  "preregistration": "analysis/validation/EXEC43_PREREGISTRATION.md",
+  "preregistration_sha256": "159ca702a34836bf9e94dac01e5a8e1af02e294d76bbd15087a552b78a15f96e",
+  "script_sha256": "7af7b3f2c86dcf3a87f916c7fc5da93f4f7f82512daf2300559efdc5ddd87de1",
+  "columns": [
+    "material",
+    "opsc_code",
+    "emission_peak_nm",
+    "emission_mean_nm",
+    "n_effective",
+    "geometric_escape",
+    "measured_escape_mean_x",
+    "measured_escape_min_x",
+    "measured_escape_max_x",
+    "measured_Z_conditional_escape",
+    "attenuation_mm",
+    "rindex_path",
+    "rindex_sha256",
+    "spectrum_path",
+    "spectrum_sha256",
+    "absorption_path",
+    "absorption_sha256"
+  ],
+  "rows": 3,
+  "csv_sha256": "9ae5d9ef075483dcefcd3c276f19040113b3c671e637b38b50f03c1f0a0f209b",
+  "root_sha256": "9f577902f5afa93ddad315c34b28d443e116f4ac219340ea9a6813943803ee6a"
+}

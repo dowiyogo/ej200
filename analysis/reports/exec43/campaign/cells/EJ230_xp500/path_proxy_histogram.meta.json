@@ -1,0 +1,36 @@
+{
+  "created_utc": "2026-09-14T08:39:29.465371+00:00",
+  "N_cells": 21,
+  "N_per_cell": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 43091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "inventory": "/home/rrios/exec42_20260913/analysis/input_inventory.csv",
+  "inventory_sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7",
+  "exec42_results": "/home/rrios/exec42_20260913/analysis/contract_results.json",
+  "exec42_results_sha256": "ba99f05cbf254ddf52eb7f620e8e401ee0708dcd6d8f76d7401c5dc368a660f3",
+  "preregistration": "analysis/validation/EXEC43_PREREGISTRATION.md",
+  "preregistration_sha256": "159ca702a34836bf9e94dac01e5a8e1af02e294d76bbd15087a552b78a15f96e",
+  "script_sha256": "7af7b3f2c86dcf3a87f916c7fc5da93f4f7f82512daf2300559efdc5ddd87de1",
+  "cell_id": "EJ230_xp500",
+  "material": "EJ-230",
+  "x_mm": 500,
+  "source_root": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp500/attempts/c211256bc6af4dbfaf338daef7d1ea6c/photon_hits_run000.root",
+  "source_root_sha256": "f16b1fcbdf4d102f71088a26741257efc9c2589072d5e3e47d9eb7d12ba5ca3a",
+  "cosine_bins": 2000,
+  "selected_first_encounters": 184459861,
+  "columns": [
+    "face",
+    "outcome",
+    "cos_bin_low",
+    "cos_bin_high",
+    "count"
+  ],
+  "rows": 13593,
+  "csv_sha256": "b9846dbfa9c1a0e8fc241a346f2f2138f77dd039b9522365f725f3b8adcd2ba9",
+  "root_sha256": "c74562f5e268c7d79efb77e35d40581118072461842c2342b8603bc3f7e96e69"
+}

@@ -1,0 +1,19 @@
+{
+  "utc": "2026-09-13T21:40:20.578511+00:00",
+  "status": "PASS",
+  "disk_projected_bytes": 210966264873,
+  "disk_projection_rule": "pilot_ROOT_size * target_N/pilot_N * job_count * 1.3",
+  "pilot_ROOT_size": 1545540402,
+  "pilot_N_generated": 2000,
+  "target_N_generated": 10000,
+  "job_count": 21,
+  "disk_available_bytes": 1425954033664,
+  "expected_six_process_rss_bytes": 1152786432,
+  "conservative_six_cell_budget_bytes": 3916185600,
+  "memory_available_bytes": 118758518784,
+  "macros_readable": 21,
+  "fresh_attempt_output_directories": 21,
+  "diagnostics": false,
+  "binary_sha256": "ec0d4498aad912728e5a3134f357198527aeeca7c29da944ca838ece4eecf1b4",
+  "timeout_s": null
+}

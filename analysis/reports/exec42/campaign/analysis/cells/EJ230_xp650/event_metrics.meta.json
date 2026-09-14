@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-09-14T08:05:47.719824+00:00",
+  "cell_id": "EJ230_xp650",
+  "source_root": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp650/attempts/916a2d83686048cfa80daa2460f0cde5/photon_hits_run000.root",
+  "source_root_sha256": "3bfdf0902f8f2f8fb8fdb9961efee496c83ca9c0c62155db73d731ffd3dfd2ca",
+  "N": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "workers_from_manifest": 4,
+  "bootstrap_seed": 42091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "preregistration": "analysis/validation/EXEC42_H3_PREREGISTRATION.md",
+  "preregistration_sha256": "37e15cf4a26271075babc90a1efc2f1c0d0a8ce1a0be6ea64e48e1d78053d6f4",
+  "script_sha256": "3d88b9cc7c826ec97fb33872d8d29beb1d75cecec3461e49f69475929990956d",
+  "columns": [
+    "event_id",
+    "produced_scint",
+    "edep_total_MeV",
+    "edep_optical_MeV",
+    "edep_nonoptical_MeV",
+    "V2_encounters",
+    "V2_escaped",
+    "V5_incident",
+    "V5_matched",
+    "V5_expected_PDE_sum",
+    "SD_detected",
+    "SD_orphan",
+    "npe_left",
+    "npe_right"
+  ],
+  "rows": 10000,
+  "csv_sha256": "52a62715d3017046a7dbec6ae954eeb56cf8c91516a87dc55c92b9aacedfa903",
+  "root_sha256": "66ac294778930491eeba3b982ae0b2a79873634b2cd0760d13c418142fd95867"
+}

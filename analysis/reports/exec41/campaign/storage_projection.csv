@@ -1,0 +1,7 @@
+quantity,bytes,measurement
+original_full,2380261978,measured
+original_encounter_compressed,1660711667,measured
+filtered_encounter_file,270101248,measured
+unchanged_trees_compressed,717778275,measured
+estimated_reduced_full,987879523,estimate
+estimated_21_cells_10000_events,103727349915,estimate_linear_from_N2000

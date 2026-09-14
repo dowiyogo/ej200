@@ -1,0 +1,9 @@
+finding,file,line_start,line_end,evidence
+G4SteppingManager automatic SD,/home/tdship/opt/geant4-v11.4.0/source/tracking/src/G4SteppingManager.cc,242,254,Calls Hit for the pre-step sensitive volume before UserSteppingAction.
+G4OpBoundary Detection SD,/home/tdship/opt/geant4-v11.4.0/source/processes/optical/src/G4OpBoundaryProcess.cc,558,559,Invokes the post-step SD only for boundary status Detection.
+SiPMSD permissive boundary gate,/home/rrios/ej200_exec40_20260913/src/SiPMSD.cc,47,53,Accepts either pre-step or post-step fGeomBoundary.
+SiPMSD fallback and unconditional hit,/home/rrios/ej200_exec40_20260913/src/SiPMSD.cc,55,113,"Falls back to track volume, records a hit, then kills the track without checking OpBoundary status."
+EXEC40 incident gate,/home/rrios/ej200_exec40_20260913/src/SiPMObservation.cc,49,80,Requires a post-step sensor and accepted boundary status.
+Geant4 nominal scintillation mean,/home/tdship/opt/geant4-v11.4.0/source/processes/electromagnetic/xrays/src/G4Scintillation.cc,310,347,"Uses configured yield times visible/total parent-step deposit, then Gaussian/Poisson fluctuations."
+Geant4 optical-photon applicability,/home/tdship/opt/geant4-v11.4.0/source/processes/electromagnetic/xrays/src/G4Scintillation.cc,150,153,Accepts every non-short-lived particle; opticalphoton is therefore applicable in this installed source.
+Geant4 process registration,/home/tdship/opt/geant4-v11.4.0/source/physics_lists/constructors/electromagnetic/src/G4OpticalPhysics.cc,151,175,Registers G4Scintillation for every particle for which IsApplicable returns true.

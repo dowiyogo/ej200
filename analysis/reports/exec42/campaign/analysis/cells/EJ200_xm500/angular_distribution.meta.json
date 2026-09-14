@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-09-14T07:54:39.947841+00:00",
+  "cell_id": "EJ200_xm500",
+  "source_root": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm500/attempts/1abedbd37a404c8d9aad684ed46c5995/photon_hits_run000.root",
+  "source_root_sha256": "5de792c5ced3b008be6e36bffc5a3467cb6b117cee279c49e0565c91832f70d0",
+  "N": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "workers_from_manifest": 4,
+  "bootstrap_seed": 42091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "preregistration": "analysis/validation/EXEC42_H3_PREREGISTRATION.md",
+  "preregistration_sha256": "37e15cf4a26271075babc90a1efc2f1c0d0a8ce1a0be6ea64e48e1d78053d6f4",
+  "script_sha256": "3d88b9cc7c826ec97fb33872d8d29beb1d75cecec3461e49f69475929990956d",
+  "columns": [
+    "bin_low",
+    "bin_high",
+    "photons",
+    "probability",
+    "probability_se",
+    "uniform_probability",
+    "old_p_2mu_probability"
+  ],
+  "rows": 20,
+  "csv_sha256": "324db0971057a1a347415e5b36b9905eccf9c360c039db9a8da9098c159a361d",
+  "root_sha256": "05d044ef17934ac9e9fe4ea17975b1b2bb2a609fc9889fd815c8b9fd9e2f0b6f"
+}

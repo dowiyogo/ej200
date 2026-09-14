@@ -1,0 +1,180 @@
+{
+  "metadata": {
+    "created_utc": "2026-09-14T08:01:51.235443+00:00",
+    "cell_id": "EJ204_xp650",
+    "source_root": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp650/attempts/e8790d8e89c643939a692412d0f38013/photon_hits_run000.root",
+    "source_root_sha256": "74a9bef3932dae63aba8b22078c8c0355e901214794f833fddc57a711260e3a8",
+    "N": 10000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "workers_from_manifest": 4,
+    "bootstrap_seed": 42091401,
+    "bootstrap_replicates": 500,
+    "bootstrap_unit": "generated event; common weights across all cells",
+    "preregistration": "analysis/validation/EXEC42_H3_PREREGISTRATION.md",
+    "preregistration_sha256": "37e15cf4a26271075babc90a1efc2f1c0d0a8ce1a0be6ea64e48e1d78053d6f4",
+    "script_sha256": "3d88b9cc7c826ec97fb33872d8d29beb1d75cecec3461e49f69475929990956d"
+  },
+  "configuration": {
+    "cell_id": "EJ204_xp650",
+    "material": "EJ-204",
+    "opsc_code": "OPSC-101",
+    "x_mm": 650,
+    "events": 10000,
+    "workers_manifest": 4,
+    "eventModulo_manifest": 1,
+    "seed1": 26092601,
+    "seed2": 8349041,
+    "PDE_path": "/home/rrios/ej200_exec40_20260913/data/sipm/AFBR-S4N66P024M_pde.txt",
+    "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7",
+    "root_path": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp650/attempts/e8790d8e89c643939a692412d0f38013/photon_hits_run000.root",
+    "root_sha256": "74a9bef3932dae63aba8b22078c8c0355e901214794f833fddc57a711260e3a8",
+    "root_bytes": 8239979344,
+    "wall_s": 3043.3804665909847
+  },
+  "Npe": {
+    "left_mean": 140.3753,
+    "right_mean": 2395.2265,
+    "per_end_mean": 1267.8009
+  },
+  "V1_primary": {
+    "value": 0.9999103662528701,
+    "se": 7.384088886026387e-05,
+    "numerator": 200693976.0,
+    "denominator": 200711966.56565708,
+    "lower_3se": 0.9996888435862893,
+    "upper_3se": 1.0001318889194508,
+    "nominal_yield_ph_per_MeV": 10400.0,
+    "status": "PASS"
+  },
+  "V1_nonoptical_secondary": {
+    "value": 1.0155667516144309,
+    "se": 7.611060880377007e-05,
+    "numerator": 200693976.0,
+    "denominator": 197617710.1908465,
+    "status": "DESCRIPTIVE_SECONDARY"
+  },
+  "V2_H1": {
+    "value": 0.26309471456232686,
+    "se": 3.178306593768397e-05,
+    "numerator": 52043700.0,
+    "denominator": 197813552.0,
+    "lower_3se": 0.2629993653645138,
+    "lower_bound": 0.226172,
+    "status": "PASS"
+  },
+  "V2_faces": [
+    {
+      "value": 0.2281696536163069,
+      "se": 5.404685079490649e-05,
+      "numerator": 20005591.0,
+      "denominator": 87678579.0,
+      "face": "+Z",
+      "encounter_share": 0.44323848448967745,
+      "encounter_share_se": 7.111904826658572e-05,
+      "escape_share": 0.38439986011755506
+    },
+    {
+      "value": 0.22749256151104943,
+      "se": 5.5639551078696734e-05,
+      "numerator": 20016378.0,
+      "denominator": 87986956.0,
+      "face": "-Z",
+      "encounter_share": 0.44479741206001905,
+      "encounter_share_se": 7.218017476893053e-05,
+      "escape_share": 0.38460712824030574
+    },
+    {
+      "value": 0.6200272075779708,
+      "se": 0.00016573878927979142,
+      "numerator": 5868108.0,
+      "denominator": 9464275.0,
+      "face": "-Y",
+      "encounter_share": 0.04784442170069319,
+      "encounter_share_se": 2.3311238232795115e-05,
+      "escape_share": 0.11275347448394331
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0.0,
+      "denominator": 1592.0,
+      "face": "-X_SENSOR",
+      "encounter_share": 8.047982475942801e-06,
+      "encounter_share_se": 2.0312416941926478e-07,
+      "escape_share": 0.0
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0.0,
+      "denominator": 1568499.0,
+      "face": "+X_SENSOR",
+      "encounter_share": 0.007929178684380532,
+      "encounter_share_se": 8.182936965261072e-06,
+      "escape_share": 0.0
+    },
+    {
+      "value": 0.0,
+      "se": 0.0,
+      "numerator": 0.0,
+      "denominator": 1861956.0,
+      "face": "+Y_SENSOR",
+      "encounter_share": 0.009412681695337032,
+      "encounter_share_se": 7.5162562157200555e-06,
+      "escape_share": 0.0
+    },
+    {
+      "value": 0.6651346591084121,
+      "se": 0.00016796307800281575,
+      "numerator": 6153623.0,
+      "denominator": 9251695.0,
+      "face": "OPEN_+Y_OR_+/-X_UNRESOLVED",
+      "encounter_share": 0.046769773387416856,
+      "encounter_share_se": 1.945570563803813e-05,
+      "escape_share": 0.1182395371581959
+    }
+  ],
+  "V2_H2": {
+    "status": "DESCRIPTIVE_NO_PASS_FAIL",
+    "uniform": {
+      "chi_square": 24768601.067594532,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "old_p_2mu": {
+      "chi_square": 20634219.421167236,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "photons": 197813552,
+    "low_mu_probability": 0.09458342368777645,
+    "low_mu_uniform": 0.2,
+    "low_mu_difference": -0.10541657631222356,
+    "low_mu_se": 2.8162174764325186e-05
+  },
+  "V5_matched": {
+    "value": 0.6126477055077466,
+    "se": 4.806188072758734e-05,
+    "numerator": 62482240.0,
+    "denominator": 101987226.0,
+    "expected_incident_PDE": {
+      "value": 0.6126402557378067,
+      "se": 1.0797971390923601e-05,
+      "numerator": 62481480.21862949,
+      "denominator": 101987226.0
+    },
+    "difference": 7.449769939937845e-06,
+    "difference_se": 4.5998807987430816e-05,
+    "status": "PASS"
+  },
+  "SD_orphan_fraction": {
+    "value": 0.015226234756511043,
+    "se": 1.5100675718641634e-05,
+    "numerator": 966079.0,
+    "denominator": 63448319.0,
+    "status": "DESCRIPTIVE_ACCOUNTING_PATH"
+  }
+}

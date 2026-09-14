@@ -1,0 +1,11 @@
+{
+  "utc": "2026-09-13T21:40:20.488056+00:00",
+  "process": {
+    "pid": 1345085,
+    "start_ticks": "90820462",
+    "boot": "33a6939d-089f-4f2c-932e-d440e330f0b6"
+  },
+  "detached": true,
+  "method": "setsid via Popen(start_new_session=True)",
+  "timeout_s": null
+}

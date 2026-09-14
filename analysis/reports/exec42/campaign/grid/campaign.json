@@ -1,0 +1,280 @@
+{
+  "schema": "EXEC42 production-observation grid v1",
+  "prepared_utc": "2026-09-13T21:28:22.061059+00:00",
+  "output_directory": "/home/rrios/exec42_20260913/grid",
+  "manifest": "/home/rrios/exec42_20260913/grid/manifest.jsonl",
+  "binary": "/home/rrios/exec40_20260913/build_off/ej200_bar_sim",
+  "binary_sha256": "ec0d4498aad912728e5a3134f357198527aeeca7c29da944ca838ece4eecf1b4",
+  "simulation_commit": "b35ee84acadef12c93506e0720580c91f901fcbf",
+  "pilot_ROOT": "/home/rrios/exec42_20260913/a2_validation/photon_hits_run000.root",
+  "pilot_ROOT_size": 1545540402,
+  "pilot_N_generated": 2000,
+  "PDE_path": "/home/rrios/ej200_exec40_20260913/data/sipm/AFBR-S4N66P024M_pde.txt",
+  "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7",
+  "geant4_version": "11.4.0",
+  "evidence_sha256": {
+    "/home/rrios/exec34r_20260912/campaign.json": "a7b24f2b2659e1d60ea79dced0abf076a3dbdfa4dc2a9c572909106e8c124a49",
+    "/home/rrios/EXEC34_HANDOFF_20260911.json": "ad60420f42472145f124e0cc13c2d29f916f15e0979a6b1aebaed433b4832183",
+    "/home/rrios/exec33_20260911/scaling.json": "4c7ed29e0eb1ad5011cd9c90331b95512d70df9cfc9f9349540dbd0d5eae2319",
+    "/home/rrios/exec33_20260911/event_reproducibility.json": "71ddbc41a8a3b28ad2050a43d048826bf458a9a4f23e18114a2ea7eb2033ea69",
+    "/home/rrios/ej200_exec40_20260913/analysis/validation/EXEC40_PREREGISTRATION.md": "cd13d28db1811e5c74d9b17d60d1be7aa0971f02ff8768d48528126602fb5531",
+    "/home/rrios/ej200_exec40_20260913/analysis/validation/EXEC41_PREREGISTRATION.md": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "/home/rrios/exec42_20260913/a2_validation/a2_results.json": "1ecd594cb7203f30e8c86bd3e5b42d76bd9f482e70e183d5c1f109fd0a86c985"
+  },
+  "material_resources_sha256": {
+    "/home/rrios/exec40_20260913/build_off/sslg4/macros/oscnt/opsc-100.mac": "3eb15270ab35a51a4465f36c5f212809f3f7625dbdb04728403e22203b3e46f3",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/absLength.txt": "a8051a1e98da5053d7731eccda420cf9fa3ea418482e9db046db1ddf82caa171",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/rIndex.txt": "9dc7dcfd4e5271c19a194e84f8a788a2816557c5e39f01676d4392719bc41995",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/scntComp1.txt": "51ca62754a8469c5e70e35492697124ae42ec4f1bd499cd5705087bfb7770310",
+    "/home/rrios/exec40_20260913/build_off/sslg4/macros/oscnt/opsc-101.mac": "0ca9e8790dca10cd535dd6986af2031a5453db897b1e704375d89873d15c0130",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/absLength.txt": "150b365ff4e7e72fd85ab9d982981b8e5dcea64a1c5709226926e72804abd1b5",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/rIndex.txt": "8d2319c133a05d11a05484007725e00a3acc6bb703a1041bda26152c758b3252",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/scntComp1.txt": "7b83d48b7ffda869c8695bdd16d6fa789d4a97704a9d03b6c31d7c1e509082e8",
+    "/home/rrios/exec40_20260913/build_off/sslg4/macros/oscnt/opsc-106.mac": "fd34c3a1c0845c0a05addcb74eda869d5b99b485c4730e94dbbd1cb2d6472eb6",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/absLength.txt": "c956af7f218aa28fa3382ee23d9860dfa6465370ae93332243a28eec86f0fd81",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/rIndex.txt": "d3042cd86cab09ba7e8f08a97b94d2435aa2858c99aed7341d012362b4d555f6",
+    "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/scntComp1.txt": "5fffb1884a217c4522c1d5841f4d6ccb843603818dc560c86e103a4653227721"
+  },
+  "runtime_environment": {
+    "LD_LIBRARY_PATH": "/home/tdship/opt/geant4-v11.4.0-install/lib64:/home/tdship/opt/geant4-v11.4.0-install/lib64:/home/tdship/opt/geant4-v11.4.0-install/lib64"
+  },
+  "handoff": "/home/rrios/exec42_20260913/grid/exec42_handoff.json",
+  "EJ200_OPSC_CODE": "OPSC-100",
+  "excluded": [],
+  "concurrency": 6,
+  "workers": 4,
+  "eventModulo": 1,
+  "N_generated": 10000,
+  "timeout_s": null,
+  "cells": [
+    {
+      "cell_id": "EJ200_xp0",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": 0,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp0",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xp0/run.mac",
+      "source_macro_sha256": "30abe9d9e8eefababe43608024ccd5d0707981758a11ee961f2d592f94584602",
+      "macro_sha256": "c903969feadd66e692a2fd379424efe987ba7c176d5dc99cf5f0208b814ba325"
+    },
+    {
+      "cell_id": "EJ200_xp200",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": 200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xp200/run.mac",
+      "source_macro_sha256": "8450acbab0400e47b14d4d4377ed922c74ca9d855eddec7ea85daf8f92f7f701",
+      "macro_sha256": "e7e946436b35401656a809ccf9c3ef7233fb3fcc840a7cfa5cbd933b7c4430e7"
+    },
+    {
+      "cell_id": "EJ200_xm200",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": -200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xm200/run.mac",
+      "source_macro_sha256": "220c65964534fc06c2df094ba4b2a4360eae2e3e5a2c29e816ef8d9d65ce458d",
+      "macro_sha256": "02cd7b4f26b5d57b6239204d4a33baa20f01bdc04a25ac4e6551132e76e706fd"
+    },
+    {
+      "cell_id": "EJ200_xp500",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": 500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xp500/run.mac",
+      "source_macro_sha256": "b946640dc3da472021141a0635cefed11a7bfc1d553cb50e12f15fc5fdce2047",
+      "macro_sha256": "5aca6039e44483bf88dd7b5b069a069a4233fe20bce2e39962fbb34274da0f68"
+    },
+    {
+      "cell_id": "EJ200_xm500",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": -500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xm500/run.mac",
+      "source_macro_sha256": "893ea5dc3a18ee6c8dee4cc97bafe44e5ba3bd7966076ef07d4a7822bce332f0",
+      "macro_sha256": "9d06c5bb04c7f92ffc82d602db131798a4b600e692008e1fa90c0ac24e0834d5"
+    },
+    {
+      "cell_id": "EJ200_xp650",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": 650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xp650/run.mac",
+      "source_macro_sha256": "b16b945c7a25d9ecfa0e3f99d9ea779ab00ad838a8db252aa11a8de1adb6b8e3",
+      "macro_sha256": "72315f9085d0388a467fcfd0a7889709767984fbbb541f0e4df720c7269e6f29"
+    },
+    {
+      "cell_id": "EJ200_xm650",
+      "material": "EJ-200",
+      "opsc": "OPSC-100",
+      "x_mm": -650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xm650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ200_xm650/run.mac",
+      "source_macro_sha256": "07fc682623cd2f422550875fedca4ab6cb1e6dadf3d7799279bedd669f26fac5",
+      "macro_sha256": "cc187f46b92f178d1c858b0b992d2efc570cb411cd8254c4d2cec41e089b9554"
+    },
+    {
+      "cell_id": "EJ204_xp0",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": 0,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp0",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xp0/run.mac",
+      "source_macro_sha256": "97b3f50ec78e1e23534e0f03269929049e3d8b897c70720b85a9f30c025928e1",
+      "macro_sha256": "aa596007b5c7e01c4aaddf10974ee69daa7cdc549af9883495ae04f15c9eb94d"
+    },
+    {
+      "cell_id": "EJ204_xp200",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": 200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xp200/run.mac",
+      "source_macro_sha256": "49d53150c7dbcbacf9ad31b91bdd14dd1089473de75825de5422a052098ad488",
+      "macro_sha256": "06f8d10a2619931ca76279b4651987e9165e935e0c7cd50976ab9172fdc8ea9c"
+    },
+    {
+      "cell_id": "EJ204_xm200",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": -200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xm200/run.mac",
+      "source_macro_sha256": "ce3bd22a4413be40334eea1588338f6bca7763c3a44add8046293463990c6e17",
+      "macro_sha256": "0ba8b561c35e0a2f41bdd796552f2a73751279f03105f69ad463ac5428a1820c"
+    },
+    {
+      "cell_id": "EJ204_xp500",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": 500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xp500/run.mac",
+      "source_macro_sha256": "4071c0850bf89b35c8c94457a91ad3b0267fedc015127f0d6e2dddb62a7d4ea3",
+      "macro_sha256": "5a9aad9d95225426c36bfcbe9cbee20e14ab10564c00e1f21b8a80c3ac995480"
+    },
+    {
+      "cell_id": "EJ204_xm500",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": -500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xm500/run.mac",
+      "source_macro_sha256": "36176ddf977d58159e2ee6934ff289bfb77cb86c6617534efc7be2be717e18a7",
+      "macro_sha256": "40a97d70d4e26398336d758dae7f8b2930c0fc2399588f77d617fe460c511b0c"
+    },
+    {
+      "cell_id": "EJ204_xp650",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": 650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xp650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xp650/run.mac",
+      "source_macro_sha256": "776761907b150128a7d9f3269e4fdfe63d65a13fd91c5b03a5e0817ee17423be",
+      "macro_sha256": "e0ca85dcf1d3ab2b3b6509e86c4cf5a1cecac3be4876fdae3cfdb1aa7063228a"
+    },
+    {
+      "cell_id": "EJ204_xm650",
+      "material": "EJ-204",
+      "opsc": "OPSC-101",
+      "x_mm": -650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ204_xm650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ204_xm650/run.mac",
+      "source_macro_sha256": "f517f4eabb7ffc4485150d6ebfa71357e5b6f461713bf9ad7150fa03264de84b",
+      "macro_sha256": "3583015849bc2d923142cb4705727cd21d4b9eeaab7b95c3363226d421444871"
+    },
+    {
+      "cell_id": "EJ230_xp0",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": 0,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp0",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xp0/run.mac",
+      "source_macro_sha256": "b0e741f4eb1bdbb16ff67520392b07b7d0bb6d6e4b4ebbf5cc8284a51984bcdb",
+      "macro_sha256": "ff9bebe3107a6e73fa18ead46400ed66db9ba20c3559766403f997f3c5733af0"
+    },
+    {
+      "cell_id": "EJ230_xp200",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": 200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xp200/run.mac",
+      "source_macro_sha256": "3abd49f7197d7732712042fbb469ea2a355f6fba0535d441805b7f30f598b9c9",
+      "macro_sha256": "1c7d90e0fe999d3aba4aaf65e8f7ba01ca882f85ebdbb9903ccb8f35a7b48af8"
+    },
+    {
+      "cell_id": "EJ230_xm200",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": -200,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm200",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xm200/run.mac",
+      "source_macro_sha256": "505d3d799bd14f7700f745128908aeae4c9f51d2f8d5aa54ca5287d75d3719d7",
+      "macro_sha256": "e9e90b2203528b9f0fc22eb63ea474f241255da12077d06b5031a3e401ffa250"
+    },
+    {
+      "cell_id": "EJ230_xp500",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": 500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xp500/run.mac",
+      "source_macro_sha256": "965f9a0b7295adf307b07db94110b29bef5e3740af44380a85f42fc4623fd23d",
+      "macro_sha256": "52485144118fb6c911b2b4954c09637a6fd0b1b1b783cb460ec551d30236510e"
+    },
+    {
+      "cell_id": "EJ230_xm500",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": -500,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm500",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xm500/run.mac",
+      "source_macro_sha256": "316c909535de4b773d719e5d9edc151972f4f7ed2507de08c178cb9f7819f1eb",
+      "macro_sha256": "89993c1af3fa2070949c47d968a32213c6ad731ce08deb085e94444716cf584a"
+    },
+    {
+      "cell_id": "EJ230_xp650",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": 650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xp650/run.mac",
+      "source_macro_sha256": "d7cd1977097a3a24eeed8c0a19492dd4991bb77c32eae47d6c1a750b4998ac49",
+      "macro_sha256": "193335af1282f7666016a86ce443ec181cf3c6dd34971692ec613f3c2027e1f7"
+    },
+    {
+      "cell_id": "EJ230_xm650",
+      "material": "EJ-230",
+      "opsc": "OPSC-106",
+      "x_mm": -650,
+      "output": "/home/rrios/exec42_20260913/grid/cells/EJ230_xm650",
+      "source_macro": "/home/rrios/exec34b_20260911/cells/EJ230_xm650/run.mac",
+      "source_macro_sha256": "cd357061d53113db44d2a953d278fd726d9882cf46cb55d9256a80171b4775b1",
+      "macro_sha256": "8cf98f67202c0ce8ec0c4ee8c7ca43601e075d09dec59b78d4df11acfdf0d92f"
+    }
+  ],
+  "expected_rss_per_process_bytes": 192131072,
+  "memory_budget_per_process_bytes": 652697600,
+  "parallelism_provenance": {
+    "source": "EXEC33 S1/S2/S3/S4 and EXEC42 A2",
+    "scaling": "/home/rrios/exec33_20260911/scaling.json",
+    "reproducibility": "/home/rrios/exec33_20260911/event_reproducibility.json",
+    "workers_tested": [
+      1,
+      4,
+      12,
+      24
+    ],
+    "exact_delta_npe_end": 0,
+    "different_events": 0,
+    "selected_workers": 4,
+    "efficiency_four_workers": 0.9569660695351303,
+    "A2_max_rss_bytes": 192131072,
+    "concurrency_selection": "6 retained from validated EXEC34R; measured RAM permits it with a large reserve"
+  }
+}

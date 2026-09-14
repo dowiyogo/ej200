@@ -1,0 +1,146 @@
+{
+  "/home/rrios/exec40_20260913/analysis/event_regression.csv": {
+    "sha256": "069839465611fdccaae4efa0f15b55f3d92705761ca179becae6a7fccad2de11",
+    "bytes": 75032
+  },
+  "/home/rrios/exec40_20260913/analysis/event_regression.root": {
+    "sha256": "188349713970b6c772cec20ebcffe03b13d5f4748333efda2d6754a4ee424990",
+    "bytes": 56684
+  },
+  "/home/rrios/exec40_20260913/analysis/event_regression.meta.json": {
+    "sha256": "e340dfbb09a0ab8d218d3889d6e745a6294e657ff31885783a5a7d036656a286",
+    "bytes": 1383
+  },
+  "/home/rrios/exec40_20260913/analysis/root_branch_sizes.csv": {
+    "sha256": "7cad3e0c04a373ca045f9a4703a5f06c5ab56965474453bc4e3b9ffa44ae7d1d",
+    "bytes": 2711
+  },
+  "/home/rrios/exec40_20260913/analysis/root_branch_sizes.root": {
+    "sha256": "9a56e2d5de998458f22768629a8be429720df51a3f7c1435eef618a9629bd292",
+    "bytes": 24364
+  },
+  "/home/rrios/exec40_20260913/analysis/root_branch_sizes.meta.json": {
+    "sha256": "e3c0a4c9aa34b4fa63fb2bcea81e63d752f9418a410a5b77f5c4669efa2175e8",
+    "bytes": 1294
+  },
+  "/home/rrios/exec40_20260913/analysis/event_observables.csv": {
+    "sha256": "be595c4ee33f0b8ee32809b3c4c2439c6475ec12c0beb790c08faf84d42b7e74",
+    "bytes": 192840
+  },
+  "/home/rrios/exec40_20260913/analysis/event_observables.root": {
+    "sha256": "69992c73dbca72012eddbda7f79439ef511956e81c184e38f87cccae63b739e7",
+    "bytes": 97884
+  },
+  "/home/rrios/exec40_20260913/analysis/event_observables.meta.json": {
+    "sha256": "2caa8b73c2ff2f4b5b80725f08987d32ed78fa2117a95af07fb84b468bf1197e",
+    "bytes": 1460
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_cosine.csv": {
+    "sha256": "ecbb546d149404cb71c868509c3bb5e5ff127c75d4e3c22cb4b47c665d7cb9b3",
+    "bytes": 1885
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_cosine.root": {
+    "sha256": "5d769f30994bef6c50caa0e24b408f47211d423fc36f4b842df99057aad2309f",
+    "bytes": 25098
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_cosine.meta.json": {
+    "sha256": "98030226d3d9e671506834d9bf637403eae5f5886b812525a9cc8cf12456bba7",
+    "bytes": 1523
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_events.csv": {
+    "sha256": "f33f51c3788cb324dec3bc0ecd708653b2d026f746d0d6d2e4a015438f58c741",
+    "bytes": 254486
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_events.root": {
+    "sha256": "3ed77723c294b68b28e5c2c6ad23cc9499a1b37094c490e39680c9b9aec24642",
+    "bytes": 163322
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_events.meta.json": {
+    "sha256": "7519c6fe54a4dfb27680f6ff6fb1dfe9bbca6461dade87d291cacf322ac89b40",
+    "bytes": 1711
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_pairs.csv": {
+    "sha256": "9301851aa84d8394c472544963664a54fda9856ed6f6a9db49a7be4450a5d3da",
+    "bytes": 1164
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_pairs.root": {
+    "sha256": "5ca80abf93eaeb34366dc11fd3c59354cbcbe23b3d1cd133988160f906a21b0d",
+    "bytes": 22669
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_pairs.meta.json": {
+    "sha256": "9816bd54fbcb17ec46e8a02c14f8eadae61f54046a02f5dd00c058fa781997a8",
+    "bytes": 1259
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_event_counts.csv": {
+    "sha256": "b04f3c849318108a6a8ce21ae0aa77ccf0096c886ee9e6a3821d1977dc0cfc34",
+    "bytes": 16811370
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_event_counts.root": {
+    "sha256": "a06cd861a54d32b2b0cc7b00a2e834bcbecabdf6df472a1e0adff21e0963db4a",
+    "bytes": 5869498
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_event_counts.meta.json": {
+    "sha256": "11ad98bd087998b297a1f6bc5549aef3f44dec128a89d41709cc1f97ac1c663b",
+    "bytes": 1657
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_channel_summary.csv": {
+    "sha256": "c22bc4219660ebe701b75eefc2342aeaaff3b444ac303bddeca46d42b4466661",
+    "bytes": 13871
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_channel_summary.root": {
+    "sha256": "0abb01cdb2953bbdb126dbf4fde5e088d202a7c5365da8c1f8839651f34f6611",
+    "bytes": 38378
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_channel_summary.meta.json": {
+    "sha256": "52516b63b97476ca3de168f430af1161b83ff13d8ccaa0eecb6cb916de95fc88",
+    "bytes": 1840
+  },
+  "/home/rrios/exec40_20260913/analysis/results.json": {
+    "sha256": "c19b8ac3a5006c935e5bae9408a0b2acc9ac1697de9a721a176a7702adaec196",
+    "bytes": 8119
+  },
+  "/home/rrios/exec40_20260913/analysis/validation_status.csv": {
+    "sha256": "7db3639216267d6fa4b5def1ddc72f898fd9f41bebb6df53cf93a3454fd7f66a",
+    "bytes": 118
+  },
+  "/home/rrios/exec40_20260913/analysis/validation_status.root": {
+    "sha256": "25a4f61feecb076db940dd7f8a010efcc3c7d26a3dc646d8dc5ce6c5bf2c0305",
+    "bytes": 22585
+  },
+  "/home/rrios/exec40_20260913/analysis/validation_status.meta.json": {
+    "sha256": "8e324f4f6e0c16b37c1cd8c514811bf4b6a17daa3abd85d028785489ac5551a7",
+    "bytes": 1243
+  },
+  "/home/rrios/exec40_20260913/analysis/posthoc_detection_closure.json": {
+    "sha256": "c86597cb1fbf5d271762d87c9ac540e33c03ed0bdeb2f2d4128c62cc893d9232",
+    "bytes": 1960
+  },
+  "/home/rrios/exec40_20260913/analysis/posthoc_detection_closure.csv": {
+    "sha256": "6e23889d21fd3d991516c41e274fd638644e6df1a47804b1e59779b7b2aef79c",
+    "bytes": 429
+  },
+  "/home/rrios/exec40_20260913/analysis/posthoc_detection_closure.root": {
+    "sha256": "0a185f7012efc5a573f573c0b9deab536b5f028f70338f3310218313cd6d8aa8",
+    "bytes": 24268
+  },
+  "/home/rrios/exec40_20260913/analysis/posthoc_detection_closure.meta.json": {
+    "sha256": "b61507b63da214aa3cd465053a1bbad11be788861dca631641c7045714e81d5a",
+    "bytes": 1459
+  },
+  "/home/rrios/exec40_20260913/analysis/first_encounter_cosine.png": {
+    "sha256": "3a597e75090ec75a6c380b3979f05456c0678b8e54e06c4d134e934dd516a773",
+    "bytes": 65457
+  },
+  "/home/rrios/exec40_20260913/analysis/sipm_channel_summary.png": {
+    "sha256": "06eed72512b503d5de1a7bb055b0b5ac910835315bed607f42da2d71d131916a",
+    "bytes": 74305
+  },
+  "/home/rrios/REPORT_EXEC40_20260913.md": {
+    "sha256": "282d40fdda6819cd199db99feaf5daaf2d93a73953cdecaa8dbef756d000610d",
+    "bytes": 13606
+  },
+  "/home/rrios/ej200_exec40_20260913/analysis/validation/GOLDEN_REFERENCE_20260913.json": {
+    "sha256": "8717aaf9605747a3345f5167755d340f8271a700aea7aaa37ef6f8dc85c88499",
+    "bytes": 243918
+  }
+}
