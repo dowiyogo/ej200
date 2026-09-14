@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-09-13T20:32:55.657129+00:00",
+  "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+  "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+  "N": 2000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 41091301,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event",
+  "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+  "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+  "script_sha256": "60c6a93eea509d651ecc4c71c280a3a3aea5073bb5583465a6bc9a38642af893",
+  "columns": [
+    "face",
+    "encounters",
+    "encounter_share",
+    "encounter_share_se",
+    "escaped",
+    "conditional_escape_fraction",
+    "conditional_escape_se",
+    "escape_contribution_to_all_encounters",
+    "escape_share",
+    "compatible_with_0p226172_3se"
+  ],
+  "rows": 7,
+  "csv_sha256": "03a509701b0d411df4f6544ea3eede064eae14cfcf596403e2b92e9b5a3a0dbf",
+  "root_sha256": "5d03cffe1f36590117eaf3d0b9e06a18c62dc148f0c85d9a78c05f4a89344501"
+}

@@ -1,4 +1,6 @@
 #include "SteppingAction.hh"
+#include "EventAction.hh"
+#include "G4EventManager.hh"
 #ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "TrackingAction.hh"
 #endif
@@ -72,6 +74,9 @@ namespace BoundaryCensus {
 
 #endif
 void SteppingAction::UserSteppingAction(const G4Step* step) {
+    auto* event = dynamic_cast<EventAction*>(
+        G4EventManager::GetEventManager()->GetUserEventAction());
+    if (event) event->ObserveEnergy(step);
     static G4ThreadLocal G4OpBoundaryProcess* boundary_process = nullptr;
     // EXEC_27: no reutilizar el estado de una frontera anterior en otro paso.
     G4OpBoundaryProcessStatus boundary_status = Undefined;
@@ -109,6 +114,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
     auto* track = step->GetTrack();
 
     if (track->GetDefinition() != G4OpticalPhoton::Definition()) return;
+    if (event) event->ObserveFirstEncounter(step, static_cast<G4int>(boundary_status));
+    if (event) event->ObserveSiPMIncident(step, static_cast<G4int>(boundary_status));
 
     // ── Diagnóstico: contar fotones de centelleo en su primer step ───────────
     // Solo en step 1 para contar cada fotón exactamente una vez.

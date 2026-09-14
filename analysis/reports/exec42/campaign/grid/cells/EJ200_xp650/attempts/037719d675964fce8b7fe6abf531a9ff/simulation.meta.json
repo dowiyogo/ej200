@@ -1,0 +1,100 @@
+{
+  "cell_id": "EJ200_xp650",
+  "status": "SIMULATION_COMPLETE",
+  "stage": "simulation",
+  "output": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff",
+  "cwd": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff",
+  "cell_directory": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650",
+  "command": "/home/rrios/exec40_20260913/build_off/ej200_bar_sim -m /home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff/run.mac",
+  "argv": [
+    "/home/rrios/exec40_20260913/build_off/ej200_bar_sim",
+    "-m",
+    "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff/run.mac"
+  ],
+  "workers": 4,
+  "eventModulo": 1,
+  "exit_code": 0,
+  "wall_s": 3441.5282033151016,
+  "root_sha256": "fac9ee0630a56a11aa4a09f4f882b819f83c32c1a065e3fc71154c17e735ad54",
+  "start_utc": "2026-09-13T21:40:20.582061+00:00",
+  "driver": {
+    "pid": 1345085,
+    "start_ticks": "90820462",
+    "boot": "33a6939d-089f-4f2c-932e-d440e330f0b6"
+  },
+  "log": "/home/rrios/exec42_20260913/grid/grid_logs/EJ200_xp650.log",
+  "timeout_s": null,
+  "material": "EJ-200",
+  "opsc_code": "OPSC-100",
+  "x_mm": 650,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "N_generated": 10000,
+  "configuration": "EndTop",
+  "N_TOP": 70,
+  "sptr_ns": 0,
+  "binary": "/home/rrios/exec40_20260913/build_off/ej200_bar_sim",
+  "binary_sha256": "ec0d4498aad912728e5a3134f357198527aeeca7c29da944ca838ece4eecf1b4",
+  "diagnostics": false,
+  "macro_sha256": "72315f9085d0388a467fcfd0a7889709767984fbbb541f0e4df720c7269e6f29",
+  "source_macro_sha256": "b16b945c7a25d9ecfa0e3f99d9ea779ab00ad838a8db252aa11a8de1adb6b8e3",
+  "simulation_commit": "b35ee84acadef12c93506e0720580c91f901fcbf",
+  "geant4_version": "11.4.0",
+  "PDE_path": "/home/rrios/ej200_exec40_20260913/data/sipm/AFBR-S4N66P024M_pde.txt",
+  "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7",
+  "parallelism_provenance": {
+    "source": "EXEC33 S1/S2/S3/S4 and EXEC42 A2",
+    "scaling": "/home/rrios/exec33_20260911/scaling.json",
+    "reproducibility": "/home/rrios/exec33_20260911/event_reproducibility.json",
+    "workers_tested": [
+      1,
+      4,
+      12,
+      24
+    ],
+    "exact_delta_npe_end": 0,
+    "different_events": 0,
+    "selected_workers": 4,
+    "efficiency_four_workers": 0.9569660695351303,
+    "A2_max_rss_bytes": 192131072,
+    "concurrency_selection": "6 retained from validated EXEC34R; measured RAM permits it with a large reserve"
+  },
+  "evidence_sha256": {
+    "/home/rrios/exec34r_20260912/campaign.json": "a7b24f2b2659e1d60ea79dced0abf076a3dbdfa4dc2a9c572909106e8c124a49",
+    "/home/rrios/EXEC34_HANDOFF_20260911.json": "ad60420f42472145f124e0cc13c2d29f916f15e0979a6b1aebaed433b4832183",
+    "/home/rrios/exec33_20260911/scaling.json": "4c7ed29e0eb1ad5011cd9c90331b95512d70df9cfc9f9349540dbd0d5eae2319",
+    "/home/rrios/exec33_20260911/event_reproducibility.json": "71ddbc41a8a3b28ad2050a43d048826bf458a9a4f23e18114a2ea7eb2033ea69",
+    "/home/rrios/ej200_exec40_20260913/analysis/validation/EXEC40_PREREGISTRATION.md": "cd13d28db1811e5c74d9b17d60d1be7aa0971f02ff8768d48528126602fb5531",
+    "/home/rrios/ej200_exec40_20260913/analysis/validation/EXEC41_PREREGISTRATION.md": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "/home/rrios/exec42_20260913/a2_validation/a2_results.json": "1ecd594cb7203f30e8c86bd3e5b42d76bd9f482e70e183d5c1f109fd0a86c985"
+  },
+  "launcher_sha256": "15688796f4f126b4e0cdae6e7b6ea13da43843890699031eca88a609fd4c1b67",
+  "runtime_environment": {
+    "LD_LIBRARY_PATH": "/home/tdship/opt/geant4-v11.4.0-install/lib64:/home/tdship/opt/geant4-v11.4.0-install/lib64:/home/tdship/opt/geant4-v11.4.0-install/lib64",
+    "EJ200_DATA_DIR": "/home/rrios/ej200_exec40_20260913/data"
+  },
+  "rng": "Geant4 per-event seeds; fixed master seeds; eventModulo=1",
+  "thread_limits": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "process": {
+    "pid": 1345098,
+    "start_ticks": "90820473",
+    "boot": "33a6939d-089f-4f2c-932e-d440e330f0b6"
+  },
+  "end_utc": "2026-09-13T22:37:42.116195+00:00",
+  "events_run": 10000,
+  "generated_count_source": "master Events run summary, ROOT hit IDs/totals cross-checked",
+  "root_entries": 68056391,
+  "events_with_hits": 10000,
+  "left_total": 2449545,
+  "right_total": 23575863,
+  "top_total": 42030983,
+  "npe_end_mean": 1301.2704,
+  "root_path": "/home/rrios/exec42_20260913/grid/cells/EJ200_xp650/attempts/037719d675964fce8b7fe6abf531a9ff/photon_hits_run000.root",
+  "root_size_bytes": 8532146979
+}

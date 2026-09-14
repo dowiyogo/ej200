@@ -1,0 +1,26 @@
+{
+  "created_utc": "2026-09-13T20:58:13.872643+00:00",
+  "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+  "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+  "N": 2000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 41091302,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event",
+  "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+  "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+  "script_sha256": "e15e2e32fee07c206caf58b9a52802c6031841939142cc40c6f606364c173624",
+  "columns": [
+    "event_id",
+    "detected",
+    "matched_boundary_detection",
+    "orphan_standard_SD",
+    "orphan_fraction_of_detected"
+  ],
+  "rows": 2000,
+  "csv_sha256": "2d063ecb11a867afd7fc1af52f1b242018187a32dbbb994c1a5362c54df88792",
+  "root_sha256": "ad7cc24942addc509c7566ee1829275b9deb9f3f5d18e97b8b94bdfcde7848cd"
+}

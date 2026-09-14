@@ -1,0 +1,37 @@
+{
+  "counts": {
+    "complete": 0,
+    "running": 0,
+    "pending": 21,
+    "failed": 0
+  },
+  "cells": {
+    "complete": [],
+    "running": [],
+    "pending": [
+      "EJ200_xp0",
+      "EJ200_xp200",
+      "EJ200_xm200",
+      "EJ200_xp500",
+      "EJ200_xm500",
+      "EJ200_xp650",
+      "EJ200_xm650",
+      "EJ204_xp0",
+      "EJ204_xp200",
+      "EJ204_xm200",
+      "EJ204_xp500",
+      "EJ204_xm500",
+      "EJ204_xp650",
+      "EJ204_xm650",
+      "EJ230_xp0",
+      "EJ230_xp200",
+      "EJ230_xm200",
+      "EJ230_xp500",
+      "EJ230_xm500",
+      "EJ230_xp650",
+      "EJ230_xm650"
+    ],
+    "failed": []
+  },
+  "note": "Disk markers + PID/start time/boot identity; launch additionally rehashes DONE ROOTs"
+}

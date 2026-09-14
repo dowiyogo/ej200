@@ -1,0 +1,291 @@
+{
+  "metadata": {
+    "created_utc": "2026-09-13T20:58:13.872643+00:00",
+    "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+    "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+    "N": 2000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "bootstrap_seed": 41091302,
+    "bootstrap_replicates": 500,
+    "bootstrap_unit": "generated event",
+    "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+    "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "script_sha256": "e15e2e32fee07c206caf58b9a52802c6031841939142cc40c6f606364c173624"
+  },
+  "detection_gap": {
+    "total": 169139,
+    "fraction_of_SD_hits": {
+      "value": 0.01523853713142798,
+      "se": 3.8819796643345647e-05,
+      "numerator": 169139.0,
+      "denominator": 11099425.0
+    },
+    "sensor_fraction_min": 0.014114930171907507,
+    "sensor_fraction_max": 0.016457352171637886,
+    "sensor_count_correlation_orphan_vs_detected": 0.9997422716127529,
+    "event_orphan_min": 46,
+    "event_orphan_max": 377,
+    "event_orphan_median": 79.0,
+    "event_correlation_orphan_vs_detected": 0.9311260713447136,
+    "EXEC27_R1_TOP": {
+      "N": 500,
+      "hits": 831825,
+      "boundary_detection": 819232,
+      "gap": 12593,
+      "fraction": 0.015139001592883118
+    },
+    "track_level_characterization": "IMPOSSIBLE_FROM_PERSISTED_SCHEMA",
+    "reason": "sipm_hits has no track_id or boundary fields; sipm_event_counts stores only event/sensor aggregates.",
+    "energy_or_volume_pair_of_orphans": "NOT_IDENTIFIABLE"
+  },
+  "arms": [
+    {
+      "arm": "left",
+      "detected": 794729,
+      "matched": 782796,
+      "orphan": 11933,
+      "orphan_fraction": {
+        "value": 0.015015181275629806,
+        "se": 0.00013108005787664035,
+        "numerator": 11933.0,
+        "denominator": 794729.0
+      },
+      "matched_over_incident": {
+        "value": 0.613902275481035,
+        "se": 0.0004221153669685419,
+        "numerator": 782796.0,
+        "denominator": 1275115.0
+      },
+      "incident_spectrum_pde": {
+        "value": 0.6136485889875647,
+        "se": 4.514748253752638e-05,
+        "numerator": 782472.5205468786,
+        "denominator": 1275115.0
+      },
+      "incident_mean_wavelength_nm": {
+        "value": 419.5519871447991,
+        "se": 0.031547027621997965,
+        "numerator": 534977032.0881405,
+        "denominator": 1275115.0
+      }
+    },
+    {
+      "arm": "right",
+      "detected": 793881,
+      "matched": 781862,
+      "orphan": 12019,
+      "orphan_fraction": {
+        "value": 0.01513954862252655,
+        "se": 0.00012905635492254476,
+        "numerator": 12019.0,
+        "denominator": 793881.0
+      },
+      "matched_over_incident": {
+        "value": 0.6130457521054625,
+        "se": 0.00044767611464963195,
+        "numerator": 781862.0,
+        "denominator": 1275373.0
+      },
+      "incident_spectrum_pde": {
+        "value": 0.6136781365481169,
+        "se": 4.513687371798876e-05,
+        "numerator": 782668.5260437814,
+        "denominator": 1275373.0
+      },
+      "incident_mean_wavelength_nm": {
+        "value": 419.5381396386143,
+        "se": 0.03186344315505009,
+        "numerator": 535067615.76531845,
+        "denominator": 1275373.0
+      }
+    },
+    {
+      "arm": "top",
+      "detected": 9510815,
+      "matched": 9365628,
+      "orphan": 145187,
+      "orphan_fraction": {
+        "value": 0.01526546358014534,
+        "se": 4.1927865353215246e-05,
+        "numerator": 145187.0,
+        "denominator": 9510815.0
+      },
+      "matched_over_incident": {
+        "value": 0.6122184596753545,
+        "se": 0.0001222495693429584,
+        "numerator": 9365628.0,
+        "denominator": 15297853.0
+      },
+      "incident_spectrum_pde": {
+        "value": 0.6122624089330707,
+        "se": 2.757920601421869e-05,
+        "numerator": 9366300.329284003,
+        "denominator": 15297853.0
+      },
+      "incident_mean_wavelength_nm": {
+        "value": 420.0083395023445,
+        "se": 0.012976045099854689,
+        "numerator": 6425225836.480959,
+        "denominator": 15297853.0
+      }
+    },
+    {
+      "arm": "all",
+      "detected": 11099425,
+      "matched": 10930286,
+      "orphan": 169139,
+      "orphan_fraction": {
+        "value": 0.01523853713142798,
+        "se": 3.8819796643345647e-05,
+        "numerator": 169139.0,
+        "denominator": 11099425.0
+      },
+      "matched_over_incident": {
+        "value": 0.6123978693593988,
+        "se": 0.00011394964849321186,
+        "numerator": 10930286.0,
+        "denominator": 17848341.0
+      },
+      "incident_spectrum_pde": {
+        "value": 0.612462602315513,
+        "se": 2.6651638199402755e-05,
+        "numerator": 10931441.375874665,
+        "denominator": 17848341.0
+      },
+      "incident_mean_wavelength_nm": {
+        "value": 419.94213828245546,
+        "se": 0.012280763624646383,
+        "numerator": 7495270484.334419,
+        "denominator": 17848341.0
+      }
+    }
+  ],
+  "cause": {
+    "classification": "PREEXISTING_STANDARD_SENSITIVE_VOLUME_CALLBACK_PATH",
+    "evidence": "Matched detections exactly equal all OpBoundary Detection rows; every remaining SD hit must use Geant4's standard pre-volume sensitive callback, the only other invocation path.",
+    "excluded_legitimate_boundary_status": "NONE_OBSERVED_OR_IDENTIFIED; sensor-directed censuses contain only Absorption and Detection, and the criterion includes both.",
+    "why_SiPMSD_accepts_it": "pre-step fGeomBoundary is sufficient and fallback selects track->GetVolume; no boundary status is checked before writing a detection.",
+    "repair_status": "NOT_APPLIED",
+    "proposal": "First record callback mode, creator, track ID, pre/post volumes and both step statuses. Then either restrict detected hits to OpBoundary Detection or define a separately named sensitive-volume-entry population; do not silently add it to the independent incident denominator.",
+    "too_narrow_incident_alternative_estimate": {
+      "maximum_callbacks_absorbed": 169139,
+      "qualification": "An SD-union rule would absorb all aggregate orphans by construction, but existing data cannot prove that all are legitimate external arrivals, so it is not proposed as the accepted criterion."
+    }
+  },
+  "spectral_filtering": {
+    "emitted_energy_density": {
+      "mean_wavelength_nm": 417.63711795123925,
+      "mean_pde": 0.61939720549195
+    },
+    "transported_incident": {
+      "left": {
+        "mean_wavelength_nm": {
+          "value": 419.5519871447991,
+          "se": 0.031547027621997965,
+          "numerator": 534977032.0881405,
+          "denominator": 1275115.0
+        },
+        "mean_surface_pde": {
+          "value": 0.6136485889875647,
+          "se": 4.514748253752638e-05,
+          "numerator": 782472.5205468786,
+          "denominator": 1275115.0
+        }
+      },
+      "right": {
+        "mean_wavelength_nm": {
+          "value": 419.5381396386143,
+          "se": 0.03186344315505009,
+          "numerator": 535067615.76531845,
+          "denominator": 1275373.0
+        },
+        "mean_surface_pde": {
+          "value": 0.6136781365481169,
+          "se": 4.513687371798876e-05,
+          "numerator": 782668.5260437814,
+          "denominator": 1275373.0
+        }
+      },
+      "top": {
+        "mean_wavelength_nm": {
+          "value": 420.0083395023445,
+          "se": 0.012976045099854689,
+          "numerator": 6425225836.480959,
+          "denominator": 15297853.0
+        },
+        "mean_surface_pde": {
+          "value": 0.6122624089330707,
+          "se": 2.757920601421869e-05,
+          "numerator": 9366300.329284003,
+          "denominator": 15297853.0
+        }
+      },
+      "all": {
+        "mean_wavelength_nm": {
+          "value": 419.94213828245546,
+          "se": 0.012280763624646383,
+          "numerator": 7495270484.334419,
+          "denominator": 17848341.0
+        },
+        "mean_surface_pde": {
+          "value": 0.612462602315513,
+          "se": 2.6651638199402755e-05,
+          "numerator": 10931441.375874665,
+          "denominator": 17848341.0
+        }
+      }
+    },
+    "all_mean_wavelength_shift_nm": 2.3050203312162125,
+    "all_PDE_shift": -0.006934603176437015,
+    "interpretation": "Measured transport spectral filtering; incident mean wavelength is redder and its PDE lower than the emitted-spectrum reference.",
+    "spectrum_sha256": "7b83d48b7ffda869c8695bdd16d6fa789d4a97704a9d03b6c31d7c1e509082e8",
+    "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7"
+  },
+  "V1": {
+    "total_denominator_ratio": {
+      "value": 1.0002569144787312,
+      "se": 0.00015948052665513168,
+      "numerator": 40039535.0,
+      "denominator": 40029250.905869514
+    },
+    "nonoptical_denominator_ratio": {
+      "value": 1.0163185895027926,
+      "se": 0.0001644689901945202,
+      "numerator": 40039535.0,
+      "denominator": 39396637.445732735
+    },
+    "effective_yield_photons_per_MeV": {
+      "value": 10569.713330829045,
+      "se": 1.7104774980230946,
+      "numerator": 40039535.0,
+      "denominator": 3788.13821593584
+    },
+    "nominal_yield_photons_per_MeV": 10400,
+    "excess_fraction": 0.016318589502792635,
+    "total_edep_MeV": 3848.966433256684,
+    "optical_edep_MeV": 60.82821732084396,
+    "nonoptical_edep_MeV": 3788.13821593584,
+    "photon_equivalent_energy_MeV": 3849.9552884615387,
+    "unexplained_equivalent_energy_vs_nonoptical_MeV": 61.81707252569868,
+    "optical_fraction_of_equivalent_excess": 0.9840035258149175,
+    "excess_photons_over_nonoptical_expectation": 642897.5542672649,
+    "photons_expected_from_optical_edep": 632613.4601367773,
+    "fluctuation_residual_photons": 10284.094130487647,
+    "effective_yield_against_all_model_eligible_edep": 10402.671910578805,
+    "bookkeeping_max_abs_error_MeV": 0.0,
+    "nonionizing_edep_MeV": 0.0,
+    "produced_counter_matches_run_summary": true,
+    "diagnosis": "RESOLVED_OPTICAL_PHOTON_ENERGY_RESCINTILLATION",
+    "evidence": "Geant4 11.4 registers G4Scintillation for optical photons; their measured deposited energy accounts for 98.4004% of the excess over the non-optical denominator. The remaining count is compatible with RESOLUTIONSCALE=1 fluctuations.",
+    "excluded_causes": [
+      "configured yield differs from 10400",
+      "active Birks coefficient",
+      "particle-dependent yield enabled by a macro",
+      "duplicate produced-photon count"
+    ],
+    "code_path": "G4Scintillation::IsApplicable accepts every non-short-lived particle at G4Scintillation.cc:150-153; G4OpticalPhysics.cc:172-175 therefore attaches it to opticalphoton."
+  }
+}

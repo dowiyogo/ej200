@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-09-14T08:05:47.719824+00:00",
+  "cell_id": "EJ230_xp650",
+  "source_root": "/home/rrios/exec42_20260913/grid/cells/EJ230_xp650/attempts/916a2d83686048cfa80daa2460f0cde5/photon_hits_run000.root",
+  "source_root_sha256": "3bfdf0902f8f2f8fb8fdb9961efee496c83ca9c0c62155db73d731ffd3dfd2ca",
+  "N": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "workers_from_manifest": 4,
+  "bootstrap_seed": 42091401,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event; common weights across all cells",
+  "preregistration": "analysis/validation/EXEC42_H3_PREREGISTRATION.md",
+  "preregistration_sha256": "37e15cf4a26271075babc90a1efc2f1c0d0a8ce1a0be6ea64e48e1d78053d6f4",
+  "script_sha256": "3d88b9cc7c826ec97fb33872d8d29beb1d75cecec3461e49f69475929990956d",
+  "columns": [
+    "face",
+    "encounters",
+    "encounter_share",
+    "encounter_share_se",
+    "escaped",
+    "conditional_escape",
+    "conditional_escape_se",
+    "escape_share"
+  ],
+  "rows": 7,
+  "csv_sha256": "fb2eef210dc1929f5efb86111ba49a510703eb050546ba9e9ce9b33a7ed0d05c",
+  "root_sha256": "2a4d2083a2fd443ed30c4512ae1b54869ebd762148660c2dca0f28f9ed53486f"
+}

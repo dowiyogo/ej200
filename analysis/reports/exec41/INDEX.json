@@ -1,0 +1,153 @@
+{
+  "source_root": "/home/rrios/exec41_20260913",
+  "nonroot_disk_file_count": 24,
+  "nonroot_disk_bytes": 636488,
+  "archived_file_count": 24,
+  "archived_bytes": 647268,
+  "files": [
+    {
+      "source": "/home/rrios/exec41_20260913/code_path_audit.csv",
+      "archived": "analysis/reports/exec41/campaign/code_path_audit.csv",
+      "bytes": 1591,
+      "sha256": "db7e12ca5a551a80c62e9cdb19744c47ed7803911d86b4040cc6182be04f296a"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/code_path_audit.meta.json",
+      "archived": "analysis/reports/exec41/campaign/code_path_audit.meta.json",
+      "bytes": 923,
+      "sha256": "1f929886a29e97a1d343195deaafe17c4be6800efad3bf0fb5f74e56cb676649"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_arm.csv",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_arm.csv",
+      "bytes": 986,
+      "sha256": "f5c65d6588d96c62883a9219972e368d6efabdb522a6788afbf75ae0064cff6c"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_arm.meta.json",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_arm.meta.json",
+      "bytes": 1146,
+      "sha256": "9875c4bebec70af3331b9921e81d8f49e849860672e9ae96f3db25f60f8b3137"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_event.csv",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_event.csv",
+      "bytes": 78735,
+      "sha256": "2d063ecb11a867afd7fc1af52f1b242018187a32dbbb994c1a5362c54df88792"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_event.meta.json",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_event.meta.json",
+      "bytes": 976,
+      "sha256": "2f3daaaa55f1e370751d21234fc522a310c7160953020c642d7685939de917f0"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_sensor.csv",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_sensor.csv",
+      "bytes": 6728,
+      "sha256": "ec0be78dfdfb160a08f1fe8adf26f582d18fb7f12025316800ff88407adb4444"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/detection_gap_by_sensor.meta.json",
+      "archived": "analysis/reports/exec41/campaign/detection_gap_by_sensor.meta.json",
+      "bytes": 1061,
+      "sha256": "ff7bf486f031f5303a5093eb8cee249588bf6e3a0afb5c8022337748963b9a43"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/diagnosis_results.json",
+      "archived": "analysis/reports/exec41/campaign/diagnosis_results.json",
+      "bytes": 10696,
+      "sha256": "d7a49dccf515077d423ece1d1ae8557583b2da86a844b3c8a38c5367fd55188c"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/storage_projection.csv",
+      "archived": "analysis/reports/exec41/campaign/storage_projection.csv",
+      "bytes": 321,
+      "sha256": "ef81a2a680384ec01bb8405936cdc8555c46fb7df29c120b9b763986e8fd0d1f"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/storage_projection.meta.json",
+      "archived": "analysis/reports/exec41/campaign/storage_projection.meta.json",
+      "bytes": 1333,
+      "sha256": "319436221f54c09e9e170157557a3e53d467075a834ec0fc5daface3ade0be32"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/storage_results.json",
+      "archived": "analysis/reports/exec41/campaign/storage_results.json",
+      "bytes": 2408,
+      "sha256": "68a89d82b13a0438ec024a05b80e8caebca74c72cc5171050ce8e9d04391fd86"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/storage_validation.csv",
+      "archived": "analysis/reports/exec41/campaign/storage_validation.csv",
+      "bytes": 2467,
+      "sha256": "477bb92666f695d5af3d7cefd4c663354021b7ee4b75bcaf807913f11b32bb2c"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/storage_validation.meta.json",
+      "archived": "analysis/reports/exec41/campaign/storage_validation.meta.json",
+      "bytes": 1395,
+      "sha256": "21154cf707526ceb140467d826aba20708b311b949a2265b7ded25a131d9f28f"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v1_event_accounting.csv",
+      "archived": "analysis/reports/exec41/campaign/v1_event_accounting.csv",
+      "bytes": 215732,
+      "sha256": "625b9051829302d2f73c9164e48409f63909c80e803ebc5c5a5cd9249f847274"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v1_event_accounting.meta.json",
+      "archived": "analysis/reports/exec41/campaign/v1_event_accounting.meta.json",
+      "bytes": 1035,
+      "sha256": "05ea85f11e5a25bcb02f9d4f3c3c01a20c7be3409ff4656d5a9cbbb1b9dd6468"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_face_decomposition.csv",
+      "archived": "analysis/reports/exec41/campaign/v2_face_decomposition.csv",
+      "bytes": 1067,
+      "sha256": "03a509701b0d411df4f6544ea3eede064eae14cfcf596403e2b92e9b5a3a0dbf"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_face_decomposition.meta.json",
+      "archived": "analysis/reports/exec41/campaign/v2_face_decomposition.meta.json",
+      "bytes": 1105,
+      "sha256": "eef40c7349eab0f842f459d946565697149f94e6ed9a7e03e80a873a0b9e8b85"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_face_events.csv",
+      "archived": "analysis/reports/exec41/campaign/v2_face_events.csv",
+      "bytes": 290258,
+      "sha256": "a8e0bcdd06c62fd13d3856c1b91cedc362ab72baaafe84e1b5d7734d69ea1ac3"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_face_events.meta.json",
+      "archived": "analysis/reports/exec41/campaign/v2_face_events.meta.json",
+      "bytes": 1588,
+      "sha256": "3282f466b099b6c9b5b1364878edfbc7eab0c66f04f48c71530a5e58f167f0fb"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_results.json",
+      "archived": "analysis/reports/exec41/campaign/v2_results.json",
+      "bytes": 5355,
+      "sha256": "87b87650e43d6a9bf26168b049b03095575ad050bb6670b8d5767162d51e1602"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_uniform_cosine.csv",
+      "archived": "analysis/reports/exec41/campaign/v2_uniform_cosine.csv",
+      "bytes": 2011,
+      "sha256": "8d68a15ba1a6aa2b8ba27284ca692f1886b1242bca48397c230f4778bb17a845"
+    },
+    {
+      "source": "/home/rrios/exec41_20260913/v2_uniform_cosine.meta.json",
+      "archived": "analysis/reports/exec41/campaign/v2_uniform_cosine.meta.json",
+      "bytes": 998,
+      "sha256": "54d703859fae15bd11e9689a47357b40108ad2d576fbfba4d478187b93ca61d6"
+    },
+    {
+      "source": "/home/rrios/REPORT_EXEC41_20260913.md",
+      "archived": "analysis/reports/exec41/REPORT_EXEC41_20260913.md",
+      "bytes": 17353,
+      "sha256": "7d9cce49fde7806490c975f540fa7b050778657bc9dc8ace029258d89680b33e"
+    }
+  ]
+}

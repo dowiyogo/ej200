@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-09-14T07:50:36.520638+00:00",
+  "campaign": "/home/rrios/exec42_20260913/grid/campaign.json",
+  "campaign_sha256": "4a06fdd4bcc616b0e0827cbc189276496ca52c5820f500cb544a28d56f3e884e",
+  "manifest": "/home/rrios/exec42_20260913/grid/manifest.jsonl",
+  "manifest_sha256": "84260146ff06796f72649452ee330f2eeb771e9d03d6d8143ff66d7df903ebc2",
+  "A2_meta": "/home/rrios/exec42_20260913/a2_validation/invocation.meta.json",
+  "A2_meta_sha256": "623cd0d29ee869b1c23a15bd4f9937d641806a8ee41dbb236c2a0b453d0c162f",
+  "rows": 21,
+  "csv_sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7",
+  "root_sha256": "6a3e912ab17a682c6203321230033c4224cdb060d9993f86e731c3d3fc37ff4e",
+  "script_sha256": "e140e7c272e0d15aa9aac29fb0774784733fea7160b5739356e173ce474e1788",
+  "hash_method": "SHA256 recomputed over every complete ROOT"
+}

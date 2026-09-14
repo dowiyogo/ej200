@@ -1,0 +1,41 @@
+{
+  "created_utc": "2026-09-14T08:05:47.779183+00:00",
+  "inventory": "/home/rrios/exec42_20260913/analysis/input_inventory.csv",
+  "inventory_sha256": "012bb6e02f3cacdfd05c418ada06c031942032882aa4f9a886bdfadc36790ea7",
+  "N_cells": 21,
+  "N_per_cell": 10000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "bootstrap_seed": 42091401,
+  "bootstrap_replicates": 500,
+  "preregistration": "analysis/validation/EXEC42_H3_PREREGISTRATION.md",
+  "preregistration_sha256": "37e15cf4a26271075babc90a1efc2f1c0d0a8ce1a0be6ea64e48e1d78053d6f4",
+  "script_sha256": "3d88b9cc7c826ec97fb33872d8d29beb1d75cecec3461e49f69475929990956d",
+  "columns": [
+    "cell_id",
+    "material",
+    "x_mm",
+    "Npe_end",
+    "V1",
+    "V1_se",
+    "V1_status",
+    "V1_nonoptical",
+    "V1_nonoptical_se",
+    "V2_escape",
+    "V2_se",
+    "V2_lower_3se",
+    "V2_status",
+    "V5_matched",
+    "V5_expected",
+    "V5_difference",
+    "V5_difference_se",
+    "V5_status",
+    "orphan_fraction",
+    "orphan_fraction_se"
+  ],
+  "rows": 21,
+  "csv_sha256": "5e6e0f07914fd5e2229d245e191aa793328f5a949027be6ae5e93ac72096c5bb",
+  "root_sha256": "bc22dcb533673c5fafb0c8b0ba06eaecd959ec3ea0ea46006db9b51052ac4424"
+}

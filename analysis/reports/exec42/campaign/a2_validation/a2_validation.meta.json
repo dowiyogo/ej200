@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-09-13T21:23:47.174421+00:00",
+  "candidate": "/home/rrios/exec42_20260913/a2_validation/photon_hits_run000.root",
+  "candidate_sha256": "8608285fea6f12a5675f7821ebb5c39a45cd53535ac814df59b69b98036ba59d",
+  "reference": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+  "reference_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+  "N": 2000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "workers": 4,
+  "eventModulo": 1,
+  "script_sha256": "c9e21c350f0835aec8e1b7e2ad5fb047fbe9b45a933e405108d2dd0942df8548",
+  "csv_sha256": "294066407c902c62c7dbf9e73114f4e7c06ca6112fbd3d5314f8df1d2ddb64ea",
+  "root_sha256": "583cef19fc8d392cc38cb2c89c7957c2f3454639bba998a54caa90f3f4cfa212",
+  "rows": 6
+}

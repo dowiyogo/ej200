@@ -1,0 +1,27 @@
+# Índice documental de campañas
+
+| Campaña | Pregunta | Respuesta documentada | Estado |
+|---|---|---|---|
+| [EXEC_26, fase estática](/home/rrios/REPORT_EXEC26_20260909.md:4) | ¿El reflector devuelve el 98 %? | Sin medición en ese checkpoint; lectura de código conservada como hipótesis. | SUPERADO POR EXEC_26 fase 1b |
+| [EXEC_26, fase 1b](/home/rrios/REPORT_EXEC26_PHASE1B_20260909.md:4) | ¿Qué ocurre realmente en aire→wrap? | Retorno 13,371145 %; no se hizo el barrido R=0/R=1 originalmente propuesto. | VIGENTE |
+| [EXEC_27](/home/rrios/REPORT_EXEC27_20260910.md:5) | ¿Corregir el guard recupera la luz? | 82,304→395,394 pe/end; pasa rendimiento, fallan controles del contador y balance incompleto. | PARCIAL |
+| [EXEC_27b](/home/rrios/REPORT_EXEC27B_EXEC28_20260910.md:5) | ¿Cierra el balance con destinos terminales? | Residual 0,00000000 %, sin duplicados ni destinos desconocidos; alcance del orden de pérdidas acotado. | VIGENTE |
+| [EXEC_28](/home/rrios/REPORT_EXEC27B_EXEC28_20260910.md:6) | ¿Qué ganancia produce el reflector metálico en EndTop? | Control reflectivo pasa; ganancia central 1,011547±0,008303, fallan las tres hipótesis de ganancia/mecanismo/convergencia. | VIGENTE |
+| [EXEC_29](/home/rrios/REPORT_EXEC29_20260910.md:48) | ¿Importa END-only y qué afirmaciones del deck tienen respaldo? | D0=1173,3375 y D1=397,1525 pe/end; auditoría registra 778 afirmaciones no verificadas. | VIGENTE |
+| [EXEC_30](/home/rrios/REPORT_EXEC30_20260910.md:268) | ¿Qué aporta el reflector en END-only? | D3=1067,684250±5,659363 pe/end, intervalo causal no clasificado; ganancia 1,09895552±0,00852071. | PARCIAL |
+| [EXEC_31](/home/rrios/REPORT_EXEC31_20260911.md:15) | ¿Son integrables las correcciones y separables los diagnósticos? | Integración reproduce D1; salidas físicas idénticas con diagnósticos ON/OFF; genealogía rectificada. | VIGENTE |
+| [EXEC_32](/home/rrios/REPORT_EXEC32_20260911.md:7) | ¿Se puede reparar el smoke test y producir talk_v7 trazable? | Reparación y presentación entregadas; pruebas y procedencia documentadas, sin promoción automática. | VIGENTE |
+| [EXEC_33](/home/rrios/REPORT_EXEC33_20260911.md:13) | ¿Cómo escala el transporte y cuáles son los dos estimadores? | Conteos idénticos con 1/4/12/24 workers; pipeline importado sin cambios, gate de selección documentado. | VIGENTE |
+| [EXEC_34A](/home/rrios/REPORT_EXEC34_20260912.md:42) | ¿Funciona el análisis separado TOP/END en un piloto? | G-P pasa; piloto de 10000 eventos con 24 workers, con advertencias gaussianas preservadas. | SUPERADO POR EXEC_35 |
+| [EXEC_34B](/home/rrios/REPORT_EXEC34_20260912.md:138) | ¿Completa la grilla de 21 celdas? | 21 timeouts: límite de 1791,36 s derivado del piloto de 24 workers, aplicado a corridas de 1 worker. | SUPERADO POR EXEC_34R |
+| [EXEC_34R, documentado por EXEC_34C](/home/rrios/REPORT_EXEC34C_20260912.md:37) | ¿Existe una grilla recuperada utilizable? | EXEC_34C acredita 21 simulaciones completas, 4 workers por celda; informe propio del lanzador NO REGISTRADO. | VIGENTE |
+| [EXEC_34C](/home/rrios/REPORT_EXEC34C_20260912.md:33) | ¿Qué devuelve el pipeline en la grilla completa? | 21 celdas analizadas; los σ gaussianos TOP quedan invalidados por la regla posterior. | SUPERADO POR EXEC_35 |
+| [EXEC_35](/home/rrios/REPORT_EXEC35_20260912.md:5) | ¿Qué anchos son válidos y qué electrónica está acreditada? | TOP robusto 21 válidos, gaussiano 21 inválidos; índices congelados y electrónica sin unificar. | VIGENTE |
+| [EXEC_36](/home/rrios/REPORT_EXEC36_20260913.md:10) | ¿Qué mide la diferencia de grupos del mismo extremo en EndTop? | Observable calculado; comparación experimental bloqueada por el guard de cordura y calibración. | PARCIAL |
+| [EXEC_37](/home/rrios/REPORT_EXEC37_20260913.md:12) | ¿Cumple END-only central la cota y el escalado propuestos? | Cota robusta pasa 4/4; escalado 1,235557–1,336580; residuo indirecto no calibra electrónica. | VIGENTE |
+| [EXEC_38](/home/rrios/REPORT_EXEC38_20260913.md:1) | ¿Se valida el transporte y su contrato independiente del motor? | Correlación positiva 88/88; cotas pasan, perfiles fallan; V1/V2/V5 no evaluables, contrato no certificado. | PARCIAL |
+| [EXEC_40](../analysis/reports/exec40/REPORT_EXEC40_20260913.md) | ¿Se pueden instrumentar los observables físicos ausentes? | V1, primer encuentro V2 y flujo incidente V5 quedan persistidos y validados en una celda. | SUPERADO POR EXEC_42 |
+| [EXEC_41](../analysis/reports/exec41/REPORT_EXEC41_20260913.md) | ¿Qué población define V2 y cuánto costará producirla? | H1 reemplaza la expectativa geométrica previa; se valida el esquema y se registra una salida medida ~43 % mayor que la proyección lineal. | SUPERADO POR EXEC_42 |
+| [EXEC_42](../analysis/reports/exec42/REPORT_EXEC42_20260914.md) | ¿Cumple la grilla completa el contrato preregistrado? | V1, V2-H1 y V5 pasan 21/21; H3 falla 21/21 y su interpretación queda superada. | SUPERADO POR EXEC_43/44 |
+| [EXEC_43](../analysis/reports/exec43/REPORT_EXEC43_20260914.md) | ¿Qué causa la dependencia material del escape? | M1 de filtrado por absorción queda confirmado dentro del esquema persistido y M2 se descarta; el cierre cuantitativo exacto requiere más observables. | VIGENTE |
+| [EXEC_44](../analysis/validation/EXEC44_H3_PRIME_EVALUATION.json) | ¿Puede cerrarse y preservarse el contrato físico? | H3' pasa 4/4, H3 queda retractada, H3'' pendiente y `ready_for_acceptance=true`. | VIGENTE |

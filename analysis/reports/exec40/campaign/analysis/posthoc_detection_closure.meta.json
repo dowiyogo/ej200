@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-09-13T19:47:04.352577+00:00",
+  "N": 2000,
+  "seeds": [
+    26092601,
+    8349041
+  ],
+  "simulation_command": "/usr/bin/time -v -o /home/rrios/exec40_20260913/cell_validated/resource_usage.txt /home/rrios/exec40_20260913/build_off/ej200_bar_sim -m /home/rrios/exec40_20260913/cell_validated/run.mac",
+  "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+  "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+  "analysis_command": "analysis/validation/check_exec40.py --cell /home/rrios/exec40_20260913/cell_validated --d1 /home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1 --out /home/rrios/exec40_20260913/analysis",
+  "analysis_sha256": "c6f79168e42f6384d387e36e07b65d7f42f99eb66a0f331722bcd2a40c8a0115",
+  "bootstrap_seed": 40091301,
+  "bootstrap_replicates": 500,
+  "bootstrap_unit": "generated event",
+  "preregistration_sha256": "cd13d28db1811e5c74d9b17d60d1be7aa0971f02ff8768d48528126602fb5531",
+  "post_hoc": true,
+  "primary_result_unchanged": true,
+  "source_sidecar_sha256": "a06cd861a54d32b2b0cc7b00a2e834bcbecabdf6df472a1e0adff21e0963db4a",
+  "columns": [
+    "arm",
+    "matched_ratio",
+    "matched_ratio_se",
+    "residual",
+    "residual_se"
+  ],
+  "rows": 4,
+  "csv_sha256": "6e23889d21fd3d991516c41e274fd638644e6df1a47804b1e59779b7b2aef79c",
+  "root_sha256": "0a185f7012efc5a573f573c0b9deab536b5f028f70338f3310218313cd6d8aa8"
+}

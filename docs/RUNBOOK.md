@@ -72,3 +72,7 @@ The recorded elapsed-time ratio was **1.468017×** (D0 3341.036238 s, V1 2275.88
 For position scans, prefer independent one-worker jobs, one fresh output directory per position, rather than MT within each job. Record each job's seeds explicitly. Do not use statistical agreement to replace exact event-level reproducibility when testing a diagnostic toggle.
 
 No timing-resolution campaign or deck-number replacement is part of this integration. New production results must cite the corrected commit and runtime data, rather than inherit `talk_v6` provenance.
+
+Agents may launch short validation runs whose estimated wall time is at most approximately 20 minutes. For any longer or multi-cell campaign, the agent prepares and dry-runs the launcher, prints the exact detached command, and stops; the operator starts the campaign separately.
+
+Size output from the recorded photon population rather than event count alone. EXEC_41 projected approximately 4.9 GB per 10,000-event cell by linear scaling, while EXEC_42 measured approximately 7 GB, 43% higher. The first-encounter tree scales with produced photons, whose multiplicity varies by material and deposited energy, rather than directly with generated events.

@@ -1,0 +1,5 @@
+condition,status,evidence
+1,PASS,"n_eff=1.58,1.580000000000001,1.58; spread=4.4408920985006262e-16 <= 1e-4; M2=EXCLUDED"
+2,PASS,EJ-200 < EJ-204 < EJ-230 absent fraction at 7/7 positions; 14/14 adjacent comparisons PASS
+3,PASS,escape EJ-200 < EJ-204 < EJ-230 in 7/7 positions (21/21 ordered pairwise differences)
+4,PASS,non-escape sec(theta) median > escape median in 84/84 available directional comparisons

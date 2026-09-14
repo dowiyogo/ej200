@@ -1,0 +1,42 @@
+{
+  "schema": "ej200.exec44.h3_prime_evaluation.v1",
+  "created_utc": "2026-09-14T10:35:29.276829+00:00",
+  "method": "Read published EXEC43 and EXEC42 JSON only; no ROOT opened and no observable recalculated.",
+  "preregistration": {
+    "path": "analysis/validation/EXEC44_PREREGISTRATION.md",
+    "sha256": "32a5bf998eefaacb384a75cd8f79057ae49a5225c8a47c23a536ad50aea1153b"
+  },
+  "inputs": {
+    "exec43_results": {
+      "path": "/home/rrios/exec43_20260914/results.json",
+      "sha256": "c9544351da187a692c34705a6669753e3b5195caa352006b1864625c73f8c6c9"
+    },
+    "exec42_contract_results": {
+      "path": "/home/rrios/exec42_20260913/analysis/contract_results.json",
+      "sha256": "ba99f05cbf254ddf52eb7f620e8e401ee0708dcd6d8f76d7401c5dc368a660f3"
+    }
+  },
+  "conditions": [
+    {
+      "condition": 1,
+      "status": "PASS",
+      "evidence": "n_eff=1.58,1.580000000000001,1.58; spread=4.4408920985006262e-16 <= 1e-4; M2=EXCLUDED"
+    },
+    {
+      "condition": 2,
+      "status": "PASS",
+      "evidence": "EJ-200 < EJ-204 < EJ-230 absent fraction at 7/7 positions; 14/14 adjacent comparisons PASS"
+    },
+    {
+      "condition": 3,
+      "status": "PASS",
+      "evidence": "escape EJ-200 < EJ-204 < EJ-230 in 7/7 positions (21/21 ordered pairwise differences)"
+    },
+    {
+      "condition": 4,
+      "status": "PASS",
+      "evidence": "non-escape sec(theta) median > escape median in 84/84 available directional comparisons"
+    }
+  ],
+  "H3_prime_status": "PASS"
+}

@@ -1,0 +1,252 @@
+{
+  "G_I_1": {
+    "status": "PASS",
+    "npe_end_mean": 397.1525,
+    "npe_end_sem": 2.40992722846526,
+    "reference": 397.1525,
+    "difference": 0.0,
+    "events_with_different_counts": 0,
+    "event_ledger_matches_hits": true,
+    "totals": [
+      794729,
+      793881,
+      9510815
+    ]
+  },
+  "G_I_3": {
+    "status": "MEASURED",
+    "root_bytes": 2380261978,
+    "D1_root_bytes": 707921457,
+    "root_ratio": 3.362324950690116,
+    "wall_s": 420.5656100510387,
+    "D1_wall_s": 1697.8802930450765,
+    "wall_ratio": 0.24770038958210183,
+    "D1_workers": 1,
+    "D1_diagnostics": true,
+    "new_workers": 4,
+    "new_diagnostics": false,
+    "matching_S2_wall_s": 358.38,
+    "matching_S2_wall_ratio": 1.1735186395754191,
+    "proposal_required": true,
+    "tree_compressed_bytes": {
+      "sipm_hits": 707595661,
+      "event_observables": 109062,
+      "first_bar_encounters": 1660711667,
+      "sipm_event_counts": 10073552
+    }
+  },
+  "metadata": {
+    "created_utc": "2026-09-13T19:47:04.352577+00:00",
+    "N": 2000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "simulation_command": "/usr/bin/time -v -o /home/rrios/exec40_20260913/cell_validated/resource_usage.txt /home/rrios/exec40_20260913/build_off/ej200_bar_sim -m /home/rrios/exec40_20260913/cell_validated/run.mac",
+    "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+    "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+    "analysis_command": "analysis/validation/check_exec40.py --cell /home/rrios/exec40_20260913/cell_validated --d1 /home/rrios/ej200_exec26_20260909/build_exec29_20260910/cells/D1 --out /home/rrios/exec40_20260913/analysis",
+    "analysis_sha256": "c6f79168e42f6384d387e36e07b65d7f42f99eb66a0f331722bcd2a40c8a0115",
+    "bootstrap_seed": 40091301,
+    "bootstrap_replicates": 500,
+    "bootstrap_unit": "generated event",
+    "preregistration_sha256": "cd13d28db1811e5c74d9b17d60d1be7aa0971f02ff8768d48528126602fb5531"
+  },
+  "ready_for_acceptance": false,
+  "G_I_2": {
+    "status": "FAIL",
+    "event_rows": 2000,
+    "first_encounter_rows": 41695454,
+    "sipm_event_rows": 172000,
+    "energy_fields_valid": true,
+    "first_encounter_fields_valid": true,
+    "sipm_fields_valid": false,
+    "active_channels": 86,
+    "channel_grid_complete": true
+  },
+  "V1": {
+    "value": 1.0002569144787312,
+    "se": 0.00015530430575678205,
+    "numerator": 40039535.0,
+    "denominator": "total deposited energy of all particles in BarLV",
+    "status": "PASS",
+    "expected": 1.0,
+    "yield_photons_per_MeV": 10400,
+    "total_edep_MeV": 3848.966433256684,
+    "optical_edep_MeV": 60.82821732084396,
+    "nonionizing_edep_MeV": 0.0,
+    "produced_optical": 42213806,
+    "produced_scint": 40039535,
+    "secondary_nonoptical_denominator": {
+      "value": 1.0163185895027926,
+      "se": 0.0001603379137171514,
+      "numerator": 40039535.0,
+      "denominator": 39396637.445732735
+    }
+  },
+  "V2": {
+    "primary_scint_exiting": {
+      "value": 0.2568982359252689,
+      "se": 7.193499505835611e-05,
+      "numerator": 10140104.0,
+      "denominator": 39471287.0
+    },
+    "scint_bar_air": {
+      "value": 0.25938182628921935,
+      "se": 7.299366854618079e-05,
+      "numerator": 10140104.0,
+      "denominator": 39093348.0
+    },
+    "all_exiting": {
+      "value": 0.24438259271218762,
+      "se": 0.00010998743509483478,
+      "numerator": 10174706.0,
+      "denominator": 41634332.0
+    },
+    "escape_status": "FAIL",
+    "escape_expected_interval": [
+      0.36,
+      0.4
+    ],
+    "cosine_gof": {
+      "chi_square_event_bootstrap": 4707030.387425478,
+      "rank": 19,
+      "p_value": 0.0,
+      "status": "FAIL",
+      "threshold_p": 0.01,
+      "pearson_chi_square_photons": 8241716.0084952805,
+      "pearson_df": 19,
+      "pearson_p_value": 0.0,
+      "photons": 39471287,
+      "mean_cosine_binned": 0.5734322426578085,
+      "null": "p(mu)=2mu",
+      "scope": "first exiting scintillation encounter, includes sensor surfaces",
+      "applicability_caveat": "First hits from a localized source in a finite bar need not follow equilibrium isotropic flux."
+    },
+    "status": "FAIL",
+    "observation_checks": {
+      "rows": 41695454,
+      "invalid_surface": 0,
+      "invalid_orientation": 0,
+      "invalid_cosine": 0,
+      "invalid_norm": 0,
+      "nonfinite": 0,
+      "unexpected_outcome": 0,
+      "duplicate_photon_keys": 0,
+      "cos_min": 0.0001280035568285154,
+      "cos_max": 0.9999999976379917
+    }
+  },
+  "V5": {
+    "left": {
+      "value": 0.623260647078891,
+      "se": 0.00047298156334891085,
+      "numerator": 794729.0,
+      "denominator": 1275115.0,
+      "status": "FAIL",
+      "emission_pde_reference": 0.619397,
+      "incident_spectrum_surface_pde": {
+        "value": 0.6136485889875648,
+        "se": 4.4843637534689995e-05,
+        "numerator": 782472.5205468787,
+        "denominator": 1275115.0
+      },
+      "incident_scint_fraction": 0.9638314975512012,
+      "unmatched_detected": 11933,
+      "unknown_surface_pde": 0,
+      "surface_detected": 782796,
+      "surface_absorbed": 492319,
+      "transmitted": 0,
+      "reflected_encounters_excluded": 0,
+      "secondary_surface_residual": {
+        "value": 0.009612058091326153,
+        "se": 0.0004732181547324735,
+        "numerator": 12256.479453121347,
+        "denominator": 1275115.0
+      }
+    },
+    "right": {
+      "value": 0.6224696618165823,
+      "se": 0.0004493995929290236,
+      "numerator": 793881.0,
+      "denominator": 1275373.0,
+      "status": "FAIL",
+      "emission_pde_reference": 0.619397,
+      "incident_spectrum_surface_pde": {
+        "value": 0.6136781365481168,
+        "se": 4.6641476434911565e-05,
+        "numerator": 782668.5260437813,
+        "denominator": 1275373.0
+      },
+      "incident_scint_fraction": 0.9642708446862213,
+      "unmatched_detected": 12019,
+      "unknown_surface_pde": 0,
+      "surface_detected": 781862,
+      "surface_absorbed": 493511,
+      "transmitted": 0,
+      "reflected_encounters_excluded": 0,
+      "secondary_surface_residual": {
+        "value": 0.008791525268465444,
+        "se": 0.0004416727391297109,
+        "numerator": 11212.473956218579,
+        "denominator": 1275373.0
+      }
+    },
+    "top": {
+      "value": 0.6217091378770603,
+      "se": 0.0001236918357787048,
+      "numerator": 9510815.0,
+      "denominator": 15297853.0,
+      "status": "FAIL",
+      "emission_pde_reference": 0.619397,
+      "incident_spectrum_surface_pde": {
+        "value": 0.6122624089330707,
+        "se": 2.7366678031987918e-05,
+        "numerator": 9366300.329284003,
+        "denominator": 15297853.0
+      },
+      "incident_scint_fraction": 0.9553568072591625,
+      "unmatched_detected": 145187,
+      "unknown_surface_pde": 0,
+      "surface_detected": 9365628,
+      "surface_absorbed": 5932225,
+      "transmitted": 0,
+      "reflected_encounters_excluded": 0,
+      "secondary_surface_residual": {
+        "value": 0.00944672894398947,
+        "se": 0.00011937874531013969,
+        "numerator": 144514.67071599615,
+        "denominator": 15297853.0
+      }
+    },
+    "all": {
+      "value": 0.6218743243419654,
+      "se": 0.00011539247348339096,
+      "numerator": 11099425.0,
+      "denominator": 17848341.0,
+      "status": "FAIL",
+      "emission_pde_reference": 0.619397,
+      "incident_spectrum_surface_pde": {
+        "value": 0.612462602315513,
+        "se": 2.625245549514814e-05,
+        "numerator": 10931441.375874665,
+        "denominator": 17848341.0
+      },
+      "incident_scint_fraction": 0.9565992155797561,
+      "unmatched_detected": 169139,
+      "unknown_surface_pde": 0,
+      "surface_detected": 10930286,
+      "surface_absorbed": 6918055,
+      "transmitted": 0,
+      "reflected_encounters_excluded": 0,
+      "secondary_surface_residual": {
+        "value": 0.00941172202645255,
+        "se": 0.000111814422487693,
+        "numerator": 167983.62412533612,
+        "denominator": 17848341.0
+      }
+    },
+    "status": "NOT_VALIDATED_OBSERVATION_FAILURE",
+    "numerical_hypothesis_status": "FAIL"
+  }
+}

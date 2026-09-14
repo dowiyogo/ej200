@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "created_utc": "2026-09-13T20:53:50.299541+00:00",
+    "source_root": "/home/rrios/exec40_20260913/cell_validated/photon_hits_run000.root",
+    "source_root_sha256": "0af0412d1090397455efd208163d1b7fc0f806bb2355943d4a41386e53d701bd",
+    "filtered_root": "/home/rrios/exec41_20260913/first_bar_encounters_production.root",
+    "filtered_root_sha256": "fb708ff003cf064561f2a0e582eade8a7f8d9aa25a9e6224eeac5ff260078567",
+    "N": 2000,
+    "seeds": [
+      26092601,
+      8349041
+    ],
+    "preregistration": "analysis/validation/EXEC41_PREREGISTRATION.md",
+    "preregistration_sha256": "933433a2882c4753301c675913df1f37db614e4afc8316ae87df6c122021d418",
+    "script_sha256": "b4524de83f0c48ee3315f7083ad46200423b788d0ed888fbf284396d0c98e230",
+    "volume_dictionary": {
+      "0": "unknown",
+      "1": "BarPV",
+      "2": "AirGapYMinusPV",
+      "3": "AirGapZPlusPV",
+      "4": "AirGapZMinusPV",
+      "5": "EndSiPMLeft_PV",
+      "6": "EndSiPMRight_PV",
+      "7": "TopSiPMPV",
+      "8": "WorldPV"
+    },
+    "full_size_method": "estimate: reduced encounter file bytes plus original compressed bytes of unchanged trees"
+  },
+  "schema": {
+    "production_columns": [
+      "event_id",
+      "track_id",
+      "source",
+      "pre_copy",
+      "post_copy",
+      "pre_volume_id",
+      "post_volume_id",
+      "outcome",
+      "exiting_bar",
+      "cos_incidence"
+    ],
+    "diagnostic_only_columns": [
+      "boundary_status",
+      "normal_valid",
+      "normal_orientation_valid",
+      "normal_norm",
+      "energy_eV"
+    ],
+    "cosine_root_type": "float"
+  },
+  "rows": 41695454,
+  "selected_V2_rows": 39471287,
+  "max_absolute_cosine_float32_rounding": 2.9802322054628405e-08,
+  "cosine_bin_changes": 18,
+  "max_escape_fraction_shift": 0.0,
+  "max_cosine_bin_probability_shift": 7.600461570528294e-08,
+  "V1_unchanged_input_bit_identical": true,
+  "V5_unchanged_input_bit_identical": true,
+  "source_root_unchanged": true,
+  "storage": {
+    "original_full_bytes": 2380261978,
+    "original_encounter_compressed_bytes": 1660711667,
+    "filtered_encounter_file_bytes": 270101248,
+    "unchanged_tree_compressed_bytes": 717778275,
+    "estimated_reduced_full_bytes": 987879523,
+    "encounter_reduction_factor": 6.148478318026876,
+    "full_file_reduction_factor": 2.4094658534591367,
+    "estimated_21_cells_10000_events_bytes": 103727349915
+  },
+  "acceptance": "PASS"
+}

@@ -87,6 +87,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     auto* ea = dynamic_cast<EventAction*>(
         G4EventManager::GetEventManager()->GetUserEventAction());
     if (ea != nullptr) {
+        ea->ObserveSiPMDetection(track->GetTrackID(), globalId);
         const G4int face = DetectorConstruction::FaceType(globalId);
         if      (face == 0) ea->AddEndLeftHit();
         else if (face == 1) ea->AddEndRightHit();
