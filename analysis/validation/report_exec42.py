@@ -50,7 +50,7 @@ def main():
         f"| V1 primary | Unity inside ±3 event-bootstrap SE | EXEC40 `{block['preregistrations']['EXEC40']['sha256']}` | 21/21 pass; ratios {min(v1):.6f}–{max(v1):.6f} | **PASS** |",
         f"| V2-H1 | escape − 3 SE ≥ 0.226172 | EXEC41 `{block['preregistrations']['EXEC41']['sha256']}` | 21/21 pass; escape {min(v2):.6f}–{max(v2):.6f} | **PASS** |",
         f"| V5 matched | matched/incident agrees with incident-spectrum PDE within 3 paired SE | EXEC40 + EXEC41 correction | 21/21 pass; differences {min(v5d):+.6f} to {max(v5d):+.6f} | **PASS** |",
-        f"| H3 material invariance | Every material pair at fixed x agrees within 3 paired SE | EXEC42 H3 `{block['preregistrations']['EXEC42_H3']['sha256']}` | 0/21 pass; |Δ|={min(h3d):.6f}–{max(h3d):.6f}, or {min(h3z):.2f}–{max(h3z):.2f} SE | **FAIL** |",
+        f"| H3 material invariance | Every material pair at fixed x agrees within 3 paired SE | EXEC42 H3 `{block['preregistrations']['EXEC42_H3']['sha256']}` | 0/21 pass; abs(Δ)={min(h3d):.6f}–{max(h3d):.6f}, or {min(h3z):.2f}–{max(h3z):.2f} SE | **FAIL** |",
         "| Required evaluability | No required result is `NOT EVALUABLE` | EXEC_42 B3 | 0 non-evaluable results | **PASS** |",
         "| `ready_for_acceptance` | True only if V1, V2-H1, V5 and all H3 comparisons pass | EXEC_42 B3 | `false`; failure reason `H3` | **FAIL / false** |",
         "",
@@ -115,7 +115,7 @@ def main():
         "",
         "Each row uses identical bootstrap event weights in both materials. Percentage-point differences are `100 × (escape_a − escape_b)`.",
         "",
-        "| x (mm) | Pair | Escape A | Escape B | Δ (percentage points) | Paired SE | |Δ|/SE | Result |",
+        "| x (mm) | Pair | Escape A | Escape B | Δ (percentage points) | Paired SE | abs(Δ)/SE | Result |",
         "|---:|---|---:|---:|---:|---:|---:|---|",
     ]
     for row in contract["H3"]:
