@@ -1,6 +1,8 @@
 #include "SteppingAction.hh"
 #include "EventAction.hh"
+#include "PhotonTrackInfo.hh"
 #include "G4EventManager.hh"
+#include "G4Exception.hh"
 #ifdef EJ200_ENABLE_DIAGNOSTICS
 #include "TrackingAction.hh"
 #endif
@@ -158,6 +160,24 @@ void SteppingAction::UserSteppingAction(const G4Step* step) {
         if (preVolName == "BarLV" &&
             (postVolName == "EndSiPMLV" || postVolName == "TopSiPMLV"))
             ++gMylarToSiPM;
+
+        // Count completed boundary encounters originating inside the bar, but
+        // exclude the final SiPM detection boundary recorded by SiPMSD.
+        if (preVolName == "BarLV" &&
+            postVolName != "EndSiPMLV" && postVolName != "TopSiPMLV") {
+            auto* trackInfo =
+                dynamic_cast<PhotonTrackInfo*>(track->GetUserInformation());
+            if (trackInfo == nullptr) {
+                if (track->GetUserInformation() != nullptr) {
+                    G4Exception("SteppingAction::UserSteppingAction",
+                                "EXEC46_TRACK_INFO_COLLISION", FatalException,
+                                "An optical track already owns incompatible user information.");
+                }
+                trackInfo = new PhotonTrackInfo;
+                track->SetUserInformation(trackInfo);
+            }
+            trackInfo->AddBoundaryEncounter();
+        }
     }
 
     // ── Wavelength filter ────────────────────────────────────────────────────

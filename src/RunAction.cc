@@ -152,6 +152,7 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("wl_nm_created");
     am->CreateNtupleDColumn("path_length_mm");
     am->CreateNtupleDColumn("exit_angle_deg");
+    am->CreateNtupleIColumn("n_boundary_encounters");
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
     EventAction::BookFirstEncounters();

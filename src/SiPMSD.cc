@@ -1,6 +1,7 @@
 #include "SiPMSD.hh"
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
+#include "PhotonTrackInfo.hh"
 
 #include "G4AnalysisManager.hh"
 #include "G4Event.hh"
@@ -28,6 +29,7 @@ constexpr G4int kCreationZColumn = 17;
 constexpr G4int kCreatedWavelengthColumn = 18;
 constexpr G4int kPathLengthColumn = 19;
 constexpr G4int kExitAngleColumn = 20;
+constexpr G4int kBoundaryEncountersColumn = 21;
 constexpr G4double kHcEvNm = 1239.84193;
 constexpr G4double kTimeToleranceNs = 1.e-12;
 constexpr G4double kPathToleranceMm = 1.e-6;
@@ -137,6 +139,18 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4double normalProjection = std::max(
         -1., std::min(1., pre->GetMomentumDirection().dot(OutwardFaceNormal(face))));
     const G4double exitAngleDeg = std::acos(normalProjection) / deg;
+    const auto* trackInfo =
+        dynamic_cast<const PhotonTrackInfo*>(track->GetUserInformation());
+    const G4int boundaryEncounters =
+        trackInfo ? trackInfo->GetBoundaryEncounters() : 0;
+    if (boundaryEncounters < 0 ||
+        !std::isfinite(static_cast<G4double>(boundaryEncounters))) {
+        G4ExceptionDescription message;
+        message << "Invalid pre-detection boundary-encounter count "
+                << boundaryEncounters << ".";
+        G4Exception("SiPMSD::ProcessHits", "EXEC46_INVALID_BOUNDARY_COUNTER",
+                    FatalException, message);
+    }
 
     // ── Electronic time jitter ───────────────────────────────────────────────
     // Simulate the timing resolution of the readout electronics by smearing
@@ -183,6 +197,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
                          createdWavelengthNm);
     am->FillNtupleDColumn(kSipmHitsNtuple, kPathLengthColumn, pathLengthMm);
     am->FillNtupleDColumn(kSipmHitsNtuple, kExitAngleColumn, exitAngleDeg);
+    am->FillNtupleIColumn(kSipmHitsNtuple, kBoundaryEncountersColumn,
+                         boundaryEncounters);
     am->AddNtupleRow(0);
 
     track->SetTrackStatus(fStopAndKill);
