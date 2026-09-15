@@ -5,6 +5,7 @@
 #include "G4AnalysisManager.hh"
 #include "G4Event.hh"
 #include "G4EventManager.hh"
+#include "G4Exception.hh"
 #include "G4GenericMessenger.hh"
 #include "G4OpticalPhoton.hh"
 #include "G4Step.hh"
@@ -13,9 +14,20 @@
 #include "G4VPhysicalVolume.hh"
 #include "Randomize.hh"
 
+#include <algorithm>
+#include <cmath>
+
 namespace {
 constexpr G4int kSipmHitsNtuple = 0;
 constexpr G4int kTrackIdColumn = 12;
+constexpr G4int kDetectionTimeColumn = 13;
+constexpr G4int kCreationTimeColumn = 14;
+constexpr G4int kCreationXColumn = 15;
+constexpr G4int kCreationYColumn = 16;
+constexpr G4int kCreationZColumn = 17;
+constexpr G4int kCreatedWavelengthColumn = 18;
+constexpr G4double kHcEvNm = 1239.84193;
+constexpr G4double kTimeToleranceNs = 1.e-12;
 }
 
 // ---------------------------------------------------------------------------
@@ -75,7 +87,27 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     // ── Photon kinematics ────────────────────────────────────────────────────
     const G4double energy    = pre->GetKineticEnergy();
     const G4double energy_eV = energy / eV;
-    const G4double wl_nm     = (energy_eV > 0.0) ? (1239.84193 / energy_eV) : 0.0;
+    const G4double wl_nm     = (energy_eV > 0.0) ? (kHcEvNm / energy_eV) : 0.0;
+
+    // Store the physical detection time separately from the legacy jittered
+    // time_ns branch.  Track local time starts at zero at photon creation.
+    const G4double detectionTimeNs = post->GetGlobalTime() / ns;
+    const G4double rawCreationTimeNs =
+        (post->GetGlobalTime() - post->GetLocalTime()) / ns;
+    if (!std::isfinite(detectionTimeNs) || !std::isfinite(rawCreationTimeNs) ||
+        rawCreationTimeNs < -kTimeToleranceNs ||
+        detectionTimeNs + kTimeToleranceNs < rawCreationTimeNs) {
+        G4ExceptionDescription message;
+        message << "Invalid photon times: creation=" << rawCreationTimeNs
+                << " ns, detection=" << detectionTimeNs << " ns.";
+        G4Exception("SiPMSD::ProcessHits", "EXEC46_INVALID_TRACK_TIME",
+                    FatalException, message);
+    }
+    const G4double creationTimeNs = std::max(0., rawCreationTimeNs);
+    const G4ThreeVector creationPos = track->GetVertexPosition();
+    const G4double createdEnergyEv = track->GetVertexKineticEnergy() / eV;
+    const G4double createdWavelengthNm =
+        (createdEnergyEv > 0.) ? (kHcEvNm / createdEnergyEv) : 0.;
 
     // ── Electronic time jitter ───────────────────────────────────────────────
     // Simulate the timing resolution of the readout electronics by smearing
@@ -115,6 +147,13 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4double gunX = ea ? ea->GetGunXmm() : 0.0;
     am->FillNtupleDColumn(0, 11, gunX);
     am->FillNtupleIColumn(kSipmHitsNtuple, kTrackIdColumn, track->GetTrackID());
+    am->FillNtupleDColumn(kSipmHitsNtuple, kDetectionTimeColumn, detectionTimeNs);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kCreationTimeColumn, creationTimeNs);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kCreationXColumn, creationPos.x() / mm);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kCreationYColumn, creationPos.y() / mm);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kCreationZColumn, creationPos.z() / mm);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kCreatedWavelengthColumn,
+                         createdWavelengthNm);
     am->AddNtupleRow(0);
 
     track->SetTrackStatus(fStopAndKill);
@@ -124,7 +163,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
 // ---------------------------------------------------------------------------
 G4double SiPMSD::GetPDE(G4double energy) const {
     if (energy <= 0.0) return 0.0;
-    return SiPMModel::InterpolatePDE(fPDECurve, 1239.84193 / (energy / eV));
+    return SiPMModel::InterpolatePDE(fPDECurve, kHcEvNm / (energy / eV));
 }
 
 void SiPMSD::SetModel(const G4String& model) {

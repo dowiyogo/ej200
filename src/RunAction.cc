@@ -144,6 +144,12 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("z_mm");
     am->CreateNtupleDColumn("gun_x_mm");
     am->CreateNtupleIColumn("track_id");
+    am->CreateNtupleDColumn("t_detection_ns");
+    am->CreateNtupleDColumn("t_creation_ns");
+    am->CreateNtupleDColumn("x_creation_mm");
+    am->CreateNtupleDColumn("y_creation_mm");
+    am->CreateNtupleDColumn("z_creation_mm");
+    am->CreateNtupleDColumn("wl_nm_created");
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
     EventAction::BookFirstEncounters();
