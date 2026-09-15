@@ -1,0 +1,130 @@
+{
+  "/home/rrios/exec46_20260915/decay_diagnostics/effective_mpt.log": {
+    "size_bytes": 9333,
+    "sha256": "77b519e4ad4cc80b7f0ad1ef4f6bc02c4e1f03c6a85553d89277534ce963ce70"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/effective_mpt.json": {
+    "size_bytes": 3099,
+    "sha256": "7e4c45a827d7af206ced27ef1038acab55864a9f5f42157480057ccc1cced93c"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d1_provenance.json": {
+    "size_bytes": 8342,
+    "sha256": "790f7e45f7e7120866c4c21e2327551b2dbf108a5bd72084398c66cfbff72ed4"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/opsc-100.mac.txt": {
+    "size_bytes": 629,
+    "sha256": "3eb15270ab35a51a4465f36c5f212809f3f7625dbdb04728403e22203b3e46f3"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/analysis.log": {
+    "size_bytes": 4876,
+    "sha256": "9d10f87c65d7e7d2e924950fab4857115582492358825846ef926a6b167e85d9"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/decay_sufficient_statistics.npz": {
+    "size_bytes": 5931810,
+    "sha256": "67ed03a33de42050d7cb616d5607569711174429abef1499e2ce9de433e4efa8"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/decay_cache.meta.json": {
+    "size_bytes": 30654,
+    "sha256": "892fd0c0638ba7902b73b858e6a09e0ff69feab55b582fccc6d5d5ea95cd1b93"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d2_cut_stability.pdf": {
+    "size_bytes": 15966,
+    "sha256": "bd8b999b16913813febfe23cef4a8c7b4797b1afe7d83cdf8cc0932651b2fd09"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d2_cut_stability.csv": {
+    "size_bytes": 587,
+    "sha256": "0ed577f4e76c1967986ebda444329f77701a0242e1d8fd03434b12959afc0346"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d2_cut_stability.root": {
+    "size_bytes": 25346,
+    "sha256": "40ca9413531ef96e2be85ebbd6394b5cb00f0527121fa3f740c8db402e370ca0"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d2_cut_stability.meta.json": {
+    "size_bytes": 1103,
+    "sha256": "853e18748974a1ffe1e299a1ade082ee0b41cfae731ca25f563cf2c9c5a7631e"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_locality.pdf": {
+    "size_bytes": 747829,
+    "sha256": "72b00f3062894e7e2d80880f30ef028dc00732d68abd5da345d407d60a4477b9"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_locality.csv": {
+    "size_bytes": 1551785,
+    "sha256": "9a0a59704d4624196ac211f49469dabfbd3454d9d141a719844625c8895d993a"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_locality.root": {
+    "size_bytes": 121319,
+    "sha256": "0cd362a1dc321e0479e88ffe2200b04d020e6499e7924cedb1e68350b965d111"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_locality.meta.json": {
+    "size_bytes": 17184,
+    "sha256": "5054753d7c26059dd3a3c52e0c386ad3cb0bcc0717db2ba53dac827dd4b6dcb6"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_profile.csv": {
+    "size_bytes": 1149,
+    "sha256": "824f4a8704b839d6be50aef59c9d756faa5f733303631f2cd88972ddf77d263f"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_correlations.csv": {
+    "size_bytes": 287,
+    "sha256": "2d7daf985e22b7935ded8c5dc2c4453edc44c1c3dd4f60278a96853d32a6c8f5"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_double_exponential.pdf": {
+    "size_bytes": 29127,
+    "sha256": "f4d355b4a3a4da9df794003f07024611d681553f203099caa253b2ea85d2051b"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_double_exponential.csv": {
+    "size_bytes": 54591,
+    "sha256": "ee0c10a4b58bd1078889cd0e2506d820872e8f38f435a0bf19731a7cb5eaab38"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_double_exponential.root": {
+    "size_bytes": 63094,
+    "sha256": "8679bbc8e1c3b59a73c97ee2876095083f533d25e9d8318468aa4a278a50bfeb"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_double_exponential.meta.json": {
+    "size_bytes": 36242,
+    "sha256": "9f868cbf4fec3866080559ed4cfef61f67a011a66f68bc3bd30efd527d15565e"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d1_d4_summary.json": {
+    "size_bytes": 16919,
+    "sha256": "5a5461dc8b63fe113deaca62d63e21205cb6b40ee8788fccdf610cada5d294e2"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_local_tail_stability.csv": {
+    "size_bytes": 1053,
+    "sha256": "95b61df2b854217b5c3178bef6f657833f7a3a22f6ea723a3705355a5080e856"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d3_creation_locality.png": {
+    "size_bytes": 124624,
+    "sha256": "abd7a8c8b157a36c4db0f58e3e22bb7c9e017e42618e128aee23fa6fedbef082"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d2_paired_cut_increases.csv": {
+    "size_bytes": 349,
+    "sha256": "81317c35b96ee55670fb46573e98861988dbe76546e0a2ddb0f035c17cc1b7af"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_fixed_fast_component.csv": {
+    "size_bytes": 401,
+    "sha256": "2fb6dc320d7f96542b9ef0bf9f5534cf10a792c421b2ce7e6198485fcd89369e"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/dump_effective_mpt.o": {
+    "size_bytes": 21816,
+    "sha256": "2899573fb46c817be68297df6a37d15304e3d2a9024114506764698284091e28"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/dump_effective_mpt": {
+    "size_bytes": 332704,
+    "sha256": "abf1f5137e3591490b5c34f7e5c411bbe358f4683484ada04dd9a08cf0a2728c"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/d4_double_exponential.png": {
+    "size_bytes": 69601,
+    "sha256": "94d3ed1838b68abcea99f5c00c0ffdf302f3da6e7570c36d6bbb247cd51d5bfe"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/emission_pool.log": {
+    "size_bytes": 1157,
+    "sha256": "bdf8a807457bb9086cb6028b25af02b9d7e12fbbd7144d9d9180e5eb3bab1705"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/emission_pool_by_face.csv": {
+    "size_bytes": 529,
+    "sha256": "8ae152ca067cb0f68ecbf974be70a59eb042827227788ceee82049287dd6055f"
+  },
+  "/home/rrios/exec46_20260915/decay_diagnostics/emission_pool_by_face.meta.json": {
+    "size_bytes": 1848,
+    "sha256": "26ddbf01ad130782d910ad93cf7f6a67ba5a3955f23feac44ec5d6219c220b24"
+  }
+}

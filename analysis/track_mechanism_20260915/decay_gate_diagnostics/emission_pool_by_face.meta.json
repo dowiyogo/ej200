@@ -1,0 +1,46 @@
+{
+  "command": "/usr/bin/python3 analysis/track_mechanism_20260915/measure_emission_pool.py",
+  "source_root": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xp0/attempts/c73247d595ca49f4aa18793200edab77/photon_hits_run000.root",
+  "source_root_sha256": "8e20d372d616e7d58d92c040d542b1691186367b7f667226de43fbac4b71f88e",
+  "events": 10000,
+  "source_selection": "source_type==1",
+  "time_origin_ns": 0,
+  "rows": [
+    {
+      "pool": "left",
+      "scintillation_photons": 5124694,
+      "pooled_mean_global_creation_ns": 3.098867027079789,
+      "pooled_se_event_ns": 0.0011325591289799773,
+      "equal_event_mean_global_creation_ns": 3.0983774219956794,
+      "equal_event_se_ns": 0.0011501330009204764
+    },
+    {
+      "pool": "right",
+      "scintillation_photons": 5122329,
+      "pooled_mean_global_creation_ns": 3.0976596722566447,
+      "pooled_se_event_ns": 0.0011262773089254449,
+      "equal_event_mean_global_creation_ns": 3.09766151005853,
+      "equal_event_se_ns": 0.0011459599283911125
+    },
+    {
+      "pool": "top",
+      "scintillation_photons": 50121141,
+      "pooled_mean_global_creation_ns": 3.0438305467135174,
+      "pooled_se_event_ns": 0.0003507930371800604,
+      "equal_event_mean_global_creation_ns": 3.04360585341069,
+      "equal_event_se_ns": 0.0003522008143751855
+    },
+    {
+      "pool": "END_equal_event_equal_face",
+      "scintillation_photons": 10247023,
+      "pooled_mean_global_creation_ns": 3.0982634889962024,
+      "pooled_se_event_ns": 0.0008017023617129023,
+      "equal_event_mean_global_creation_ns": 3.098019466027105,
+      "equal_event_se_ns": 0.0008143746133384317
+    }
+  ],
+  "interpretation": "Moment-matched exponential surrogate; not a measured exponential decay lifetime",
+  "new_events_generated": 0,
+  "other_cells_scanned": 0,
+  "first_photon_selection_performed": false
+}
