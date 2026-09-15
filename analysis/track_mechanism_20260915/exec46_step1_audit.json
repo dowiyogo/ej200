@@ -1,0 +1,24 @@
+{
+  "start_utc": "2026-09-15T16:50:33.403802+00:00",
+  "end_utc": "2026-09-15T16:51:31.785640+00:00",
+  "command": "analysis/track_mechanism_20260915/analyze_step1.py --cell EJ200_xp0 --processes 1 --sha-file /tmp/exec46_step1_sha256.txt",
+  "constants": {
+    "step_size": "256 MB",
+    "processes": 1,
+    "expected_events": 10000,
+    "path_tolerance_mm": 1e-06,
+    "time_tolerance_ns": 1e-12,
+    "speed_tolerance_mm": 1e-06,
+    "npe_reference_sigma_multiplier": 5.0,
+    "npe_reference_rounding_tolerance": 0.005,
+    "tau_tail_multiplier": 5.0,
+    "tau_compatibility_relative": 0.03
+  },
+  "cells": 21,
+  "campaign_cells": 21,
+  "campaign_complete": false,
+  "all_gates_pass": false,
+  "analyzed_cells": 1,
+  "hard_abort_cell": "EJ200_xp0",
+  "hard_abort_gate": "scintillation_creation_time_tail_tau"
+}
