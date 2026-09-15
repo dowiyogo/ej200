@@ -150,6 +150,8 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("y_creation_mm");
     am->CreateNtupleDColumn("z_creation_mm");
     am->CreateNtupleDColumn("wl_nm_created");
+    am->CreateNtupleDColumn("path_length_mm");
+    am->CreateNtupleDColumn("exit_angle_deg");
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
     EventAction::BookFirstEncounters();

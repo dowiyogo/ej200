@@ -26,8 +26,17 @@ constexpr G4int kCreationXColumn = 15;
 constexpr G4int kCreationYColumn = 16;
 constexpr G4int kCreationZColumn = 17;
 constexpr G4int kCreatedWavelengthColumn = 18;
+constexpr G4int kPathLengthColumn = 19;
+constexpr G4int kExitAngleColumn = 20;
 constexpr G4double kHcEvNm = 1239.84193;
 constexpr G4double kTimeToleranceNs = 1.e-12;
+constexpr G4double kPathToleranceMm = 1.e-6;
+
+G4ThreeVector OutwardFaceNormal(G4int face) {
+    if (face == 0) return {-1., 0., 0.};
+    if (face == 1) return {1., 0., 0.};
+    return {0., 1., 0.};
+}
 }
 
 // ---------------------------------------------------------------------------
@@ -83,6 +92,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
         return false;
     }
     const G4int globalId = pv->GetCopyNo();
+    const G4int face = DetectorConstruction::FaceType(globalId);
+    const G4ThreeVector pos = post->GetPosition();
 
     // ── Photon kinematics ────────────────────────────────────────────────────
     const G4double energy    = pre->GetKineticEnergy();
@@ -109,6 +120,24 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4double createdWavelengthNm =
         (createdEnergyEv > 0.) ? (kHcEvNm / createdEnergyEv) : 0.;
 
+    // BoundaryInvokeSD runs before G4SteppingManager adds the current step to
+    // G4Track::GetTrackLength(), so include it explicitly at detection.
+    const G4double pathLengthMm =
+        (track->GetTrackLength() + step->GetStepLength()) / mm;
+    const G4double straightDistanceMm = (pos - creationPos).mag() / mm;
+    if (!std::isfinite(pathLengthMm) || !std::isfinite(straightDistanceMm) ||
+        pathLengthMm + kPathToleranceMm < straightDistanceMm) {
+        G4ExceptionDescription message;
+        message << "Photon path is shorter than its creation-to-detection chord: "
+                << "path=" << pathLengthMm << " mm, chord="
+                << straightDistanceMm << " mm.";
+        G4Exception("SiPMSD::ProcessHits", "EXEC46_INVALID_TRACK_PATH",
+                    FatalException, message);
+    }
+    const G4double normalProjection = std::max(
+        -1., std::min(1., pre->GetMomentumDirection().dot(OutwardFaceNormal(face))));
+    const G4double exitAngleDeg = std::acos(normalProjection) / deg;
+
     // ── Electronic time jitter ───────────────────────────────────────────────
     // Simulate the timing resolution of the readout electronics by smearing
     // the photon arrival time with a Gaussian of zero mean and sigma = fJitterSigma.
@@ -116,7 +145,6 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     const G4double jitter  = G4RandGauss::shoot(0.0, fJitterSigma);
     const G4double time_ns = (track->GetGlobalTime() + jitter) / ns;
 
-    const G4ThreeVector pos = post->GetPosition();
     const G4double pde = GetPDE(energy);
     const G4int eventId =
         G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
@@ -126,7 +154,6 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     if (ea != nullptr) {
         ea->RegisterDetectedTrackId(track->GetTrackID());
         ea->ObserveSiPMDetection(track->GetTrackID(), globalId);
-        const G4int face = DetectorConstruction::FaceType(globalId);
         if      (face == 0) ea->AddEndLeftHit();
         else if (face == 1) ea->AddEndRightHit();
         else                ea->AddTopHit();
@@ -134,7 +161,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
 
     auto* am = G4AnalysisManager::Instance();
     am->FillNtupleIColumn(0, 0, eventId);
-    am->FillNtupleIColumn(0, 1, DetectorConstruction::FaceType(globalId));
+    am->FillNtupleIColumn(0, 1, face);
     am->FillNtupleIColumn(0, 2, globalId);
     am->FillNtupleIColumn(0, 3, DetectorConstruction::LocalId(globalId));
     am->FillNtupleDColumn(0, 4, time_ns);
@@ -154,6 +181,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     am->FillNtupleDColumn(kSipmHitsNtuple, kCreationZColumn, creationPos.z() / mm);
     am->FillNtupleDColumn(kSipmHitsNtuple, kCreatedWavelengthColumn,
                          createdWavelengthNm);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kPathLengthColumn, pathLengthMm);
+    am->FillNtupleDColumn(kSipmHitsNtuple, kExitAngleColumn, exitAngleDeg);
     am->AddNtupleRow(0);
 
     track->SetTrackStatus(fStopAndKill);
