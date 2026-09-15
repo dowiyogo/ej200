@@ -1,0 +1,4 @@
+material,opsc_code,rindex_wavelength_min_nm,rindex_wavelength_max_nm,rindex_min,rindex_max,rindex_constant,abs_wavelength_min_nm,abs_wavelength_max_nm,abs_length_min_mm,abs_length_max_mm,abs_length_constant,rindex_path,absorption_path
+EJ-200,OPSC-100,200.0,800.0,1.58,1.58,True,200.0,800.0,3800.0,3800.0,True,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-100/rIndex.txt,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-100/absLength.txt
+EJ-204,OPSC-101,200.0,800.0,1.58,1.58,True,200.0,800.0,1600.0,1600.0,True,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-101/rIndex.txt,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-101/absLength.txt
+EJ-230,OPSC-106,200.0,800.0,1.58,1.58,True,200.0,800.0,1200.0,1200.0,True,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/rIndex.txt,/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/absLength.txt

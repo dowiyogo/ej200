@@ -117,12 +117,14 @@ def _const_property_ns(macro_path, property_name):
 
 
 def load_material_config(opsc_code):
-    """Lee tiempos y RINDEX sin heredar valores entre materiales."""
+    """Lee tiempos, RINDEX y ABSLENGTH sin heredar valores entre materiales."""
     paths = material_paths(opsc_code)
     for path in paths.values():
         if not path.is_file():
             raise FileNotFoundError(path)
     wavelength_nm, rindex = np.loadtxt(paths["rindex"], unpack=True)
+    absorption_wavelength_nm, absorption_cm = np.loadtxt(
+        paths["absorption"], unpack=True)
     order = np.argsort(HC_EV_NM / wavelength_nm)
     energy_ev = (HC_EV_NM / wavelength_nm)[order]
     rindex = rindex[order]
@@ -133,6 +135,9 @@ def load_material_config(opsc_code):
         "rise_time_ns": _const_property_ns(paths["macro"], "SCINTILLATIONRISETIME1"),
         "energy_ev": energy_ev,
         "rindex": rindex,
+        "rindex_wavelength_nm": wavelength_nm,
+        "absorption_wavelength_nm": absorption_wavelength_nm,
+        "absorption_length_mm": absorption_cm * 10.0,
         "paths": paths,
     }
 

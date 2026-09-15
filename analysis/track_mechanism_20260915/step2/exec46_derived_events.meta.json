@@ -1,0 +1,235 @@
+{
+  "start_utc": "2026-09-15T21:05:09.964699+00:00",
+  "end_utc": "2026-09-15T21:09:13.410824+00:00",
+  "command": "analysis/track_mechanism_20260915/build_step2_derived.py --processes 4",
+  "input_mode": "READ",
+  "new_simulation": false,
+  "tree": "derived_events",
+  "entries": 210000,
+  "cells": [
+    {
+      "cell_code": 0,
+      "cell_id": "EJ200_xm650",
+      "material": "EJ-200",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xm650/attempts/49749dc0e186483c86cf6e0b900894b1/photon_hits_run000.root",
+      "root_sha256": "5535290397016fcec9047ee4e09374dfbccedee15e7707708640b321edb10c2f"
+    },
+    {
+      "cell_code": 1,
+      "cell_id": "EJ200_xm500",
+      "material": "EJ-200",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xm500/attempts/eda9b96121cb40cd89b0818d157b1214/photon_hits_run000.root",
+      "root_sha256": "3c9fb0dd2bcedef701f61459bcf78aa223802307f9ddadb68461dc559debfa1b"
+    },
+    {
+      "cell_code": 2,
+      "cell_id": "EJ200_xm200",
+      "material": "EJ-200",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xm200/attempts/84c2ac28226b4278b513220ec4fb5b06/photon_hits_run000.root",
+      "root_sha256": "863c68acce144a8e30a31222d3856dc44283b9dad77d1541da2fc1f47e6628e6"
+    },
+    {
+      "cell_code": 3,
+      "cell_id": "EJ200_xp0",
+      "material": "EJ-200",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xp0/attempts/c73247d595ca49f4aa18793200edab77/photon_hits_run000.root",
+      "root_sha256": "8e20d372d616e7d58d92c040d542b1691186367b7f667226de43fbac4b71f88e"
+    },
+    {
+      "cell_code": 4,
+      "cell_id": "EJ200_xp200",
+      "material": "EJ-200",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xp200/attempts/791043ce3257443f9fe26c06f6359aed/photon_hits_run000.root",
+      "root_sha256": "5a33bc0aa14ca246621ccaa74e6ed6ed889b291b73ed3c26dfd1d87e88115bbb"
+    },
+    {
+      "cell_code": 5,
+      "cell_id": "EJ200_xp500",
+      "material": "EJ-200",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xp500/attempts/d572ac23e46341958fd74436b4b1fb63/photon_hits_run000.root",
+      "root_sha256": "528239c0da87a5820d87cfcfa6ee20ce18e60cb80d0aa4542333bca8fb4fb6ae"
+    },
+    {
+      "cell_code": 6,
+      "cell_id": "EJ200_xp650",
+      "material": "EJ-200",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ200_xp650/attempts/8ad503335084431e968c7d819f0d7bfa/photon_hits_run000.root",
+      "root_sha256": "955bcc4808dcc613bad246debbb4c5e1eea6efd509b8459c522516f7ef680872"
+    },
+    {
+      "cell_code": 7,
+      "cell_id": "EJ204_xm650",
+      "material": "EJ-204",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xm650/attempts/96b1c186bf6b4be684c02984888dde15/photon_hits_run000.root",
+      "root_sha256": "2473580fdc1b6baa33eb282f892cab03060ddd94c4ed0e277b189293a310770d"
+    },
+    {
+      "cell_code": 8,
+      "cell_id": "EJ204_xm500",
+      "material": "EJ-204",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xm500/attempts/7734e245e56c43a19ecca8178a1a00e2/photon_hits_run000.root",
+      "root_sha256": "7914092a0a9675fe14f77b89a8943744fefbf80820d6cdd69f30c6ee3caabf9a"
+    },
+    {
+      "cell_code": 9,
+      "cell_id": "EJ204_xm200",
+      "material": "EJ-204",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xm200/attempts/bb18302b934a49eea769df15714a8535/photon_hits_run000.root",
+      "root_sha256": "487e6cbe41cd39dedd0fc0239f658793f043c1237e7da1dcac15d7f827d1439e"
+    },
+    {
+      "cell_code": 10,
+      "cell_id": "EJ204_xp0",
+      "material": "EJ-204",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xp0/attempts/003718beeb4f43799de6bbc6723db1ef/photon_hits_run000.root",
+      "root_sha256": "6aff8084a7da8fd031dba73bcc160e8009a42be65b2234d4a6bf97a6529a2854"
+    },
+    {
+      "cell_code": 11,
+      "cell_id": "EJ204_xp200",
+      "material": "EJ-204",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xp200/attempts/2618934ec00b4c15844d19682ffcaf70/photon_hits_run000.root",
+      "root_sha256": "9feb78e144c555ba71ab6d5c948ae6cbe68e27aaf52bd3e844e9d766065aee02"
+    },
+    {
+      "cell_code": 12,
+      "cell_id": "EJ204_xp500",
+      "material": "EJ-204",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xp500/attempts/28750397d07247d3b4cbc7dc29c01073/photon_hits_run000.root",
+      "root_sha256": "f4ba68367f720b47920be2f3988c175e73b0bd47eb4cfaf78d3a21f13f7301e2"
+    },
+    {
+      "cell_code": 13,
+      "cell_id": "EJ204_xp650",
+      "material": "EJ-204",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ204_xp650/attempts/2a20cf13465046e5bc39bd2786f596b7/photon_hits_run000.root",
+      "root_sha256": "757808b1b98724cf0144139d38ed70efe464be0134badf73ab33b7020ee13bb6"
+    },
+    {
+      "cell_code": 14,
+      "cell_id": "EJ230_xm650",
+      "material": "EJ-230",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xm650/attempts/df6fd49e2d9440c3976f61da0e8cb37e/photon_hits_run000.root",
+      "root_sha256": "1c0a37dbca3de1b7dd2f0b7d3af4dbe8ca6b9540f9efcf82f5d7a69f1d4110a2"
+    },
+    {
+      "cell_code": 15,
+      "cell_id": "EJ230_xm500",
+      "material": "EJ-230",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xm500/attempts/0f7971bbc02045b4b8da1a7e22197481/photon_hits_run000.root",
+      "root_sha256": "82028fd7e7d3f118ef60a35a88f050501ed522ce6fc048deaf80da4ee5db7fb0"
+    },
+    {
+      "cell_code": 16,
+      "cell_id": "EJ230_xm200",
+      "material": "EJ-230",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xm200/attempts/3c5abb8811eb46edb86c9718c1f927e0/photon_hits_run000.root",
+      "root_sha256": "256c94446962cba3d23ce8a35244e8afbcd50e0edb04c668a4899601986e553e"
+    },
+    {
+      "cell_code": 17,
+      "cell_id": "EJ230_xp0",
+      "material": "EJ-230",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xp0/attempts/8e8a9b5e95f149ed8ad3f8ae6d04dbdb/photon_hits_run000.root",
+      "root_sha256": "90695d61bb72f6fcec613b84e4eae71883991c85f91b85c989ecc15da126ea65"
+    },
+    {
+      "cell_code": 18,
+      "cell_id": "EJ230_xp200",
+      "material": "EJ-230",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xp200/attempts/7bb21318515847d78241e239ef9d37ec/photon_hits_run000.root",
+      "root_sha256": "6f8188fd40d6142a8840a32df05872b9fdcc65f9d5b7521bb0161c934f97e8ef"
+    },
+    {
+      "cell_code": 19,
+      "cell_id": "EJ230_xp500",
+      "material": "EJ-230",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xp500/attempts/2dbfc26293a14b269acf70b7bf85a859/photon_hits_run000.root",
+      "root_sha256": "64394dbd75938fc5101c7f170c66ef4777cc6df082e9b7dab6b31192933346cd"
+    },
+    {
+      "cell_code": 20,
+      "cell_id": "EJ230_xp650",
+      "material": "EJ-230",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260915/full_grid/cells/EJ230_xp650/attempts/9eaf2cbaff094f568538a535a44a11f2/photon_hits_run000.root",
+      "root_sha256": "4292559dd9fdfb4db51b1295fcdc080955e50162b6e5cf3b3a0cf432ddaad0c7"
+    }
+  ],
+  "random_control": {
+    "algorithm": "minimum splitmix64 priority per event and END face",
+    "seed_hex": "0x46a2c0de5eed1234",
+    "unit": "one photon uniformly selected from each event and END face"
+  },
+  "material_properties": [
+    {
+      "material": "EJ-200",
+      "opsc_code": "OPSC-100",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.58,
+      "rindex_max": 1.58,
+      "rindex_constant": true,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 3800.0,
+      "abs_length_max_mm": 3800.0,
+      "abs_length_constant": true,
+      "rindex_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-100/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-100/absLength.txt"
+    },
+    {
+      "material": "EJ-204",
+      "opsc_code": "OPSC-101",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.58,
+      "rindex_max": 1.58,
+      "rindex_constant": true,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 1600.0,
+      "abs_length_max_mm": 1600.0,
+      "abs_length_constant": true,
+      "rindex_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-101/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-101/absLength.txt"
+    },
+    {
+      "material": "EJ-230",
+      "opsc_code": "OPSC-106",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.58,
+      "rindex_max": 1.58,
+      "rindex_constant": true,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 1200.0,
+      "abs_length_max_mm": 1200.0,
+      "abs_length_constant": true,
+      "rindex_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/absLength.txt"
+    }
+  ],
+  "derived_root_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d"
+}

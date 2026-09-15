@@ -1,0 +1,6 @@
+quantity,max_abs_difference_ns
+tL(time)-tL(detection),0.0
+tR(time)-tR(detection),0.0
+T0(time)-T0(detection),0.0
+T0(time)-formula,0.0
+T0(detection)-formula,0.0

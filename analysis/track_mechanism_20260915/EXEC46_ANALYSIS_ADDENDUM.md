@@ -60,3 +60,26 @@ independent contributions.
 Include the variance of creation position together with `path_length_mm` in the
 mechanism-1 analysis. Preserve the measured displaced population as physical
 spatial dispersion; do not collapse it into a purely temporal correction.
+
+## Additions approved before Step 2
+
+The configured RINDEX tables are constant at 1.58 over 200--800 nm. Therefore
+`dn/dlambda` is zero and the proposed group-velocity spectral correction is
+identically zero by construction. Remove it from Step 6 and record the missing
+dispersion as a model limitation. Investigate spectral selection only through
+the configured PDE and ABSLENGTH properties. Step 2 must report the latter
+directly from each material configuration. If ABSLENGTH is itself constant in
+wavelength, say so; do not infer spectral filtering that the model cannot
+produce.
+
+Step 2 also compares the robust single-left-END boundary
+`sigma_IQR(tL)/sigma_IQR(T0) = 0.5` with the first-photon Cherenkov transition,
+using the three materials without forcing an identification. It contrasts
+`exit_angle_deg` and `n_boundary_encounters` for scintillation and Cherenkov,
+separately for first and deterministic random photons from the same event and
+END face. The recorded exit angle is relative to the SiPM normal at detection;
+it is not a per-boundary incidence-angle history.
+
+For Step 4, N in the first-scintillation-photon order statistic is the number
+of detected scintillation photons at the relevant END. Use the separately
+counted scintillation population; never substitute total `Npe_END`.
