@@ -2,6 +2,7 @@
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
 #include "PhotonTrackInfo.hh"
+#include "PhysicalObservation.hh"
 
 #include "G4AnalysisManager.hh"
 #include "G4Event.hh"
@@ -30,6 +31,7 @@ constexpr G4int kCreatedWavelengthColumn = 18;
 constexpr G4int kPathLengthColumn = 19;
 constexpr G4int kExitAngleColumn = 20;
 constexpr G4int kBoundaryEncountersColumn = 21;
+constexpr G4int kSourceTypeColumn = 22;
 constexpr G4double kHcEvNm = 1239.84193;
 constexpr G4double kTimeToleranceNs = 1.e-12;
 constexpr G4double kPathToleranceMm = 1.e-6;
@@ -199,6 +201,8 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     am->FillNtupleDColumn(kSipmHitsNtuple, kExitAngleColumn, exitAngleDeg);
     am->FillNtupleIColumn(kSipmHitsNtuple, kBoundaryEncountersColumn,
                          boundaryEncounters);
+    am->FillNtupleIColumn(kSipmHitsNtuple, kSourceTypeColumn,
+                         PhysicalObservation::Source(track));
     am->AddNtupleRow(0);
 
     track->SetTrackStatus(fStopAndKill);
