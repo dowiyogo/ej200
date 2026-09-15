@@ -1,6 +1,14 @@
 # EXEC_46 — D1–D4 investigation of the decay-tail gate
 
-Only `EJ200_xp0` was analyzed. The existing gate remains unchanged and the full grid remains stopped.
+> **Disposition recorded after this diagnostic (2026-09-15).** René approved
+> the local gate `source_type == 1 && abs(x_creation_mm-gun_x_mm) < 0.1 mm`,
+> with the configured material-specific decay constant and a declared 3%
+> analysis tolerance. He rejected the 3.098019 ns full END-pool mean as an
+> exponential benchmark and accepted the empirical `t_creation_ns`
+> distribution for first-photon predictions. The proposal near the end of
+> this document is retained as historical context and is superseded by that
+> decision. Only `EJ200_xp0` was analyzed for D1–D4; the later approved Step 1
+> resumption is reported separately.
 
 ## Finding
 
@@ -190,7 +198,9 @@ Proposed replacement for the current global-tail compatibility clause, subject t
 - Preserve and report the full-pool six-cut scan, spatial profile and measured pool-moment scale. A changing global mean excess is a population-composition result, not by itself a material-load failure. Do not tune cuts or replace the mixture with a fitted material lifetime.
 - Report the exponential-surrogate benchmark alongside the empirical-pool benchmark in Step 4, with END/face/event weighting explicit. Use independently evaluated events for any predictive validation.
 
-The proposed gate is not implemented. The original failed gate and its artifacts remain intact; resumption requires René's explicit approval.
+This was the proposal at the time of D1–D4. It has since been superseded by
+René's explicit approval quoted at the top of this report. The original failed
+gate and its artifacts remain intact as historical evidence.
 
 ## Artifacts and reproducibility
 

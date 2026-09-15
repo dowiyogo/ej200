@@ -31,6 +31,7 @@ from exec46_schema import (
 OUTPUT_DIR = Path(__file__).resolve().parent
 INVENTORY_PATH = OUTPUT_DIR / "exec46_inventory.csv"
 SOURCE_CENSUS_PATH = OUTPUT_DIR / "exec46_source_census.csv"
+TAU_DIAGNOSTICS_PATH = OUTPUT_DIR / "exec46_tau_diagnostics.csv"
 SCHEMA_DUMP_PATH = OUTPUT_DIR / "exec46_schema_dump.json"
 AUDIT_PATH = OUTPUT_DIR / "exec46_step1_audit.json"
 STEP_SIZE = "256 MB"
@@ -40,9 +41,13 @@ PATH_TOLERANCE_MM = 1.0e-6
 TIME_TOLERANCE_NS = 1.0e-12
 SPEED_TOLERANCE_MM = 1.0e-6
 SENSOR_POSITION_TOLERANCE_MM = 1.0e-9
+GUN_POSITION_TOLERANCE_MM = 1.0e-9
 NPE_REFERENCE_SIGMA_MULTIPLIER = 5.0
 NPE_REFERENCE_ROUNDING_TOLERANCE = 0.005
-TAU_TAIL_MULTIPLIER = 5.0
+TAU_DIAGNOSTIC_MULTIPLIERS = np.asarray([3.0, 4.0, 5.0, 8.0, 12.0, 20.0])
+TAU_GATE_MULTIPLIERS = (3.0, 4.0, 5.0)
+TAU_LOCAL_HALF_WIDTH_MM = 0.1
+TAU_MIN_CONTRIBUTING_EVENTS = 200
 TAU_COMPATIBILITY_RELATIVE = 0.03
 SCINTILLATION_SOURCE = 1
 ALLOWED_SOURCE_TYPES = tuple(sorted(SOURCE_LABELS))
@@ -61,7 +66,7 @@ NPE_REFERENCE = {
 
 READ_BRANCHES = [
     "event_id", "track_id", "face_type", "global_id", "local_id",
-    "time_ns", "t_detection_ns", "t_creation_ns",
+    "time_ns", "t_detection_ns", "t_creation_ns", "gun_x_mm",
     "x_creation_mm", "y_creation_mm", "z_creation_mm",
     "x_mm", "y_mm", "z_mm", "wl_nm_created", "path_length_mm",
     "n_boundary_encounters", "source_type",
@@ -134,6 +139,36 @@ def update_first(first_time, first_source, event_id, detection_time, source_type
     first_source[events[better]] = sources[better]
 
 
+def tail_statistics(event_count, event_sum, event_sum_sq):
+    """Estadísticos del exceso medio con incertidumbre agrupada por evento."""
+    count = float(np.sum(event_count))
+    if count <= 1:
+        return {
+            "count": int(count),
+            "events": int(np.count_nonzero(event_count)),
+            "mean_ns": None,
+            "se_event_ns": None,
+            "se_iid_photon_ns": None,
+        }
+    mean = float(np.sum(event_sum) / count)
+    influence = event_sum - mean * event_count
+    cluster_se = float(
+        np.sqrt(len(event_count) / (len(event_count) - 1) * np.sum(influence ** 2))
+        / count
+    )
+    variance = max(
+        0.0,
+        (float(np.sum(event_sum_sq)) - count * mean ** 2) / (count - 1.0),
+    )
+    return {
+        "count": int(count),
+        "events": int(np.count_nonzero(event_count)),
+        "mean_ns": mean,
+        "se_event_ns": cluster_se,
+        "se_iid_photon_ns": float(np.sqrt(variance / count)),
+    }
+
+
 def analyze_cell(payload):
     cell, known_sha = payload
     cell_id = cell["cell_id"]
@@ -162,10 +197,11 @@ def analyze_cell(payload):
     minimum_path_margin = np.inf
     minimum_boundary = np.inf
     maximum_speed_excess = -np.inf
-    tau_count = 0
-    tau_sum = 0.0
-    tau_sum_sq = 0.0
-    tau_cut = TAU_TAIL_MULTIPLIER * material_config["decay_time_ns"]
+    tau_counts = np.zeros((2, len(TAU_DIAGNOSTIC_MULTIPLIERS), EXPECTED_EVENTS))
+    tau_sums = np.zeros_like(tau_counts)
+    tau_sums_sq = np.zeros_like(tau_counts)
+    tau_cuts = TAU_DIAGNOSTIC_MULTIPLIERS * material_config["decay_time_ns"]
+    gun_x_violations = 0
 
     with uproot.open(root_path) as root_file:
         tree = root_file[TREE_NAME]
@@ -240,11 +276,24 @@ def analyze_cell(payload):
             track_id = arrays["track_id"].astype(np.uint32, copy=False)
             keys.append((event_id.astype(np.uint64) << np.uint64(32)) | track_id.astype(np.uint64))
 
-            tail = (source_type == SCINTILLATION_SOURCE) & (arrays["t_creation_ns"] >= tau_cut)
-            excess = arrays["t_creation_ns"][tail] - tau_cut
-            tau_count += excess.size
-            tau_sum += float(np.sum(excess))
-            tau_sum_sq += float(np.sum(excess ** 2))
+            gun_x = arrays["gun_x_mm"]
+            gun_x_violations += int(np.count_nonzero(
+                ~np.isfinite(gun_x)
+                | (np.abs(gun_x - cell["x_mm"]) > GUN_POSITION_TOLERANCE_MM)))
+            scintillation = source_type == SCINTILLATION_SOURCE
+            local = np.abs(arrays["x_creation_mm"] - gun_x) < TAU_LOCAL_HALF_WIDTH_MM
+            scope_masks = (scintillation, scintillation & local)
+            for cut_index, cut in enumerate(tau_cuts):
+                for scope_index, scope in enumerate(scope_masks):
+                    selected = scope & (arrays["t_creation_ns"] >= cut)
+                    selected_events = event_id[selected]
+                    excess = arrays["t_creation_ns"][selected] - cut
+                    tau_counts[scope_index, cut_index] += np.bincount(
+                        selected_events, minlength=EXPECTED_EVENTS)
+                    tau_sums[scope_index, cut_index] += np.bincount(
+                        selected_events, weights=excess, minlength=EXPECTED_EVENTS)
+                    tau_sums_sq[scope_index, cut_index] += np.bincount(
+                        selected_events, weights=excess ** 2, minlength=EXPECTED_EVENTS)
 
         require(photons == tree.num_entries, f"{cell_id}: lectura incompleta")
 
@@ -269,12 +318,51 @@ def analyze_cell(payload):
                                + NPE_REFERENCE_ROUNDING_TOLERANCE)
         reference_pass = abs(reference_difference) <= reference_tolerance
 
-    require(tau_count > 1, f"{cell_id}: cola de centelleo vacía")
-    tau_fit = tau_sum / tau_count
-    tau_variance = max(0.0, (tau_sum_sq - tau_count * tau_fit ** 2) / (tau_count - 1))
-    tau_error = np.sqrt(tau_variance / tau_count)
-    tau_relative_difference = (tau_fit - material_config["decay_time_ns"]) / material_config["decay_time_ns"]
-    tau_pass = abs(tau_relative_difference) <= TAU_COMPATIBILITY_RELATIVE
+    tau_rows = []
+    tau_gate_pass = True
+    gate_results = {}
+    for scope_index, scope_name in enumerate(("full_pool_informational", "local_gate")):
+        for cut_index, (multiplier, cut) in enumerate(zip(TAU_DIAGNOSTIC_MULTIPLIERS, tau_cuts)):
+            result = tail_statistics(
+                tau_counts[scope_index, cut_index],
+                tau_sums[scope_index, cut_index],
+                tau_sums_sq[scope_index, cut_index],
+            )
+            relative_difference = "" if result["mean_ns"] is None else (
+                result["mean_ns"] - material_config["decay_time_ns"]
+            ) / material_config["decay_time_ns"]
+            is_gate_cut = scope_name == "local_gate" and multiplier in TAU_GATE_MULTIPLIERS
+            cut_pass = (
+                result["mean_ns"] is not None
+                and result["events"] >= TAU_MIN_CONTRIBUTING_EVENTS
+                and abs(relative_difference) <= TAU_COMPATIBILITY_RELATIVE
+            ) if is_gate_cut else ""
+            if is_gate_cut:
+                tau_gate_pass = tau_gate_pass and bool(cut_pass)
+                gate_results[int(multiplier)] = {**result, "relative_difference": relative_difference}
+            tau_rows.append({
+                "cell_id": cell_id,
+                "material": cell["material"],
+                "opsc_code": cell["opsc"],
+                "x_mm": cell["x_mm"],
+                "scope": scope_name,
+                "coordinate_definition": "abs(x_creation_mm-gun_x_mm)",
+                "local_half_width_mm": TAU_LOCAL_HALF_WIDTH_MM if scope_name == "local_gate" else "",
+                "tau_config_ns": material_config["decay_time_ns"],
+                "tau_rise_config_ns": material_config["rise_time_ns"],
+                "cut_multiplier": multiplier,
+                "cut_ns": cut,
+                "tail_photons": result["count"],
+                "contributing_events": result["events"],
+                "tau_fit_ns": result["mean_ns"],
+                "se_event_ns": result["se_event_ns"],
+                "se_iid_photon_ns": result["se_iid_photon_ns"],
+                "relative_difference": relative_difference,
+                "is_gate_cut": is_gate_cut,
+                "gate_tolerance_relative": TAU_COMPATIBILITY_RELATIVE if is_gate_cut else "",
+                "minimum_contributing_events": TAU_MIN_CONTRIBUTING_EVENTS if is_gate_cut else "",
+                "cut_pass": cut_pass,
+            })
 
     stat = root_path.stat()
     root_key = str(root_path.resolve())
@@ -288,10 +376,11 @@ def analyze_cell(payload):
         "duplicate_event_track": duplicate_count,
         "source_type": source_violations,
         "sensor_map": sensor_map_violations,
+        "gun_x": gun_x_violations,
     }
     all_gates_pass = bool(
         event_id_complete and hash_matches_done and reference_pass and delta_nonzero == 0
-        and all(value == 0 for value in violations.values()) and tau_pass
+        and all(value == 0 for value in violations.values()) and tau_gate_pass
         and all(np.all(np.isfinite(first_time[face])) for face in (LEFT_FACE, RIGHT_FACE))
     )
 
@@ -336,12 +425,20 @@ def analyze_cell(payload):
         "source_type_violations": source_violations,
         "sensor_map_violations": sensor_map_violations,
         "tau_config_ns": material_config["decay_time_ns"],
-        "tau_tail_cut_ns": tau_cut,
-        "tau_tail_count": tau_count,
-        "tau_fit_ns": tau_fit,
-        "tau_fit_error_ns": float(tau_error),
-        "tau_relative_difference": tau_relative_difference,
-        "tau_pass": tau_pass,
+        "tau_rise_config_ns": material_config["rise_time_ns"],
+        "tau_gate_coordinate": "abs(x_creation_mm-gun_x_mm)",
+        "tau_gate_half_width_mm": TAU_LOCAL_HALF_WIDTH_MM,
+        "tau_gate_tolerance_relative": TAU_COMPATIBILITY_RELATIVE,
+        "tau_gate_3x_fit_ns": gate_results[3]["mean_ns"],
+        "tau_gate_3x_se_event_ns": gate_results[3]["se_event_ns"],
+        "tau_gate_3x_relative_difference": gate_results[3]["relative_difference"],
+        "tau_gate_4x_fit_ns": gate_results[4]["mean_ns"],
+        "tau_gate_4x_se_event_ns": gate_results[4]["se_event_ns"],
+        "tau_gate_4x_relative_difference": gate_results[4]["relative_difference"],
+        "tau_gate_5x_fit_ns": gate_results[5]["mean_ns"],
+        "tau_gate_5x_se_event_ns": gate_results[5]["se_event_ns"],
+        "tau_gate_5x_relative_difference": gate_results[5]["relative_difference"],
+        "tau_gate_pass": tau_gate_pass,
         "all_gates_pass": all_gates_pass,
     }
 
@@ -362,7 +459,7 @@ def analyze_cell(payload):
                 "source_label": source_label, "count": count, "denominator": denominator,
                 "fraction": float(count / denominator),
             })
-    return inventory, census
+    return inventory, census, tau_rows
 
 
 def write_csv(path, rows):
@@ -431,10 +528,12 @@ def main():
             inventory.append(placeholder)
     inventory.sort(key=lambda row: (row["material"], int(row["x_mm"])))
     census = [row for result in results for row in result[1]]
+    tau_diagnostics = [row for result in results for row in result[2]]
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_csv(args.output_dir / INVENTORY_PATH.name, inventory)
     write_csv(args.output_dir / SOURCE_CENSUS_PATH.name, census)
+    write_csv(args.output_dir / TAU_DIAGNOSTICS_PATH.name, tau_diagnostics)
     schema_payload = {
         "tree": TREE_NAME,
         "expected": BRANCH_TYPES,
@@ -453,9 +552,13 @@ def main():
             "path_tolerance_mm": PATH_TOLERANCE_MM,
             "time_tolerance_ns": TIME_TOLERANCE_NS,
             "speed_tolerance_mm": SPEED_TOLERANCE_MM,
+            "gun_position_tolerance_mm": GUN_POSITION_TOLERANCE_MM,
             "npe_reference_sigma_multiplier": NPE_REFERENCE_SIGMA_MULTIPLIER,
             "npe_reference_rounding_tolerance": NPE_REFERENCE_ROUNDING_TOLERANCE,
-            "tau_tail_multiplier": TAU_TAIL_MULTIPLIER,
+            "tau_diagnostic_multipliers": TAU_DIAGNOSTIC_MULTIPLIERS.tolist(),
+            "tau_gate_multipliers": list(TAU_GATE_MULTIPLIERS),
+            "tau_local_half_width_mm": TAU_LOCAL_HALF_WIDTH_MM,
+            "tau_min_contributing_events": TAU_MIN_CONTRIBUTING_EVENTS,
             "tau_compatibility_relative": TAU_COMPATIBILITY_RELATIVE,
         },
         "cells": len(inventory),

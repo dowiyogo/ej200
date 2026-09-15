@@ -1,0 +1,59 @@
+{
+  "derivation": {
+    "geant4_pdf": "(tau_r+tau_d)/tau_d^2 * exp(-t/tau_d) * (1-exp(-t/tau_r))",
+    "geant4_small_t": "f(t) -> [(tau_r+tau_d)/(tau_d^2 tau_r)] t",
+    "generic_minimum": "if f(t)->a*t, E[min_N] -> sqrt(pi/(2*a))*N^(-1/2)",
+    "standard_biexponential_prefactor": "sqrt(2*tau_r*tau_d)*Gamma(3/2)",
+    "geant4_prefactor": "tau_d*sqrt(pi*tau_r/[2*(tau_r+tau_d)])",
+    "conclusion": "The N^-1/2 exponent is verified; the prompt prefactor is not the Geant4 11.4 sampler prefactor."
+  },
+  "integration": {
+    "points": 2000000,
+    "upper_decay_multiplier": 50.0,
+    "N_values": [
+      10,
+      100,
+      1000,
+      10000,
+      100000
+    ]
+  },
+  "materials": [
+    {
+      "material": "EJ-200",
+      "opsc_code": "OPSC-100",
+      "tau_rise_ns": 0.9,
+      "tau_decay_ns": 2.1,
+      "standard_biexponential_f_over_t_limit_per_ns2": 0.5291005291005291,
+      "geant4_f_over_t_limit_per_ns2": 0.7558578987150415,
+      "numerical_geant4_f_over_t_per_ns2": 0.755857890881946,
+      "standard_biexponential_min_prefactor_ns": 1.7230220711419673,
+      "geant4_min_prefactor_ns": 1.4415836917604363,
+      "exponent": -0.5
+    },
+    {
+      "material": "EJ-204",
+      "opsc_code": "OPSC-101",
+      "tau_rise_ns": 0.7,
+      "tau_decay_ns": 1.8,
+      "standard_biexponential_f_over_t_limit_per_ns2": 0.7936507936507936,
+      "geant4_f_over_t_limit_per_ns2": 1.1022927689594357,
+      "numerical_geant4_f_over_t_per_ns2": 1.1022927579735893,
+      "standard_biexponential_min_prefactor_ns": 1.4068416299504256,
+      "geant4_min_prefactor_ns": 1.1937447079121775,
+      "exponent": -0.5
+    },
+    {
+      "material": "EJ-230",
+      "opsc_code": "OPSC-106",
+      "tau_rise_ns": 0.5,
+      "tau_decay_ns": 1.5,
+      "standard_biexponential_f_over_t_limit_per_ns2": 1.3333333333333333,
+      "geant4_f_over_t_limit_per_ns2": 1.7777777777777777,
+      "numerical_geant4_f_over_t_per_ns2": 1.7777777610474592,
+      "standard_biexponential_min_prefactor_ns": 1.0854018818374014,
+      "geant4_min_prefactor_ns": 0.9399856029866251,
+      "exponent": -0.5
+    }
+  ]
+}
