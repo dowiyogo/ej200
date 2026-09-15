@@ -1,0 +1,19 @@
+{
+  "categories": [
+    "0",
+    "1-2",
+    "3-5",
+    "6-10",
+    ">10"
+  ],
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step3.py",
+  "created_utc": "2026-09-15T22:22:43.810531+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_by_boundary.csv",
+  "distance_note": "Nominal d pairs mirrors; per-photon definitions use d_direct.",
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_by_boundary.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_by_boundary.root",
+  "source_hashes": {
+    "first_by_source.root": "f56af4d2366c59f7320b42bea6037bc285347ae5ed14ee35f18e80965a588166",
+    "microscopic_transport_bins.npz": "f53f64ecde2b4f04e343fc3eeebe0f356f6077d7afead8aa6b691c546a6701c2"
+  }
+}

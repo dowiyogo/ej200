@@ -83,3 +83,41 @@ it is not a per-boundary incidence-angle history.
 For Step 4, N in the first-scintillation-photon order statistic is the number
 of detected scintillation photons at the relevant END. Use the separately
 counted scintillation population; never substitute total `Npe_END`.
+
+## Additions approved before Step 3
+
+The A2 boundary comparison is withdrawn.  The correlation between the first
+Cherenkov fraction and `sigma_IQR(tL)/sigma_IQR(T0)` changes sign between
+`|x|=500` and 650 mm, so neither linear crossing is a measured boundary.  Both
+are sparse-grid interpolation artifacts.  The 21 cells provide only seven
+END distances, 50, 200, 500, 700, 900, 1200, and 1350 mm; the observed change
+of regime lies wholly inside the unmeasured 50--200 mm interval.  Step 3 must
+record that gap and must not propose new simulation.
+
+Reparameterize the Step 3 consistency presentation in physical END distance
+`d`: for each of the seven distances, combine the left-END realization with
+the right-END realization from the mirror cell, while retaining both as
+independent consistency controls.  The primary definition of `g(d)` remains
+microscopic `d_direct`, as required by the EXEC_46 prompt; nominal distance is
+used only to pair the two realizations and display the seven sampled scales.
+
+Before applying the Cherenkov geometry test, verify the gun direction from the
+production macro and source.  For a primary perpendicular to the bar axis,
+the Cherenkov cone has an axial-angle lower edge equal to
+`asin(1/n)=39.27 deg` and is trapped at the large faces for `n > sqrt(2)`.
+Test the fine-binned lower edge and caustic for the first Cherenkov photon at
+the near END in all three materials.  `source_type == 2` identifies the
+creator process but does not encode the creator track or parentage; therefore
+separate the exact primary-cone prediction from any observed population of
+secondary-particle Cherenkov photons.
+
+The identity between the axial cone edge and the critical angle is exact in
+the beta=1 limit.  The configured 1 GeV kinetic-energy muon has beta=0.995424,
+so Step 3 must retain the requested beta=1 prediction and also report the
+parameter-free finite-beta correction from the gun configuration.
+
+Build `g(d)` separately for scintillation and Cherenkov.  For the Cherenkov
+cone edge, compare the fitted axial velocity with the parameter-free
+`c*sqrt(1-1/n^2)/n = 146.9 mm/ns` prediction and with the configured group
+velocity, `c/n = 189.742 mm/ns`.  Report disagreement explicitly rather than
+retuning either value.

@@ -1,0 +1,26 @@
+{
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step3.py",
+  "created_utc": "2026-09-15T22:22:42.933088+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_d.csv",
+  "definition": "Mirror-combined g(d); band spans the two mirror realizations.",
+  "fit_models": [
+    "linear_origin",
+    "quadratic_origin",
+    "cubic_origin"
+  ],
+  "nominal_distances_mm": [
+    50,
+    200,
+    500,
+    700,
+    900,
+    1200,
+    1350
+  ],
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_d.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/g_d.root",
+  "source_hashes": {
+    "first_by_source.root": "f56af4d2366c59f7320b42bea6037bc285347ae5ed14ee35f18e80965a588166",
+    "microscopic_transport_bins.npz": "f53f64ecde2b4f04e343fc3eeebe0f356f6077d7afead8aa6b691c546a6701c2"
+  }
+}

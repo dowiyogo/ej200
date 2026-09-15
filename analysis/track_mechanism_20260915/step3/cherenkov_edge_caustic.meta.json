@@ -1,0 +1,17 @@
+{
+  "bin_width_deg": 0.02,
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step3.py",
+  "created_utc": "2026-09-15T22:22:50.482017+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/cherenkov_edge_caustic.csv",
+  "finite_beta": 0.9954235275799608,
+  "finite_beta_edge_deg": 39.48091876914231,
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/cherenkov_edge_caustic.pdf",
+  "primary_like_tolerance_mm": 0.001,
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/cherenkov_edge_caustic.root",
+  "selection_note": "Proxy requires creation x at gun and y at zero; parent track is absent.",
+  "source_hashes": {
+    "first_by_source.root": "f56af4d2366c59f7320b42bea6037bc285347ae5ed14ee35f18e80965a588166",
+    "microscopic_transport_bins.npz": "f53f64ecde2b4f04e343fc3eeebe0f356f6077d7afead8aa6b691c546a6701c2"
+  },
+  "theta_critical_deg": 39.265247913879456
+}

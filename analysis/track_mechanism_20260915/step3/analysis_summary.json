@@ -1,0 +1,11 @@
+{
+  "cherenkov_edge_velocity_finite_beta_mm_per_ns": 146.44982513308227,
+  "cherenkov_edge_velocity_mm_per_ns": 146.90290322355725,
+  "first_rows": 836541,
+  "fit_rows": 45,
+  "microscopic_rows": 933,
+  "mirror_rows": 105,
+  "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step3/REPORT_TPROP_GD_20260916.md",
+  "report_sha256": "1b39afff836717f65d4ef881b570f5a4dc551df83dedbd12258cd71d6d057976",
+  "theta_critical_deg": 39.265247913879456
+}
