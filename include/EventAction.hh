@@ -40,6 +40,7 @@ class EventAction : public G4UserEventAction {
     void EndSiPMObservations(G4int eventId);
     void ObserveSiPMIncident(const G4Step*, G4int boundaryStatus);
     void ObserveSiPMDetection(G4int trackId, G4int globalId);
+    void RegisterDetectedTrackId(G4int trackId);
 
   private:
     RunAction* fRunAction = nullptr;
@@ -58,4 +59,5 @@ class EventAction : public G4UserEventAction {
     };
     std::map<G4int, SiPMObservation> fSiPMObservations;
     std::unordered_set<std::uint64_t> fIncidentKeys, fDetectionKeys;
+    std::unordered_set<G4int> fDetectedTrackIds;
 };

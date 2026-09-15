@@ -143,6 +143,7 @@ RunAction::RunAction() {
     am->CreateNtupleDColumn("y_mm");
     am->CreateNtupleDColumn("z_mm");
     am->CreateNtupleDColumn("gun_x_mm");
+    am->CreateNtupleIColumn("track_id");
     am->FinishNtuple();
     EventAction::BookEnergyObservations();
     EventAction::BookFirstEncounters();

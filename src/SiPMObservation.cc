@@ -2,6 +2,7 @@
 #include "DetectorConstruction.hh"
 #include "PhysicalObservation.hh"
 #include "G4AnalysisManager.hh"
+#include "G4Exception.hh"
 #include "G4LogicalBorderSurface.hh"
 #include "G4LogicalVolume.hh"
 #include "G4MaterialPropertiesTable.hh"
@@ -33,11 +34,22 @@ void EventAction::BookSiPMObservations() {
 void EventAction::BeginSiPMObservations() {
     fIncidentKeys.clear();
     fDetectionKeys.clear();
+    fDetectedTrackIds.clear();
     fSiPMObservations.clear();
     const auto* detector = dynamic_cast<const DetectorConstruction*>(
         G4RunManager::GetRunManager()->GetUserDetectorConstruction());
     if (detector) for (const auto& item : detector->GetSiPMSurfaces())
         fSiPMObservations.emplace(item.first, SiPMObservation{});
+}
+
+void EventAction::RegisterDetectedTrackId(G4int trackId) {
+    if (trackId <= 0 || !fDetectedTrackIds.insert(trackId).second) {
+        G4ExceptionDescription message;
+        message << "Detected optical-photon track_id must be positive and unique "
+                << "within an event; received " << trackId << ".";
+        G4Exception("EventAction::RegisterDetectedTrackId",
+                    "EXEC46_DUPLICATE_TRACK_ID", FatalException, message);
+    }
 }
 
 void EventAction::ObserveSiPMDetection(G4int trackId, G4int globalId) {

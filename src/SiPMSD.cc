@@ -13,6 +13,11 @@
 #include "G4VPhysicalVolume.hh"
 #include "Randomize.hh"
 
+namespace {
+constexpr G4int kSipmHitsNtuple = 0;
+constexpr G4int kTrackIdColumn = 12;
+}
+
 // ---------------------------------------------------------------------------
 SiPMSD::SiPMSD(const G4String& name)
     : G4VSensitiveDetector(name)
@@ -87,6 +92,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     auto* ea = dynamic_cast<EventAction*>(
         G4EventManager::GetEventManager()->GetUserEventAction());
     if (ea != nullptr) {
+        ea->RegisterDetectedTrackId(track->GetTrackID());
         ea->ObserveSiPMDetection(track->GetTrackID(), globalId);
         const G4int face = DetectorConstruction::FaceType(globalId);
         if      (face == 0) ea->AddEndLeftHit();
@@ -108,6 +114,7 @@ G4bool SiPMSD::ProcessHits(G4Step* step, G4TouchableHistory*)
     am->FillNtupleDColumn(0, 10, pos.z() / mm);
     const G4double gunX = ea ? ea->GetGunXmm() : 0.0;
     am->FillNtupleDColumn(0, 11, gunX);
+    am->FillNtupleIColumn(kSipmHitsNtuple, kTrackIdColumn, track->GetTrackID());
     am->AddNtupleRow(0);
 
     track->SetTrackStatus(fStopAndKill);
