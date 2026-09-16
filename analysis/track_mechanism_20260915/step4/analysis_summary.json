@@ -1,12 +1,12 @@
 {
   "angle_window_rows": 42,
   "bootstrap_replicates": 2000,
-  "created_utc": "2026-09-16T08:19:39.887136+00:00",
-  "input_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "created_utc": "2026-09-16T09:06:10.068371+00:00",
+  "input_sha256": "465f64e38a9d121feabde2f0040453b8bd52ba632fd732068b287eb1b858aa8e",
   "mixture_rows": 6,
   "nc_scan_rows": 210,
   "paired_statistic_rows": 462,
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/REPORT_FIRSTPHOTON_SELECTION_20260916.md",
-  "report_sha256": "f9c4fc42dc2a53a1dbfcd9583179c7d2db377adf439bb79b4065b59b13329f98",
+  "report_sha256": "3764eac0feb1bf200379cc74be2cb48b60b6beaf5d6fe61e8741c0a7a7ad6adf",
   "rows": 420000
 }

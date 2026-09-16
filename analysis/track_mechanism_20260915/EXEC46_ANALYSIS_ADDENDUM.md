@@ -150,3 +150,22 @@ the six mirror values independently at END distances 50 and 200 mm without
 interpolating.  Decompose the six rejected near-END Gaussian timestamp fits by
 source, quantify the angular caustic, and replace the rejected Gaussian width
 there with an explicitly defined source-mixture estimator.
+
+## Corrections approved before Step 5
+
+Recondition the angular-window test on Cherenkov multiplicity at fixed distance
+for d <= 500 mm. The former distance-only conclusion is invalid where the low
+quintile has N_C=1 and no order statistic can select the cone edge.
+
+For the scintillation order statistic, subtract the parent-muon transit estimate
+`(5 mm - z_creation_mm)/c` before selecting the minimum and refit the
+`N^-1/2` law. The configured gun points along -z and the +z bar entry is 5 mm.
+Retain both raw and corrected results.
+
+Treat `sigma_mixture` as the intrinsic zero-jitter optical limit rather than
+detector performance. Compare the source separation with that limit and retain
+the angle-time correlation as a direct cone signature.
+
+Step 5 first compares the common within-cell slope with the seven-point
+between-position slope. If this identification gap explains a majority of the
+registered remnant, stop before Steps 5.2--5.5 and request a thesis decision.

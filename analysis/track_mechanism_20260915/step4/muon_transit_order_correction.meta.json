@@ -1,14 +1,11 @@
 {
-  "bin_width_deg": 0.02,
+  "bar_entry_z_mm": 5.0,
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
-  "created_utc": "2026-09-16T09:06:07.975616+00:00",
-  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.csv",
-  "finite_beta_edge_deg": 39.48091876914231,
-  "histogram_range_deg": [
-    38.0,
-    90.0
-  ],
+  "correction": "t_creation-(5 mm-z_creation)/c",
+  "created_utc": "2026-09-16T09:06:08.942076+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/muon_transit_order_correction.csv",
+  "gun_direction": "(0,0,-1)",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
   "input_sha256": "465f64e38a9d121feabde2f0040453b8bd52ba632fd732068b287eb1b858aa8e",
   "materials": [
@@ -16,6 +13,7 @@
     "EJ-204",
     "EJ-230"
   ],
+  "model": "offset + A*N^-1/2, separately before and after correction",
   "optical_model": {
     "material_codes": {
       "EJ-200": "OPSC-100",
@@ -25,9 +23,7 @@
     "rindex": 1.58,
     "rindex_model": "constant over the configured energy range"
   },
-  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.pdf",
-  "plot_scale": "logarithmic y, linear x",
-  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.root",
-  "selection": "first primary-like Cherenkov photon per event and END",
-  "stratification": "seven nominal END distances"
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/muon_transit_order_correction.pdf",
+  "plot_scale": "logarithmic x, linear y",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/muon_transit_order_correction.root"
 }

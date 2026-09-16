@@ -1,0 +1,24 @@
+{
+  "baseline_fits": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/baseline_fits.csv",
+  "baseline_fits_sha256": "9f40cb0b068ea5fdc0e6be176e1595777c451551cefdb99afcb0d83f1a516f38",
+  "baseline_points": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/baseline_points.csv",
+  "baseline_points_sha256": "9328faa93b706853989f139ccd1d8eec75ad89b0aec324b9b8b08a07e8a992c4",
+  "between_model": "OLS of seven cell means; WLS retained as sensitivity",
+  "binning": "none",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
+  "created_utc": "2026-09-16T09:07:12.469532+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/within_between_slopes.csv",
+  "error": "HC1 event-level error for within; residual OLS error for between",
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",
+  "input_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "model": "T0=position fixed effect + beta_within*(Npe-cell mean Npe)",
+  "new_simulation": false,
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/within_between_slopes.pdf",
+  "plot_scale": "linear",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/within_between_slopes.root"
+}

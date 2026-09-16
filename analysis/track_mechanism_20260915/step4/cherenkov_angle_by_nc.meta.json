@@ -1,14 +1,9 @@
 {
-  "bin_width_deg": 0.02,
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
-  "created_utc": "2026-09-16T09:06:07.975616+00:00",
-  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.csv",
+  "created_utc": "2026-09-16T09:06:08.254927+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_by_nc.csv",
   "finite_beta_edge_deg": 39.48091876914231,
-  "histogram_range_deg": [
-    38.0,
-    90.0
-  ],
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
   "input_sha256": "465f64e38a9d121feabde2f0040453b8bd52ba632fd732068b287eb1b858aa8e",
   "materials": [
@@ -25,9 +20,10 @@
     "rindex": 1.58,
     "rindex_model": "constant over the configured energy range"
   },
-  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.pdf",
-  "plot_scale": "logarithmic y, linear x",
-  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_histograms.root",
-  "selection": "first primary-like Cherenkov photon per event and END",
-  "stratification": "seven nominal END distances"
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_by_nc.pdf",
+  "plot_scale": "linear unless stated otherwise",
+  "prediction": "q95 approaches the finite-beta edge as N_C increases",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_angle_by_nc.root",
+  "selection": "first primary-like Cherenkov; d <= 500 mm",
+  "stratification": "N_C quintiles independently at fixed material and distance"
 }

@@ -334,6 +334,35 @@ def cherenkov_angle_window(frame):
     return pd.DataFrame(rows), pd.DataFrame(histogram_rows)
 
 
+def cherenkov_angle_by_count(frame):
+    """Prueba D1: ventana angular contra N_C manteniendo fija la distancia."""
+    prefix = "first_primary_cherenkov"
+    selected = frame[(frame[f"{prefix}_track_id"] >= 0)
+                     & (frame["nominal_d_mm"] <= 500)].copy()
+    selected["alpha_axial_deg"] = folded_angle(selected[f"{prefix}_exit_angle_deg"])
+    rows = []
+    for (material_code, distance), group in selected.groupby(
+            ["material_code", "nominal_d_mm"], sort=True):
+        group = group.copy()
+        group["count_quantile"] = quantile_bins(group["npe_primary_cherenkov"])
+        for quantile, values in group.groupby("count_quantile", sort=True):
+            rows.append({
+                "material_code": int(material_code),
+                "material": MATERIALS[int(material_code)],
+                "nominal_d_mm": int(distance),
+                "count_quantile": int(quantile),
+                "n_event_ends": len(values),
+                "mean_n_primary_cherenkov": values["npe_primary_cherenkov"].mean(),
+                "min_n_primary_cherenkov": values["npe_primary_cherenkov"].min(),
+                "max_n_primary_cherenkov": values["npe_primary_cherenkov"].max(),
+                "q50_alpha_axial_deg": values["alpha_axial_deg"].median(),
+                "q95_alpha_axial_deg": values["alpha_axial_deg"].quantile(0.95),
+                "q95_minus_edge_deg": (values["alpha_axial_deg"].quantile(0.95)
+                                         - AXIAL_EDGE_ANGLE_DEG),
+            })
+    return pd.DataFrame(rows)
+
+
 def minimum_handicap(frame):
     rows = []
     selected = frame[frame["nominal_d_mm"] == 50]
@@ -405,54 +434,68 @@ def scintillation_order_statistics(frame):
                                       / group["npe_scint"].mean()),
             "mean_min_creation_ns": group["min_creation_scint_t_creation_ns"].mean(),
             "se_min_creation_ns": group["min_creation_scint_t_creation_ns"].sem(),
+            "mean_min_corrected_creation_ns": group[
+                "min_corrected_creation_scint_t_creation_corrected_ns"].mean(),
+            "se_min_corrected_creation_ns": group[
+                "min_corrected_creation_scint_t_creation_corrected_ns"].sem(),
             "mean_detection_selected_creation_ns": group[
                 "first_scint_t_creation_ns"].mean(),
         })
     points = pd.DataFrame(points)
     fits = []
-    for material in MATERIALS:
-        group = points[points["material"] == material]
-        results = {}
-        for label, exponent in (("N^-1", 1.0), ("N^-1/2", 0.5)):
-            parameters, covariance, chi_square = weighted_order_fit(group, exponent)
-            results[label] = (parameters, covariance, chi_square, exponent)
-        scans = []
-        for exponent in ORDER_EXPONENT_GRID:
-            parameters, covariance, chi_square = weighted_order_fit(group, exponent)
-            scans.append((chi_square, exponent, parameters, covariance))
-        best = min(scans, key=lambda item: item[0])
-        results["free"] = (best[2], best[3], best[0], best[1])
-        config = load_material_config(OPSC_CODES[material])
-        prefactor = config["decay_time_ns"] * math.sqrt(
-            math.pi * config["rise_time_ns"]
-            / (2.0 * (config["rise_time_ns"] + config["decay_time_ns"])))
-        threshold = best[0] + 1.0
-        allowed = [entry[1] for entry in scans if entry[0] <= threshold]
-        for label, (parameters, covariance, chi_square, exponent) in results.items():
-            normalization = parameters[1]
-            if label == "N^-1/2":
-                effective_fraction = (prefactor / normalization) ** 2
-                effective_fraction_error = abs(
-                    2.0 * effective_fraction * math.sqrt(covariance[1, 1]) / normalization)
-            else:
-                effective_fraction = np.nan
-                effective_fraction_error = np.nan
-            fits.append({
-                "material": material, "material_code": MATERIAL_CODES[material],
-                "model": label, "exponent": exponent,
-                "exponent_low_delta_chi2_1": min(allowed) if label == "free" else np.nan,
-                "exponent_high_delta_chi2_1": max(allowed) if label == "free" else np.nan,
-                "t0_ns": parameters[0], "t0_error_ns": math.sqrt(covariance[0, 0]),
-                "normalization_ns": normalization,
-                "normalization_error_ns": math.sqrt(covariance[1, 1]),
-                "chi2": chi_square, "ndf": len(group) - (3 if label == "free" else 2),
-                "chi2_ndf": chi_square / (len(group) - (3 if label == "free" else 2)),
-                "geant4_prefactor_ns": prefactor,
-                "effective_fraction": effective_fraction,
-                "effective_fraction_error": effective_fraction_error,
-            })
+    for time_basis, mean_column, error_column in (
+            ("raw_creation", "mean_min_creation_ns", "se_min_creation_ns"),
+            ("muon_transit_corrected", "mean_min_corrected_creation_ns",
+             "se_min_corrected_creation_ns")):
+        fit_points = points.copy()
+        fit_points["mean_min_creation_ns"] = points[mean_column]
+        fit_points["se_min_creation_ns"] = points[error_column]
+        for material in MATERIALS:
+            group = fit_points[fit_points["material"] == material]
+            results = {}
+            for label, exponent in (("N^-1", 1.0), ("N^-1/2", 0.5)):
+                parameters, covariance, chi_square = weighted_order_fit(group, exponent)
+                results[label] = (parameters, covariance, chi_square, exponent)
+            scans = []
+            for exponent in ORDER_EXPONENT_GRID:
+                parameters, covariance, chi_square = weighted_order_fit(group, exponent)
+                scans.append((chi_square, exponent, parameters, covariance))
+            best = min(scans, key=lambda item: item[0])
+            results["free"] = (best[2], best[3], best[0], best[1])
+            config = load_material_config(OPSC_CODES[material])
+            prefactor = config["decay_time_ns"] * math.sqrt(
+                math.pi * config["rise_time_ns"]
+                / (2.0 * (config["rise_time_ns"] + config["decay_time_ns"])))
+            threshold = best[0] + 1.0
+            allowed = [entry[1] for entry in scans if entry[0] <= threshold]
+            for label, (parameters, covariance, chi_square, exponent) in results.items():
+                normalization = parameters[1]
+                if label == "N^-1/2":
+                    effective_fraction = (prefactor / normalization) ** 2
+                    effective_fraction_error = abs(
+                        2.0 * effective_fraction * math.sqrt(covariance[1, 1])
+                        / normalization)
+                else:
+                    effective_fraction = np.nan
+                    effective_fraction_error = np.nan
+                fits.append({
+                    "time_basis": time_basis,
+                    "material": material, "material_code": MATERIAL_CODES[material],
+                    "model": label, "exponent": exponent,
+                    "exponent_low_delta_chi2_1": min(allowed) if label == "free" else np.nan,
+                    "exponent_high_delta_chi2_1": max(allowed) if label == "free" else np.nan,
+                    "t0_ns": parameters[0], "t0_error_ns": math.sqrt(covariance[0, 0]),
+                    "normalization_ns": normalization,
+                    "normalization_error_ns": math.sqrt(covariance[1, 1]),
+                    "chi2": chi_square, "ndf": len(group) - (3 if label == "free" else 2),
+                    "chi2_ndf": chi_square / (len(group) - (3 if label == "free" else 2)),
+                    "geant4_prefactor_ns": prefactor,
+                    "effective_fraction": effective_fraction,
+                    "effective_fraction_error": effective_fraction_error,
+                })
     fits = pd.DataFrame(fits)
-    effective_fraction = (fits[fits["model"] == "N^-1/2"]
+    effective_fraction = (fits[(fits["model"] == "N^-1/2")
+                               & (fits["time_basis"] == "raw_creation")]
                           .set_index("material")["effective_fraction"])
     points["fitted_effective_fraction"] = points["material"].map(effective_fraction)
     points["fitted_n_eff"] = (points["fitted_effective_fraction"]
@@ -609,7 +652,7 @@ def save_bundle(stem, frame, metadata, figure):
 
 
 def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
-                 angle_histograms,
+                 angle_histograms, angle_by_count,
                  order_points, order_fits, fixed_points, mixture_hist):
     colors = {"EJ-200": "#1f77b4", "EJ-204": "#ff7f0e", "EJ-230": "#2ca02c"}
     variables = list(PAIR_VARIABLES) + ["is_cherenkov"]
@@ -724,6 +767,24 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         "plot_scale": "logarithmic y, linear x",
     }, fig)
 
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharex=False, sharey=True)
+    for axis, material in zip(axes, MATERIALS):
+        group = angle_by_count[angle_by_count["material"] == material]
+        for distance, values in group.groupby("nominal_d_mm", sort=True):
+            axis.plot(values["mean_n_primary_cherenkov"],
+                      values["q95_alpha_axial_deg"], marker="o", label=f"{int(distance)}")
+        axis.axhline(AXIAL_EDGE_ANGLE_DEG, color="black", ls="--", lw=0.8)
+        axis.set_title(material); axis.grid(alpha=0.2)
+        axis.set_xlabel("mean primary-like N_C in quintile")
+    axes[0].set_ylabel("q95 folded axial angle [deg]")
+    axes[0].legend(title="fixed d [mm]", fontsize=7)
+    save_bundle("cherenkov_angle_by_nc", angle_by_count, {
+        "selection": "first primary-like Cherenkov; d <= 500 mm",
+        "stratification": "N_C quintiles independently at fixed material and distance",
+        "prediction": "q95 approaches the finite-beta edge as N_C increases",
+        "finite_beta_edge_deg": AXIAL_EDGE_ANGLE_DEG,
+    }, fig)
+
     fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
     for axis, material in zip(axes, MATERIALS):
         points = order_points[order_points["material"] == material].sort_values("mean_n_scint")
@@ -732,6 +793,7 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         xgrid = np.linspace(points["mean_n_scint"].min(), points["mean_n_scint"].max(), 300)
         for model, style in (("N^-1", ":"), ("N^-1/2", "--"), ("free", "-")):
             fit = order_fits[(order_fits["material"] == material)
+                             & (order_fits["time_basis"] == "raw_creation")
                              & (order_fits["model"] == model)].iloc[0]
             axis.plot(xgrid, fit["t0_ns"] + fit["normalization_ns"]
                       * xgrid ** (-fit["exponent"]), style, label=model)
@@ -741,6 +803,34 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
     save_bundle("scintillation_order_scaling", order_points, {
         "models": ["N^-1", "N^-1/2", "free exponent"],
         "scope": "scintillation only; true minimum creation time per event and END",
+        "plot_scale": "logarithmic x, linear y",
+    }, fig)
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
+    for axis, material in zip(axes, MATERIALS):
+        points = order_points[order_points["material"] == material].sort_values("mean_n_scint")
+        axis.errorbar(points["mean_n_scint"], points["mean_min_creation_ns"],
+                      yerr=points["se_min_creation_ns"], fmt="o", ms=3, label="raw")
+        axis.errorbar(points["mean_n_scint"], points["mean_min_corrected_creation_ns"],
+                      yerr=points["se_min_corrected_creation_ns"], fmt="s", ms=3,
+                      label="deposit-time corrected")
+        xgrid = np.linspace(points["mean_n_scint"].min(), points["mean_n_scint"].max(), 300)
+        for basis, style in (("raw_creation", "--"),
+                             ("muon_transit_corrected", "-")):
+            fit = order_fits[(order_fits["material"] == material)
+                             & (order_fits["time_basis"] == basis)
+                             & (order_fits["model"] == "N^-1/2")].iloc[0]
+            axis.plot(xgrid, fit["t0_ns"] + fit["normalization_ns"] * xgrid ** -0.5,
+                      style, label=f"{basis} fit")
+        axis.set_title(material); axis.set_xscale("log"); axis.grid(alpha=0.2)
+        axis.set_xlabel("detected scintillation photons N_S")
+    axes[0].set_ylabel("E[min creation time] [ns]"); axes[0].legend(fontsize=7)
+    correction_sidecar = order_points.copy()
+    save_bundle("muon_transit_order_correction", correction_sidecar, {
+        "correction": "t_creation-(5 mm-z_creation)/c",
+        "gun_direction": "(0,0,-1)",
+        "bar_entry_z_mm": 5.0,
+        "model": "offset + A*N^-1/2, separately before and after correction",
         "plot_scale": "logarithmic x, linear y",
     }, fig)
 
@@ -780,13 +870,17 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
 
 
 def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_points,
-                  order_fits, fixed_points, fixed_summary, mixtures):
+                  angle_by_count, order_fits, fixed_points, fixed_summary, mixtures):
     transport_ps = 1000.0 * handicap["cherenkov_transport_handicap_ns"]
     creation_ps = -1000.0 * handicap["observed_detection_selected_creation_gap_ns"]
     total_ps = 1000.0 * handicap["total_cherenkov_minus_scint_ns"]
     reorder_ps = 1000.0 * handicap["selection_reordering_gap_ns"]
-    sqrt_fits = order_fits[order_fits["model"] == "N^-1/2"]
-    inverse_fits = order_fits[order_fits["model"] == "N^-1"]
+    raw_fits = order_fits[order_fits["time_basis"] == "raw_creation"]
+    corrected_fits = order_fits[
+        order_fits["time_basis"] == "muon_transit_corrected"]
+    sqrt_fits = raw_fits[raw_fits["model"] == "N^-1/2"]
+    corrected_sqrt_fits = corrected_fits[corrected_fits["model"] == "N^-1/2"]
+    inverse_fits = raw_fits[raw_fits["model"] == "N^-1"]
     fitted_fractions = sqrt_fits.set_index("material")["effective_fraction"]
     fitted_fraction_errors = (sqrt_fits.set_index("material")
                               ["effective_fraction_error"])
@@ -810,7 +904,7 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
         "The pure scintillation emission minimum follows N^-1/2 and rejects N^-1. The smaller",
         "effective populations inferred from the detection-selected photon are therefore a",
         "transport-selection effect, not the emission order statistic itself.", "",
-        "This is the mandatory checkpoint. Step 5 has not been started.", "",
+        "This revised Step 4 record includes D1--D3; Step 5 is reported separately.", "",
         "## Input and estimator definitions", "",
         f"The derived tree has 420,000 event-END rows. First and random selections reproduce the",
         "Step 2 tree exactly. The random control uses the same splitmix64 seed and the same event",
@@ -852,12 +946,29 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
                      f"{row['q95_alpha_axial_deg']:.3f} | "
                      f"{1000*row['predicted_penalty_at_q95_ns']:.2f} | "
                      f"{1000*row['empirical_q95_edge_excess_ns']:.2f} |")
-    lines += ["", "Contrary to the preregistered narrowing prediction, q95 moves away from the",
-              "edge as distance grows in all three materials. The parameter-free formula still",
-              "maps each observed angular q95 to its measured timing penalty at short and medium",
-              "distance, but it does not predict the population selected after the simultaneous",
-              "loss of Cherenkov multiplicity, reflections, and attenuation. The narrowing",
-              "hypothesis is therefore rejected for the detected first-primary-like sample.", "",
+    lines += ["", "This distance-only comparison is not a valid rejection of angular selection:",
+              "the low-N_C quintile is N_C=1 at d >= 700 mm, where no order statistic exists.",
+              "D1 below conditions on distance and uses N_C as the control variable.", "",
+              "### D1 — angular q95 at fixed distance versus N_C", "",
+              "| material | d [mm] | low/high mean N_C | low/high q95 [deg] | change [deg] |",
+              "|---|---:|---:|---:|---:|"]
+    for (material, distance), group in angle_by_count.groupby(
+            ["material", "nominal_d_mm"], sort=True):
+        group = group.sort_values("count_quantile")
+        low, high = group.iloc[0], group.iloc[-1]
+        lines.append(f"| {material} | {int(distance)} | "
+                     f"{low['mean_n_primary_cherenkov']:.2f}/{high['mean_n_primary_cherenkov']:.2f} | "
+                     f"{low['q95_alpha_axial_deg']:.3f}/{high['q95_alpha_axial_deg']:.3f} | "
+                     f"{high['q95_alpha_axial_deg']-low['q95_alpha_axial_deg']:+.3f} |")
+    narrowing_groups = sum(
+        group.sort_values("count_quantile").iloc[-1]["q95_alpha_axial_deg"]
+        < group.sort_values("count_quantile").iloc[0]["q95_alpha_axial_deg"]
+        for _, group in angle_by_count.groupby(["material", "nominal_d_mm"]))
+    total_groups = angle_by_count.groupby(["material", "nominal_d_mm"]).ngroups
+    lines += ["", f"q95 narrows from the lowest to highest N_C quintile in "
+              f"{narrowing_groups}/{total_groups} fixed-distance groups. The distance-only test is",
+              "therefore reclassified as badly conditioned rather than a refutation of the",
+              "cone-edge order-statistics mechanism.", "",
               "## C0c — corrected d=50 mm handicap", "",
               "| material | mirror | N_S | pure-min creation C-S [ps] | selected creation C-S [ps] | transport C-S [ps] | total C-S [ps] | Cher wins | reorder gap [ps] |",
               "|---|---|---:|---:|---:|---:|---:|---:|---:|"]
@@ -881,7 +992,7 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
               "## C1 and C4 — scintillation order statistic and N_eff", "",
               "| material | model | exponent | chi2/ndf | fitted effective fraction (sqrt model) |",
               "|---|---|---:|---:|---:|"]
-    for _, row in order_fits.iterrows():
+    for _, row in raw_fits.iterrows():
         fraction = (f"{row['effective_fraction']:.4f} +/- "
                     f"{row['effective_fraction_error']:.4f}"
                     if np.isfinite(row["effective_fraction"]) else "--")
@@ -907,6 +1018,39 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
               "are strongly distance dependent and do not reproduce the fitted effective "
               "fractions. `scintillation_order_points.csv` gives fitted N_eff, the low-boundary "
               "count, and their ratio at each of the fourteen mirror-resolved points per material.", "",
+              "### D2 — correction for primary-muon transit", "",
+              "The gun points along -z and enters the 10-mm bar at z=+5 mm. The corrected",
+              "creation coordinate is `t_creation-(5 mm-z_creation)/c`; a common upstream flight",
+              "offset is absorbed by the fitted intercept.", "",
+              "| material | raw f_eff | corrected f_eff | corrected exponent | corrected chi2/ndf |",
+              "|---|---:|---:|---:|---:|"]
+    for material in MATERIALS:
+        raw = sqrt_fits[sqrt_fits["material"] == material].iloc[0]
+        corrected = corrected_sqrt_fits[
+            corrected_sqrt_fits["material"] == material].iloc[0]
+        free = corrected_fits[(corrected_fits["material"] == material)
+                              & (corrected_fits["model"] == "free")].iloc[0]
+        lines.append(f"| {material} | {raw['effective_fraction']:.4f} +/- "
+                     f"{raw['effective_fraction_error']:.4f} | "
+                     f"{corrected['effective_fraction']:.4f} +/- "
+                     f"{corrected['effective_fraction_error']:.4f} | "
+                     f"{free['exponent']:.4f} | {corrected['chi2_ndf']:.2f} |")
+    recovered_deficit = []
+    for material in MATERIALS:
+        raw = sqrt_fits[sqrt_fits["material"] == material].iloc[0]
+        corrected = corrected_sqrt_fits[
+            corrected_sqrt_fits["material"] == material].iloc[0]
+        recovered_deficit.append((corrected["effective_fraction"]
+                                  - raw["effective_fraction"])
+                                 / (1.0 - raw["effective_fraction"]))
+    lines += ["", "The raw effective-fraction ordering follows the d=50-mm asymptotic minimum",
+              "delays 30.2 > 24.7 > 20.6 ps: the faster material suffers the larger fractional",
+              "dilution from the same 33.4-ps traversal. Subtracting the transit moves every",
+              "fraction toward one but recovers only "
+              f"{100*min(recovered_deficit):.1f}--{100*max(recovered_deficit):.1f}% of the original",
+              "deficit. N_eff does not reach N_scint; primary transit is a real contribution but",
+              "does not explain the remaining 15--21% deficit. The corrected free exponents also",
+              "remain above 0.5, so the exact i.i.d. common-origin law is not restored.", "",
               "## C2 — fixed-point Cherenkov/width test", "",
               "No interpolation is used.", "", "| d [mm] | Pearson r | Spearman rho | role |",
               "|---:|---:|---:|---|"]
@@ -942,7 +1086,14 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
               "with different means and shapes; the Cherenkov component also carries the axial",
               "caustic. The replacement width for these six cells is therefore `sigma_mixture`,",
               "defined as sqrt(within-source variance + between-source variance), with qwidth as",
-              "the robust cross-check. The failure is physical rather than a numerical fit failure.", "",
+              "the robust cross-check. It is an intrinsic, zero-jitter limit of the first-photon",
+              "estimator in this geometry, not detector performance. A real detector includes",
+              "S13360 SPTR and a readout target below 50 ps, both well above this approximately",
+              "19-ps optical limit; instrumentation therefore sets the attainable resolution.",
+              "The approximately 12-ps source separation is smaller than sigma_mixture, so",
+              "Cherenkov and scintillation cannot be tagged event by event from this timestamp.",
+              "Conversely, the angle-time correlations of +0.962 to +0.986 are a direct signature",
+              "of the Cherenkov cone. The Gaussian-fit failure is physical, not numerical.", "",
               "## Original first-versus-random selection result", "",
               "All requested variables, KS statistics, paired mean shifts, and bootstrap intervals",
               "are in `paired_selection_statistics.csv`. `paired_deltas.pdf` shows the distance",
@@ -989,6 +1140,7 @@ def main():
     count_summary.to_csv(OUTPUT_DIR / "cherenkov_counts.csv", index=False,
                          float_format="%.12g")
     angle_window, angle_histograms = cherenkov_angle_window(frame)
+    angle_by_count = cherenkov_angle_by_count(frame)
     handicap = minimum_handicap(frame)
     handicap.to_csv(OUTPUT_DIR / "minimum_handicap_d50.csv", index=False,
                     float_format="%.12g")
@@ -1005,10 +1157,10 @@ def main():
                     float_format="%.12g")
 
     make_figures(distributions, paired, enrichment, nc_scan, angle_window,
-                 angle_histograms,
+                 angle_histograms, angle_by_count,
                  order_points, order_fits, fixed_points, mixture_hist)
     render_report(paired, enrichment, nc_scan, angle_window, handicap, order_points,
-                  order_fits, fixed_points, fixed_summary, mixtures)
+                  angle_by_count, order_fits, fixed_points, fixed_summary, mixtures)
     summary = {
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "report": str(REPORT_PATH.resolve()), "report_sha256": sha256(REPORT_PATH),

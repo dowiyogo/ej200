@@ -12,7 +12,14 @@ import numpy as np
 import uproot
 
 from analyze_step1 import discover_cells
-from exec46_schema import CAMPAIGN_DIR, LEFT_FACE, RIGHT_FACE, TREE_NAME
+from exec46_schema import (
+    BAR_HALF_Z_MM,
+    CAMPAIGN_DIR,
+    LEFT_FACE,
+    RIGHT_FACE,
+    SPEED_OF_LIGHT_MM_PER_NS,
+    TREE_NAME,
+)
 
 
 OUTPUT_DIR = Path(__file__).resolve().parent / "step4"
@@ -39,10 +46,12 @@ SELECTION_FIELDS = [
     "x_mm", "y_mm", "z_mm", "x_creation_mm", "y_creation_mm", "z_creation_mm",
     "path_length_mm", "exit_angle_deg", "n_boundary_encounters",
     "wl_nm_created", "wl_nm", "pde", "d_direct_mm", "rho_detour",
+    "t_creation_corrected_ns",
 ]
 SELECTION_NAMES = (
     "first", "random", "first_scint", "first_cherenkov",
-    "min_creation_scint", "first_primary_cherenkov",
+    "min_creation_scint", "min_corrected_creation_scint",
+    "first_primary_cherenkov",
 )
 MATERIAL_CODES = {"EJ-200": 0, "EJ-204": 1, "EJ-230": 2}
 
@@ -143,7 +152,14 @@ def analyze_cell(payload):
             dz = arrays["z_mm"] - arrays["z_creation_mm"]
             direct = np.sqrt(dx * dx + dy * dy + dz * dz)
             rho = arrays["path_length_mm"] / direct
-            quantities = {"d_direct_mm": direct, "rho_detour": rho}
+            deposit_time = ((BAR_HALF_Z_MM - arrays["z_creation_mm"])
+                            / SPEED_OF_LIGHT_MM_PER_NS)
+            corrected_creation = arrays["t_creation_ns"] - deposit_time
+            quantities = {
+                "d_direct_mm": direct,
+                "rho_detour": rho,
+                "t_creation_corrected_ns": corrected_creation,
+            }
 
             detection_priority = arrays["t_detection_ns"][selected]
             update_selection(selections["first"], arrays, selected,
@@ -172,6 +188,8 @@ def analyze_cell(payload):
             scint_selected = np.flatnonzero(end & (source == SCINTILLATION_SOURCE))
             update_selection(selections["min_creation_scint"], arrays, scint_selected,
                              arrays["t_creation_ns"][scint_selected], quantities)
+            update_selection(selections["min_corrected_creation_scint"], arrays,
+                             scint_selected, corrected_creation[scint_selected], quantities)
             primary_like = (end & (source == CHERENKOV_SOURCE)
                             & (np.abs(arrays["x_creation_mm"] - gun_x)
                                < PRIMARY_LIKE_TOLERANCE_MM)
@@ -261,6 +279,12 @@ def main():
         "random_seed_hex": hex(int(RANDOM_SELECTION_SEED)),
         "primary_like_tolerance_mm": PRIMARY_LIKE_TOLERANCE_MM,
         "low_boundary_max": LOW_BOUNDARY_MAX,
+        "muon_transit_correction": {
+            "gun_direction": [0.0, 0.0, -1.0],
+            "bar_entry_z_mm": BAR_HALF_Z_MM,
+            "formula": "t_creation-(bar_entry_z-z_creation)/c",
+            "speed_mm_per_ns": SPEED_OF_LIGHT_MM_PER_NS,
+        },
         "output": str(OUTPUT_ROOT.resolve()), "output_sha256": sha256(OUTPUT_ROOT),
     }
     OUTPUT_META.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")

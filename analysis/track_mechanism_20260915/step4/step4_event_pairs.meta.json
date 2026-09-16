@@ -2,16 +2,26 @@
   "campaign": "/home/rrios/exec46_20260915/full_grid",
   "cells": 21,
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/build_step4_pairs.py --processes 4",
-  "created_utc": "2026-09-16T08:03:10.289271+00:00",
+  "created_utc": "2026-09-16T09:01:27.664622+00:00",
   "events_per_cell": 10000,
   "low_boundary_max": 2,
+  "muon_transit_correction": {
+    "bar_entry_z_mm": 5.0,
+    "formula": "t_creation-(bar_entry_z-z_creation)/c",
+    "gun_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "speed_mm_per_ns": 299.792458
+  },
   "output": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
-  "output_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "output_sha256": "465f64e38a9d121feabde2f0040453b8bd52ba632fd732068b287eb1b858aa8e",
   "primary_like_tolerance_mm": 0.001,
   "processes": 4,
   "random_seed_hex": "0x46a2c0de5eed1234",
   "rows": 420000,
-  "started_utc": "2026-09-16T07:57:56.538248+00:00",
+  "started_utc": "2026-09-16T08:56:00.850440+00:00",
   "step_size": "192 MB",
-  "wall_seconds": 313.751023
+  "wall_seconds": 326.814182
 }

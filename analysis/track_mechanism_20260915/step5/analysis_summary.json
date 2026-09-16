@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-09-16T09:07:12.697559+00:00",
+  "fractions_removed": {
+    "EJ-200": 0.9699700724440077,
+    "EJ-204": 0.9765256951953073,
+    "EJ-230": 0.9729370088978794
+  },
+  "fractions_removed_wls_sensitivity": {
+    "EJ-200": 0.9728758497654671,
+    "EJ-204": 0.9826003746452231,
+    "EJ-230": 0.98190879645833
+  },
+  "input_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d",
+  "majority_threshold": 0.5,
+  "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
+  "report_sha256": "92f364ca875ff7fe32d1e02fef2098e2bfe761909f5aabeb9b6846d5abcefb49",
+  "status": "HALTED_AT_5_1_MAJORITY_IDENTIFICATION_ARTIFACT",
+  "steps_not_run": [
+    "5.2",
+    "5.3",
+    "5.4",
+    "5.5",
+    "6"
+  ]
+}

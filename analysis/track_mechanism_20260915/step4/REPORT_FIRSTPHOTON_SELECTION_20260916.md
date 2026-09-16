@@ -13,7 +13,7 @@ The pure scintillation emission minimum follows N^-1/2 and rejects N^-1. The sma
 effective populations inferred from the detection-selected photon are therefore a
 transport-selection effect, not the emission order statistic itself.
 
-This is the mandatory checkpoint. Step 5 has not been started.
+This revised Step 4 record includes D1--D3; Step 5 is reported separately.
 
 ## Input and estimator definitions
 
@@ -99,12 +99,27 @@ boundary.
 | EJ-230 | 1200 | 54.262 | 2632.99 | 4371.43 |
 | EJ-230 | 1350 | 54.557 | 3050.14 | 3642.78 |
 
-Contrary to the preregistered narrowing prediction, q95 moves away from the
-edge as distance grows in all three materials. The parameter-free formula still
-maps each observed angular q95 to its measured timing penalty at short and medium
-distance, but it does not predict the population selected after the simultaneous
-loss of Cherenkov multiplicity, reflections, and attenuation. The narrowing
-hypothesis is therefore rejected for the detected first-primary-like sample.
+This distance-only comparison is not a valid rejection of angular selection:
+the low-N_C quintile is N_C=1 at d >= 700 mm, where no order statistic exists.
+D1 below conditions on distance and uses N_C as the control variable.
+
+### D1 — angular q95 at fixed distance versus N_C
+
+| material | d [mm] | low/high mean N_C | low/high q95 [deg] | change [deg] |
+|---|---:|---:|---:|---:|
+| EJ-200 | 50 | 8.56/39.56 | 52.492/40.578 | -11.913 |
+| EJ-200 | 200 | 4.60/23.66 | 53.461/40.065 | -13.396 |
+| EJ-200 | 500 | 2.17/13.08 | 55.186/39.953 | -15.233 |
+| EJ-204 | 50 | 8.08/37.35 | 50.242/40.604 | -9.638 |
+| EJ-204 | 200 | 3.88/20.21 | 55.524/40.081 | -15.444 |
+| EJ-204 | 500 | 1.56/10.14 | 60.488/40.214 | -20.274 |
+| EJ-230 | 50 | 7.84/36.98 | 52.478/40.643 | -11.836 |
+| EJ-230 | 200 | 3.53/18.63 | 55.222/40.199 | -15.023 |
+| EJ-230 | 500 | 1.42/8.77 | 60.551/40.370 | -20.182 |
+
+q95 narrows from the lowest to highest N_C quintile in 9/9 fixed-distance groups. The distance-only test is
+therefore reclassified as badly conditioned rather than a refutation of the
+cone-edge order-statistics mechanism.
 
 ## C0c — corrected d=50 mm handicap
 
@@ -143,6 +158,26 @@ differ by at least 5.1 formal standard deviations, so N_eff/N_scint is not mater
 A universal geometric factor is therefore rejected. The preregistered fractions
 needed to force the detection-selected handicap, 0.20/0.13/0.09, are even more
 strongly material dependent. The low-boundary fractions span 0.019--0.271, 0.021--0.278, and 0.021--0.280; they are strongly distance dependent and do not reproduce the fitted effective fractions. `scintillation_order_points.csv` gives fitted N_eff, the low-boundary count, and their ratio at each of the fourteen mirror-resolved points per material.
+
+### D2 — correction for primary-muon transit
+
+The gun points along -z and enters the 10-mm bar at z=+5 mm. The corrected
+creation coordinate is `t_creation-(5 mm-z_creation)/c`; a common upstream flight
+offset is absorbed by the fitted intercept.
+
+| material | raw f_eff | corrected f_eff | corrected exponent | corrected chi2/ndf |
+|---|---:|---:|---:|---:|
+| EJ-200 | 0.8125 +/- 0.0062 | 0.8522 +/- 0.0064 | 0.5525 | 2.33 |
+| EJ-204 | 0.7722 +/- 0.0049 | 0.8179 +/- 0.0052 | 0.5345 | 2.39 |
+| EJ-230 | 0.7361 +/- 0.0043 | 0.7934 +/- 0.0047 | 0.5435 | 6.54 |
+
+The raw effective-fraction ordering follows the d=50-mm asymptotic minimum
+delays 30.2 > 24.7 > 20.6 ps: the faster material suffers the larger fractional
+dilution from the same 33.4-ps traversal. Subtracting the transit moves every
+fraction toward one but recovers only 20.1--21.7% of the original
+deficit. N_eff does not reach N_scint; primary transit is a real contribution but
+does not explain the remaining 15--21% deficit. The corrected free exponents also
+remain above 0.5, so the exact i.i.d. common-origin law is not restored.
 
 ## C2 — fixed-point Cherenkov/width test
 
@@ -191,7 +226,14 @@ reconstructs the total RMS exactly. The rejected Gaussian combines two populatio
 with different means and shapes; the Cherenkov component also carries the axial
 caustic. The replacement width for these six cells is therefore `sigma_mixture`,
 defined as sqrt(within-source variance + between-source variance), with qwidth as
-the robust cross-check. The failure is physical rather than a numerical fit failure.
+the robust cross-check. It is an intrinsic, zero-jitter limit of the first-photon
+estimator in this geometry, not detector performance. A real detector includes
+S13360 SPTR and a readout target below 50 ps, both well above this approximately
+19-ps optical limit; instrumentation therefore sets the attainable resolution.
+The approximately 12-ps source separation is smaller than sigma_mixture, so
+Cherenkov and scintillation cannot be tagged event by event from this timestamp.
+Conversely, the angle-time correlations of +0.962 to +0.986 are a direct signature
+of the Cherenkov cone. The Gaussian-fit failure is physical, not numerical.
 
 ## Original first-versus-random selection result
 
