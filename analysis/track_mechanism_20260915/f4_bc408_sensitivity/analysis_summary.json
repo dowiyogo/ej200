@@ -1,0 +1,21 @@
+{
+  "created_utc": "2026-09-16T13:05:40.470151+00:00",
+  "global_effective_velocity_test": "UNDERIDENTIFIED_BY_SINGLE_POSITION",
+  "metrics_sha256": "487ee6f1638cdccab3d060c08ad6606bd3c74cca11c074b6a4f89e935eebcc40",
+  "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/REPORT_F4_BC408_SENSITIVITY_20260916.md",
+  "report_sha256": "085126e004b898efc0c5c9a4c9454aaf91c925ed68710be7811ec387759ef74d",
+  "status": "F4_COMPLETE_STEP6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC",
+  "step6_run": false,
+  "theory": {
+    "axial420": 129.6292047855792,
+    "delta_t_200_ps": 159.2399371244526,
+    "edge370": 37.45819576296165,
+    "edge660": 40.17426705078521,
+    "edge_span": 2.71607128782356,
+    "n420": 1.6262959953941964,
+    "ng420": 1.8186946608115258,
+    "vg420": 164.83935674294477,
+    "vg_error_high": 0.6797706081241995,
+    "vg_error_low": 0.49849844595774634
+  }
+}

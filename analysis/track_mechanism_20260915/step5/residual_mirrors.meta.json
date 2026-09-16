@@ -7,7 +7,7 @@
   "bootstrap_seed": 460516,
   "causal": false,
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
-  "created_utc": "2026-09-16T09:31:46.981434+00:00",
+  "created_utc": "2026-09-16T10:23:50.680871+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/residual_mirrors.csv",
   "error": "paired cell-stratified event bootstrap including center and fitted between slope",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",

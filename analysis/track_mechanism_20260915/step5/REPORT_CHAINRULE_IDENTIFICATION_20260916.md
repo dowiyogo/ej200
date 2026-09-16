@@ -57,6 +57,8 @@ All 21 signed residuals and their uncertainties are in `residual_significance.cs
 
 Across materials the common even amplitude is 7.183 ± 0.515 ps (chi2/ndf=1.391/2, p=0.499). This supports consistency of the localized amplitude across these three materials, not a universal law beyond the sampled grid.
 
+The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out the measured mixture term as the dominant origin of the material-independent target. A single common residual gives chi2/ndf = 1.391/2 (p=0.499), so the three amplitudes are statistically consistent with one material-independent value. The mixture remains a smaller additive descriptive component, not the cause of that common structure. The fitted values and both ranks are in `material_common_fit.csv`.
+
 The retained quadratic summaries of this descriptive curve are:
 
 | Material | a2 [ps/m2] | paired a2 SE | diagonal chi2/ndf |
@@ -102,6 +104,22 @@ Integrate the even measured count profile trapezoidally with these local slopes;
 | EJ-230 | quantile_pol2 | 94.9641 | 41.2443 |
 | EJ-230 | event_ols_total | 77.2709 | 23.5512 |
 | EJ-230 | event_ols_two_counts | 77.0691 | 23.3494 |
+
+F1 uses exactly the three specifications requested in the original 5.3 contract: uniform-bin pol1 (linear nominal), uniform-bin pol2, and quantile-bin pol1. Quantile pol2 remains a documented 2×2 diagnostic but is not added to the declared three-model envelope. The envelope is quoted asymmetrically around the nominal result; it is a model-specification range, not a Gaussian standard deviation.
+
+| Material | \|x\| [mm] | linear [ps] | pol2 [ps] | quantiles [ps] | envelope low [ps] | envelope high [ps] | nominal/max envelope deviation | zero excluded |
+|---|---|---|---|---|---|---|---|---|
+| EJ-200 | 200 | 5.6263 | 9.6177 | 4.9366 | 4.9366 | 9.6177 | 1.4096 | True |
+| EJ-200 | 500 | 37.9821 | 61.1193 | 29.9748 | 29.9748 | 61.1193 | 1.6416 | True |
+| EJ-200 | 650 | 50.8619 | 97.2349 | 37.6613 | 37.6613 | 97.2349 | 1.0968 | True |
+| EJ-204 | 200 | 10.3669 | 13.0375 | 7.3753 | 7.3753 | 13.0375 | 3.4653 | True |
+| EJ-204 | 500 | 62.0571 | 84.2531 | 49.0583 | 49.0583 | 84.2531 | 2.7959 | True |
+| EJ-204 | 650 | 95.3351 | 139.7802 | 72.2622 | 72.2622 | 139.7802 | 2.1450 | True |
+| EJ-230 | 200 | 9.0303 | 15.1625 | 9.6078 | 9.0303 | 15.1625 | 1.4726 | True |
+| EJ-230 | 500 | 53.7197 | 92.8754 | 58.2526 | 53.7197 | 92.8754 | 1.3720 | True |
+| EJ-230 | 650 | 82.6933 | 161.0172 | 95.5223 | 82.6933 | 161.0172 | 1.0558 | True |
+
+At |x|=500 the nominal residuals and conservative envelope uncertainties are 37.98 +23.14/−8.01 ps (EJ-200), 62.06 +22.20/−13.00 ps (EJ-204), and 53.72 +39.16/−0.00 ps (EJ-230). Treating the largest one-sided excursion as a one-sigma-equivalent sensitivity scale gives only 1.64, 2.80, and 1.37 envelope units: none reaches 3. The sign is robust because all three specification values are positive, but the former fit-error significance is withdrawn. Since the envelope has no sampling distribution, these ratios are diagnostics rather than statistical z scores.
 
 To test localized shape in the sensitivity curves, additionally define B = r(500) − [(1−w)r(200)+w*r(650)], w=[N(500)−N(200)]/[N(650)−N(200)]. This declared diagnostic removes a broad trend linear in the measured Npe profile. For r_between, B is exactly the same as for the raw mean curve: a constant beta*N term cancels. Compute the chain variant independently on each mirror (center → 200 → 500 → 650) and on the even curve. This is a shape sensitivity, not a new causal observable or an interpolated physical boundary.
 

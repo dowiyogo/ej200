@@ -26,6 +26,7 @@ BOOTSTRAP_SEED = 460516
 NS_TO_PS = 1000.0
 PROFILE_REFERENCE_ATOL = 2e-10
 VARIANTS = ('uniform_pol1', 'uniform_pol2', 'quantile_pol1', 'quantile_pol2')
+F1_SPECIFICATIONS = ('uniform_pol1', 'uniform_pol2', 'quantile_pol1')
 BOOT_FIELDS = ('n', 'y', 's', 'c', 'fL', 'muCL', 'muSL', 'fR', 'muCR', 'muSR', 'btotal', 'bs', 'bc')
 INPUT_BRANCHES = ['material_code', 'x_mm', 't0_ns', 'npe_end', 't_left_ns',
                   't_right_ns', 'npe_scint_left', 'npe_scint_right',
@@ -329,11 +330,49 @@ def run():
                         shift_from_original_ps=NS_TO_PS*(predictions['uniform_pol1'][j]-pred[j]),
                         chain_residual_bootstrap_se_ps=NS_TO_PS*br[:,j].std(ddof=1) if boot_pred is not None else np.nan,
                         descriptive_between_residual_ps=NS_TO_PS*ebr[j]))
+    sensitivity = pd.DataFrame(rows_sensitive)
+    selected = sensitivity[sensitivity['variant'].isin(F1_SPECIFICATIONS)]
+    pivot = selected.pivot(index=['material', 'abs_x_mm'], columns='variant',
+                           values='chain_residual_ps').reset_index()
+    specification_columns = list(F1_SPECIFICATIONS)
+    pivot['envelope_low_ps'] = pivot[specification_columns].min(axis=1)
+    pivot['envelope_high_ps'] = pivot[specification_columns].max(axis=1)
+    pivot['nominal_ps'] = pivot['uniform_pol1']
+    pivot['envelope_minus_ps'] = pivot['nominal_ps'] - pivot['envelope_low_ps']
+    pivot['envelope_plus_ps'] = pivot['envelope_high_ps'] - pivot['nominal_ps']
+    pivot['envelope_uncertainty_ps'] = pivot[
+        ['envelope_minus_ps', 'envelope_plus_ps']].max(axis=1)
+    pivot['envelope_sensitivity_ratio'] = np.divide(
+        np.abs(pivot['nominal_ps']), pivot['envelope_uncertainty_ps'],
+        out=np.full(len(pivot), np.nan), where=pivot['envelope_uncertainty_ps'] > 0)
+    pivot['envelope_excludes_zero'] = ((pivot['envelope_low_ps'] > 0)
+                                       | (pivot['envelope_high_ps'] < 0))
+    pivot['at_least_3_envelope_units'] = pivot['envelope_sensitivity_ratio'] >= 3.0
+
+    target500 = pd.DataFrame(rows_boot).query('abs_x_mm == 500').copy()
+    inverse_variance = 1.0 / target500['residual_bootstrap_se_ps'] ** 2
+    common = float(np.sum(inverse_variance * target500['descriptive_residual_ps'])
+                   / np.sum(inverse_variance))
+    common_error = float(1.0 / np.sqrt(np.sum(inverse_variance)))
+    common_chi2 = float(np.sum(((target500['descriptive_residual_ps'] - common)
+                                / target500['residual_bootstrap_se_ps']) ** 2))
+    target500['common_residual_ps'] = common
+    target500['common_residual_se_ps'] = common_error
+    target500['common_fit_chi2'] = common_chi2
+    target500['common_fit_ndf'] = len(target500) - 1
+    target500['common_fit_chi2_ndf'] = common_chi2 / (len(target500) - 1)
+    target500['common_fit_p_value'] = math.exp(-common_chi2 / 2.0)
+    target500['residual_rank_high_to_low'] = target500[
+        'descriptive_residual_ps'].rank(method='min', ascending=False).astype(int)
+    target500['mixture_rank_high_to_low'] = target500[
+        'projected_mixing_ps'].rank(method='min', ascending=False).astype(int)
+
     frames = dict(profile_refits=pd.DataFrame(rows_profile),two_count_slopes=pd.DataFrame(rows_count),
                   cell_statistics=pd.DataFrame(rows_cells),mixture_intervals=pd.DataFrame(rows_intervals),
-                  mixture_components=pd.DataFrame(rows_mix),chain_sensitivity=pd.DataFrame(rows_sensitive),
+                  mixture_components=pd.DataFrame(rows_mix),chain_sensitivity=sensitivity,
                   chain_fit_summary=pd.DataFrame(rows_fits),residual_significance=pd.DataFrame(rows_signif),
-                  mixture_target=pd.DataFrame(rows_boot),localization_sensitivity=pd.DataFrame(rows_local))
+                  mixture_target=pd.DataFrame(rows_boot),localization_sensitivity=pd.DataFrame(rows_local),
+                  specification_envelope=pivot, material_common_fit=target500)
     for name,frame in frames.items(): save_frame(name,frame)
     save_frame('within_between_summary',summary)
     # Numeric companion stores every table plus categorical string columns.
@@ -345,7 +384,7 @@ def run():
     base.require(base.sha256(base.DERIVED_ROOT)==before_hash,'Read-only input hash changed')
     meta = dict(created_utc=datetime.now(timezone.utc).isoformat(),status='CHAIN_RULE_WITHIN_SLOPE_REFUTED',
         completed_steps=['5.1','5.3','5.4','5.5'],cancelled_steps=['5.2'],steps_not_run=['6'],
-        gate='AWAITING_STEP_6_APPROVAL',input_sha256=before_hash,command=base.COMMAND,
+        gate='STEP_6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC',input_sha256=before_hash,command=base.COMMAND,
         bootstrap=dict(method='ordinary paired event resampling within each cell; independent cells',
                        replicates=BOOTSTRAP_REPLICATES,seed=BOOTSTRAP_SEED),
         report=str(base.REPORT_PATH),report_sha256=base.sha256(base.REPORT_PATH),
@@ -467,6 +506,13 @@ def write_report(fr,summary,points,stats):
         f'Across materials the common even amplitude is {common_r:.3f} ± {common_r_se:.3f} ps '
         f'(chi2/ndf={hetero_r:.3f}/2, p={math.exp(-hetero_r/2):.3f}). '
         'This supports consistency of the localized amplitude across these three materials, not a universal law beyond the sampled grid.', '',
+        'The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection '
+        'mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out '
+        'the measured mixture term as the dominant origin of the material-independent target. '
+        'A single common residual gives chi2/ndf = 1.391/2 (p=0.499), so the three amplitudes '
+        'are statistically consistent with one material-independent value. The mixture remains '
+        'a smaller additive descriptive component, not the cause of that common structure. '
+        'The fitted values and both ranks are in `material_common_fit.csv`.', '',
         'The retained quadratic summaries of this descriptive curve are:', '',
         table(summary.assign(a2_ps=summary.descriptive_residual_a2_ns_per_m2*NS_TO_PS, a2_se_ps=summary.descriptive_residual_a2_total_error_ns_per_m2*NS_TO_PS),{
             'material':'Material','a2_ps':'a2 [ps/m2]','a2_se_ps':'paired a2 SE','descriptive_residual_chi2_ndf':'diagonal chi2/ndf'}), '',
@@ -493,6 +539,25 @@ def write_report(fr,summary,points,stats):
         'would be a tautological robustness test.', '',
         table(fr['chain_sensitivity'].query('abs_x_mm==500'),{'material':'Material','variant':'Variant',
             'chain_residual_ps':'chain residual at 500 [ps]','shift_from_original_ps':'change vs original [ps]'}), '',
+        'F1 uses exactly the three specifications requested in the original 5.3 contract: '
+        'uniform-bin pol1 (linear nominal), uniform-bin pol2, and quantile-bin pol1. '
+        'Quantile pol2 remains a documented 2×2 diagnostic but is not added to the declared '
+        'three-model envelope. The envelope is quoted asymmetrically around the nominal result; '
+        'it is a model-specification range, not a Gaussian standard deviation.', '',
+        table(fr['specification_envelope'].query('abs_x_mm>0'),{
+            'material':'Material','abs_x_mm':'|x| [mm]',
+            'uniform_pol1':'linear [ps]','uniform_pol2':'pol2 [ps]',
+            'quantile_pol1':'quantiles [ps]','envelope_low_ps':'envelope low [ps]',
+            'envelope_high_ps':'envelope high [ps]',
+            'envelope_sensitivity_ratio':'nominal/max envelope deviation',
+            'envelope_excludes_zero':'zero excluded'}), '',
+        'At |x|=500 the nominal residuals and conservative envelope uncertainties are '
+        '37.98 +23.14/−8.01 ps (EJ-200), 62.06 +22.20/−13.00 ps (EJ-204), and '
+        '53.72 +39.16/−0.00 ps (EJ-230). Treating the largest one-sided excursion as a '
+        'one-sigma-equivalent sensitivity scale gives only 1.64, 2.80, and 1.37 envelope '
+        'units: none reaches 3. The sign is robust because all three specification values are '
+        'positive, but the former fit-error significance is withdrawn. Since the envelope has '
+        'no sampling distribution, these ratios are diagnostics rather than statistical z scores.', '',
         'To test localized shape in the sensitivity curves, additionally define B = r(500) − '
         '[(1−w)r(200)+w*r(650)], w=[N(500)−N(200)]/[N(650)−N(200)]. '
         'This declared diagnostic removes a broad trend linear in the measured Npe profile. '

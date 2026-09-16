@@ -6,7 +6,7 @@
   "between_model": "OLS of seven cell means; WLS retained as sensitivity",
   "binning": "none",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
-  "created_utc": "2026-09-16T09:31:39.507750+00:00",
+  "created_utc": "2026-09-16T10:23:43.073731+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/within_between_slopes.csv",
   "error": "HC1 event-level error for within; residual OLS error for between",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",

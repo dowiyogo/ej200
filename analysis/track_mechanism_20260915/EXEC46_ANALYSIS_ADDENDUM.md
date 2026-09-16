@@ -184,3 +184,24 @@ profiles, the source-mixture finite-difference identity, and the two-count
 chain. Test rather than assume exact material universality of beta_within.
 Do not reinterpret the between-fit residual as a causally corrected observable.
 The remaining approval gate is before Step 6. No simulation or push.
+
+## F1--F4 revision and Step 6 suspension
+
+For Step 5.3, quote the specification envelope from exactly three declared
+analyses: uniform-bin pol1, uniform-bin pol2, and quantile-bin pol1.  Do not use
+the nominal fit error as the uncertainty when specification spread dominates.
+The envelope is not a sampling distribution; any envelope-unit significance
+must be labelled as a sensitivity diagnostic rather than a statistical z score.
+
+For Step 5.4, test a common material-independent residual and compare material
+rank ordering explicitly.  The projected mixture ordering and residual ordering
+must not be conflated with agreement in absolute magnitude.
+
+Step 6 is suspended because the constant `RINDEX=1.58` model omits measured
+PVT dispersion at the same transport scale as the residual.  F4 is limited to
+the explicitly authorized EJ-200, x=-650 mm, 10,000-event sensitivity cell in
+two visible-absorption scenarios.  The BC-408 index model is sampled only over
+its measured 370--660 nm domain; below it the index is clamped to n(370), never
+exponentially extrapolated.  The 764 mm visible scenario is a published 90%
+lower bound, not a central value.  EJ-230 remains uncorrected because BC-420 was
+not measured and BC-422 is not an equivalent substitute.

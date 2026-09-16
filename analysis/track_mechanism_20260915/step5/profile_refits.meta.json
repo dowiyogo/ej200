@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-09-16T09:31:47.492506+00:00",
+  "created_utc": "2026-09-16T10:23:51.211694+00:00",
   "status": "CHAIN_RULE_WITHIN_SLOPE_REFUTED",
   "completed_steps": [
     "5.1",
@@ -13,7 +13,7 @@
   "steps_not_run": [
     "6"
   ],
-  "gate": "AWAITING_STEP_6_APPROVAL",
+  "gate": "STEP_6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC",
   "input_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
   "bootstrap": {
@@ -22,8 +22,8 @@
     "seed": 460516
   },
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
-  "report_sha256": "dbdcd98076daa3daf81dc761f0112fa0c94ba5b36540aa90a510488f3e035514",
-  "analysis_script_sha256": "6392e8faa164feea0bb699d4a3522d6b05268524cb827b2ba1d7c09fc4aa0441",
+  "report_sha256": "b973e2f4672b8dc7cfcf59b82096305e9afab09706a6e486d99b4eb4129c8593",
+  "analysis_script_sha256": "e16c2b6648560bc9d784f229454de8e6670d9d4c035486fc058ad65bd40b9194",
   "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation",
   "bins": 40,
   "variants": [
