@@ -1,0 +1,11 @@
+{
+  "mixture_even_max_closure_ps": 7.000053869887779e-10,
+  "six_mirrors_lower_ci_positive": true,
+  "profile_fits_successful": 84,
+  "chain_points": 72,
+  "all_54_local_excesses_positive": true,
+  "figure_sidecars_complete": true,
+  "root_fit_objects": 210,
+  "table_labels_preserved": true,
+  "step6_gate_active": true
+}

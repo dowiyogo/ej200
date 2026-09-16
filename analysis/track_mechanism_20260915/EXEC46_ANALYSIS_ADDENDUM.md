@@ -167,5 +167,20 @@ detector performance. Compare the source separation with that limit and retain
 the angle-time correlation as a direct cone signature.
 
 Step 5 first compares the common within-cell slope with the seven-point
-between-position slope. If this identification gap explains a majority of the
-registered remnant, stop before Steps 5.2--5.5 and request a thesis decision.
+between-position slope. The original majority-artifact gate is superseded by
+the following E1--E5 revision (2026-09-16).
+
+## Step 5 E1--E5 revision
+
+The between-position regression fits the response being explained. Its roughly
+97% reduction of the former quadratic remnant is reabsorption into a fitted
+parameter, not an independent mechanism or explanation. The status is
+`CHAIN_RULE_WITHIN_SLOPE_REFUTED`. Step 5.2 is cancelled: cell centering fixes
+alpha to the observed cell mean and supplies no independent information.
+
+Finish 5.3--5.5, with the descriptive residual near |x|=500 mm as the target:
+retain both mirrors, cell SEM and joint uncertainty; compare pol2 and quantile
+profiles, the source-mixture finite-difference identity, and the two-count
+chain. Test rather than assume exact material universality of beta_within.
+Do not reinterpret the between-fit residual as a causally corrected observable.
+The remaining approval gate is before Step 6. No simulation or push.

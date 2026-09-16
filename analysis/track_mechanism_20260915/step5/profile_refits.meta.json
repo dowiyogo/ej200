@@ -24,5 +24,16 @@
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
   "report_sha256": "dbdcd98076daa3daf81dc761f0112fa0c94ba5b36540aa90a510488f3e035514",
   "analysis_script_sha256": "6392e8faa164feea0bb699d4a3522d6b05268524cb827b2ba1d7c09fc4aa0441",
-  "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation"
+  "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation",
+  "bins": 40,
+  "variants": [
+    "uniform_pol1",
+    "uniform_pol2",
+    "quantile_pol1",
+    "quantile_pol2"
+  ],
+  "pol2_beta": "derivative at each empirical cell mean Npe; local Taylor convention",
+  "quantiles": "40 quantile bins, unique edges, extrema padded by 0.5 pe; fits use TProfile bin centers",
+  "root": "profile_refits.root",
+  "csv": "profile_refits.csv"
 }

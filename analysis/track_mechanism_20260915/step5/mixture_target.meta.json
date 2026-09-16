@@ -3,21 +3,21 @@
   "baseline_fits_sha256": "9f40cb0b068ea5fdc0e6be176e1595777c451551cefdb99afcb0d83f1a516f38",
   "baseline_points": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/baseline_points.csv",
   "baseline_points_sha256": "9328faa93b706853989f139ccd1d8eec75ad89b0aec324b9b8b08a07e8a992c4",
-  "binning": "measured |x| points 0, 200, 500, 650 mm",
+  "bootstrap_replicates": 2000,
+  "bootstrap_seed": 460516,
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
-  "created_utc": "2026-09-16T09:31:39.669471+00:00",
-  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/identification_residual.csv",
-  "descriptive_only": "observed even shift minus beta_between*Delta mean Npe; fitted to the same means, not a causal prediction",
+  "created_utc": "2026-09-16T09:31:47.350658+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/mixture_target.csv",
+  "identity": "delta mu = fbar delta muC +(1-fbar)delta muS +(muCbar-muSbar)delta f",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",
   "input_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d",
+  "interpretation": "exact finite-interval descriptive decomposition, not an independent causal intervention",
   "materials": [
     "EJ-200",
     "EJ-204",
     "EJ-230"
   ],
   "new_simulation": false,
-  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/identification_residual.pdf",
-  "plot_scale": "linear",
-  "registered": "observed even shift minus original local-beta chain",
-  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/identification_residual.root"
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/mixture_target.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/mixture_target.root"
 }

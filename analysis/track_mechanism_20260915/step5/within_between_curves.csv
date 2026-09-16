@@ -1,4 +1,4 @@
-material,material_code,x_mm,mean_npe,mean_t0_ns,sem_t0_ns,observed_shift_ps,original_prediction_shift_ps,within_prediction_shift_ps,between_prediction_shift_ps,corrected_residual_ps
+material,material_code,x_mm,mean_npe,mean_t0_ns,sem_t0_ns,observed_shift_ps,original_prediction_shift_ps,within_prediction_shift_ps,between_prediction_shift_ps,descriptive_residual_ps
 EJ-200,0,-650,2589.0144,4.09550019636,0.000808155411236,-32.0692395387,-82.7844126054,-87.2381668242,-32.2544398715,0.185200332861
 EJ-200,0,-500,1657.5541,4.12152834977,0.000813796595325,-6.04108613019,-44.2459886809,-34.204213116,-12.6462737064,6.6051875762
 EJ-200,0,-200,1140.1472,4.12656252106,0.000773264443082,-1.00691484699,-6.97983778571,-4.74495051195,-1.75434361533,0.74742876834

@@ -1,4 +1,4 @@
-material,material_code,abs_x_mm,even_mean_npe,observed_even_shift_ps,original_prediction_shift_ps,within_prediction_shift_ps,between_prediction_shift_ps,registered_remnant_ps,identification_correction_ps,corrected_remnant_ps,fraction_registered_remnant_removed
+material,material_code,abs_x_mm,even_mean_npe,observed_even_shift_ps,original_prediction_shift_ps,within_prediction_shift_ps,between_prediction_shift_ps,registered_remnant_ps,descriptive_reabsorption_ps,descriptive_residual_ps,fraction_registered_remnant_reabsorbed
 EJ-200,0,0,1056.8094,0,0,-0,-0,0,-0,0,
 EJ-200,0,200,1139.24385,-1.35354021327,-6.97983778571,-4.69351705624,-1.73532719895,5.62629757244,5.24451058676,0.381786985677,0.93214241146
 EJ-200,0,500,1656.8945,-6.26392818397,-44.2459886809,-34.1666578966,-12.63238847,37.982060497,31.6136002109,6.36846028608,0.832329784041

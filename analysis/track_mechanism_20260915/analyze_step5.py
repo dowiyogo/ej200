@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ejecuta el gate 5.1 de identificación entre/dentro para EXEC_46."""
+"""EXEC_46 Step 5: descriptive identification checks, revised by E1--E5."""
 
 import hashlib
 import json
@@ -31,7 +31,6 @@ POSITIONS_MM = np.asarray([-650, -500, -200, 0, 200, 500, 650])
 EVEN_POSITIONS_MM = (0, 200, 500, 650)
 EXPECTED_ROWS = 210_000
 EXPECTED_EVENTS_PER_CELL = 10_000
-MAJORITY_THRESHOLD = 0.5
 FIT_RANGE_M = (-0.66, 0.66)
 NS_TO_PS = 1000.0
 COLORS = {"EJ-200": "#1f77b4", "EJ-204": "#ff7f0e", "EJ-230": "#2ca02c"}
@@ -127,14 +126,12 @@ def between_fit(cell_frame, weighted=False):
 
 
 def numeric_root(path, tree_name, frame):
-    columns = {}
-    for name in frame.columns:
-        values = frame[name].to_numpy()
-        if np.issubdtype(values.dtype, np.number) or values.dtype == bool:
-            columns[name] = values
+    # Keep categorical labels as well as numbers, so the figure is reconstructible.
+    columns = {name: (frame[name].astype(str).to_numpy(dtype=str)
+                      if frame[name].dtype == object else frame[name].to_numpy())
+               for name in frame.columns}
     with uproot.recreate(path) as root_file:
-        root_file.mktree(tree_name, {name: value.dtype for name, value in columns.items()})
-        root_file[tree_name].extend(columns)
+        root_file[tree_name] = columns
 
 
 def save_bundle(stem, frame, metadata, figure):
@@ -278,20 +275,17 @@ def analyze(arrays, baseline_points, baseline_fits):
             "between_prediction_a2_chi2_ndf": between_curve_fit["chi2_ndf"],
             "between_wls_prediction_a2_ns_per_m2": between_wls_curve_fit["a2_ns_per_m2"],
             "registered_remnant_a2_ns_per_m2": registered_remnant,
-            "identification_correction_a2_ns_per_m2": correction_from_identification,
-            "fraction_registered_remnant_removed": fraction_registered_removed,
-            "fraction_registered_remnant_removed_wls": fraction_registered_removed_wls,
+            "descriptive_reabsorption_a2_ns_per_m2": correction_from_identification,
+            "fraction_registered_remnant_reabsorbed": fraction_registered_removed,
+            "fraction_registered_remnant_reabsorbed_wls": fraction_registered_removed_wls,
             "common_slope_gap_a2_ns_per_m2": common_slope_gap,
-            "fraction_common_slope_remnant_explained": fraction_common_gap,
-            "corrected_remnant_a2_ns_per_m2": corrected_fit["a2_ns_per_m2"],
-            "corrected_remnant_a2_error_ns_per_m2": corrected_fit["a2_error_ns_per_m2"],
-            "corrected_remnant_a2_total_error_ns_per_m2": corrected_total_error,
-            "corrected_remnant_chi2": corrected_fit["chi2"],
-            "corrected_remnant_ndf": corrected_fit["ndf"],
-            "corrected_remnant_chi2_ndf": corrected_fit["chi2_ndf"],
-            "majority_gate": (min(fraction_registered_removed,
-                                  fraction_registered_removed_wls)
-                              > MAJORITY_THRESHOLD),
+            "fraction_common_slope_remnant_reabsorbed": fraction_common_gap,
+            "descriptive_residual_a2_ns_per_m2": corrected_fit["a2_ns_per_m2"],
+            "descriptive_residual_a2_error_ns_per_m2": corrected_fit["a2_error_ns_per_m2"],
+            "descriptive_residual_a2_total_error_ns_per_m2": corrected_total_error,
+            "descriptive_residual_chi2": corrected_fit["chi2"],
+            "descriptive_residual_ndf": corrected_fit["ndf"],
+            "descriptive_residual_chi2_ndf": corrected_fit["chi2_ndf"],
         })
 
         for index, cell in cells.iterrows():
@@ -310,7 +304,7 @@ def analyze(arrays, baseline_points, baseline_fits):
                                                             - center["mean_t0_ns"]),
                 "between_prediction_shift_ps": NS_TO_PS * (between_curve[index]
                                                              - center["mean_t0_ns"]),
-                "corrected_residual_ps": NS_TO_PS * corrected_residual[index],
+                "descriptive_residual_ps": NS_TO_PS * corrected_residual[index],
             })
 
         for abs_x in EVEN_POSITIONS_MM:
@@ -335,9 +329,9 @@ def analyze(arrays, baseline_points, baseline_fits):
                 "within_prediction_shift_ps": within_shift,
                 "between_prediction_shift_ps": between_shift,
                 "registered_remnant_ps": registered,
-                "identification_correction_ps": correction,
-                "corrected_remnant_ps": corrected,
-                "fraction_registered_remnant_removed": (
+                "descriptive_reabsorption_ps": correction,
+                "descriptive_residual_ps": corrected,
+                "fraction_registered_remnant_reabsorbed": (
                     correction / registered if registered != 0.0 else np.nan),
             })
     return (pd.DataFrame(slope_rows), pd.DataFrame(point_rows),
@@ -372,15 +366,15 @@ def make_figures(slopes, points, curves, summary):
         group = points[points["material"] == material]
         axis.plot(group["abs_x_mm"], group["registered_remnant_ps"], "o-",
                   label="registered")
-        axis.plot(group["abs_x_mm"], group["corrected_remnant_ps"], "s-",
-                  label="after between-position slope")
+        axis.plot(group["abs_x_mm"], group["descriptive_residual_ps"], "s-",
+                  label="descriptive between-fit residual")
         axis.axhline(0.0, color="black", lw=0.8)
         axis.set_title(material); axis.grid(alpha=0.2)
         axis.set_xlabel("|x| [mm]")
     axes[0].set_ylabel("even residual [ps]"); axes[0].legend(fontsize=8)
     save_bundle("identification_residual", points, {
         "registered": "observed even shift minus original local-beta chain",
-        "corrected": "observed even shift minus beta_between*Delta mean Npe",
+        "descriptive_only": "observed even shift minus beta_between*Delta mean Npe; fitted to the same means, not a causal prediction",
         "binning": "measured |x| points 0, 200, 500, 650 mm",
         "plot_scale": "linear",
     }, fig)
@@ -391,120 +385,10 @@ def make_figures(slopes, points, curves, summary):
                    float_format="%.12g")
 
 
-def render_report(slopes, points, summary, halted):
-    lines = [
-        "# EXEC_46 Step 5 — chain-rule identification gate", "",
-        "Date: 2026-09-16", "", "## Gate result", "",
-        "**HALTED_AT_5_1_MAJORITY_IDENTIFICATION_ARTIFACT.**" if halted else
-        "**5.1 did not activate the majority-artifact gate.**", "",
-        "No simulation was run. The 210,000-event `derived_events` tree was opened read-only.",
-        "The common within-cell slope uses position fixed effects and cell-centered Npe. The",
-        "between-position slope is an unweighted OLS regression of the seven cell means; a WLS",
-        "sensitivity is retained in the sidecar.", "",
-        "## 5.1 within versus between", "",
-        "| material | beta_within [ps/pe] | beta_between [ps/pe] | gap significance | WLS beta_between [ps/pe] |",
-        "|---|---:|---:|---:|---:|",
-    ]
-    for _, row in summary.iterrows():
-        lines.append(
-            f"| {row['material']} | {NS_TO_PS*row['beta_within_ns_per_pe']:.5f} +/- "
-            f"{NS_TO_PS*row['beta_within_error_ns_per_pe']:.5f} | "
-            f"{NS_TO_PS*row['beta_between_ns_per_pe']:.5f} +/- "
-            f"{NS_TO_PS*row['beta_between_error_ns_per_pe']:.5f} | "
-            f"{row['beta_gap_significance']:.2f} sigma | "
-            f"{NS_TO_PS*row['beta_between_wls_ns_per_pe']:.5f} |")
-    lines += ["", "The between-position response is much weaker than the conditional response",
-              "inside a cell. A local beta therefore does not identify the change of the",
-              "unconditional mean between positions.", "",
-              "## Quadratic summary and mandatory stop", "",
-              "| material | observed a2 | original predicted a2 | between predicted a2 | corrected residual a2 | corrected chi2/ndf | registered removed |",
-              "|---|---:|---:|---:|---:|---:|---:|"]
-    for _, row in summary.iterrows():
-        lines.append(
-            f"| {row['material']} | {NS_TO_PS*row['observed_a2_ns_per_m2']:+.2f} | "
-            f"{NS_TO_PS*row['original_prediction_a2_ns_per_m2']:+.2f} | "
-            f"{NS_TO_PS*row['between_prediction_a2_ns_per_m2']:+.2f} | "
-            f"{NS_TO_PS*row['corrected_remnant_a2_ns_per_m2']:+.2f} +/- "
-            f"{NS_TO_PS*row['corrected_remnant_a2_total_error_ns_per_m2']:.2f} | "
-            f"{row['corrected_remnant_chi2']:.2f}/{int(row['corrected_remnant_ndf'])}="
-            f"{row['corrected_remnant_chi2_ndf']:.2f} | "
-            f"{100*row['fraction_registered_remnant_removed']:.2f}% |")
-    lines += ["", "The quadratic basis remains a poor shape description where its chi2/ndf is",
-              "large; the table is retained only to compare with the preregistered +123.10,",
-              "+227.05, and +197.23 ps/m^2 remnants. The primary result is pointwise:", "",
-              "| material | |x| [mm] | observed [ps] | original prediction [ps] | registered residual [ps] | between prediction [ps] | corrected residual [ps] | removed |",
-              "|---|---:|---:|---:|---:|---:|---:|---:|"]
-    for _, row in points[points["abs_x_mm"] > 0].iterrows():
-        lines.append(
-            f"| {row['material']} | {int(row['abs_x_mm'])} | "
-            f"{row['observed_even_shift_ps']:+.3f} | "
-            f"{row['original_prediction_shift_ps']:+.3f} | "
-            f"{row['registered_remnant_ps']:+.3f} | "
-            f"{row['between_prediction_shift_ps']:+.3f} | "
-            f"{row['corrected_remnant_ps']:+.3f} | "
-            f"{100*row['fraction_registered_remnant_removed']:+.1f}% |")
-    if halted:
-        all_identification_fractions = np.concatenate([
-            summary["fraction_registered_remnant_removed"].to_numpy(),
-            summary["fraction_registered_remnant_removed_wls"].to_numpy(),
-        ])
-        lines += ["", "All three materials exceed the preregistered 50% majority threshold:",
-                  f"the identification correction removes "
-                  f"{100*all_identification_fractions.min():.2f}--"
-                  f"{100*all_identification_fractions.max():.2f}% of the registered remnant across",
-                  "the OLS primary result and WLS sensitivity. Independently, replacing the common",
-                  "within slope by the common between slope explains "
-                  f"{100*summary['fraction_common_slope_remnant_explained'].min():.2f}--"
-                  f"{100*summary['fraction_common_slope_remnant_explained'].max():.2f}% of its",
-                  "own common-slope remnant. Both definitions cross the majority gate.",
-                  "The corrected a2 uncertainty conservatively adds the between-slope uncertainty",
-                  "without a covariance cancellation; it does not affect the gate.", "",
-                  "This changes the thesis: the remnant is",
-                  "predominantly an identification artifact before any attribution to optical",
-                  "mechanisms. Per the explicit gate, Steps 5.2--5.5 and Step 6 were not run.", ""]
-    lines += ["## Reproducibility", "", "```bash", COMMAND, "```", "",
-              "`within_between_slopes` and `identification_residual` each have PDF, CSV, ROOT,",
-              "and JSON metadata sidecars. No push, merge, deck edit, or simulation occurred.", ""]
-    REPORT_PATH.write_text("\n".join(lines))
-
-
 def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    for path in (DERIVED_ROOT, BASELINE_POINTS, BASELINE_FITS):
-        require(path.is_file(), f"falta entrada {path}")
-    with uproot.open(DERIVED_ROOT) as root_file:
-        tree = root_file["derived_events"]
-        require(tree.num_entries == EXPECTED_ROWS, "conteo derived_events inesperado")
-        arrays = tree.arrays(["material_code", "x_mm", "t0_ns", "npe_end"],
-                             library="np")
-    baseline_points = pd.read_csv(BASELINE_POINTS)
-    baseline_fits = pd.read_csv(BASELINE_FITS)
-    slopes, points, curves, summary = analyze(arrays, baseline_points, baseline_fits)
-    halted = bool(np.all(summary["majority_gate"]))
-    slopes.to_csv(OUTPUT_DIR / "within_between_slopes.csv", index=False,
-                  float_format="%.12g")
-    points.to_csv(OUTPUT_DIR / "identification_residual_points.csv", index=False,
-                  float_format="%.12g")
-    make_figures(slopes, points, curves, summary)
-    render_report(slopes, points, summary, halted)
-    result = {
-        "created_utc": datetime.now(timezone.utc).isoformat(),
-        "status": ("HALTED_AT_5_1_MAJORITY_IDENTIFICATION_ARTIFACT"
-                   if halted else "STEP_5_1_COMPLETE"),
-        "majority_threshold": MAJORITY_THRESHOLD,
-        "fractions_removed": dict(zip(summary["material"],
-                                      summary["fraction_registered_remnant_removed"])),
-        "fractions_removed_wls_sensitivity": dict(zip(
-            summary["material"],
-            summary["fraction_registered_remnant_removed_wls"])),
-        "report": str(REPORT_PATH.resolve()),
-        "report_sha256": sha256(REPORT_PATH),
-        "input_sha256": sha256(DERIVED_ROOT),
-        "steps_not_run": ["5.2", "5.3", "5.4", "5.5", "6"] if halted else [],
-    }
-    (OUTPUT_DIR / "analysis_summary.json").write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n")
-    print(json.dumps(result, indent=2, sort_keys=True))
+    # E1--E5 supersede the circular majority-artifact gate; Step 6 stays gated.
+    from analyze_step5_revision import run
+    run()
 
 
 if __name__ == "__main__":
