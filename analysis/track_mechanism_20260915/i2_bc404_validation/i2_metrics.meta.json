@@ -1,0 +1,14 @@
+{
+  "baseline_pairs": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "baseline_pairs_sha256": "465f64e38a9d121feabde2f0040453b8bd52ba632fd732068b287eb1b858aa8e",
+  "bootstrap_replicates": 2000,
+  "bootstrap_seed": 460612,
+  "caustic_width": "q95-q05 folded exit_angle_deg, primary-like first Cherenkov",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_i2_bc404_validation.py",
+  "created_utc": "2026-09-16T18:23:32.269334+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/i2_bc404_validation/i2_metrics.csv",
+  "input_root": "/home/rrios/exec46_20260916/i2_bc404_validation/EJ204_xm650/photon_hits_run000.root",
+  "input_root_sha256": "675210e81616bdf90aaffc8bcc58208993d635202aff68f157fcd6e2154a35eb",
+  "local_velocity": "mean(d_direct_mm)/mean(t_detection_ns-t_creation_ns)",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/i2_bc404_validation/i2_metrics.root"
+}

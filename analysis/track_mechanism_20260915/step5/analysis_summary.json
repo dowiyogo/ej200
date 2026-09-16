@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-09-16T14:06:24.280852+00:00",
+  "created_utc": "2026-09-16T14:30:04.163999+00:00",
   "status": "CHAIN_RULE_WITHIN_SLOPE_REFUTED",
   "completed_steps": [
     "5.1",
@@ -22,11 +22,12 @@
     "seed": 460516
   },
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
-  "report_sha256": "fa7e642953db411b5da90311602c904675d35bccd07972fd137aa5dcea114751",
-  "analysis_script_sha256": "2af09b7c2b2a1f0e2b07b14bd36b27e08d02ff9120181c64f3ed077195413795",
+  "report_sha256": "b78db41cc98d81fb2e9beb758056f4856b4f317f4a1ac4bbfe1e6d7230ee5487",
+  "analysis_script_sha256": "1dec99ad5c7eddd5a28272a9c0e5073070f0adb805e5cb1681aead02669d6ca7",
   "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation",
   "between_common_result": "POL2_SUPPORTED_LINEAR_RESIDUAL_MODEL_MISSPECIFICATION",
   "h1_decision": "POL2_PREDICTS_BETTER_OUT_OF_SAMPLE; SEVEN_POSITION_F_TEST_SIGNIFICANT_ALL_MATERIALS; EVEN_ONLY_F_TEST_SIGNIFICANT_EJ204_EJ230_AND_SUGGESTIVE_EJ200",
+  "step5_conclusion": "T0(x) nonlinearity is compatible with an entirely Npe-driven response when between-position curvature is allowed; seven positions do not resolve absence of an additional physical mechanism",
   "between_common_linear_ps": 7.183416189885699,
   "between_common_pol2_ps": -0.18258532092221563
 }

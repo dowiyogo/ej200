@@ -26,10 +26,14 @@ PILOT_EVENTS = 500
 MEASURED_RSS_KIB = 167100
 F4_3800_SSLG4 = Path(
     "/home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4")
+I2_BC404_SSLG4 = Path(
+    "/home/rrios/exec46_20260916/i2_bc404_validation/EJ204_xm650/sslg4")
+I2_SUMMARY = Path(
+    "/home/rrios/ej200/analysis/track_mechanism_20260915/i2_bc404_validation/analysis_summary.json")
 EJ204_BC404_COEFFICIENTS = {"A": 1.578, "B": 0.818, "C_per_nm": 0.00729}
 MATERIAL_OPTICAL_STATUS = {
     "EJ-200": "CORRECTED_BC408_3800_VALIDATED_F4",
-    "EJ-204": "UNCORRECTED_CONSTANT_RINDEX_BC404_ANALOG_NOT_VALIDATED",
+    "EJ-204": "CORRECTED_BC404_3800_VALIDATED_I2",
     "EJ-230": "UNCORRECTED_CONSTANT_RINDEX_NO_MEASURED_ANALOG",
 }
 
@@ -59,7 +63,7 @@ def write_new(path, value):
         stream.write("\n")
 
 
-def prepare(output, binary, ej200_sslg4_source=None):
+def prepare(output, binary, corrected_sslg4_source=None):
     output = output.resolve()
     binary = binary.resolve()
     require(not output.exists(), f"refusing to overwrite {output}")
@@ -67,17 +71,28 @@ def prepare(output, binary, ej200_sslg4_source=None):
     require("EJ200_ENABLE_DIAGNOSTICS:BOOL=OFF" in
             (binary.parent / "CMakeCache.txt").read_text(), "diagnostics are not OFF")
     require((binary.parent / "sslg4").is_dir(), "missing SSLG4 runtime directory")
-    if ej200_sslg4_source is not None:
-        ej200_sslg4_source = ej200_sslg4_source.resolve()
-        require(ej200_sslg4_source.is_dir(), "alternate EJ-200 SSLG4 directory is missing")
-        for relative in ("macros/oscnt/opsc-100.mac", "data/oscnt/opsc-100/rIndex.txt",
-                         "data/oscnt/opsc-100/absLength.txt"):
-            require((ej200_sslg4_source / relative).is_file(),
-                    f"alternate EJ-200 SSLG4 is incomplete: {relative}")
-            reference = F4_3800_SSLG4 / relative
-            require(reference.is_file(), f"missing validated F4 reference: {reference}")
-            require(sha256(ej200_sslg4_source / relative) == sha256(reference),
-                    f"EJ-200 MPT differs from validated F4 3800 mm: {relative}")
+    if corrected_sslg4_source is not None:
+        corrected_sslg4_source = corrected_sslg4_source.resolve()
+        require(corrected_sslg4_source.is_dir(),
+                "combined corrected SSLG4 directory is missing")
+        require(I2_SUMMARY.is_file(), "missing I2 BC-404 validation summary")
+        require(json.loads(I2_SUMMARY.read_text()).get("status") == "PASS",
+                "I2 BC-404 direction gate did not pass")
+        references = {
+            "macros/oscnt/opsc-100.mac": F4_3800_SSLG4,
+            "data/oscnt/opsc-100/rIndex.txt": F4_3800_SSLG4,
+            "data/oscnt/opsc-100/absLength.txt": F4_3800_SSLG4,
+            "macros/oscnt/opsc-101.mac": I2_BC404_SSLG4,
+            "data/oscnt/opsc-101/rIndex.txt": I2_BC404_SSLG4,
+            "data/oscnt/opsc-101/absLength.txt": I2_BC404_SSLG4,
+        }
+        for relative, reference_runtime in references.items():
+            require((corrected_sslg4_source / relative).is_file(),
+                    f"combined corrected SSLG4 is incomplete: {relative}")
+            reference = reference_runtime / relative
+            require(reference.is_file(), f"missing validated optical reference: {reference}")
+            require(sha256(corrected_sslg4_source / relative) == sha256(reference),
+                    f"corrected MPT differs from its validated reference: {relative}")
     require(PILOT_ROOT.is_file() and VALIDATION_METRICS.is_file(), "missing validation evidence")
 
     source_campaign = json.loads((SOURCE_GRID / "campaign.json").read_text())
@@ -108,8 +123,9 @@ def prepare(output, binary, ej200_sslg4_source=None):
         target = output / "cells" / source_cell["cell_id"]
         target.mkdir()
         shutil.copyfile(source_macro, target / "run.mac")
-        runtime_sslg4 = (ej200_sslg4_source if source_cell["material"] == "EJ-200"
-                         and ej200_sslg4_source is not None else binary.parent / "sslg4")
+        runtime_sslg4 = (corrected_sslg4_source
+                         if source_cell["material"] in ("EJ-200", "EJ-204")
+                         and corrected_sslg4_source is not None else binary.parent / "sslg4")
         (target / "sslg4").symlink_to(runtime_sslg4, target_is_directory=True)
         cells.append({
             "cell_id": source_cell["cell_id"], "material": source_cell["material"],
@@ -131,12 +147,15 @@ def prepare(output, binary, ej200_sslg4_source=None):
         "simulation_commit": SIMULATION_COMMIT, "binary": str(binary),
         "binary_sha256": sha256(binary), "validation_metrics": str(VALIDATION_METRICS),
         "validation_metrics_sha256": sha256(VALIDATION_METRICS),
+        "I2_BC404_validation": str(I2_SUMMARY),
+        "I2_BC404_validation_sha256": sha256(I2_SUMMARY),
         "material_optical_status": MATERIAL_OPTICAL_STATUS,
     }
     write_new(handoff_path, handoff)
     evidence = {
         str(SOURCE_GRID / "campaign.json"): sha256(SOURCE_GRID / "campaign.json"),
         str(VALIDATION_METRICS): sha256(VALIDATION_METRICS),
+        str(I2_SUMMARY): sha256(I2_SUMMARY),
         str(handoff_path): sha256(handoff_path),
     }
     expected_rss = MEASURED_RSS_KIB * 1024
@@ -154,8 +173,8 @@ def prepare(output, binary, ej200_sslg4_source=None):
             "EJ200_DATA_DIR": str(PDE_PATH.parent.parent),
         },
         "handoff": str(handoff_path), "EJ200_OPSC_CODE": EJ200_OPSC_CODE,
-        "EJ200_SSLG4_source": (str(ej200_sslg4_source)
-                                if ej200_sslg4_source is not None else None),
+        "corrected_SSLG4_source": (str(corrected_sslg4_source)
+                                    if corrected_sslg4_source is not None else None),
         "EJ200_F4_3800_reference": str(F4_3800_SSLG4),
         "EJ200_F4_MPT_hashes": {
             relative: sha256(F4_3800_SSLG4 / relative)
@@ -163,12 +182,18 @@ def prepare(output, binary, ej200_sslg4_source=None):
                              "data/oscnt/opsc-100/rIndex.txt",
                              "data/oscnt/opsc-100/absLength.txt")
         },
+        "EJ204_I2_MPT_hashes": {
+            relative: sha256(I2_BC404_SSLG4 / relative)
+            for relative in ("macros/oscnt/opsc-101.mac",
+                             "data/oscnt/opsc-101/rIndex.txt",
+                             "data/oscnt/opsc-101/absLength.txt")
+        },
         "material_optical_status": MATERIAL_OPTICAL_STATUS,
         "EJ204_BC404_analog": {
             "rindex_parameterization": "n(lambda_nm)=A+B*exp(-C*lambda_nm)",
             "coefficients": EJ204_BC404_COEFFICIENTS,
-            "technical_status": "RINDEX_TABLE_FEASIBLE_NOT_VALIDATED_NOT_ENABLED",
-            "limitation": "No validated matching ABSLENGTH model in this campaign.",
+            "technical_status": "VALIDATED_I2_AND_ENABLED",
+            "absorption": "26.58 mm through 372 nm; interpolation to 3800 mm at 439 nm",
         },
         "excluded": [], "concurrency": CONCURRENCY, "workers": WORKERS,
         "eventModulo": EVENT_MODULO, "N_generated": EVENTS, "timeout_s": None,
@@ -195,10 +220,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--binary", type=Path, default=DEFAULT_BINARY)
-    parser.add_argument("--ej200-sslg4-source", type=Path,
-                        help="Alternate complete SSLG4 runtime used only by EJ-200 cells")
+    parser.add_argument("--corrected-sslg4-source", type=Path,
+                        help="Combined runtime used by corrected EJ-200 and EJ-204 cells")
     args = parser.parse_args()
-    prepare(args.output, args.binary, args.ej200_sslg4_source)
+    prepare(args.output, args.binary, args.corrected_sslg4_source)
 
 
 if __name__ == "__main__":

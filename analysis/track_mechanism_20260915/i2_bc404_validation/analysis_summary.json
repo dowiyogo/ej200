@@ -1,0 +1,9 @@
+{
+  "campaign_launch_authorized_by_I2": true,
+  "created_utc": "2026-09-16T18:23:32.431612+00:00",
+  "first_cherenkov_difference_percentage_points": 9.98,
+  "first_cherenkov_difference_se_percentage_points": 0.6565131834167537,
+  "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/i2_bc404_validation/REPORT_I2_BC404_VALIDATION_20260916.md",
+  "report_sha256": "375380739cac72b6ba21f6ba40252e07e8c79731428c9ca5696fb172de637ebd",
+  "status": "PASS"
+}

@@ -578,6 +578,10 @@ def run():
         h1_decision=('POL2_PREDICTS_BETTER_OUT_OF_SAMPLE; SEVEN_POSITION_F_TEST_'
                      'SIGNIFICANT_ALL_MATERIALS; EVEN_ONLY_F_TEST_SIGNIFICANT_EJ204_'
                      'EJ230_AND_SUGGESTIVE_EJ200'),
+        step5_conclusion=(
+            'T0(x) nonlinearity is compatible with an entirely Npe-driven response when '
+            'between-position curvature is allowed; seven positions do not resolve absence '
+            'of an additional physical mechanism'),
         between_common_linear_ps=float(between_common.query('specification=="linear"').common_residual_ps.iloc[0]),
         between_common_pol2_ps=float(between_common.query('specification=="pol2"').common_residual_ps.iloc[0]))
     (OUT/'analysis_summary.json').write_text(json.dumps(meta,indent=2)+'\n')
@@ -911,6 +915,19 @@ def write_report(fr,summary,points,stats):
         'the integrated predictions also have uncertainty and shared fitted coefficients, so these are shape diagnostics. '
         'Bootstrap errors are supplied for event OLS variants; profile variants retain conditional formal errors in the sidecar. '
         'No poor quadratic or poor profile fit is used as a mechanism measurement.', '',
+        '## Step 5 closeout', '',
+        'The registered +123.10/+227.05/+197.23 ps/m2 remnant resulted from two compounded '
+        'specification errors: transferring the within-cell slope to a between-position change, '
+        'and forcing the between-position mean(T0)-mean(Npe) relation to be linear. The first is '
+        'rejected at 16.84, 20.41, and 25.72 standard errors. For the second, the seven-position '
+        'linear-versus-pol2 F tests are 140.20/113.12/46.45 with p=0.000291/0.000443/0.002423, '
+        'and pol2 reduces LOO RMSE by 77.8/76.4/60.6%. Thus the 7.183 ps common residual is '
+        'identified as an artifact of the linear between-curve specification.', '',
+        '**Step 5 conclusion:** the T0(x) nonlinearity is compatible with being entirely an Npe '
+        'response once curvature is allowed and the response is estimated between positions. '
+        'This does not prove that no additional physical mechanism exists; with only seven '
+        'positions, this design cannot resolve such a mechanism after the Npe response is '
+        're-specified.', '',
         '## Reproducibility and stopping point', '', '```bash',base.COMMAND,'```','',
         f'Input SHA-256: `{base.sha256(base.DERIVED_ROOT)}`. Bootstrap seed: {BOOTSTRAP_SEED}; replicates: {BOOTSTRAP_REPLICATES}. '
         'ROOT version: '+ROOT.gROOT.GetVersion()+'. Input opened read-only. '

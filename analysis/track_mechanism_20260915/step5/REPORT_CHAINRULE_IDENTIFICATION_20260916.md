@@ -388,6 +388,12 @@ The complete quadratic comparison (residual fit, not separate fitted-curve subtr
 
 Quadratic chi2/ndf uses historical cell SEM weights and 5 nominal degrees of freedom for comparison; the integrated predictions also have uncertainty and shared fitted coefficients, so these are shape diagnostics. Bootstrap errors are supplied for event OLS variants; profile variants retain conditional formal errors in the sidecar. No poor quadratic or poor profile fit is used as a mechanism measurement.
 
+## Step 5 closeout
+
+The registered +123.10/+227.05/+197.23 ps/m2 remnant resulted from two compounded specification errors: transferring the within-cell slope to a between-position change, and forcing the between-position mean(T0)-mean(Npe) relation to be linear. The first is rejected at 16.84, 20.41, and 25.72 standard errors. For the second, the seven-position linear-versus-pol2 F tests are 140.20/113.12/46.45 with p=0.000291/0.000443/0.002423, and pol2 reduces LOO RMSE by 77.8/76.4/60.6%. Thus the 7.183 ps common residual is identified as an artifact of the linear between-curve specification.
+
+**Step 5 conclusion:** the T0(x) nonlinearity is compatible with being entirely an Npe response once curvature is allowed and the response is estimated between positions. This does not prove that no additional physical mechanism exists; with only seven positions, this design cannot resolve such a mechanism after the Npe response is re-specified.
+
 ## Reproducibility and stopping point
 
 ```bash
