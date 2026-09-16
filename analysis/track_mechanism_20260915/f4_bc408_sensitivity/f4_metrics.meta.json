@@ -4,7 +4,7 @@
   "bootstrap_seed": 460604,
   "caution": "one x=-650 cell cannot reproduce a seven-distance effective-velocity slope or establish agreement with the 155 mm/ns test-beam value",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py",
-  "created_utc": "2026-09-16T13:05:40.468989+00:00",
+  "created_utc": "2026-09-16T13:29:43.448720+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_metrics.csv",
   "local_direct_velocity": "mean(d_direct_mm)/mean(t_detection_ns-t_creation_ns)",
   "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_metrics.pdf",

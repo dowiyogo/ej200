@@ -6,7 +6,7 @@ Date: 2026-09-16. Revision E1–E5 supersedes the Step 5 conclusion in commit `1
 
 No simulation, production rerun, source-tree regeneration, push, merge, or deck edit. Input: 210,000 existing derived events, 21 cells, 10,000 per cell. The input SHA-256 is checked unchanged at exit.
 
-The localized positive structure is present separately in both mirrors for all materials: at ±500 mm its significance is 7.49–10.53 cell SEM, or 5.74–8.18 paired-bootstrap SE after refitting. Its even amplitudes are 6.368 ± 0.900, 7.858 ± 0.920, and 7.338 ± 0.859 ps. The same-projection source-mixture terms are +4.157 ± 0.298, +3.767 ± 0.263, and +2.800 ± 0.216 ps: a partial descriptive allocation, leaving +2.212 ± 0.864, +4.091 ± 0.877, and +4.538 ± 0.827 ps. The mechanism is not fully closed.
+Under the linear seven-point between specification, the localized positive structure is present separately in both mirrors for all materials: at ±500 mm its significance is 7.49–10.53 cell SEM, or 5.74–8.18 paired-bootstrap SE after refitting. Its even amplitudes are 6.368 ± 0.900, 7.858 ± 0.920, and 7.338 ± 0.859 ps. The same-projection source-mixture terms are +4.157 ± 0.298, +3.767 ± 0.263, and +2.800 ± 0.216 ps: a partial descriptive allocation, leaving +2.212 ± 0.864, +4.091 ± 0.877, and +4.538 ± 0.827 ps. The mechanism is not fully closed under that specification. G1 below shows that a quadratic between prediction reduces the common amplitude to a value compatible with zero.
 
 ## E1–E2: correction of the circular claim
 
@@ -55,7 +55,24 @@ All 21 signed residuals and their uncertainties are in `residual_significance.cs
 | EJ-230 | 500 | 7.3385 | 0.8593 |
 | EJ-230 | 650 | 1.3644 | 0.5467 |
 
-Across materials the common even amplitude is 7.183 ± 0.515 ps (chi2/ndf=1.391/2, p=0.499). This supports consistency of the localized amplitude across these three materials, not a universal law beyond the sampled grid.
+Across materials the common even amplitude is 7.183 ± 0.515 ps (chi2/ndf=1.391/2, p=0.499). This is the result under the linear seven-point between specification.
+
+### G1: specification of the between prediction
+
+The previous F1 table varied the within-cell beta chain and therefore quantified the registered within-chain remnant, not the approximately 7 ps between-fit residual. That table is retained below as a separate result. To test the corrected residual itself, fit the same seven cell means with unweighted linear and quadratic models of mean(T0) versus mean(Npe). In both cases subtract the fitted change relative to the x=0 cell, then average the two mirrors. The bootstrap refits the selected polynomial in every replica.
+
+| Material | linear residual [ps] | linear bootstrap SE [ps] | pol2 residual [ps] | pol2 bootstrap SE [ps] | envelope low [ps] | envelope high [ps] | envelope contains zero |
+|---|---|---|---|---|---|---|---|
+| EJ-200 | 6.3685 | 0.8996 | -0.5641 | 0.5044 | -0.5641 | 6.3685 | True |
+| EJ-204 | 7.8585 | 0.9203 | -0.2706 | 0.4922 | -0.2706 | 7.8585 | True |
+| EJ-230 | 7.3385 | 0.8593 | 0.2458 | 0.4795 | 0.2458 | 7.3385 | False |
+
+| between specification | common residual [ps] | common bootstrap SE [ps] | chi2/ndf | p value | common envelope low [ps] | common envelope high [ps] | envelope contains zero |
+|---|---|---|---|---|---|---|---|
+| linear | 7.1834 | 0.5150 | 0.6957 | 0.4987 | -0.1826 | 7.1834 | True |
+| pol2 | -0.1826 | 0.2839 | 0.7011 | 0.4960 | -0.1826 | 7.1834 | True |
+
+The quadratic between prediction reduces all three 500 mm residuals to values near zero. Accordingly, the 7.183 ps common residual does not survive its own linear-versus-quadratic specification envelope. The apparent material universality remains true conditionally within each specification, but its nonzero magnitude is not specification-stable. Neither fit is a causal explanation: both regress the outcome to be explained on a position-correlated cell mean.
 
 The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out the measured mixture term as the dominant origin of the material-independent target. A single common residual gives chi2/ndf = 1.391/2 (p=0.499), so the three amplitudes are statistically consistent with one material-independent value. The mixture remains a smaller additive descriptive component, not the cause of that common structure. The fitted values and both ranks are in `material_common_fit.csv`.
 
@@ -105,7 +122,7 @@ Integrate the even measured count profile trapezoidally with these local slopes;
 | EJ-230 | event_ols_total | 77.2709 | 23.5512 |
 | EJ-230 | event_ols_two_counts | 77.0691 | 23.3494 |
 
-F1 uses exactly the three specifications requested in the original 5.3 contract: uniform-bin pol1 (linear nominal), uniform-bin pol2, and quantile-bin pol1. Quantile pol2 remains a documented 2×2 diagnostic but is not added to the declared three-model envelope. The envelope is quoted asymmetrically around the nominal result; it is a model-specification range, not a Gaussian standard deviation.
+The retained within-chain sensitivity uses exactly the three specifications requested in the original 5.3 contract: uniform-bin pol1 (linear nominal), uniform-bin pol2, and quantile-bin pol1. Quantile pol2 remains a documented 2×2 diagnostic but is not added to the declared three-model envelope. The envelope is quoted asymmetrically around the nominal result; it is a model-specification range, not a Gaussian standard deviation.
 
 | Material | \|x\| [mm] | linear [ps] | pol2 [ps] | quantiles [ps] | envelope low [ps] | envelope high [ps] | nominal/max envelope deviation | zero excluded |
 |---|---|---|---|---|---|---|---|---|
@@ -119,7 +136,7 @@ F1 uses exactly the three specifications requested in the original 5.3 contract:
 | EJ-230 | 500 | 53.7197 | 92.8754 | 58.2526 | 53.7197 | 92.8754 | 1.3720 | True |
 | EJ-230 | 650 | 82.6933 | 161.0172 | 95.5223 | 82.6933 | 161.0172 | 1.0558 | True |
 
-At |x|=500 the nominal residuals and conservative envelope uncertainties are 37.98 +23.14/−8.01 ps (EJ-200), 62.06 +22.20/−13.00 ps (EJ-204), and 53.72 +39.16/−0.00 ps (EJ-230). Treating the largest one-sided excursion as a one-sigma-equivalent sensitivity scale gives only 1.64, 2.80, and 1.37 envelope units: none reaches 3. The sign is robust because all three specification values are positive, but the former fit-error significance is withdrawn. Since the envelope has no sampling distribution, these ratios are diagnostics rather than statistical z scores.
+This table is the G1 registered-remnant result, separate from the between-fit re-specification above. At |x|=500 the nominal residuals and conservative envelope uncertainties are 37.98 +23.14/−8.01 ps (EJ-200), 62.06 +22.20/−13.00 ps (EJ-204), and 53.72 +39.16/−0.00 ps (EJ-230). Across materials and the three declared specifications, the central values span 29.97–92.88 ps. This registered remnant is therefore not a well-defined quantity. Treating the largest one-sided excursion as a one-sigma-equivalent sensitivity scale gives only 1.64, 2.80, and 1.37 envelope units: none reaches 3. The sign is robust because all three specification values are positive, but the former fit-error significance is withdrawn. Since the envelope has no sampling distribution, these ratios are diagnostics rather than statistical z scores.
 
 To test localized shape in the sensitivity curves, additionally define B = r(500) − [(1−w)r(200)+w*r(650)], w=[N(500)−N(200)]/[N(650)−N(200)]. This declared diagnostic removes a broad trend linear in the measured Npe profile. For r_between, B is exactly the same as for the raw mean curve: a constant beta*N term cancels. Compute the chain variant independently on each mirror (center → 200 → 500 → 650) and on the even curve. This is a shape sensitivity, not a new causal observable or an interpolated physical boundary.
 

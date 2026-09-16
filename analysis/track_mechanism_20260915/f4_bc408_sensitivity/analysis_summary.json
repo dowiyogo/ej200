@@ -1,9 +1,10 @@
 {
-  "created_utc": "2026-09-16T13:05:40.470151+00:00",
+  "created_utc": "2026-09-16T13:30:32.039498+00:00",
+  "full_campaign_run": false,
   "global_effective_velocity_test": "UNDERIDENTIFIED_BY_SINGLE_POSITION",
   "metrics_sha256": "487ee6f1638cdccab3d060c08ad6606bd3c74cca11c074b6a4f89e935eebcc40",
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/REPORT_F4_BC408_SENSITIVITY_20260916.md",
-  "report_sha256": "085126e004b898efc0c5c9a4c9454aaf91c925ed68710be7811ec387759ef74d",
+  "report_sha256": "e6eb1d178d2acb99a44d5b32ca50c7398672e50754d9014cf46dff5a9ad8e34c",
   "status": "F4_COMPLETE_STEP6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC",
   "step6_run": false,
   "theory": {
@@ -17,5 +18,7 @@
     "vg420": 164.83935674294477,
     "vg_error_high": 0.6797706081241995,
     "vg_error_low": 0.49849844595774634
-  }
+  },
+  "uv_clamp_artifact_gate": false,
+  "uv_clamp_sha256": "5dd5d668942bb1efa1716f13959ca5cfab0e551118c891ac68809cf1a76cbc66"
 }

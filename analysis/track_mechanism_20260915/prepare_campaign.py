@@ -51,7 +51,7 @@ def write_new(path, value):
         stream.write("\n")
 
 
-def prepare(output, binary):
+def prepare(output, binary, ej200_sslg4_source=None):
     output = output.resolve()
     binary = binary.resolve()
     require(not output.exists(), f"refusing to overwrite {output}")
@@ -59,6 +59,13 @@ def prepare(output, binary):
     require("EJ200_ENABLE_DIAGNOSTICS:BOOL=OFF" in
             (binary.parent / "CMakeCache.txt").read_text(), "diagnostics are not OFF")
     require((binary.parent / "sslg4").is_dir(), "missing SSLG4 runtime directory")
+    if ej200_sslg4_source is not None:
+        ej200_sslg4_source = ej200_sslg4_source.resolve()
+        require(ej200_sslg4_source.is_dir(), "alternate EJ-200 SSLG4 directory is missing")
+        for relative in ("macros/oscnt/opsc-100.mac", "data/oscnt/opsc-100/rIndex.txt",
+                         "data/oscnt/opsc-100/absLength.txt"):
+            require((ej200_sslg4_source / relative).is_file(),
+                    f"alternate EJ-200 SSLG4 is incomplete: {relative}")
     require(PILOT_ROOT.is_file() and VALIDATION_METRICS.is_file(), "missing validation evidence")
 
     source_campaign = json.loads((SOURCE_GRID / "campaign.json").read_text())
@@ -89,13 +96,20 @@ def prepare(output, binary):
         target = output / "cells" / source_cell["cell_id"]
         target.mkdir()
         shutil.copyfile(source_macro, target / "run.mac")
-        (target / "sslg4").symlink_to(binary.parent / "sslg4", target_is_directory=True)
+        runtime_sslg4 = (ej200_sslg4_source if source_cell["material"] == "EJ-200"
+                         and ej200_sslg4_source is not None else binary.parent / "sslg4")
+        (target / "sslg4").symlink_to(runtime_sslg4, target_is_directory=True)
         cells.append({
             "cell_id": source_cell["cell_id"], "material": source_cell["material"],
             "opsc": source_cell["opsc"], "x_mm": source_cell["x_mm"],
             "output": str(target), "source_macro": str(source_macro),
             "source_macro_sha256": sha256(source_macro),
             "macro_sha256": sha256(target / "run.mac"),
+            "sslg4_runtime": str(runtime_sslg4),
+            "rindex_sha256": sha256(runtime_sslg4 / "data" / "oscnt"
+                                    / source_cell["opsc"].lower() / "rIndex.txt"),
+            "absLength_sha256": sha256(runtime_sslg4 / "data" / "oscnt"
+                                       / source_cell["opsc"].lower() / "absLength.txt"),
         })
 
     handoff_path = output / "exec46_handoff.json"
@@ -126,6 +140,8 @@ def prepare(output, binary):
             "EJ200_DATA_DIR": str(PDE_PATH.parent.parent),
         },
         "handoff": str(handoff_path), "EJ200_OPSC_CODE": EJ200_OPSC_CODE,
+        "EJ200_SSLG4_source": (str(ej200_sslg4_source)
+                                if ej200_sslg4_source is not None else None),
         "excluded": [], "concurrency": CONCURRENCY, "workers": WORKERS,
         "eventModulo": EVENT_MODULO, "N_generated": EVENTS, "timeout_s": None,
         "cells": cells, "expected_rss_per_process_bytes": expected_rss,
@@ -151,8 +167,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--binary", type=Path, default=DEFAULT_BINARY)
+    parser.add_argument("--ej200-sslg4-source", type=Path,
+                        help="Alternate complete SSLG4 runtime used only by EJ-200 cells")
     args = parser.parse_args()
-    prepare(args.output, args.binary)
+    prepare(args.output, args.binary, args.ej200_sslg4_source)
 
 
 if __name__ == "__main__":

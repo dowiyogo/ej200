@@ -5,7 +5,7 @@
   "baseline_points_sha256": "9328faa93b706853989f139ccd1d8eec75ad89b0aec324b9b8b08a07e8a992c4",
   "binning": "measured |x| points 0, 200, 500, 650 mm",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
-  "created_utc": "2026-09-16T10:23:43.237752+00:00",
+  "created_utc": "2026-09-16T13:27:35.523253+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/identification_residual.csv",
   "descriptive_only": "observed even shift minus beta_between*Delta mean Npe; fitted to the same means, not a causal prediction",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",

@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-09-16T10:23:51.211694+00:00",
+  "created_utc": "2026-09-16T13:27:43.369027+00:00",
   "status": "CHAIN_RULE_WITHIN_SLOPE_REFUTED",
   "completed_steps": [
     "5.1",
@@ -22,7 +22,10 @@
     "seed": 460516
   },
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
-  "report_sha256": "b973e2f4672b8dc7cfcf59b82096305e9afab09706a6e486d99b4eb4129c8593",
-  "analysis_script_sha256": "e16c2b6648560bc9d784f229454de8e6670d9d4c035486fc058ad65bd40b9194",
-  "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation"
+  "report_sha256": "34014cc0873960b07b5077c0ad832bc3522ade2f1a79a0c78a12ad569fdf823a",
+  "analysis_script_sha256": "e438d962e486d9c393541476a6bf6397fc449da45f4a1309171afc36a09fd8bf",
+  "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation",
+  "between_common_result": "NONZERO_COMMON_RESIDUAL_NOT_SPECIFICATION_STABLE",
+  "between_common_linear_ps": 7.183416189885699,
+  "between_common_pol2_ps": -0.18258532092221563
 }

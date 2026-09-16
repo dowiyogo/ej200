@@ -1,0 +1,10 @@
+{
+  "angle": "folded min(exit_angle_deg, 180-exit_angle_deg)",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py",
+  "created_utc": "2026-09-16T13:29:43.630287+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_uv_clamp.csv",
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_uv_clamp.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_uv_clamp.root",
+  "scope": "near END (face_type=0) at x=-650; overall Cherenkov winners, source-specific first Cherenkov, and primary-like first Cherenkov",
+  "uv_clamp_nm": 370.0
+}

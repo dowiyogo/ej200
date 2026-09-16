@@ -36,6 +36,58 @@ The one-cell first-Cherenkov local direct velocity moves from 149.847 to 147.455
 
 The historical 148.548 mm/ns Cherenkov and 186.071 mm/ns scintillation numbers are seven-distance, origin-constrained slopes. A single x=-650 cell cannot refit those slopes. Likewise, the [SHiP test-beam 155 mm/ns value](https://doi.org/10.1016/j.nima.2020.164398) is a global effective propagation speed from time versus position, not a microscopic group velocity or one-point d/t ratio. F4 can test whether the local transport shifts toward that scale. Numerically, the distance of the local first-scintillation proxy from 155 mm/ns decreases from 24.618 to 13.992/14.294 mm/ns, so the shift is in the requested direction. It cannot establish agreement or trigger the stated full-campaign invalidation criterion by itself. That requires at least two positions under the corrected optical model.
 
+## G2: UV-clamp diagnostic
+
+Configuration correction: the executed F4 MPT clamps the index below 370 nm to n(370)=1.651803, but it does **not** make that region absorption-free. It holds ABSLENGTH at 28.23 mm from 200 through 372 nm. Thus this diagnostic measures the combined implemented UV hypotheses (index clamp plus absorption-length extension). A hypothetical zero-absorption UV model is not represented by these ROOT files and cannot be inferred without a new simulation, which G2 forbids.
+
+The following population is the actual first photon at the near END, conditioned on that winner being Cherenkov. `wl_nm_created` is used, so the classification tests the optical model at photon creation rather than the detected wavelength.
+
+| scenario | N Cherenkov winners | wavelength q01 [nm] | q05 [nm] | q10 [nm] | median [nm] | fraction <370 nm |
+|---|---:|---:|---:|---:|---:|---:|
+| visible_lower_764mm | 8225 | 308.30 | 360.79 | 389.99 | 508.64 | 5.56 +/- 0.25% |
+| visible_current_3800mm | 8202 | 311.75 | 374.02 | 387.49 | 512.04 | 4.56 +/- 0.23% |
+
+For completeness, the fraction below 370 nm among the source-specific first Cherenkov photons in all events is 5.39% (764 mm) and 4.68% (3800 mm); among the primary-like cone selection it is only 1.92% and 1.32%. None approaches the preregistered 50% threshold.
+
+| scenario | population | wavelength region | N | angle q05 [deg] | median [deg] | q95 [deg] | q95-q05 [deg] |
+|---|---|---|---:|---:|---:|---:|---:|
+| visible_lower_764mm | overall_cherenkov_winner | clamped_lt370 | 457 | 11.146 | 37.582 | 38.648 | 27.502 |
+| visible_lower_764mm | overall_cherenkov_winner | measured_ge370 | 7768 | 18.062 | 39.351 | 41.039 | 22.976 |
+| visible_lower_764mm | primary_like_first_cherenkov | clamped_lt370 | 141 | 37.485 | 39.020 | 47.905 | 10.420 |
+| visible_lower_764mm | primary_like_first_cherenkov | measured_ge370 | 7202 | 38.440 | 40.264 | 46.537 | 8.096 |
+| visible_current_3800mm | overall_cherenkov_winner | clamped_lt370 | 374 | 11.790 | 37.596 | 38.179 | 26.389 |
+| visible_current_3800mm | overall_cherenkov_winner | measured_ge370 | 7828 | 16.137 | 39.333 | 40.858 | 24.721 |
+| visible_current_3800mm | primary_like_first_cherenkov | clamped_lt370 | 97 | 37.489 | 38.771 | 45.905 | 8.415 |
+| visible_current_3800mm | primary_like_first_cherenkov | measured_ge370 | 7262 | 38.405 | 40.243 | 46.100 | 7.695 |
+
+The primary-like caustic remains broad after removing the clamped photons: its measured-domain width is 8.096 deg (764 mm) and 7.695 deg (3800 mm), compared with total widths of 8.199 and 7.749 deg. The small clamped population has wider tails, but it does not generate the observed 8 deg width. Therefore the 82.25/82.02% first-photon fractions are **not dominated by the clamped population in the executed F4 trees under the declared >50% decision rule**. The unmeasured UV region and its 28.23 mm absorption extension remain model systematics; passing this test does not validate either hypothesis physically.
+
+## G3: direction of the Cherenkov effect
+
+At d=50 mm the measured local transport handicap `d*(1/v_Cher-1/v_scint)` decreases from 55.3 ps to 43.2/43.2 ps. Relative to the baseline, the first-scintillation local velocity falls by 5.92/5.75%, while the first-Cherenkov velocity falls by only 1.60/1.45%. The corrected optical model therefore strengthens Cherenkov’s advantage. The prior prediction that dispersion would reduce the first-photon Cherenkov fraction is refuted by the two measured F4 variants; the axial Cherenkov speed is less sensitive because cone geometry controls it.
+
+## G4: held relaunch command
+
+No grid was prepared or launched. The unresolved visible-absorption alternatives remain separate. After an explicit campaign decision, the exact alternative sequences would be:
+
+```bash
+# Existing 3800 mm visible attenuation
+python3 analysis/track_mechanism_20260915/prepare_campaign.py \
+  --output /home/rrios/exec46_20260916/full_grid_bc408_3800 \
+  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4
+python3 analysis/sigma_t/orchestration/detached_grid.py launch \
+  --directory /home/rrios/exec46_20260916/full_grid_bc408_3800
+
+# Published 764 mm lower-bound scenario
+python3 analysis/track_mechanism_20260915/prepare_campaign.py \
+  --output /home/rrios/exec46_20260916/full_grid_bc408_764 \
+  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_lower_764mm/sslg4
+python3 analysis/sigma_t/orchestration/detached_grid.py launch \
+  --directory /home/rrios/exec46_20260916/full_grid_bc408_764
+```
+
+These are mutually exclusive campaign choices unless both attenuation-systematic grids are explicitly authorized. Neither preparation nor launch command was executed.
+
 ## Decision
 
 The current constant-n optical model is demonstrably non-robust for transport timing at the scale of the 7 ps residual: the measured-input sensitivity shifts local photon transport by far more than 7 ps-equivalent timing and introduces chromatic broadening that the old model fixes to zero. Therefore no Step 6 mechanism attribution is defensible with the constant-n campaign. The stronger claim that the old campaign is experimentally invalidated by reproducing 155 mm/ns is **not decidable from this one-position design**.
@@ -49,4 +101,4 @@ env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanis
 env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py
 ```
 
-The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under `/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are `f4_metrics.{csv,root,meta.json}`; source-selection caches are retained under `scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.
+The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under `/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are `f4_metrics.{csv,root,meta.json}` and `f4_uv_clamp.{csv,root,meta.json}`; source-selection caches are retained under `scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.

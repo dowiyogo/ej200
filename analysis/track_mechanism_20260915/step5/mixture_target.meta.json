@@ -6,7 +6,7 @@
   "bootstrap_replicates": 2000,
   "bootstrap_seed": 460516,
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
-  "created_utc": "2026-09-16T10:23:51.063946+00:00",
+  "created_utc": "2026-09-16T13:27:43.225129+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/mixture_target.csv",
   "identity": "delta mu = fbar delta muC +(1-fbar)delta muS +(muCbar-muSbar)delta f",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step2/exec46_derived_events.root",

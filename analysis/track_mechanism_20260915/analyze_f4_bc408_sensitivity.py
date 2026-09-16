@@ -37,6 +37,8 @@ FIT_A, FIT_B, FIT_C = 1.518, 0.640, 0.00423
 REFERENCE_GLOBAL_SCINT_MM_NS = 186.070980
 REFERENCE_GLOBAL_CHER_MM_NS = 148.547541
 EXPERIMENTAL_EFFECTIVE_MM_NS = 155.0
+UV_CLAMP_NM = 370.0
+HANDICAP_DISTANCE_MM = 50.0
 COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
     "analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py"
@@ -179,6 +181,98 @@ def load_baseline():
     return {key: values[selected] for key, values in arrays.items()}
 
 
+def uv_clamp_metrics(label, arrays):
+    rows = []
+    selections = (
+        ('overall_cherenkov_winner', 'first', arrays['first_source_type'] == 2),
+        ('source_specific_first_cherenkov', 'first_cherenkov',
+         arrays['first_cherenkov_track_id'] >= 0),
+        ('primary_like_first_cherenkov', 'first_primary_cherenkov',
+         arrays['first_primary_cherenkov_track_id'] >= 0),
+    )
+    for population, prefix, valid in selections:
+        wavelength = arrays[prefix + '_wl_nm_created'][valid]
+        angle = folded_angle(arrays[prefix + '_exit_angle_deg'][valid])
+        below = wavelength < UV_CLAMP_NM
+        for region, mask in (
+                ('all', np.ones(len(wavelength), dtype=bool)),
+                ('clamped_lt370', below),
+                ('measured_ge370', ~below)):
+            selected_wavelength = wavelength[mask]
+            selected_angle = angle[mask]
+            require(len(selected_wavelength) > 20,
+                    f'{label}/{population}/{region}: insufficient entries')
+            rows.append({
+                'scenario': label, 'population': population,
+                'wavelength_region': region, 'n': int(len(selected_wavelength)),
+                'fraction_of_population': float(mask.mean()),
+                'fraction_below_370': float(below.mean()),
+                'fraction_below_370_binomial_se': float(
+                    math.sqrt(below.mean()*(1.0-below.mean())/len(below))),
+                'wavelength_q01_nm': float(np.quantile(selected_wavelength, .01)),
+                'wavelength_q05_nm': float(np.quantile(selected_wavelength, .05)),
+                'wavelength_q10_nm': float(np.quantile(selected_wavelength, .10)),
+                'wavelength_median_nm': float(np.median(selected_wavelength)),
+                'angle_q05_deg': float(np.quantile(selected_angle, .05)),
+                'angle_median_deg': float(np.median(selected_angle)),
+                'angle_q95_deg': float(np.quantile(selected_angle, .95)),
+                'angle_central90_width_deg': float(
+                    np.quantile(selected_angle, .95)-np.quantile(selected_angle, .05)),
+            })
+    return rows
+
+
+def save_uv_bundle(frame, extracted):
+    csv_path = OUTPUT / 'f4_uv_clamp.csv'
+    root_path = OUTPUT / 'f4_uv_clamp.root'
+    pdf_path = OUTPUT / 'f4_uv_clamp.pdf'
+    meta_path = OUTPUT / 'f4_uv_clamp.meta.json'
+    frame.to_csv(csv_path, index=False, float_format='%.12g')
+    with uproot.recreate(root_path) as root_file:
+        root_file['uv_clamp'] = {
+            column: (frame[column].astype(str).to_numpy(dtype=str)
+                     if frame[column].dtype == object else frame[column].to_numpy())
+            for column in frame.columns
+        }
+    fig, axes = plt.subplots(2, 2, figsize=(11, 8))
+    for column, scenario in enumerate(VARIANTS):
+        arrays = extracted[scenario]
+        winner = arrays['first_source_type'] == 2
+        wavelength = arrays['first_wl_nm_created'][winner]
+        axes[0, column].hist(wavelength, bins=np.arange(280, 821, 10), density=True,
+                             histtype='step', linewidth=1.4)
+        axes[0, column].axvline(UV_CLAMP_NM, color='black', linestyle='--', linewidth=1)
+        axes[0, column].set_title(scenario)
+        axes[0, column].set_xlabel('Created wavelength [nm]')
+        axes[0, column].set_ylabel('Normalized density')
+        primary = arrays['first_primary_cherenkov_track_id'] >= 0
+        primary_wavelength = arrays['first_primary_cherenkov_wl_nm_created'][primary]
+        primary_angle = folded_angle(
+            arrays['first_primary_cherenkov_exit_angle_deg'][primary])
+        bins = np.arange(35.0, 55.01, 0.25)
+        for mask, label in ((primary_wavelength < UV_CLAMP_NM, 'lambda < 370 nm'),
+                            (primary_wavelength >= UV_CLAMP_NM, 'lambda >= 370 nm')):
+            axes[1, column].hist(primary_angle[mask], bins=bins, density=True,
+                                 histtype='step', linewidth=1.4, label=label)
+        axes[1, column].set_xlabel('Folded exit_angle_deg [deg]')
+        axes[1, column].set_ylabel('Normalized density')
+        axes[1, column].legend(fontsize=8)
+        for axis in axes[:, column]:
+            axis.grid(alpha=.2)
+    fig.tight_layout()
+    fig.savefig(pdf_path)
+    plt.close(fig)
+    meta = {
+        'created_utc': datetime.now(timezone.utc).isoformat(),
+        'command': COMMAND, 'uv_clamp_nm': UV_CLAMP_NM,
+        'scope': ('near END (face_type=0) at x=-650; overall Cherenkov winners, '
+                  'source-specific first Cherenkov, and primary-like first Cherenkov'),
+        'angle': 'folded min(exit_angle_deg, 180-exit_angle_deg)',
+        'pdf': str(pdf_path), 'csv': str(csv_path), 'root': str(root_path),
+    }
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + '\n')
+
+
 def save_bundle(frame):
     csv_path = OUTPUT / 'f4_metrics.csv'
     root_path = OUTPUT / 'f4_metrics.root'
@@ -245,12 +339,26 @@ def save_bundle(frame):
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + '\n')
 
 
-def render_report(frame, theory):
+def render_report(frame, uv_frame, theory):
     def row(label):
         return frame[frame.scenario == label].iloc[0]
     baseline = row('constant_n1p58_existing')
     lower = row('visible_lower_764mm')
     current = row('visible_current_3800mm')
+    winner_uv = uv_frame.query(
+        'population == "overall_cherenkov_winner" and wavelength_region == "all"')
+    angle_uv = uv_frame.query(
+        'population in ["overall_cherenkov_winner", "primary_like_first_cherenkov"] '
+        'and wavelength_region != "all"')
+    baseline_handicap = HANDICAP_DISTANCE_MM*1000.0*(
+        1.0/baseline.cherenkov_local_direct_velocity_mm_ns
+        - 1.0/baseline.scintillation_local_direct_velocity_mm_ns)
+    lower_handicap = HANDICAP_DISTANCE_MM*1000.0*(
+        1.0/lower.cherenkov_local_direct_velocity_mm_ns
+        - 1.0/lower.scintillation_local_direct_velocity_mm_ns)
+    current_handicap = HANDICAP_DISTANCE_MM*1000.0*(
+        1.0/current.cherenkov_local_direct_velocity_mm_ns
+        - 1.0/current.scintillation_local_direct_velocity_mm_ns)
     lines = [
         '# EXEC_46 F4 — BC-408 optical-model sensitivity at EJ200 x=-650 mm', '',
         'Date: 2026-09-16. Step 6 remains suspended.', '',
@@ -347,6 +455,79 @@ def render_report(frame, theory):
         'mm/ns, so the shift is in the requested direction. It cannot establish agreement or '
         'trigger the stated full-campaign invalidation criterion by itself. That requires at least '
         'two positions under the corrected optical model.', '',
+        '## G2: UV-clamp diagnostic', '',
+        f'Configuration correction: the executed F4 MPT clamps the index below 370 nm to '
+        f'n(370)={float(n_phase(370.0)):.6f}, but it does **not** make that region absorption-free. '
+        'It holds ABSLENGTH at 28.23 mm from 200 through 372 nm. Thus this diagnostic measures '
+        'the combined implemented UV hypotheses (index clamp plus absorption-length extension). '
+        'A hypothetical zero-absorption UV model is not represented by these ROOT files and cannot '
+        'be inferred without a new simulation, which G2 forbids.', '',
+        'The following population is the actual first photon at the near END, conditioned on that '
+        'winner being Cherenkov. `wl_nm_created` is used, so the classification tests the optical '
+        'model at photon creation rather than the detected wavelength.', '',
+        '| scenario | N Cherenkov winners | wavelength q01 [nm] | q05 [nm] | q10 [nm] | median [nm] | fraction <370 nm |',
+        '|---|---:|---:|---:|---:|---:|---:|',
+    ]
+    for _, value in winner_uv.iterrows():
+        lines.append(
+            f'| {value.scenario} | {int(value.n)} | {value.wavelength_q01_nm:.2f} | '
+            f'{value.wavelength_q05_nm:.2f} | {value.wavelength_q10_nm:.2f} | '
+            f'{value.wavelength_median_nm:.2f} | '
+            f'{100*value.fraction_below_370:.2f} +/- '
+            f'{100*value.fraction_below_370_binomial_se:.2f}% |')
+    lines += ['',
+        'For completeness, the fraction below 370 nm among the source-specific first Cherenkov '
+        'photons in all events is 5.39% (764 mm) and 4.68% (3800 mm); among the primary-like '
+        'cone selection it is only 1.92% and 1.32%. None approaches the preregistered 50% threshold.', '',
+        '| scenario | population | wavelength region | N | angle q05 [deg] | median [deg] | q95 [deg] | q95-q05 [deg] |',
+        '|---|---|---|---:|---:|---:|---:|---:|']
+    for _, value in angle_uv.iterrows():
+        lines.append(
+            f'| {value.scenario} | {value.population} | {value.wavelength_region} | '
+            f'{int(value.n)} | {value.angle_q05_deg:.3f} | '
+            f'{value.angle_median_deg:.3f} | {value.angle_q95_deg:.3f} | '
+            f'{value.angle_central90_width_deg:.3f} |')
+    lines += ['',
+        'The primary-like caustic remains broad after removing the clamped photons: its measured-domain '
+        'width is 8.096 deg (764 mm) and 7.695 deg (3800 mm), compared with total widths of '
+        '8.199 and 7.749 deg. The small clamped population has wider tails, but it does not generate '
+        'the observed 8 deg width. Therefore the 82.25/82.02% first-photon fractions are **not '
+        'dominated by the clamped population in the executed F4 trees under the declared >50% '
+        'decision rule**. The unmeasured UV region and its 28.23 mm absorption extension remain model '
+        'systematics; passing this test does not validate either hypothesis physically.', '',
+        '## G3: direction of the Cherenkov effect', '',
+        f'At d={HANDICAP_DISTANCE_MM:.0f} mm the measured local transport handicap '
+        f'`d*(1/v_Cher-1/v_scint)` decreases from {baseline_handicap:.1f} ps to '
+        f'{lower_handicap:.1f}/{current_handicap:.1f} ps. Relative to the baseline, the '
+        f'first-scintillation local velocity falls by '
+        f'{100*(1-lower.scintillation_local_direct_velocity_mm_ns/baseline.scintillation_local_direct_velocity_mm_ns):.2f}/'
+        f'{100*(1-current.scintillation_local_direct_velocity_mm_ns/baseline.scintillation_local_direct_velocity_mm_ns):.2f}%, '
+        f'while the first-Cherenkov velocity falls by only '
+        f'{100*(1-lower.cherenkov_local_direct_velocity_mm_ns/baseline.cherenkov_local_direct_velocity_mm_ns):.2f}/'
+        f'{100*(1-current.cherenkov_local_direct_velocity_mm_ns/baseline.cherenkov_local_direct_velocity_mm_ns):.2f}%. '
+        'The corrected optical model therefore strengthens Cherenkov’s advantage. The prior prediction '
+        'that dispersion would reduce the first-photon Cherenkov fraction is refuted by the two measured '
+        'F4 variants; the axial Cherenkov speed is less sensitive because cone geometry controls it.', '',
+        '## G4: held relaunch command', '',
+        'No grid was prepared or launched. The unresolved visible-absorption alternatives remain separate. '
+        'After an explicit campaign decision, the exact alternative sequences would be:', '',
+        '```bash',
+        '# Existing 3800 mm visible attenuation',
+        'python3 analysis/track_mechanism_20260915/prepare_campaign.py \\',
+        '  --output /home/rrios/exec46_20260916/full_grid_bc408_3800 \\',
+        '  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4',
+        'python3 analysis/sigma_t/orchestration/detached_grid.py launch \\',
+        '  --directory /home/rrios/exec46_20260916/full_grid_bc408_3800',
+        '',
+        '# Published 764 mm lower-bound scenario',
+        'python3 analysis/track_mechanism_20260915/prepare_campaign.py \\',
+        '  --output /home/rrios/exec46_20260916/full_grid_bc408_764 \\',
+        '  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_lower_764mm/sslg4',
+        'python3 analysis/sigma_t/orchestration/detached_grid.py launch \\',
+        '  --directory /home/rrios/exec46_20260916/full_grid_bc408_764',
+        '```', '',
+        'These are mutually exclusive campaign choices unless both attenuation-systematic grids '
+        'are explicitly authorized. Neither preparation nor launch command was executed.', '',
         '## Decision', '',
         'The current constant-n optical model is demonstrably non-robust for transport timing at '
         'the scale of the 7 ps residual: the measured-input sensitivity shifts local photon transport '
@@ -362,7 +543,8 @@ def render_report(frame, theory):
         COMMAND, '```', '',
         'The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under '
         '`/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are '
-        '`f4_metrics.{csv,root,meta.json}`; source-selection caches are retained under '
+        '`f4_metrics.{csv,root,meta.json}` and `f4_uv_clamp.{csv,root,meta.json}`; '
+        'source-selection caches are retained under '
         '`scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.', ''
     ]
     REPORT.write_text('\n'.join(lines))
@@ -394,6 +576,9 @@ def main():
                             RUN_DIR / variant / 'photon_hits_run000.root'))
     frame = pd.DataFrame(rows)
     save_bundle(frame)
+    uv_frame = pd.DataFrame(
+        row for variant in VARIANTS for row in uv_clamp_metrics(variant, extracted[variant]))
+    save_uv_bundle(uv_frame, extracted)
     n420 = float(n_phase(420.0))
     ng420 = float(n_group_analytic(420.0))
     vg420 = SPEED_OF_LIGHT_MM_PER_NS / ng420
@@ -408,13 +593,18 @@ def main():
             1.0/vg420 - 1.0/(SPEED_OF_LIGHT_MM_PER_NS/1.58)),
     }
     theory['edge_span'] = theory['edge660'] - theory['edge370']
-    render_report(frame, theory)
+    render_report(frame, uv_frame, theory)
     summary = {
         'created_utc': datetime.now(timezone.utc).isoformat(),
         'status': 'F4_COMPLETE_STEP6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC',
         'report': str(REPORT), 'report_sha256': sha256(REPORT),
         'metrics_sha256': sha256(OUTPUT/'f4_metrics.csv'),
+        'uv_clamp_sha256': sha256(OUTPUT/'f4_uv_clamp.csv'),
         'step6_run': False,
+        'full_campaign_run': False,
+        'uv_clamp_artifact_gate': bool(
+            uv_frame.query('population == "overall_cherenkov_winner" '
+                           'and wavelength_region == "all"').fraction_below_370.max() > .5),
         'global_effective_velocity_test': 'UNDERIDENTIFIED_BY_SINGLE_POSITION',
         'theory': theory,
     }

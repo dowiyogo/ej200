@@ -205,3 +205,25 @@ its measured 370--660 nm domain; below it the index is clamped to n(370), never
 exponentially extrapolated.  The 764 mm visible scenario is a published 90%
 lower bound, not a central value.  EJ-230 remains uncorrected because BC-420 was
 not measured and BC-422 is not an equivalent substitute.
+
+## G1--G4 correction and UV-clamp gate
+
+Keep two residual definitions separate.  The 30--93 ps specification range is
+the registered within-chain remnant and is itself evidence that this quantity
+is not well defined.  Independently re-specify the seven-cell between
+prediction with unweighted linear and quadratic fits of mean T0 on mean Npe;
+refit each bootstrap replica and quote the envelope of the corrected residual.
+
+For F4, inspect the created wavelength of the actual near-END first-photon
+Cherenkov winners, plus the source-specific and primary-like first-Cherenkov
+controls.  Split the folded exit-angle distribution at 370 nm.  The full-grid
+relaunch is prohibited if more than half of the winning Cherenkov population
+lies in the unmeasured, clamped UV region.
+
+Record the direction of the measured sensitivity: BC-408 dispersion reduces
+the local scintillation velocity more than the cone-guided Cherenkov velocity,
+thereby decreasing the 50 mm Cherenkov transport handicap and increasing the
+first-photon Cherenkov fraction.  This refutes the prior directional prediction.
+
+Prepare an exact detached-grid command with an explicit EJ-200 SSLG4 runtime,
+but do not prepare or launch the grid.  Step 6 remains suspended.

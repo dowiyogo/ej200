@@ -69,6 +69,20 @@ def between_residual(n, y):
     return beta, r
 
 
+def between_polynomial_residual(n, y, degree):
+    """Unweighted fit of the seven cell means, batched over bootstrap replicas."""
+    base.require(degree in (1, 2), 'Unsupported between-fit degree')
+    centered_n = n - n.mean(axis=-1, keepdims=True)
+    design = np.stack([centered_n ** power for power in range(degree + 1)], axis=-1)
+    normal = np.einsum('...ij,...ik->...jk', design, design)
+    rhs = np.einsum('...ij,...i->...j', design, y)
+    coefficients = np.linalg.solve(normal, rhs)
+    prediction = np.einsum('...ij,...j->...i', design, coefficients)
+    residual = (y - y[..., CENTER:CENTER+1]
+                - (prediction - prediction[..., CENTER:CENTER+1]))
+    return coefficients, residual
+
+
 def local_excess(r, n):
     """Prespecified diagnostic: residual at 500 above Npe-linear chord 200--650."""
     w = (n[..., 2]-n[..., 1])/(n[..., 3]-n[..., 1])
@@ -186,6 +200,7 @@ def run():
     reference = pd.read_csv(base.BASE_DIR/'step2/baseline_cells.csv').query('clock == "time_ns"')
     rows_profile, rows_count, rows_cells, rows_intervals, rows_mix = [], [], [], [], []
     rows_sensitive, rows_fits, rows_signif, rows_boot, rows_local = [], [], [], [], []
+    rows_between_specs, rows_between_models = [], []
     rng = np.random.default_rng(BOOTSTRAP_SEED)
     all_stats, all_boot, all_variants = {}, {}, {}
     with ROOT.TFile(str(OUT/'profile_refits.root'),'RECREATE') as root_file:
@@ -230,6 +245,41 @@ def run():
             all_stats[material],all_boot[material] = stats,bst
             bbetween, rbetween = between_residual(stats['n'],stats['y'])
             bbboot, rbboot = between_residual(bst['n'],bst['y'])
+            coefficients_linear, rbetween_linear = between_polynomial_residual(
+                stats['n'], stats['y'], 1)
+            boot_coefficients_linear, rbboot_linear = between_polynomial_residual(
+                bst['n'], bst['y'], 1)
+            coefficients_pol2, rbetween_pol2 = between_polynomial_residual(
+                stats['n'], stats['y'], 2)
+            boot_coefficients_pol2, rbboot_pol2 = between_polynomial_residual(
+                bst['n'], bst['y'], 2)
+            base.require(np.max(np.abs(rbetween-rbetween_linear)) < 1e-12,
+                         'Linear between-fit implementations disagree')
+            base.require(np.max(np.abs(rbboot-rbboot_linear)) < 1e-12,
+                         'Bootstrap linear between-fit implementations disagree')
+            rows_between_models.extend([
+                dict(material=material, specification='linear',
+                     n_center_pe=stats['n'].mean(), p0_ns=coefficients_linear[0],
+                     p1_ns_pe=coefficients_linear[1], p2_ns_pe2=0.0),
+                dict(material=material, specification='pol2',
+                     n_center_pe=stats['n'].mean(), p0_ns=coefficients_pol2[0],
+                     p1_ns_pe=coefficients_pol2[1], p2_ns_pe2=coefficients_pol2[2]),
+            ])
+            even_linear, even_pol2 = even(rbetween_linear), even(rbetween_pol2)
+            boot_even_linear, boot_even_pol2 = even(rbboot_linear), even(rbboot_pol2)
+            for j, ax in enumerate(ABS_X):
+                linear_ps, pol2_ps = NS_TO_PS*even_linear[j], NS_TO_PS*even_pol2[j]
+                low, high = min(linear_ps, pol2_ps), max(linear_ps, pol2_ps)
+                rows_between_specs.append(dict(
+                    material=material, abs_x_mm=int(ax),
+                    linear_residual_ps=linear_ps,
+                    linear_bootstrap_se_ps=NS_TO_PS*boot_even_linear[:,j].std(ddof=1),
+                    pol2_residual_ps=pol2_ps,
+                    pol2_bootstrap_se_ps=NS_TO_PS*boot_even_pol2[:,j].std(ddof=1),
+                    envelope_low_ps=low, envelope_high_ps=high,
+                    envelope_minus_ps=linear_ps-low,
+                    envelope_plus_ps=high-linear_ps,
+                    envelope_contains_zero=low <= 0.0 <= high))
             rse = rbboot.std(axis=0,ddof=1)
             for j,x in enumerate(POSITIONS):
                 rows_signif.append(dict(material=material,x_mm=int(x),residual_ps=NS_TO_PS*rbetween[j],
@@ -367,12 +417,39 @@ def run():
     target500['mixture_rank_high_to_low'] = target500[
         'projected_mixing_ps'].rank(method='min', ascending=False).astype(int)
 
+    between_specs = pd.DataFrame(rows_between_specs)
+    between_common_rows = []
+    for specification in ('linear', 'pol2'):
+        values = between_specs.query('abs_x_mm == 500')[
+            specification + '_residual_ps'].to_numpy()
+        errors = between_specs.query('abs_x_mm == 500')[
+            specification + '_bootstrap_se_ps'].to_numpy()
+        weights = 1.0 / errors**2
+        fitted = float(np.sum(weights*values)/np.sum(weights))
+        fitted_error = float(1.0/np.sqrt(np.sum(weights)))
+        chi2 = float(np.sum(((values-fitted)/errors)**2))
+        between_common_rows.append(dict(
+            specification=specification, common_residual_ps=fitted,
+            common_residual_bootstrap_se_ps=fitted_error,
+            chi2=chi2, ndf=len(values)-1, chi2_ndf=chi2/(len(values)-1),
+            p_value=math.exp(-chi2/2.0)))
+    between_common = pd.DataFrame(between_common_rows)
+    common_low = between_common.common_residual_ps.min()
+    common_high = between_common.common_residual_ps.max()
+    between_common['specification_envelope_low_ps'] = common_low
+    between_common['specification_envelope_high_ps'] = common_high
+    between_common['specification_envelope_contains_zero'] = (
+        common_low <= 0.0 <= common_high)
+
     frames = dict(profile_refits=pd.DataFrame(rows_profile),two_count_slopes=pd.DataFrame(rows_count),
                   cell_statistics=pd.DataFrame(rows_cells),mixture_intervals=pd.DataFrame(rows_intervals),
                   mixture_components=pd.DataFrame(rows_mix),chain_sensitivity=sensitivity,
                   chain_fit_summary=pd.DataFrame(rows_fits),residual_significance=pd.DataFrame(rows_signif),
                   mixture_target=pd.DataFrame(rows_boot),localization_sensitivity=pd.DataFrame(rows_local),
-                  specification_envelope=pivot, material_common_fit=target500)
+                  specification_envelope=pivot, material_common_fit=target500,
+                  between_specification=between_specs,
+                  between_model_fits=pd.DataFrame(rows_between_models),
+                  between_common_specification=between_common)
     for name,frame in frames.items(): save_frame(name,frame)
     save_frame('within_between_summary',summary)
     # Numeric companion stores every table plus categorical string columns.
@@ -389,7 +466,10 @@ def run():
                        replicates=BOOTSTRAP_REPLICATES,seed=BOOTSTRAP_SEED),
         report=str(base.REPORT_PATH),report_sha256=base.sha256(base.REPORT_PATH),
         analysis_script_sha256=base.sha256(__file__),
-        between_slope_interpretation='descriptive fit to same cell means; reabsorption is not explanation')
+        between_slope_interpretation='descriptive fit to same cell means; reabsorption is not explanation',
+        between_common_result='NONZERO_COMMON_RESIDUAL_NOT_SPECIFICATION_STABLE',
+        between_common_linear_ps=float(between_common.query('specification=="linear"').common_residual_ps.iloc[0]),
+        between_common_pol2_ps=float(between_common.query('specification=="pol2"').common_residual_ps.iloc[0]))
     (OUT/'analysis_summary.json').write_text(json.dumps(meta,indent=2)+'\n')
     (OUT/'profile_refits.meta.json').write_text(json.dumps({**meta,'bins':PROFILE_BINS,'variants':VARIANTS,
         'pol2_beta':'derivative at each empirical cell mean Npe; local Taylor convention',
@@ -453,17 +533,21 @@ def write_report(fr,summary,points,stats):
     common_r=np.sum(target500.descriptive_residual_ps/target500.residual_bootstrap_se_ps**2)/np.sum(1/target500.residual_bootstrap_se_ps**2)
     common_r_se=1/np.sqrt(np.sum(1/target500.residual_bootstrap_se_ps**2))
     hetero_r=np.sum(((target500.descriptive_residual_ps-common_r)/target500.residual_bootstrap_se_ps)**2)
+    between500=fr['between_specification'].query('abs_x_mm==500')
+    between_common=fr['between_common_specification']
     lines=['# EXEC_46 Step 5 — revised chain-rule identification and localized residual', '',
         'Date: 2026-09-16. Revision E1–E5 supersedes the Step 5 conclusion in commit `185a916`.', '',
         '**CHAIN_RULE_WITHIN_SLOPE_REFUTED. Steps 5.3–5.5 completed; Step 5.2 cancelled; STOP BEFORE STEP 6.**', '',
         'No simulation, production rerun, source-tree regeneration, push, merge, or deck edit. '
         'Input: 210,000 existing derived events, 21 cells, 10,000 per cell. The input SHA-256 is checked unchanged at exit.', '',
-        'The localized positive structure is present separately in both mirrors for all materials: '
+        'Under the linear seven-point between specification, the localized positive structure is '
+        'present separately in both mirrors for all materials: '
         'at ±500 mm its significance is 7.49–10.53 cell SEM, or 5.74–8.18 paired-bootstrap SE after refitting. '
         'Its even amplitudes are 6.368 ± 0.900, 7.858 ± 0.920, and 7.338 ± 0.859 ps. '
         'The same-projection source-mixture terms are +4.157 ± 0.298, +3.767 ± 0.263, and +2.800 ± 0.216 ps: '
         'a partial descriptive allocation, leaving +2.212 ± 0.864, +4.091 ± 0.877, and +4.538 ± 0.827 ps. '
-        'The mechanism is not fully closed.', '',
+        'The mechanism is not fully closed under that specification. G1 below shows that a quadratic '
+        'between prediction reduces the common amplitude to a value compatible with zero.', '',
         '## E1–E2: correction of the circular claim', '',
         f'The EJ-200 center-to-|x|=650 secant is {secant:.8f} ps/pe, versus the '
         f'seven-mean OLS slope {slopes.beta_between_ps_pe.iloc[0]:.8f} ps/pe. '
@@ -505,7 +589,34 @@ def write_report(fr,summary,points,stats):
             'descriptive_residual_ps':'even r [ps]','residual_bootstrap_se_ps':'paired SE [ps]'}), '',
         f'Across materials the common even amplitude is {common_r:.3f} ± {common_r_se:.3f} ps '
         f'(chi2/ndf={hetero_r:.3f}/2, p={math.exp(-hetero_r/2):.3f}). '
-        'This supports consistency of the localized amplitude across these three materials, not a universal law beyond the sampled grid.', '',
+        'This is the result under the linear seven-point between specification.', '',
+        '### G1: specification of the between prediction', '',
+        'The previous F1 table varied the within-cell beta chain and therefore quantified the '
+        'registered within-chain remnant, not the approximately 7 ps between-fit residual. That '
+        'table is retained below as a separate result. To test the corrected residual itself, fit '
+        'the same seven cell means with unweighted linear and quadratic models of mean(T0) versus '
+        'mean(Npe). In both cases subtract the fitted change relative to the x=0 cell, then average '
+        'the two mirrors. The bootstrap refits the selected polynomial in every replica.', '',
+        table(between500,{'material':'Material','linear_residual_ps':'linear residual [ps]',
+            'linear_bootstrap_se_ps':'linear bootstrap SE [ps]',
+            'pol2_residual_ps':'pol2 residual [ps]',
+            'pol2_bootstrap_se_ps':'pol2 bootstrap SE [ps]',
+            'envelope_low_ps':'envelope low [ps]',
+            'envelope_high_ps':'envelope high [ps]',
+            'envelope_contains_zero':'envelope contains zero'}), '',
+        table(between_common,{'specification':'between specification',
+            'common_residual_ps':'common residual [ps]',
+            'common_residual_bootstrap_se_ps':'common bootstrap SE [ps]',
+            'chi2_ndf':'chi2/ndf','p_value':'p value',
+            'specification_envelope_low_ps':'common envelope low [ps]',
+            'specification_envelope_high_ps':'common envelope high [ps]',
+            'specification_envelope_contains_zero':'envelope contains zero'}), '',
+        'The quadratic between prediction reduces all three 500 mm residuals to values near zero. '
+        'Accordingly, the 7.183 ps common residual does not survive its own linear-versus-quadratic '
+        'specification envelope. The apparent material universality remains true conditionally '
+        'within each specification, but its nonzero magnitude is not specification-stable. Neither '
+        'fit is a causal explanation: both regress the outcome to be explained on a position-correlated '
+        'cell mean.', '',
         'The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection '
         'mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out '
         'the measured mixture term as the dominant origin of the material-independent target. '
@@ -539,7 +650,8 @@ def write_report(fr,summary,points,stats):
         'would be a tautological robustness test.', '',
         table(fr['chain_sensitivity'].query('abs_x_mm==500'),{'material':'Material','variant':'Variant',
             'chain_residual_ps':'chain residual at 500 [ps]','shift_from_original_ps':'change vs original [ps]'}), '',
-        'F1 uses exactly the three specifications requested in the original 5.3 contract: '
+        'The retained within-chain sensitivity uses exactly the three specifications requested '
+        'in the original 5.3 contract: '
         'uniform-bin pol1 (linear nominal), uniform-bin pol2, and quantile-bin pol1. '
         'Quantile pol2 remains a documented 2×2 diagnostic but is not added to the declared '
         'three-model envelope. The envelope is quoted asymmetrically around the nominal result; '
@@ -551,9 +663,14 @@ def write_report(fr,summary,points,stats):
             'envelope_high_ps':'envelope high [ps]',
             'envelope_sensitivity_ratio':'nominal/max envelope deviation',
             'envelope_excludes_zero':'zero excluded'}), '',
-        'At |x|=500 the nominal residuals and conservative envelope uncertainties are '
+        'This table is the G1 registered-remnant result, separate from the between-fit '
+        're-specification above. At |x|=500 the nominal residuals and conservative envelope '
+        'uncertainties are '
         '37.98 +23.14/−8.01 ps (EJ-200), 62.06 +22.20/−13.00 ps (EJ-204), and '
-        '53.72 +39.16/−0.00 ps (EJ-230). Treating the largest one-sided excursion as a '
+        '53.72 +39.16/−0.00 ps (EJ-230). '
+        'Across materials and the three declared specifications, the central values span '
+        '29.97–92.88 ps. This registered remnant is therefore not a well-defined quantity. '
+        'Treating the largest one-sided excursion as a '
         'one-sigma-equivalent sensitivity scale gives only 1.64, 2.80, and 1.37 envelope '
         'units: none reaches 3. The sign is robust because all three specification values are '
         'positive, but the former fit-error significance is withdrawn. Since the envelope has '
