@@ -74,6 +74,86 @@ The previous F1 table varied the within-cell beta chain and therefore quantified
 
 The quadratic between prediction reduces all three 500 mm residuals to values near zero. Accordingly, the 7.183 ps common residual does not survive its own linear-versus-quadratic specification envelope. The apparent material universality remains true conditionally within each specification, but its nonzero magnitude is not specification-stable. Neither fit is a causal explanation: both regress the outcome to be explained on a position-correlated cell mean.
 
+### H1: nested-model and out-of-sample tests
+
+The requested primary F-test applies the same unweighted between-fit convention to all seven signed positions. Linear has two parameters and five residual degrees of freedom; pol2 has three parameters and four residual degrees of freedom.
+
+| Material | linear RSS [ps2] | pol2 RSS [ps2] | delta RSS [ps2] | F(1,4) | F-test p |
+|---|---|---|---|---|---|
+| EJ-200 | 52.577261 | 1.458408 | 51.118853 | 140.204538 | 0.000291 |
+| EJ-204 | 74.074828 | 2.529924 | 71.544904 | 113.117874 | 0.000443 |
+| EJ-230 | 59.797872 | 4.741181 | 55.056691 | 46.449773 | 0.002423 |
+
+This seven-position F-test rejects the linear specification for all three materials.
+
+The even-component nested test uses exactly the three informative shifts at |x|=200, 500, and 650 mm. The center is fixed to zero by subtraction. The linear model has one coefficient, the quadratic model two, leaving only one residual degree of freedom for pol2. The GLS covariance includes the shared x=0 uncertainty and the two mirror SEMs. The F statistic is `[(chi2_linear-chi2_pol2)/1]/(chi2_pol2/1)`; its low-denominator-dof p value is the conservative nested-model result. The delta-chi2 p value treats the supplied cell-mean uncertainties as calibrated.
+
+| Material | linear chi2 | pol2 chi2 | delta chi2 | F(1,1) | F-test p | delta-chi2 p |
+|---|---|---|---|---|---|---|
+| EJ-200 | 79.667885 | 1.293377 | 78.374508 | 60.596788 | 0.081336 | 8.525e-19 |
+| EJ-204 | 110.372285 | 0.336130 | 110.036155 | 327.361548 | 0.035150 | 9.622e-26 |
+| EJ-230 | 90.935587 | 0.280255 | 90.655332 | 323.474383 | 0.035360 | 1.710e-21 |
+
+The even-component F-test rejects the linear model at 5% for EJ-204 and EJ-230; EJ-200 is suggestive but does not cross 5% because the denominator has one degree of freedom. The calibrated delta-chi2 test strongly favors pol2 for all three materials.
+
+LOO uses the seven signed positions exactly as requested. Each row fits six cell means without weights and predicts the excluded seventh; prediction errors are observed minus predicted.
+
+| Material | excluded x [mm] | model | LOO error [ps] | absolute error [ps] | error / cell SEM |
+|---|---|---|---|---|---|
+| EJ-200 | -650 | linear | -3.3961 | 3.3961 | -4.2023 |
+| EJ-200 | -650 | pol2 | -0.8218 | 0.8218 | -1.0169 |
+| EJ-200 | -500 | linear | 5.3005 | 5.3005 | 6.5134 |
+| EJ-200 | -500 | pol2 | 0.6412 | 0.6412 | 0.7879 |
+| EJ-200 | -200 | linear | -1.7735 | 1.7735 | -2.2935 |
+| EJ-200 | -200 | pol2 | -0.0760 | 0.0760 | -0.0983 |
+| EJ-200 | 0 | linear | -2.9272 | 2.9272 | -3.8057 |
+| EJ-200 | 0 | pol2 | 1.1725 | 1.1725 | 1.5244 |
+| EJ-200 | 200 | linear | -2.7613 | 2.7613 | -3.5024 |
+| EJ-200 | 200 | pol2 | -1.0654 | 1.0654 | -1.3514 |
+| EJ-200 | 500 | linear | 4.7481 | 4.7481 | 5.8001 |
+| EJ-200 | 500 | pol2 | -0.2760 | 0.2760 | -0.3371 |
+| EJ-200 | 650 | linear | -2.3908 | 2.3908 | -2.9363 |
+| EJ-200 | 650 | pol2 | 0.7931 | 0.7931 | 0.9741 |
+| EJ-204 | -650 | linear | -2.4032 | 2.4032 | -2.8346 |
+| EJ-204 | -650 | pol2 | 1.3149 | 1.3149 | 1.5509 |
+| EJ-204 | -500 | linear | 5.7735 | 5.7735 | 7.0226 |
+| EJ-204 | -500 | pol2 | -0.0855 | 0.0855 | -0.1040 |
+| EJ-204 | -200 | linear | -1.2137 | 1.2137 | -1.6296 |
+| EJ-204 | -200 | pol2 | 0.9364 | 0.9364 | 1.2573 |
+| EJ-204 | 0 | linear | -3.9849 | 3.9849 | -5.5008 |
+| EJ-204 | 0 | pol2 | 0.5570 | 0.5570 | 0.7689 |
+| EJ-204 | 200 | linear | -3.5340 | 3.5340 | -4.7732 |
+| EJ-204 | 200 | pol2 | -1.4879 | 1.4879 | -2.0097 |
+| EJ-204 | 500 | linear | 5.9933 | 5.9933 | 7.2977 |
+| EJ-204 | 500 | pol2 | 0.2698 | 0.2698 | 0.3285 |
+| EJ-204 | 650 | linear | -4.4095 | 4.4095 | -5.1860 |
+| EJ-204 | 650 | pol2 | -1.3143 | 1.3143 | -1.5457 |
+| EJ-230 | -650 | linear | -3.9018 | 3.9018 | -4.5877 |
+| EJ-230 | -650 | pol2 | -1.0768 | 1.0768 | -1.2661 |
+| EJ-230 | -500 | linear | 3.7576 | 3.7576 | 4.7429 |
+| EJ-230 | -500 | pol2 | -2.2865 | 2.2865 | -2.8861 |
+| EJ-230 | -200 | linear | -2.8369 | 2.8369 | -4.0986 |
+| EJ-230 | -200 | pol2 | -0.9767 | 0.9767 | -1.4111 |
+| EJ-230 | 0 | linear | -4.2029 | 4.2029 | -6.2012 |
+| EJ-230 | 0 | pol2 | -0.4783 | 0.4783 | -0.7057 |
+| EJ-230 | 200 | linear | -0.5343 | 0.5343 | -0.7621 |
+| EJ-230 | 200 | pol2 | 1.4459 | 1.4459 | 2.0624 |
+| EJ-230 | 500 | linear | 6.4146 | 6.4146 | 7.9668 |
+| EJ-230 | 500 | pol2 | 2.1772 | 2.1772 | 2.7040 |
+| EJ-230 | 650 | linear | -2.0000 | 2.0000 | -2.3392 |
+| EJ-230 | 650 | pol2 | 1.0954 | 1.0954 | 1.2812 |
+
+| Material | model | LOO RMSE [ps] | LOO MAE [ps] | PRESS [ps2] | standardized RMSE | RMSE reduction vs linear |
+|---|---|---|---|---|---|---|
+| EJ-200 | linear | 3.5300 | 3.3282 | 87.2284 | 4.3811 | 0.0000 |
+| EJ-200 | pol2 | 0.7844 | 0.6923 | 4.3074 | 0.9912 | 0.7778 |
+| EJ-204 | linear | 4.2141 | 3.9017 | 124.3130 | 5.2536 | 0.0000 |
+| EJ-204 | pol2 | 0.9955 | 0.8523 | 6.9374 | 1.2606 | 0.7638 |
+| EJ-230 | linear | 3.7889 | 3.3783 | 100.4882 | 4.9036 | 0.0000 |
+| EJ-230 | pol2 | 1.4929 | 1.3624 | 15.6013 | 1.9134 | 0.6060 |
+
+Across all materials, LOO PRESS decreases from 312.030 to 26.846 ps2, a 91.4% reduction. Pol2 predicts better out of sample at every material and every aggregate error measure. Under the H1 decision rule this is evidence against simple overfitting: absorption of the 7.183 ps linear residual by pol2 is supported. This establishes misspecification of the linear between curve; it does not establish that the underlying physical residual is exactly zero.
+
 The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out the measured mixture term as the dominant origin of the material-independent target. A single common residual gives chi2/ndf = 1.391/2 (p=0.499), so the three amplitudes are statistically consistent with one material-independent value. The mixture remains a smaller additive descriptive component, not the cause of that common structure. The fitted values and both ranks are in `material_common_fit.csv`.
 
 The retained quadratic summaries of this descriptive curve are:

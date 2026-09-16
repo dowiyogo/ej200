@@ -1,10 +1,13 @@
 {
-  "created_utc": "2026-09-16T13:30:32.039498+00:00",
+  "caustic_time_selection_sha256": "3a025b41e47647af506aa5c4fb68cd0bbc9c8924ab6b86c470a752d3f2017986",
+  "created_utc": "2026-09-16T14:03:49.037114+00:00",
+  "full_campaign_prepared": true,
   "full_campaign_run": false,
   "global_effective_velocity_test": "UNDERIDENTIFIED_BY_SINGLE_POSITION",
+  "held_campaign": "/home/rrios/exec46_20260916/full_grid_bc408_3800",
   "metrics_sha256": "487ee6f1638cdccab3d060c08ad6606bd3c74cca11c074b6a4f89e935eebcc40",
   "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/REPORT_F4_BC408_SENSITIVITY_20260916.md",
-  "report_sha256": "e6eb1d178d2acb99a44d5b32ca50c7398672e50754d9014cf46dff5a9ad8e34c",
+  "report_sha256": "5900d4f988e01e863853ff6b630f60270462a6329557fba08765e139d6c68c78",
   "status": "F4_COMPLETE_STEP6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC",
   "step6_run": false,
   "theory": {

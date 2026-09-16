@@ -1,0 +1,11 @@
+{
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py",
+  "created_utc": "2026-09-16T14:03:49.031723+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_caustic_time_selection.csv",
+  "observed_excess": "t_detection-t_creation - d/[v_group(lambda)*cos(alpha_edge)]",
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_caustic_time_selection.pdf",
+  "prediction": "d_axial/v_group(lambda) * [1/cos(alpha) - 1/cos(alpha_edge(lambda,beta))]",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_caustic_time_selection.root",
+  "selection": "primary-like first Cherenkov at near END, wl_nm_created >= 370 nm",
+  "summary_csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/f4_bc408_sensitivity/f4_caustic_time_selection_summary.csv"
+}

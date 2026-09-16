@@ -62,31 +62,39 @@ For completeness, the fraction below 370 nm among the source-specific first Cher
 
 The primary-like caustic remains broad after removing the clamped photons: its measured-domain width is 8.096 deg (764 mm) and 7.695 deg (3800 mm), compared with total widths of 8.199 and 7.749 deg. The small clamped population has wider tails, but it does not generate the observed 8 deg width. Therefore the 82.25/82.02% first-photon fractions are **not dominated by the clamped population in the executed F4 trees under the declared >50% decision rule**. The unmeasured UV region and its 28.23 mm absorption extension remain model systematics; passing this test does not validate either hypothesis physically.
 
+## H4: temporal selection of the caustic upper tail
+
+For every primary-like first Cherenkov photon with created wavelength at or above 370 nm, the parameter-free angular penalty is evaluated photon by photon as `d/v_group(lambda) * [1/cos(alpha) - 1/cos(alpha_edge(lambda,beta))]`. The observed comparison quantity is propagation time minus the wavelength-dependent cone-edge time. This selection removes the UV clamp before testing the 46.5 deg tail.
+
+| scenario | N | median edge [deg] | angle q95 [deg] | angle q99 [deg] | q95-angle penalty [ps] | upper-tail median predicted / observed [ps] | upper-tail r | all-event fit intercept [ps] | slope |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| visible_lower_764mm | 7202 | 39.316 | 46.537 | 60.860 | 46.3 | 111.5 / 70.3 | 0.9960 | -24.1 | 0.886 |
+| visible_current_3800mm | 7262 | 39.312 | 46.100 | 62.267 | 43.0 | 109.4 / 69.4 | 0.9979 | -21.3 | 0.871 |
+
+The q95 angles of 46.54/46.10 deg cost 46.3/43.0 ps relative to a photon at the finite-beta cone edge at the same representative distance and wavelength. Within the upper 5% angular tail, the eventwise predicted penalty and observed excess have Pearson r=0.9960/0.9979; their median scales are 111.5/109.4 ps predicted and 70.3/69.4 ps observed. The nonzero fitted intercept records transport contributions absent from the one-angle formula; the slopes of 0.886/0.871 show that the angular dependence itself is recovered. The measured-domain widths of 8.096/7.695 deg are 3.51/3.34 times the 2.305 deg constant-index baseline and exceed the 2.716 deg chromatic edge span. The 8 deg central width and its tail to about 46.5 deg are therefore quantitatively compatible with arrival-time selection, rather than a second geometric cone edge or the sub-370 nm clamp.
+
 ## G3: direction of the Cherenkov effect
 
 At d=50 mm the measured local transport handicap `d*(1/v_Cher-1/v_scint)` decreases from 55.3 ps to 43.2/43.2 ps. Relative to the baseline, the first-scintillation local velocity falls by 5.92/5.75%, while the first-Cherenkov velocity falls by only 1.60/1.45%. The corrected optical model therefore strengthens Cherenkov’s advantage. The prior prediction that dispersion would reduce the first-photon Cherenkov fraction is refuted by the two measured F4 variants; the axial Cherenkov speed is less sensitive because cone geometry controls it.
 
-## G4: held relaunch command
+## H2/H3: single held campaign
 
-No grid was prepared or launched. The unresolved visible-absorption alternatives remain separate. After an explicit campaign decision, the exact alternative sequences would be:
+The first-photon Cherenkov fractions differ by 0.23 +/- 0.54 percentage points between 764 and 3800 mm. The primary-caustic widths differ by 0.450 +/- 0.329 deg. Both are compatible with zero. H2 therefore selects one campaign, the 3800 mm scenario; F4 documents the observed insensitivity rather than motivating a duplicate grid.
+
+The campaign has been prepared and hash-audited but not launched. Its EJ-200 MPT is copied from the validated F4 3800 mm runtime. EJ-204 and EJ-230 are explicitly marked `UNCORRECTED_CONSTANT_RINDEX`. A BC-404 RINDEX construction from `A=1.578, B=0.818, C=0.00729` is technically viable, but it is not validated here and does not include a measured absorption model; it is excluded from this campaign. No measured analog is available for EJ-230.
+
+The validated EJ-200 hashes are `rIndex.txt=15d1f8cf5a62effd9a0f2f9bd1edaeb5164b94c2035a11cfe6a878d51680f6ed` and `absLength.txt=82191c023ed343d9b0f0c6de09ec3f1be12627e4eed6219d8e048529d7755d3a`; every prepared EJ-200 cell has these exact hashes. For scale, the proposed BC-404 coefficients give n(408 nm)=1.619785, n_group(408 nm)=1.744068, and v_group=171.893 mm/ns. Generating that RINDEX table is feasible, but enabling it would require its own single-cell validation and a declared ABSLENGTH treatment.
+
+The detached-driver dry run passed with 21 pending cells, zero outputs, diagnostics OFF, no timeout, 354,728,885,238 projected bytes against 961,284,907,008 available bytes, and a 3,663,937,536-byte conservative six-process memory budget against 120,537,047,040 bytes available.
+
+The exact held launch command is:
 
 ```bash
-# Existing 3800 mm visible attenuation
-python3 analysis/track_mechanism_20260915/prepare_campaign.py \
-  --output /home/rrios/exec46_20260916/full_grid_bc408_3800 \
-  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4
 python3 analysis/sigma_t/orchestration/detached_grid.py launch \
   --directory /home/rrios/exec46_20260916/full_grid_bc408_3800
-
-# Published 764 mm lower-bound scenario
-python3 analysis/track_mechanism_20260915/prepare_campaign.py \
-  --output /home/rrios/exec46_20260916/full_grid_bc408_764 \
-  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_lower_764mm/sslg4
-python3 analysis/sigma_t/orchestration/detached_grid.py launch \
-  --directory /home/rrios/exec46_20260916/full_grid_bc408_764
 ```
 
-These are mutually exclusive campaign choices unless both attenuation-systematic grids are explicitly authorized. Neither preparation nor launch command was executed.
+It remains held pending Rene’s explicit approval. No launch command was executed.
 
 ## Decision
 
@@ -101,4 +109,4 @@ env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanis
 env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py
 ```
 
-The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under `/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are `f4_metrics.{csv,root,meta.json}` and `f4_uv_clamp.{csv,root,meta.json}`; source-selection caches are retained under `scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.
+The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under `/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are `f4_metrics.{csv,root,meta.json}`, `f4_uv_clamp.{csv,root,meta.json}`, and `f4_caustic_time_selection.{csv,root,meta.json}`; source-selection caches are retained under `scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.

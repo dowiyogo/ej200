@@ -177,7 +177,9 @@ def preflight(cfg):
         require(cell['material'] != 'EJ-200' or code != 'NOT_FOUND' and cell['opsc'] == code,
                 'EJ200 not authorized by handoff')
         local_sslg4 = Path(cell['output'])/'sslg4'
-        require(local_sslg4.is_symlink() and local_sslg4.resolve() == (binary.parent/'sslg4').resolve(),
+        runtime_sslg4 = Path(cell.get('sslg4_runtime', binary.parent/'sslg4')).resolve()
+        require(runtime_sslg4.is_dir(), 'Missing cell SSLG4 runtime: ' + cell['cell_id'])
+        require(local_sslg4.is_symlink() and local_sslg4.resolve() == runtime_sslg4,
                 'Missing/wrong local sslg4 link: ' + cell['cell_id'])
     import uproot  # Fail before detaching if ROOT reader dependencies are absent.
     require(Path(cfg['pilot_ROOT']).stat().st_size == cfg['pilot_ROOT_size'], 'Pilot size changed')
@@ -304,7 +306,9 @@ def run_cell(cfg, cell, lock_fd):
     attempt = base/'attempts'/uuid.uuid4().hex
     attempt.mkdir(parents=True)
     shutil.copyfile(base/'run.mac', attempt/'run.mac')
-    (attempt/'sslg4').symlink_to(Path(cfg['binary']).parent/'sslg4', target_is_directory=True)
+    runtime_sslg4 = Path(cell.get(
+        'sslg4_runtime', Path(cfg['binary']).parent/'sslg4')).resolve()
+    (attempt/'sslg4').symlink_to(runtime_sslg4, target_is_directory=True)
     logfile = Path(cfg['output_directory'])/'grid_logs'/(cell['cell_id']+'.log')
     argv = [cfg['binary'], '-m', str(attempt/'run.mac')]
     raw = (attempt/'run.mac').read_bytes()
@@ -322,6 +326,8 @@ def run_cell(cfg, cell, lock_fd):
                seeds=[int(v) for v in macro_value(raw, '/random/setSeeds').split()],
                N_generated=10000, configuration='EndTop', N_TOP=70, sptr_ns=0,
                binary=cfg['binary'], binary_sha256=cfg['binary_sha256'], diagnostics=False,
+               sslg4_runtime=str(runtime_sslg4),
+               optical_model_status=cell.get('optical_model_status', 'UNSPECIFIED'),
                macro_sha256=cell['macro_sha256'], source_macro_sha256=cell['source_macro_sha256'],
                simulation_commit=cfg['simulation_commit'], geant4_version=cfg['geant4_version'],
                PDE_path=cfg['PDE_path'], PDE_sha256=cfg['PDE_sha256'],

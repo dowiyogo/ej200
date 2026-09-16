@@ -24,6 +24,14 @@ EVENT_MODULO = 1
 EVENTS = 10000
 PILOT_EVENTS = 500
 MEASURED_RSS_KIB = 167100
+F4_3800_SSLG4 = Path(
+    "/home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4")
+EJ204_BC404_COEFFICIENTS = {"A": 1.578, "B": 0.818, "C_per_nm": 0.00729}
+MATERIAL_OPTICAL_STATUS = {
+    "EJ-200": "CORRECTED_BC408_3800_VALIDATED_F4",
+    "EJ-204": "UNCORRECTED_CONSTANT_RINDEX_BC404_ANALOG_NOT_VALIDATED",
+    "EJ-230": "UNCORRECTED_CONSTANT_RINDEX_NO_MEASURED_ANALOG",
+}
 
 
 def sha256(path):
@@ -66,6 +74,10 @@ def prepare(output, binary, ej200_sslg4_source=None):
                          "data/oscnt/opsc-100/absLength.txt"):
             require((ej200_sslg4_source / relative).is_file(),
                     f"alternate EJ-200 SSLG4 is incomplete: {relative}")
+            reference = F4_3800_SSLG4 / relative
+            require(reference.is_file(), f"missing validated F4 reference: {reference}")
+            require(sha256(ej200_sslg4_source / relative) == sha256(reference),
+                    f"EJ-200 MPT differs from validated F4 3800 mm: {relative}")
     require(PILOT_ROOT.is_file() and VALIDATION_METRICS.is_file(), "missing validation evidence")
 
     source_campaign = json.loads((SOURCE_GRID / "campaign.json").read_text())
@@ -110,6 +122,7 @@ def prepare(output, binary, ej200_sslg4_source=None):
                                     / source_cell["opsc"].lower() / "rIndex.txt"),
             "absLength_sha256": sha256(runtime_sslg4 / "data" / "oscnt"
                                        / source_cell["opsc"].lower() / "absLength.txt"),
+            "optical_model_status": MATERIAL_OPTICAL_STATUS[source_cell["material"]],
         })
 
     handoff_path = output / "exec46_handoff.json"
@@ -118,6 +131,7 @@ def prepare(output, binary, ej200_sslg4_source=None):
         "simulation_commit": SIMULATION_COMMIT, "binary": str(binary),
         "binary_sha256": sha256(binary), "validation_metrics": str(VALIDATION_METRICS),
         "validation_metrics_sha256": sha256(VALIDATION_METRICS),
+        "material_optical_status": MATERIAL_OPTICAL_STATUS,
     }
     write_new(handoff_path, handoff)
     evidence = {
@@ -142,6 +156,20 @@ def prepare(output, binary, ej200_sslg4_source=None):
         "handoff": str(handoff_path), "EJ200_OPSC_CODE": EJ200_OPSC_CODE,
         "EJ200_SSLG4_source": (str(ej200_sslg4_source)
                                 if ej200_sslg4_source is not None else None),
+        "EJ200_F4_3800_reference": str(F4_3800_SSLG4),
+        "EJ200_F4_MPT_hashes": {
+            relative: sha256(F4_3800_SSLG4 / relative)
+            for relative in ("macros/oscnt/opsc-100.mac",
+                             "data/oscnt/opsc-100/rIndex.txt",
+                             "data/oscnt/opsc-100/absLength.txt")
+        },
+        "material_optical_status": MATERIAL_OPTICAL_STATUS,
+        "EJ204_BC404_analog": {
+            "rindex_parameterization": "n(lambda_nm)=A+B*exp(-C*lambda_nm)",
+            "coefficients": EJ204_BC404_COEFFICIENTS,
+            "technical_status": "RINDEX_TABLE_FEASIBLE_NOT_VALIDATED_NOT_ENABLED",
+            "limitation": "No validated matching ABSLENGTH model in this campaign.",
+        },
         "excluded": [], "concurrency": CONCURRENCY, "workers": WORKERS,
         "eventModulo": EVENT_MODULO, "N_generated": EVENTS, "timeout_s": None,
         "cells": cells, "expected_rss_per_process_bytes": expected_rss,

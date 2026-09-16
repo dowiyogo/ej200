@@ -83,6 +83,66 @@ def between_polynomial_residual(n, y, degree):
     return coefficients, residual
 
 
+def even_between_f_test(stats):
+    """Nested GLS test on the three informative even shifts; pol2 has one residual dof."""
+    n, y, sem = stats['n'], stats['y'], stats['sem']
+    even_n, even_y = even(n), even(y)
+    even_variance = np.array([
+        sem[CENTER]**2,
+        (sem[2]**2 + sem[4]**2)/4.0,
+        (sem[1]**2 + sem[5]**2)/4.0,
+        (sem[0]**2 + sem[6]**2)/4.0,
+    ])
+    delta_n = even_n[1:] - even_n[0]
+    delta_y = even_y[1:] - even_y[0]
+    covariance = np.diag(even_variance[1:]) + even_variance[0]
+    inverse = np.linalg.inv(covariance)
+    fits = {}
+    for degree in (1, 2):
+        design = np.stack([delta_n**power for power in range(1, degree+1)], axis=1)
+        coefficient = np.linalg.solve(design.T@inverse@design,
+                                      design.T@inverse@delta_y)
+        residual = delta_y-design@coefficient
+        fits[degree] = dict(coefficient=coefficient, residual=residual,
+                            chi2=float(residual@inverse@residual))
+    delta_chi2 = fits[1]['chi2']-fits[2]['chi2']
+    f_value = delta_chi2/fits[2]['chi2']  # (df1=1)/(df2=1)
+    return fits, delta_chi2, f_value
+
+
+def seven_position_between_f_test(n, y):
+    """Classical nested OLS F-test for the declared seven-point between fit."""
+    centered = n-n.mean()
+    fits = {}
+    for degree in (1, 2):
+        design = np.stack([centered**power for power in range(degree+1)], axis=1)
+        coefficient = np.linalg.lstsq(design, y, rcond=None)[0]
+        residual = y-design@coefficient
+        fits[degree] = dict(coefficient=coefficient, residual=residual,
+                            rss=float(residual@residual),
+                            ndf=len(y)-(degree+1))
+    delta_rss = fits[1]['rss']-fits[2]['rss']
+    f_value = delta_rss/(fits[2]['rss']/fits[2]['ndf'])
+    return fits, delta_rss, f_value
+
+
+def leave_one_out_between(n, y):
+    """Unweighted seven-position LOO errors for the declared between specifications."""
+    rows = []
+    for excluded in range(len(n)):
+        keep = np.arange(len(n)) != excluded
+        for degree, specification in ((1, 'linear'), (2, 'pol2')):
+            center = n[keep].mean()
+            train_n = n[keep]-center
+            design = np.stack([train_n**power for power in range(degree+1)], axis=1)
+            coefficient = np.linalg.lstsq(design, y[keep], rcond=None)[0]
+            test_n = n[excluded]-center
+            prediction = sum(coefficient[power]*test_n**power
+                             for power in range(degree+1))
+            rows.append((excluded, specification, prediction, y[excluded]-prediction))
+    return rows
+
+
 def local_excess(r, n):
     """Prespecified diagnostic: residual at 500 above Npe-linear chord 200--650."""
     w = (n[..., 2]-n[..., 1])/(n[..., 3]-n[..., 1])
@@ -201,6 +261,7 @@ def run():
     rows_profile, rows_count, rows_cells, rows_intervals, rows_mix = [], [], [], [], []
     rows_sensitive, rows_fits, rows_signif, rows_boot, rows_local = [], [], [], [], []
     rows_between_specs, rows_between_models = [], []
+    rows_h1_f_test, rows_h1_loo = [], []
     rng = np.random.default_rng(BOOTSTRAP_SEED)
     all_stats, all_boot, all_variants = {}, {}, {}
     with ROOT.TFile(str(OUT/'profile_refits.root'),'RECREATE') as root_file:
@@ -265,6 +326,36 @@ def run():
                      n_center_pe=stats['n'].mean(), p0_ns=coefficients_pol2[0],
                      p1_ns_pe=coefficients_pol2[1], p2_ns_pe2=coefficients_pol2[2]),
             ])
+            f_fits, delta_chi2, f_value = even_between_f_test(stats)
+            raw_fits, raw_delta_rss, raw_f_value = seven_position_between_f_test(
+                stats['n'], stats['y'])
+            rows_h1_f_test.append(dict(
+                material=material, n_informative_even_points=3,
+                linear_parameters=1, pol2_parameters=2,
+                linear_chi2=f_fits[1]['chi2'], linear_ndf=2,
+                pol2_chi2=f_fits[2]['chi2'], pol2_ndf=1,
+                delta_chi2=delta_chi2, f_value=f_value,
+                f_df1=1, f_df2=1,
+                f_p_value=float(ROOT.Math.fdistribution_cdf_c(f_value, 1, 1)),
+                delta_chi2_p_value=float(ROOT.Math.chisquared_cdf_c(delta_chi2, 1)),
+                seven_position_linear_rss_ps2=NS_TO_PS**2*raw_fits[1]['rss'],
+                seven_position_linear_ndf=raw_fits[1]['ndf'],
+                seven_position_pol2_rss_ps2=NS_TO_PS**2*raw_fits[2]['rss'],
+                seven_position_pol2_ndf=raw_fits[2]['ndf'],
+                seven_position_delta_rss_ps2=NS_TO_PS**2*raw_delta_rss,
+                seven_position_f_value=raw_f_value,
+                seven_position_f_df1=1,
+                seven_position_f_df2=raw_fits[2]['ndf'],
+                seven_position_f_p_value=float(ROOT.Math.fdistribution_cdf_c(
+                    raw_f_value, 1, raw_fits[2]['ndf']))))
+            for excluded, specification, prediction, error in leave_one_out_between(
+                    stats['n'], stats['y']):
+                rows_h1_loo.append(dict(
+                    material=material, x_mm=int(POSITIONS[excluded]),
+                    specification=specification, observed_ns=stats['y'][excluded],
+                    predicted_ns=prediction, prediction_error_ps=NS_TO_PS*error,
+                    absolute_prediction_error_ps=NS_TO_PS*abs(error),
+                    standardized_prediction_error=error/stats['sem'][excluded]))
             even_linear, even_pol2 = even(rbetween_linear), even(rbetween_pol2)
             boot_even_linear, boot_even_pol2 = even(rbboot_linear), even(rbboot_pol2)
             for j, ax in enumerate(ABS_X):
@@ -440,6 +531,19 @@ def run():
     between_common['specification_envelope_high_ps'] = common_high
     between_common['specification_envelope_contains_zero'] = (
         common_low <= 0.0 <= common_high)
+    h1_loo = pd.DataFrame(rows_h1_loo)
+    h1_loo_summary = h1_loo.groupby(['material', 'specification'], sort=False).agg(
+        loo_rmse_ps=('prediction_error_ps', lambda value: np.sqrt(np.mean(value**2))),
+        loo_mae_ps=('absolute_prediction_error_ps', 'mean'),
+        loo_press_ps2=('prediction_error_ps', lambda value: np.sum(value**2)),
+        standardized_rmse=('standardized_prediction_error',
+                           lambda value: np.sqrt(np.mean(value**2))),
+    ).reset_index()
+    for material in base.MATERIALS:
+        selected = h1_loo_summary[h1_loo_summary.material == material]
+        linear_rmse = selected.query('specification=="linear"').loo_rmse_ps.iloc[0]
+        h1_loo_summary.loc[selected.index, 'rmse_reduction_vs_linear'] = (
+            1.0-selected.loo_rmse_ps/linear_rmse)
 
     frames = dict(profile_refits=pd.DataFrame(rows_profile),two_count_slopes=pd.DataFrame(rows_count),
                   cell_statistics=pd.DataFrame(rows_cells),mixture_intervals=pd.DataFrame(rows_intervals),
@@ -449,7 +553,10 @@ def run():
                   specification_envelope=pivot, material_common_fit=target500,
                   between_specification=between_specs,
                   between_model_fits=pd.DataFrame(rows_between_models),
-                  between_common_specification=between_common)
+                  between_common_specification=between_common,
+                  h1_even_f_test=pd.DataFrame(rows_h1_f_test),
+                  h1_loo_predictions=h1_loo,
+                  h1_loo_summary=h1_loo_summary)
     for name,frame in frames.items(): save_frame(name,frame)
     save_frame('within_between_summary',summary)
     # Numeric companion stores every table plus categorical string columns.
@@ -467,7 +574,10 @@ def run():
         report=str(base.REPORT_PATH),report_sha256=base.sha256(base.REPORT_PATH),
         analysis_script_sha256=base.sha256(__file__),
         between_slope_interpretation='descriptive fit to same cell means; reabsorption is not explanation',
-        between_common_result='NONZERO_COMMON_RESIDUAL_NOT_SPECIFICATION_STABLE',
+        between_common_result='POL2_SUPPORTED_LINEAR_RESIDUAL_MODEL_MISSPECIFICATION',
+        h1_decision=('POL2_PREDICTS_BETTER_OUT_OF_SAMPLE; SEVEN_POSITION_F_TEST_'
+                     'SIGNIFICANT_ALL_MATERIALS; EVEN_ONLY_F_TEST_SIGNIFICANT_EJ204_'
+                     'EJ230_AND_SUGGESTIVE_EJ200'),
         between_common_linear_ps=float(between_common.query('specification=="linear"').common_residual_ps.iloc[0]),
         between_common_pol2_ps=float(between_common.query('specification=="pol2"').common_residual_ps.iloc[0]))
     (OUT/'analysis_summary.json').write_text(json.dumps(meta,indent=2)+'\n')
@@ -535,6 +645,17 @@ def write_report(fr,summary,points,stats):
     hetero_r=np.sum(((target500.descriptive_residual_ps-common_r)/target500.residual_bootstrap_se_ps)**2)
     between500=fr['between_specification'].query('abs_x_mm==500')
     between_common=fr['between_common_specification']
+    h1_f=fr['h1_even_f_test']
+    h1_f_display=h1_f.copy()
+    h1_f_display['f_p_value']=h1_f_display.f_p_value.map(lambda value: f'{value:.6f}')
+    h1_f_display['delta_chi2_p_value']=h1_f_display.delta_chi2_p_value.map(
+        lambda value: f'{value:.3e}')
+    h1_f_display['seven_position_f_p_value']=h1_f_display.seven_position_f_p_value.map(
+        lambda value: f'{value:.6f}')
+    h1_loo=fr['h1_loo_predictions']
+    h1_loo_summary=fr['h1_loo_summary']
+    linear_press=h1_loo_summary.query('specification=="linear"').loo_press_ps2.sum()
+    pol2_press=h1_loo_summary.query('specification=="pol2"').loo_press_ps2.sum()
     lines=['# EXEC_46 Step 5 — revised chain-rule identification and localized residual', '',
         'Date: 2026-09-16. Revision E1–E5 supersedes the Step 5 conclusion in commit `185a916`.', '',
         '**CHAIN_RULE_WITHIN_SLOPE_REFUTED. Steps 5.3–5.5 completed; Step 5.2 cancelled; STOP BEFORE STEP 6.**', '',
@@ -617,6 +738,48 @@ def write_report(fr,summary,points,stats):
         'within each specification, but its nonzero magnitude is not specification-stable. Neither '
         'fit is a causal explanation: both regress the outcome to be explained on a position-correlated '
         'cell mean.', '',
+        '### H1: nested-model and out-of-sample tests', '',
+        'The requested primary F-test applies the same unweighted between-fit convention to all '
+        'seven signed positions. Linear has two parameters and five residual degrees of freedom; '
+        'pol2 has three parameters and four residual degrees of freedom.', '',
+        table(h1_f_display,{'material':'Material',
+            'seven_position_linear_rss_ps2':'linear RSS [ps2]',
+            'seven_position_pol2_rss_ps2':'pol2 RSS [ps2]',
+            'seven_position_delta_rss_ps2':'delta RSS [ps2]',
+            'seven_position_f_value':'F(1,4)',
+            'seven_position_f_p_value':'F-test p'},6), '',
+        'This seven-position F-test rejects the linear specification for all three materials.', '',
+        'The even-component nested test uses exactly the three informative shifts at '
+        '|x|=200, 500, and 650 mm. The center is fixed to zero by subtraction. The linear model '
+        'has one coefficient, the quadratic model two, leaving only one residual degree of freedom '
+        'for pol2. The GLS covariance includes the shared x=0 uncertainty and the two mirror SEMs. '
+        'The F statistic is `[(chi2_linear-chi2_pol2)/1]/(chi2_pol2/1)`; its low-denominator-dof '
+        'p value is the conservative nested-model result. The delta-chi2 p value treats the supplied '
+        'cell-mean uncertainties as calibrated.', '',
+        table(h1_f_display,{'material':'Material','linear_chi2':'linear chi2',
+            'pol2_chi2':'pol2 chi2','delta_chi2':'delta chi2',
+            'f_value':'F(1,1)','f_p_value':'F-test p',
+            'delta_chi2_p_value':'delta-chi2 p'},6), '',
+        'The even-component F-test rejects the linear model at 5% for EJ-204 and EJ-230; EJ-200 is suggestive '
+        'but does not cross 5% because the denominator has one degree of freedom. The calibrated '
+        'delta-chi2 test strongly favors pol2 for all three materials.', '',
+        'LOO uses the seven signed positions exactly as requested. Each row fits six cell means '
+        'without weights and predicts the excluded seventh; prediction errors are observed minus '
+        'predicted.', '',
+        table(h1_loo,{'material':'Material','x_mm':'excluded x [mm]',
+            'specification':'model','prediction_error_ps':'LOO error [ps]',
+            'absolute_prediction_error_ps':'absolute error [ps]',
+            'standardized_prediction_error':'error / cell SEM'}), '',
+        table(h1_loo_summary,{'material':'Material','specification':'model',
+            'loo_rmse_ps':'LOO RMSE [ps]','loo_mae_ps':'LOO MAE [ps]',
+            'loo_press_ps2':'PRESS [ps2]','standardized_rmse':'standardized RMSE',
+            'rmse_reduction_vs_linear':'RMSE reduction vs linear'}), '',
+        f'Across all materials, LOO PRESS decreases from {linear_press:.3f} to '
+        f'{pol2_press:.3f} ps2, a {(1-pol2_press/linear_press)*100:.1f}% reduction. Pol2 predicts '
+        'better out of sample at every material and every aggregate error measure. Under the H1 '
+        'decision rule this is evidence against simple overfitting: absorption of the 7.183 ps '
+        'linear residual by pol2 is supported. This establishes misspecification of the linear '
+        'between curve; it does not establish that the underlying physical residual is exactly zero.', '',
         'The residual ordering is EJ-204 > EJ-230 > EJ-200, whereas the same-projection '
         'mixture term orders EJ-200 > EJ-204 > EJ-230. The opposite rank pattern rules out '
         'the measured mixture term as the dominant origin of the material-independent target. '

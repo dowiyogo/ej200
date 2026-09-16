@@ -39,6 +39,7 @@ REFERENCE_GLOBAL_CHER_MM_NS = 148.547541
 EXPERIMENTAL_EFFECTIVE_MM_NS = 155.0
 UV_CLAMP_NM = 370.0
 HANDICAP_DISTANCE_MM = 50.0
+HELD_CAMPAIGN = Path('/home/rrios/exec46_20260916/full_grid_bc408_3800')
 COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
     "analysis/track_mechanism_20260915/analyze_f4_bc408_sensitivity.py"
@@ -222,6 +223,151 @@ def uv_clamp_metrics(label, arrays):
     return rows
 
 
+def caustic_time_selection(label, arrays, rindex_path):
+    """Test the H4 angular-delay prediction photon by photon.
+
+    The primary-like first Cherenkov photon at the near END is used.  The
+    unmeasured UV clamp is removed explicitly so that the observed upper tail
+    cannot be attributed to wavelengths below 370 nm.
+    """
+    valid = ((arrays['first_primary_cherenkov_track_id'] >= 0)
+             & (arrays['first_primary_cherenkov_wl_nm_created'] >= UV_CLAMP_NM))
+    wavelength = arrays['first_primary_cherenkov_wl_nm_created'][valid]
+    angle_deg = folded_angle(
+        arrays['first_primary_cherenkov_exit_angle_deg'][valid])
+    # alpha is measured against the bar axis, so the geometric delay formula
+    # requires the axial separation rather than the three-dimensional chord.
+    distance = np.abs(
+        arrays['first_primary_cherenkov_x_mm'][valid]
+        - arrays['first_primary_cherenkov_x_creation_mm'][valid])
+    propagation = (arrays['first_primary_cherenkov_t_detection_ns'][valid]
+                   - arrays['first_primary_cherenkov_t_creation_ns'][valid])
+    require(len(wavelength) > 1000, f'{label}: too few measured-domain photons')
+    require(np.all(propagation > 0), f'{label}: nonpositive propagation')
+
+    energy, index = load_rindex(rindex_path)
+    gv_energy, gv_speed = geant4_group_velocity_table(energy, index)
+    group_velocity = np.interp(HC_EV_NM / wavelength, gv_energy, gv_speed)
+    edge_deg = np.degrees(np.arcsin(1.0 / (MUON_BETA*n_phase(wavelength))))
+    angle_rad = np.radians(angle_deg)
+    edge_rad = np.radians(edge_deg)
+    predicted_penalty_ns = distance/group_velocity * (
+        1.0/np.cos(angle_rad) - 1.0/np.cos(edge_rad))
+    observed_edge_excess_ns = propagation - distance/(
+        group_velocity*np.cos(edge_rad))
+
+    angle_q95 = float(np.quantile(angle_deg, .95))
+    tail = angle_deg >= angle_q95
+    require(np.count_nonzero(tail) > 100, f'{label}: too few upper-tail photons')
+    fit_slope, fit_intercept = np.polyfit(
+        predicted_penalty_ns*1000.0, observed_edge_excess_ns*1000.0, 1)
+    median_wavelength = float(np.median(wavelength))
+    median_energy = HC_EV_NM/median_wavelength
+    median_gv = float(np.interp(median_energy, gv_energy, gv_speed))
+    median_edge = float(np.degrees(np.arcsin(
+        1.0/(MUON_BETA*float(n_phase(median_wavelength))))))
+    mean_distance = float(np.mean(distance))
+    scalar_q95_penalty_ps = 1000.0*mean_distance/median_gv * (
+        1.0/math.cos(math.radians(angle_q95))
+        - 1.0/math.cos(math.radians(median_edge)))
+
+    raw = pd.DataFrame({
+        'scenario': label,
+        'wavelength_nm_created': wavelength,
+        'folded_exit_angle_deg': angle_deg,
+        'finite_beta_edge_deg': edge_deg,
+        'd_axial_mm': distance,
+        'group_velocity_mm_ns': group_velocity,
+        'propagation_time_ns': propagation,
+        'predicted_angular_penalty_ps': predicted_penalty_ns*1000.0,
+        'observed_edge_excess_ps': observed_edge_excess_ns*1000.0,
+        'is_upper_5pct_angle_tail': tail.astype(np.int8),
+    })
+    summary = {
+        'scenario': label,
+        'n_measured_domain': len(raw),
+        'mean_distance_mm': mean_distance,
+        'median_wavelength_nm': median_wavelength,
+        'median_finite_beta_edge_deg': median_edge,
+        'angle_q95_deg': angle_q95,
+        'angle_q99_deg': float(np.quantile(angle_deg, .99)),
+        'scalar_q95_penalty_ps': scalar_q95_penalty_ps,
+        'predicted_penalty_q95_ps': float(np.quantile(predicted_penalty_ns, .95)*1000),
+        'observed_edge_excess_q95_ps': float(
+            np.quantile(observed_edge_excess_ns, .95)*1000),
+        'upper_tail_predicted_penalty_median_ps': float(
+            np.median(predicted_penalty_ns[tail])*1000),
+        'upper_tail_observed_excess_median_ps': float(
+            np.median(observed_edge_excess_ns[tail])*1000),
+        'upper_tail_predicted_penalty_mean_ps': float(
+            np.mean(predicted_penalty_ns[tail])*1000),
+        'upper_tail_observed_excess_mean_ps': float(
+            np.mean(observed_edge_excess_ns[tail])*1000),
+        'all_pearson_r': float(np.corrcoef(
+            predicted_penalty_ns, observed_edge_excess_ns)[0, 1]),
+        'upper_tail_pearson_r': float(np.corrcoef(
+            predicted_penalty_ns[tail], observed_edge_excess_ns[tail])[0, 1]),
+        'all_fit_intercept_ps': float(fit_intercept),
+        'all_fit_slope': float(fit_slope),
+    }
+    return raw, summary
+
+
+def save_caustic_time_selection(raw_frame, summary_frame):
+    csv_path = OUTPUT / 'f4_caustic_time_selection.csv'
+    summary_path = OUTPUT / 'f4_caustic_time_selection_summary.csv'
+    root_path = OUTPUT / 'f4_caustic_time_selection.root'
+    pdf_path = OUTPUT / 'f4_caustic_time_selection.pdf'
+    meta_path = OUTPUT / 'f4_caustic_time_selection.meta.json'
+    raw_frame.to_csv(csv_path, index=False, float_format='%.12g')
+    summary_frame.to_csv(summary_path, index=False, float_format='%.12g')
+    with uproot.recreate(root_path) as root_file:
+        for tree_name, frame in (('photons', raw_frame), ('summary', summary_frame)):
+            root_file[tree_name] = {
+                column: (frame[column].astype(str).to_numpy(dtype=str)
+                         if frame[column].dtype == object else frame[column].to_numpy())
+                for column in frame.columns
+            }
+
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.5), sharex=True, sharey=True)
+    for axis, scenario in zip(axes, VARIANTS):
+        data = raw_frame[raw_frame.scenario == scenario]
+        shown = data[(data.predicted_angular_penalty_ps > -40)
+                     & (data.predicted_angular_penalty_ps < 300)
+                     & (data.observed_edge_excess_ps > -60)
+                     & (data.observed_edge_excess_ps < 300)]
+        axis.hexbin(shown.predicted_angular_penalty_ps,
+                    shown.observed_edge_excess_ps, gridsize=55,
+                    mincnt=1, bins='log', cmap='viridis')
+        summary = summary_frame[summary_frame.scenario == scenario].iloc[0]
+        domain = np.array([-40.0, 300.0])
+        axis.plot(domain, domain, color='0.55', ls='--', lw=1, label='unit response')
+        axis.plot(domain, summary.all_fit_intercept_ps + summary.all_fit_slope*domain,
+                  color='tab:red', lw=1.2,
+                  label=f'fit slope={summary.all_fit_slope:.3f}')
+        axis.set_title(scenario)
+        axis.set_xlabel('Predicted angular penalty [ps]')
+        axis.grid(alpha=.2)
+        axis.legend(fontsize=8)
+    axes[0].set_ylabel('Observed excess above cone-edge time [ps]')
+    fig.tight_layout()
+    fig.savefig(pdf_path)
+    plt.close(fig)
+    meta = {
+        'created_utc': datetime.now(timezone.utc).isoformat(),
+        'command': COMMAND,
+        'selection': ('primary-like first Cherenkov at near END, '
+                      'wl_nm_created >= 370 nm'),
+        'prediction': ('d_axial/v_group(lambda) * [1/cos(alpha) - '
+                       '1/cos(alpha_edge(lambda,beta))]'),
+        'observed_excess': ('t_detection-t_creation - '
+                            'd/[v_group(lambda)*cos(alpha_edge)]'),
+        'csv': str(csv_path), 'summary_csv': str(summary_path),
+        'root': str(root_path), 'pdf': str(pdf_path),
+    }
+    meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + '\n')
+
+
 def save_uv_bundle(frame, extracted):
     csv_path = OUTPUT / 'f4_uv_clamp.csv'
     root_path = OUTPUT / 'f4_uv_clamp.root'
@@ -339,17 +485,24 @@ def save_bundle(frame):
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + '\n')
 
 
-def render_report(frame, uv_frame, theory):
+def render_report(frame, uv_frame, caustic_frame, theory):
     def row(label):
         return frame[frame.scenario == label].iloc[0]
     baseline = row('constant_n1p58_existing')
     lower = row('visible_lower_764mm')
     current = row('visible_current_3800mm')
+    f4_runtime = RUN_DIR / 'visible_current_3800mm' / 'sslg4'
+    f4_rindex_hash = sha256(f4_runtime/'data/oscnt/opsc-100/rIndex.txt')
+    f4_abs_hash = sha256(f4_runtime/'data/oscnt/opsc-100/absLength.txt')
+    bc404_n408 = 1.578 + .818*math.exp(-.00729*408.0)
+    bc404_ng408 = bc404_n408 + 408.0*.00729*.818*math.exp(-.00729*408.0)
+    bc404_vg408 = SPEED_OF_LIGHT_MM_PER_NS/bc404_ng408
     winner_uv = uv_frame.query(
         'population == "overall_cherenkov_winner" and wavelength_region == "all"')
     angle_uv = uv_frame.query(
         'population in ["overall_cherenkov_winner", "primary_like_first_cherenkov"] '
         'and wavelength_region != "all"')
+    caustic = caustic_frame.set_index('scenario')
     baseline_handicap = HANDICAP_DISTANCE_MM*1000.0*(
         1.0/baseline.cherenkov_local_direct_velocity_mm_ns
         - 1.0/baseline.scintillation_local_direct_velocity_mm_ns)
@@ -495,6 +648,50 @@ def render_report(frame, uv_frame, theory):
         'dominated by the clamped population in the executed F4 trees under the declared >50% '
         'decision rule**. The unmeasured UV region and its 28.23 mm absorption extension remain model '
         'systematics; passing this test does not validate either hypothesis physically.', '',
+        '## H4: temporal selection of the caustic upper tail', '',
+        'For every primary-like first Cherenkov photon with created wavelength at or above 370 nm, '
+        'the parameter-free angular penalty is evaluated photon by photon as '
+        '`d/v_group(lambda) * [1/cos(alpha) - 1/cos(alpha_edge(lambda,beta))]`. The observed '
+        'comparison quantity is propagation time minus the wavelength-dependent cone-edge time. '
+        'This selection removes the UV clamp before testing the 46.5 deg tail.', '',
+        '| scenario | N | median edge [deg] | angle q95 [deg] | angle q99 [deg] | q95-angle penalty [ps] | upper-tail median predicted / observed [ps] | upper-tail r | all-event fit intercept [ps] | slope |',
+        '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|',
+    ]
+    for scenario in VARIANTS:
+        value = caustic.loc[scenario]
+        lines.append(
+            f'| {scenario} | {int(value.n_measured_domain)} | '
+            f'{value.median_finite_beta_edge_deg:.3f} | {value.angle_q95_deg:.3f} | '
+            f'{value.angle_q99_deg:.3f} | {value.scalar_q95_penalty_ps:.1f} | '
+            f'{value.upper_tail_predicted_penalty_median_ps:.1f} / '
+            f'{value.upper_tail_observed_excess_median_ps:.1f} | '
+            f'{value.upper_tail_pearson_r:.4f} | {value.all_fit_intercept_ps:.1f} | '
+            f'{value.all_fit_slope:.3f} |')
+    lines += ['',
+        f'The q95 angles of {caustic.loc[VARIANTS[0], "angle_q95_deg"]:.2f}/'
+        f'{caustic.loc[VARIANTS[1], "angle_q95_deg"]:.2f} deg cost '
+        f'{caustic.loc[VARIANTS[0], "scalar_q95_penalty_ps"]:.1f}/'
+        f'{caustic.loc[VARIANTS[1], "scalar_q95_penalty_ps"]:.1f} ps relative to a photon at the '
+        'finite-beta cone edge at the same representative distance and wavelength. Within the '
+        'upper 5% angular tail, the eventwise predicted penalty and observed excess have '
+        f'Pearson r={caustic.loc[VARIANTS[0], "upper_tail_pearson_r"]:.4f}/'
+        f'{caustic.loc[VARIANTS[1], "upper_tail_pearson_r"]:.4f}; their median scales are '
+        f'{caustic.loc[VARIANTS[0], "upper_tail_predicted_penalty_median_ps"]:.1f}/'
+        f'{caustic.loc[VARIANTS[1], "upper_tail_predicted_penalty_median_ps"]:.1f} ps predicted '
+        'and '
+        f'{caustic.loc[VARIANTS[0], "upper_tail_observed_excess_median_ps"]:.1f}/'
+        f'{caustic.loc[VARIANTS[1], "upper_tail_observed_excess_median_ps"]:.1f} ps observed. '
+        'The nonzero fitted intercept records transport contributions absent from the one-angle '
+        f'formula; the slopes of {caustic.loc[VARIANTS[0], "all_fit_slope"]:.3f}/'
+        f'{caustic.loc[VARIANTS[1], "all_fit_slope"]:.3f} show that the angular dependence itself is recovered. '
+        f'The measured-domain widths of 8.096/7.695 deg are '
+        f'{8.096/baseline.primary_cherenkov_angle_central90_width_deg:.2f}/'
+        f'{7.695/baseline.primary_cherenkov_angle_central90_width_deg:.2f} times the '
+        f'{baseline.primary_cherenkov_angle_central90_width_deg:.3f} deg constant-index baseline '
+        f'and exceed the {theory["edge_span"]:.3f} deg chromatic edge span. The 8 deg central width '
+        'and its tail to about 46.5 deg are therefore quantitatively '
+        'compatible with arrival-time selection, rather than a second geometric cone edge or the '
+        'sub-370 nm clamp.', '',
         '## G3: direction of the Cherenkov effect', '',
         f'At d={HANDICAP_DISTANCE_MM:.0f} mm the measured local transport handicap '
         f'`d*(1/v_Cher-1/v_scint)` decreases from {baseline_handicap:.1f} ps to '
@@ -508,26 +705,37 @@ def render_report(frame, uv_frame, theory):
         'The corrected optical model therefore strengthens Cherenkov’s advantage. The prior prediction '
         'that dispersion would reduce the first-photon Cherenkov fraction is refuted by the two measured '
         'F4 variants; the axial Cherenkov speed is less sensitive because cone geometry controls it.', '',
-        '## G4: held relaunch command', '',
-        'No grid was prepared or launched. The unresolved visible-absorption alternatives remain separate. '
-        'After an explicit campaign decision, the exact alternative sequences would be:', '',
+        '## H2/H3: single held campaign', '',
+        f'The first-photon Cherenkov fractions differ by '
+        f'{100*(lower.first_cherenkov_fraction-current.first_cherenkov_fraction):.2f} +/- '
+        f'{100*math.hypot(lower.first_cherenkov_fraction_se,current.first_cherenkov_fraction_se):.2f} '
+        'percentage points between 764 and 3800 mm. The primary-caustic widths differ by '
+        f'{lower.primary_cherenkov_angle_central90_width_deg-current.primary_cherenkov_angle_central90_width_deg:.3f} +/- '
+        f'{math.hypot(lower.primary_cherenkov_angle_width_bootstrap_se_deg,current.primary_cherenkov_angle_width_bootstrap_se_deg):.3f} deg. '
+        'Both are compatible with zero. H2 therefore selects one campaign, the 3800 mm scenario; '
+        'F4 documents the observed insensitivity rather than motivating a duplicate grid.', '',
+        'The campaign has been prepared and hash-audited but not launched. Its EJ-200 MPT is copied '
+        'from the validated F4 3800 mm runtime. EJ-204 and EJ-230 are explicitly marked '
+        '`UNCORRECTED_CONSTANT_RINDEX`. A BC-404 RINDEX construction from '
+        '`A=1.578, B=0.818, C=0.00729` is technically viable, but it is not validated here and '
+        'does not include a measured absorption model; it is excluded from this campaign. No '
+        'measured analog is available for EJ-230.', '',
+        f'The validated EJ-200 hashes are `rIndex.txt={f4_rindex_hash}` and '
+        f'`absLength.txt={f4_abs_hash}`; every prepared EJ-200 cell has these exact hashes. '
+        f'For scale, the proposed BC-404 coefficients give n(408 nm)={bc404_n408:.6f}, '
+        f'n_group(408 nm)={bc404_ng408:.6f}, and v_group={bc404_vg408:.3f} mm/ns. '
+        'Generating that RINDEX table is feasible, but enabling it would require its own '
+        'single-cell validation and a declared ABSLENGTH treatment.', '',
+        'The detached-driver dry run passed with 21 pending cells, zero outputs, diagnostics OFF, '
+        'no timeout, 354,728,885,238 projected bytes against 961,284,907,008 available bytes, '
+        'and a 3,663,937,536-byte conservative six-process memory budget against '
+        '120,537,047,040 bytes available.', '',
+        'The exact held launch command is:', '',
         '```bash',
-        '# Existing 3800 mm visible attenuation',
-        'python3 analysis/track_mechanism_20260915/prepare_campaign.py \\',
-        '  --output /home/rrios/exec46_20260916/full_grid_bc408_3800 \\',
-        '  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4',
         'python3 analysis/sigma_t/orchestration/detached_grid.py launch \\',
         '  --directory /home/rrios/exec46_20260916/full_grid_bc408_3800',
-        '',
-        '# Published 764 mm lower-bound scenario',
-        'python3 analysis/track_mechanism_20260915/prepare_campaign.py \\',
-        '  --output /home/rrios/exec46_20260916/full_grid_bc408_764 \\',
-        '  --ej200-sslg4-source /home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_lower_764mm/sslg4',
-        'python3 analysis/sigma_t/orchestration/detached_grid.py launch \\',
-        '  --directory /home/rrios/exec46_20260916/full_grid_bc408_764',
         '```', '',
-        'These are mutually exclusive campaign choices unless both attenuation-systematic grids '
-        'are explicitly authorized. Neither preparation nor launch command was executed.', '',
+        'It remains held pending Rene’s explicit approval. No launch command was executed.', '',
         '## Decision', '',
         'The current constant-n optical model is demonstrably non-robust for transport timing at '
         'the scale of the 7 ps residual: the measured-input sensitivity shifts local photon transport '
@@ -543,7 +751,8 @@ def render_report(frame, uv_frame, theory):
         COMMAND, '```', '',
         'The exact MPT tables, macros, logs, ROOT hashes, run times and commands are under '
         '`/home/rrios/exec46_20260915/f4_bc408_sensitivity/`. Figure sidecars are '
-        '`f4_metrics.{csv,root,meta.json}` and `f4_uv_clamp.{csv,root,meta.json}`; '
+        '`f4_metrics.{csv,root,meta.json}`, `f4_uv_clamp.{csv,root,meta.json}`, and '
+        '`f4_caustic_time_selection.{csv,root,meta.json}`; '
         'source-selection caches are retained under '
         '`scratch/`. No Step 6 analysis, push, merge, or deck edit occurred.', ''
     ]
@@ -579,6 +788,17 @@ def main():
     uv_frame = pd.DataFrame(
         row for variant in VARIANTS for row in uv_clamp_metrics(variant, extracted[variant]))
     save_uv_bundle(uv_frame, extracted)
+    caustic_raw = []
+    caustic_rows = []
+    for variant in VARIANTS:
+        raw, row = caustic_time_selection(
+            variant, extracted[variant],
+            RUN_DIR / variant / 'sslg4/data/oscnt/opsc-100/rIndex.txt')
+        caustic_raw.append(raw)
+        caustic_rows.append(row)
+    caustic_raw_frame = pd.concat(caustic_raw, ignore_index=True)
+    caustic_frame = pd.DataFrame(caustic_rows)
+    save_caustic_time_selection(caustic_raw_frame, caustic_frame)
     n420 = float(n_phase(420.0))
     ng420 = float(n_group_analytic(420.0))
     vg420 = SPEED_OF_LIGHT_MM_PER_NS / ng420
@@ -593,15 +813,19 @@ def main():
             1.0/vg420 - 1.0/(SPEED_OF_LIGHT_MM_PER_NS/1.58)),
     }
     theory['edge_span'] = theory['edge660'] - theory['edge370']
-    render_report(frame, uv_frame, theory)
+    render_report(frame, uv_frame, caustic_frame, theory)
     summary = {
         'created_utc': datetime.now(timezone.utc).isoformat(),
         'status': 'F4_COMPLETE_STEP6_SUSPENDED_OPTICAL_MODEL_SYSTEMATIC',
         'report': str(REPORT), 'report_sha256': sha256(REPORT),
         'metrics_sha256': sha256(OUTPUT/'f4_metrics.csv'),
         'uv_clamp_sha256': sha256(OUTPUT/'f4_uv_clamp.csv'),
+        'caustic_time_selection_sha256': sha256(
+            OUTPUT/'f4_caustic_time_selection.csv'),
         'step6_run': False,
         'full_campaign_run': False,
+        'full_campaign_prepared': HELD_CAMPAIGN.is_dir(),
+        'held_campaign': str(HELD_CAMPAIGN),
         'uv_clamp_artifact_gate': bool(
             uv_frame.query('population == "overall_cherenkov_winner" '
                            'and wavelength_region == "all"').fraction_below_370.max() > .5),
