@@ -1,0 +1,27 @@
+{
+  "binning": "tabulated points; no histogram binning",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
+  "count_bins": "five equal-population bins per material and distance",
+  "created_utc": "2026-09-16T08:19:37.624432+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_nc_velocity.csv",
+  "finite_beta_edge_velocity_mm_per_ns": 146.44982513308227,
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "input_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "optical_model": {
+    "material_codes": {
+      "EJ-200": "OPSC-100",
+      "EJ-204": "OPSC-101",
+      "EJ-230": "OPSC-106"
+    },
+    "rindex": 1.58,
+    "rindex_model": "constant over the configured energy range"
+  },
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_nc_velocity.pdf",
+  "plot_scale": "linear unless stated otherwise",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/cherenkov_nc_velocity.root"
+}

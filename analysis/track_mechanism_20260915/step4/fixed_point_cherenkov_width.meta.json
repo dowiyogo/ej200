@@ -1,0 +1,28 @@
+{
+  "binning": "tabulated points; no histogram binning",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
+  "created_utc": "2026-09-16T08:19:39.086272+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/fixed_point_cherenkov_width.csv",
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "input_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "optical_model": {
+    "material_codes": {
+      "EJ-200": "OPSC-100",
+      "EJ-204": "OPSC-101",
+      "EJ-230": "OPSC-106"
+    },
+    "rindex": 1.58,
+    "rindex_model": "constant over the configured energy range"
+  },
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/fixed_point_cherenkov_width.pdf",
+  "plot_scale": "linear unless stated otherwise",
+  "points": "three materials times two mirrors; no interpolation",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/fixed_point_cherenkov_width.root",
+  "width_source": "/home/rrios/ej200/analysis/order_stat_weight_20260915/sources/part_a_widths.csv",
+  "width_source_sha256": "7691032e413d8fce0854802c31a301945973a42cc6472ca85a5e1c12d91489cc"
+}

@@ -168,9 +168,14 @@ within 0.001 mm of zero; it is a geometric proxy, not a recovered parent label.
 | EJ-230 | all_source_type_2 | 20000 | 1.650 | 39.644 | 11.5400% | 39.50--39.52 |
 | EJ-230 | primary_like_proxy | 11025 | 39.425 | 39.700 | 0.0181% | 39.50--39.52 |
 
-The observed modal bin, 39.50--39.52 deg in every material, agrees with the
-finite-beta edge at 39.481 deg to 0.019 deg and
-exhibits the expected caustic pile-up. The undifferentiated source-type-2
+The finite-beta edge at 39.481 deg lies inside a partly filled histogram bin.
+The modal 39.50--39.52 deg bin immediately to its right therefore does not imply
+a 0.019-deg discrepancy; the agreement is limited by the 0.02-deg binning and
+exhibits the expected caustic pile-up. Isolated 41--43 deg teeth contain about
+one photon per bin and are Poisson noise, not angular discretization. The upper
+edge of the selected angular window is temporal selection, not a second geometric
+cone boundary. In the beta=1 limit the cone-edge and END critical angles coincide
+exactly through arccos(sin(theta_C)) = arcsin(1/n). The undifferentiated source-type-2
 population fails the strict lower-bound
 test: about 11.5--11.8% lies below theta_crit. The primary-like proxy satisfies
 the bound for 99.97% or more of photons and displays the expected edge pile-up.

@@ -121,3 +121,32 @@ cone edge, compare the fitted axial velocity with the parameter-free
 `c*sqrt(1-1/n^2)/n = 146.9 mm/ns` prediction and with the configured group
 velocity, `c/n = 189.742 mm/ns`.  Report disagreement explicitly rather than
 retuning either value.
+
+## Additions approved before Step 4
+
+Compare the first Cherenkov photon with the first scintillation photon as two
+order statistics.  Count the detected Cherenkov population independently per
+event and END, and test whether the source-specific minimum approaches the
+cone-edge velocity as that population grows.  Stratify the folded axial exit
+angle by the seven measured END distances and test its timing penalty directly.
+The upper angular window is a timing selection, not a geometric cone boundary.
+
+Correct the Step 3 caustic wording: the finite-beta edge lies inside a partly
+filled bin and the mode is in the following bin; do not quote the lower-bin-edge
+difference as the agreement.  Treat isolated bins at 41--43 degrees with about
+one count as Poisson fluctuations.  The equality of the beta=1 axial cone edge
+and the END critical angle follows exactly from
+`acos(sin(theta_C)) = asin(1/n)`; the finite-beta correction remains a separate
+configured-gun effect.
+
+For scintillation only, fit the first-emission order statistic against the
+detected scintillation population, testing `N^-1`, `N^-1/2`, and a free
+exponent.  Compare the inferred effective population with photons having zero
+to two boundary encounters and test material independence.  Do not apply an
+emission-lifetime order-statistics law to Cherenkov photons.
+
+Recover the Cherenkov/width correlation only at measured fixed points: report
+the six mirror values independently at END distances 50 and 200 mm without
+interpolating.  Decompose the six rejected near-END Gaussian timestamp fits by
+source, quantify the angular caustic, and replace the rejected Gaussian width
+there with an explicitly defined source-mixture estimator.

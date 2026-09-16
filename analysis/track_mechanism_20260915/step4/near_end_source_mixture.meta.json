@@ -1,0 +1,27 @@
+{
+  "binning": "120 equal bins over the 0.1--99.9% range independently per near-END cell",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
+  "created_utc": "2026-09-16T08:19:39.748802+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/near_end_source_mixture.csv",
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "input_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "mixture_estimator": "sqrt(within-source variance + between-source variance)",
+  "optical_model": {
+    "material_codes": {
+      "EJ-200": "OPSC-100",
+      "EJ-204": "OPSC-101",
+      "EJ-230": "OPSC-106"
+    },
+    "rindex": 1.58,
+    "rindex_model": "constant over the configured energy range"
+  },
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/near_end_source_mixture.pdf",
+  "plot_scale": "logarithmic y, linear x",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/near_end_source_mixture.root",
+  "selection": "six near-END cells at |x|=650 mm"
+}

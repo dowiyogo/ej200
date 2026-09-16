@@ -1,0 +1,31 @@
+{
+  "binning": "tabulated points; no histogram binning",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
+  "created_utc": "2026-09-16T08:19:38.842763+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/scintillation_order_scaling.csv",
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "input_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "models": [
+    "N^-1",
+    "N^-1/2",
+    "free exponent"
+  ],
+  "optical_model": {
+    "material_codes": {
+      "EJ-200": "OPSC-100",
+      "EJ-204": "OPSC-101",
+      "EJ-230": "OPSC-106"
+    },
+    "rindex": 1.58,
+    "rindex_model": "constant over the configured energy range"
+  },
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/scintillation_order_scaling.pdf",
+  "plot_scale": "logarithmic x, linear y",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/scintillation_order_scaling.root",
+  "scope": "scintillation only; true minimum creation time per event and END"
+}

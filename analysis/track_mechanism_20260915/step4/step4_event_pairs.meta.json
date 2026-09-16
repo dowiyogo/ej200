@@ -1,0 +1,17 @@
+{
+  "campaign": "/home/rrios/exec46_20260915/full_grid",
+  "cells": 21,
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/build_step4_pairs.py --processes 4",
+  "created_utc": "2026-09-16T08:03:10.289271+00:00",
+  "events_per_cell": 10000,
+  "low_boundary_max": 2,
+  "output": "/home/rrios/ej200/analysis/track_mechanism_20260915/step4/step4_event_pairs.root",
+  "output_sha256": "ab57c72a1922a89e6489aa791a2827670ec50dede534c1f2b863281e12fb8f01",
+  "primary_like_tolerance_mm": 0.001,
+  "processes": 4,
+  "random_seed_hex": "0x46a2c0de5eed1234",
+  "rows": 420000,
+  "started_utc": "2026-09-16T07:57:56.538248+00:00",
+  "step_size": "192 MB",
+  "wall_seconds": 313.751023
+}
