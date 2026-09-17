@@ -4,6 +4,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{siunitx}
 \usepackage{booktabs,longtable}
+\usepackage{tabularx,array}
 \usepackage{graphicx}
 \usepackage{caption,subcaption}
 \usepackage{geometry}
@@ -16,3 +17,5 @@
 \setcounter{tocdepth}{2}
 \newcommand{\NOTAVAILABLE}{\textbf{[NOT\_AVAILABLE]}}
 \input{values.tex}
+\newcommand{\ReportFigure}[3]{\begin{figure}[htbp]\centering\includegraphics[width=0.88\textwidth]{#1}\caption{#2}\label{#3}\end{figure}}
+\newcommand{\ReportTable}[3]{\par\medskip\noindent\textbf{#2}\label{#3}\par\input{generated/#1.tex}\medskip}

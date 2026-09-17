@@ -1,0 +1,195 @@
+\chapter{Introducción y contexto}
+El detector T0 de SHiP se diseña para medir el tiempo de llegada de muones en el SPS del CERN con una resolución inferior a \SI{100}{ps}, y con una meta preferente por debajo de \SI{50}{ps}. La geometría estudiada es una barra de centelleador de \SI{1400x60x10}{mm}. El informe cubre la cadena completa: la historia del modelo óptico, el presupuesto de fotones, los estimadores temporales, la campaña fotón a fotón EXEC\_46, la identificación de la no linealidad, la corrección dispersiva y la comparación con test beam.
+
+La lectura EndTop combina ocho SiPM por extremo y setenta en la cara superior. Los identificadores globales 0--7 y 8--15 corresponden a los extremos izquierdo y derecho; para cada extremo $y=(i-3.5)\times\SI{7.5}{mm}$. Los identificadores 16--85 son los canales superiores: treinta y cinco posiciones negativas centradas en $-692+20i$ mm y treinta y cinco positivas centradas en $12+20(i-35)$ mm. El sensor modelado es el Broadcom AFBR-S4N66P024M.
+
+\ReportTable{optical_properties}{Propiedades ópticas registradas por material y campaña.}{tab:intro-materials}
+\ReportFigure{v2_baseline_reproduction.pdf}{Reproducción de la campaña v2. La etiqueta v2 indica el modelo óptico corregido; no se mezcla con baseline.}{fig:intro-reproduction}
+
+Los tres materiales son EJ--200/OPSC--100, EJ--204/OPSC--101 y EJ--230/OPSC--106. Sus rendimientos y constantes de centelleo se leen del MPT y de los macros OPSC; sus diferencias no deben atribuirse a una sola constante temporal. Las referencias experimentales principales son \cite{Betancourt2020,Blondel2018,Betancourt2017}. El principio rector del documento es que cada número del texto proviene de una fuente registrada; cuando no existe procedencia, se escribe \NOTAVAILABLE.
+
+\chapter{El bug GEN-1 y la corrección de superficies}
+GEN-1 aplicaba una superficie `dielectric\_metal` como skin de la barra en la interfaz barra--aire. Esa elección impide que Geant4 trate la interfaz como una frontera dieléctrica con reflexión interna total: los fotones que debían quedar guiados entran en el canal de pérdida de la superficie. El síntoma histórico fue un rendimiento de aproximadamente $0.37$ pe/evento, entre $300$ y $1500$ veces menor que las estimaciones de presupuesto. Es un diagnóstico histórico de una configuración inválida, no un resultado físico del detector.
+
+La corrección tiene dos superficies explícitas. `CreateBarSurface()` conecta la barra con un volumen de aire real usando `dielectric\_dielectric`, modelo `unified`, acabado `polished` y sin propiedad `REFLECTIVITY`; Fresnel y Snell producen TIR para los ángulos por encima del crítico. `CreateMylarReflector(0.98)` actúa en la frontera aire--panel Vikuiti mediante `dielectric\_metal`, con reflectividad explícita. La geometría crea `airPV` y `reflPV`, por lo que el transporte ocurre en el medio correcto antes de alcanzar el panel.
+
+\begin{table}[htbp]\centering
+\caption{Cronología cerrada de las fases ópticas. R=0.95 pertenece a la Fase 5 superada; R=0.98 es el valor vivo de Fase 7.}
+\begin{tabular}{llllp{0.42\textwidth}}\toprule
+Fase & Commit & Cambio & Estado & Interpretación\\\midrule
+3 & \texttt{1f6aca1} & \texttt{dielectric\_metal}, sin air gap & descartada & Óptica histórica sin geometría de aire.\\
+4 & \texttt{f39b84c} & skin \texttt{dielectric\_metal} & inválida & Elimina TIR; produce el déficit GEN-1.\\
+5 & \texttt{fc5d8b0} & skin \texttt{dielectric\_dielectric}, R=0.95 & superada & Primera reparación de TIR; no es la arquitectura actual.\\
+6 & \texttt{4cb2c23} & air gap explícito & incorrecta & Velocidad de grupo del aire aún incorrecta.\\
+7 & \texttt{5576687} & dos superficies y \texttt{GROUPVEL}=c/n & válida & Arquitectura utilizada por las campañas corregidas.\\\bottomrule
+\end{tabular}\end{table}
+
+La función `CreateBarSkinReflector()` queda como fábrica histórica no llamada por la arquitectura viva. Las narrativas que citan R=0.95 describen Fase 5; no contradicen el R=0.98 de Fase 7. Esta separación también evita atribuir a la superficie del panel la TIR que debe ocurrir en barra--aire. El modelo UNIFIED se interpreta siguiendo \cite{Levin1996}.
+
+\ReportFigure{baseline_cherenkov_boundary.pdf}{Fronteras y estados angulares de la campaña baseline.}{fig:surface-baseline}
+\ReportFigure{v2_cherenkov_boundary.pdf}{Las mismas cantidades con la campaña v2.}{fig:surface-v2}
+
+\chapter{Presupuesto de fotones}
+La fuente de la cifra central es `analysis/top\_npe\_diag/top\_npe\_diag.csv`. En $x=0$, la geometría híbrida da \HybridNpePerEnd{} pe/end, mientras la geometría END-only da \EndOnlyNpePerEnd{} pe/end. La interceptación de TOP es \TopInterceptedPct\%. Esta es la comparación físicamente interpretable porque mantiene la procedencia de la geometría; citar un rendimiento sin decir si TOP está instrumentado mezcla dos experimentos distintos.
+
+Los valores $1310.8$, $941.0$ y $701.3$ pe/end solo aparecen como contexto histórico. \texttt{PROJECT\_STATE.md} dice textualmente: ``\texttt{napkin.py:71}: \texttt{sim\_npe=\{1310.8,941.0,701.3\}}, diccionario literal sin procedencia de corrida; se reproduce la cita, no el resultado físico.'' Por ello se etiquetan como \HistoricalNpeStatus{} y no se usan para calibrar la geometría híbrida.
+
+\ReportTable{budget}{Presupuesto por posición: END-only, TOP y END híbrido.}{tab:budget}
+\ReportFigure{baseline_g_d.pdf}{Tiempo medio de transporte frente a distancia en baseline.}{fig:budget-gd}
+\ReportFigure{v2_g_d.pdf}{Tiempo medio de transporte frente a distancia en v2.}{fig:budget-gd-v2}
+
+El perfil longitudinal no es una propiedad material aislada. La componente prompt cerca del extremo y la cola recirculada tienen pesos que cambian con $x$, con la frontera que intercepta el fotón y con la fuente que gana el primer orden estadístico. Un ajuste mono-exponencial de NPE(x) no puede representar ambas contribuciones sin absorber geometría y pérdidas en un parámetro efectivo.
+
+\chapter{Estimadores de tiempo}
+Para cada evento se define $t_L$ y $t_R$ como los primeros tiempos detectados en los extremos y $T_0=(t_L+t_R)/2$. En TOP se fusionan cuatro canales para formar TOP\_SUM4\_N1 y se corrige el walk. La comparación no es entre nombres de estimador sino entre poblaciones de fotones: el $k$-ésimo fotón está gobernado por la distancia al SiPM que lo suministra, no por el conteo total de TOP.
+
+\begin{table}[htbp]\centering\caption{Estimadores, observable y limitación dominante.}\begin{tabular}{p{0.22\textwidth}p{0.28\textwidth}p{0.38\textwidth}}\toprule Estimador & Definición & Limitación \\\midrule END primer fotón & $(t_L+t_R)/2$ & mezcla de propagación y composición de fuente.\\ END promedio $m$ & media de los primeros $m$ & reduce colas, cambia la velocidad efectiva.\\ TOP\_SUM4\_N1 & primer orden de cuatro canales & picos cuando cambia el SiPM que aporta el orden.\\ BLUE & combinación con covarianza empírica & peso END pequeño y sensible a convención de anchura.\\\bottomrule\end{tabular}\end{table}
+
+\ReportFigure{baseline_tprop_vs_d.pdf}{Distribución de tiempos de propagación baseline.}{fig:estimators-tprop}
+\ReportFigure{v2_tprop_vs_d.pdf}{Distribución de tiempos de propagación v2.}{fig:estimators-tprop-v2}
+\ReportFigure{baseline_tprop_variance.pdf}{Varianza de transporte por estrato de distancia.}{fig:estimators-var}
+
+La estructura de $\sigma_{TOP}(x)$ presenta picos en las posiciones donde cambia el canal que suministra el cuarto fotón. Ese comportamiento no se corrige aumentando el número total de fotones: es una propiedad del orden y de la topología de los canales. La combinación BLUE utiliza el teorema de Gauss--Markov; no requiere que cada distribución sea exactamente gaussiana.
+
+\chapter{Metodología estadística y guardarraíl L2}
+La anchura principal se obtiene con histogramas de 4 ps, sembrados en la mediana y restringidos a $\mathrm{mediana}\pm0.320$ ns. La ventana de ajuste usa $\mathrm{mediana}\pm2q_{68}$, con $q_{68}=(q_{84}-q_{16})/2$. El RMS crudo pondera cuadráticamente las colas; IQR/1.349 sirve como contraste robusto. Un ajuste con $\chi^2/\mathrm{ndf}>5$ conserva el número pero se marca como no fiable.
+
+\ReportTable{t6_widths}{Anchuras, estimadores robustos y banderas de ajuste del conjunto T6.}{tab:t6-widths}
+\ReportTable{l2_guardrail}{Guardarraíl L2 por material y posición.}{tab:l2}
+\ReportFigure{baseline_paired_distributions.pdf}{Distribuciones emparejadas de los dos extremos en baseline.}{fig:stats-paired}
+\ReportFigure{v2_paired_distributions.pdf}{Distribuciones emparejadas de los dos extremos en v2.}{fig:stats-paired-v2}
+
+El guardarraíl se aplica únicamente a desviaciones estándar ordinarias: $\mathrm{RMS}(T_0)\le[\mathrm{RMS}(t_L)+\mathrm{RMS}(t_R)]/2+3\,\mathrm{SE}_{gap}$. Los CSV registran 21 celdas aprobadas y márgenes negativos; `se\_gap` permanece \NOTAVAILABLE, así que no se debe reinterpretar el guardarraíl como una validación de anchuras gaussianas o IQR.
+
+\chapter{Principio de servilleta}
+La campaña sigue una regla de trabajo: una predicción de primeros principios precede a la simulación, y el desacuerdo entre ambas es un resultado. La servilleta predice el ángulo crítico, la velocidad axial de un borde Cherenkov, el escalamiento del mínimo de emisión y la penalización por ángulo. La simulación corrige tres intuiciones: $E[t_{(1)}]\simeq\tau_d/N$ falla con rise time no nulo; la dispersión no tiene por qué reducir la fracción Cherenkov; y el valor literal de un diccionario histórico no sustituye la procedencia de una corrida.
+
+\ReportTable{order_scaling}{Escalamiento del primer orden estadístico y fracción efectiva.}{tab:napkin-order}
+\ReportFigure{baseline_scintillation_order_scaling.pdf}{Escalamiento de emisión de centelleo en baseline.}{fig:napkin-order}
+\ReportFigure{v2_scintillation_order_scaling.pdf}{Escalamiento de emisión de centelleo en v2.}{fig:napkin-order-v2}
+\ReportFigure{baseline_muon_transit_order_correction.pdf}{Corrección por tránsito del muón.}{fig:napkin-transit}
+\ReportFigure{v2_muon_transit_order_correction.pdf}{Corrección por tránsito en v2.}{fig:napkin-transit-v2}
+
+\chapter{Instrumentación fotón a fotón}
+EXEC\_46 añade al árbol `sipm\_hits` la clave `(event\_id,track\_id)` y ramas de detección, creación, coordenadas, longitud de camino, longitud de onda, ángulo de salida, encuentros de frontera y `source\_type`. La campaña contiene tres materiales, siete posiciones $x=\{-650,-500,-200,0,200,500,650\}$ mm y 10000 eventos por celda.
+
+\ReportTable{inventory}{Inventario de las 21 celdas, eventos, fotones y resultado agregado de gates.}{tab:inventory}
+\ReportTable{source_census}{Censo de fuentes por cara y alcance de selección.}{tab:source-census}
+\ReportTable{tau_diagnostics}{Diagnóstico de la cola de decaimiento y selección local.}{tab:tau}
+\ReportFigure{baseline_near_end_source_mixture.pdf}{Mezcla de fuentes cerca del extremo en baseline.}{fig:instrument-mixture}
+\ReportFigure{v2_near_end_source_mixture.pdf}{Mezcla de fuentes cerca del extremo en v2.}{fig:instrument-mixture-v2}
+
+El gate inicial de $\tau_d$ no puede leer una cola global como si fuera una exponencial pura: un offset de creación y una selección por distancia cambian la mezcla. La solución aprobada restringe la creación al entorno local del gun y separa la prueba de integridad del ajuste físico. El inventario conserva hashes, conteos, sensores, reloj, orden temporal, caminos, fronteras, velocidad aparente, duplicados, fuentes y posición.
+
+\chapter{Mecanismo Cherenkov}
+Los Cherenkov son una fracción pequeña de todos los hits pero una fracción dominante del primer fotón cercano al extremo. La explicación geométrica es exacta: para un track perpendicular al eje, $\arccos(\sin\theta_C)=\arcsin(1/n)=\theta_{crit}$. Con $n=1.58$, el borde separa la población que alimenta el primer orden de la población de centelleo que domina el conteo total.
+
+\ReportTable{cherenkov_counts}{Conteos y fracciones Cherenkov por material, posición y cara.}{tab:cher-counts}
+\ReportTable{cherenkov_angles}{Ventanas angulares, bordes y selección temporal.}{tab:cher-angles}
+\ReportTable{cherenkov_enrichment}{Enriquecimiento Cherenkov del primer fotón frente a todos los hits.}{tab:cher-enrichment}
+\ReportTable{cherenkov_velocity}{Velocidades del borde y poblaciones fuente.}{tab:cher-velocity}
+\ReportFigure{baseline_cherenkov_edge_caustic.pdf}{Cáustica angular de la población Cherenkov baseline.}{fig:cher-caustic}
+\ReportFigure{v2_cherenkov_edge_caustic.pdf}{Cáustica angular de la población Cherenkov v2.}{fig:cher-caustic-v2}
+\ReportFigure{baseline_cherenkov_enrichment.pdf}{Enriquecimiento del primer fotón Cherenkov en baseline.}{fig:cher-enrich}
+\ReportFigure{v2_cherenkov_enrichment.pdf}{Enriquecimiento en v2.}{fig:cher-enrich-v2}
+\ReportFigure{baseline_cherenkov_angle_window.pdf}{Ventana angular y penalización temporal baseline.}{fig:cher-window}
+\ReportFigure{v2_cherenkov_angle_window.pdf}{Ventana angular y penalización temporal v2.}{fig:cher-window-v2}
+
+La condición de atrapamiento se obtiene de $\theta_C>\theta_{crit}$, equivalente a $n>\sqrt{2}$ para el track perpendicular. La velocidad axial del borde se contrasta con $v_{edge}=c\sqrt{1-1/n^2}/n$ y la selección angular con $\Delta t=(d/v_g)[\sec\alpha-\sec\alpha_{edge}]$. Son predicciones de forma, no ajustes libres. El enriquecimiento observado no significa que la fuente Cherenkov produzca más fotones; significa que gana con mayor frecuencia el mínimo temporal.
+
+\chapter{Estadística de orden de emisión}
+Con rise time finito, la densidad de emisión se anula en $t=0^+$. El sampler de Geant4 acepta una exponencial de decaimiento con probabilidad $1-e^{-t/\tau_r}$, por lo que el primer mínimo escala como $N^{-1/2}$ en el régimen de muchos fotones, no como $\tau_d/N$. La tabla de puntos conserva las dos convenciones: sampler de Geant4 y referencia biexponencial.
+
+\ReportTable{order_handicap}{Carrera del primer Cherenkov contra el primer centelleo a distancia corta.}{tab:order-handicap}
+\ReportFigure{baseline_fixed_point_cherenkov_width.pdf}{Anchura angular en puntos de distancia fija.}{fig:order-width}
+\ReportFigure{v2_fixed_point_cherenkov_width.pdf}{Anchura angular en v2.}{fig:order-width-v2}
+
+El déficit de $N_{eff}$ no es un factor geométrico universal: varía con material, fuente y distancia. La corrección de tránsito del muón recupera solo una parte del déficit. La carrera a 50 mm combina ventaja de creación, reordenamiento de selección y handicap de transporte; por eso no se puede atribuir el resultado a un único término sin mantener la descomposición registrada.
+
+\chapter{Regla de cadena y fallo de identificación}
+El remanente registrado de la regla de cadena debe separarse en dos preguntas. La primera compara $\beta_{within}$, obtenida de fluctuaciones de NPE dentro de una posición con efectos fijos, con $\beta_{between}$, obtenida de medias entre posiciones. La segunda pregunta si la curva between es lineal. Confundir ambas pendientes transfiere una derivada local a una variación geométrica.
+
+\ReportTable{within_between}{Pendientes within/between, brecha de identificación y remanente registrado.}{tab:within-between}
+\ReportTable{between_specification}{Residuo común bajo especificación lineal y pol2.}{tab:between-common}
+\ReportTable{f_test}{F-tests de siete posiciones para curvatura.}{tab:f-test}
+\ReportTable{loo}{Validación leave-one-out de las especificaciones.}{tab:loo}
+\ReportTable{mixture_components}{Componentes descriptivos de la mezcla de fuentes.}{tab:mixture-components}
+\ReportFigure{baseline_within_between_slopes.pdf}{Pendientes within/between de baseline.}{fig:chain-slopes}
+\ReportFigure{v2_within_between_slopes.pdf}{Pendientes within/between de v2.}{fig:chain-slopes-v2}
+\ReportFigure{baseline_identification_residual.pdf}{Residuo de identificación en baseline.}{fig:chain-residual}
+\ReportFigure{v2_identification_residual.pdf}{Residuo de identificación en v2.}{fig:chain-residual-v2}
+\ReportFigure{baseline_residual_mirrors.pdf}{Residuo por espejos en baseline.}{fig:chain-mirrors}
+\ReportFigure{v2_residual_mirrors.pdf}{Residuo por espejos en v2.}{fig:chain-mirrors-v2}
+
+La conclusión defendible es condicional: la no linealidad de $T_0(x)$ es compatible con ser una respuesta a NPE cuando se modela la curvatura y se estima between. No se puede afirmar que sea enteramente NPE porque el término de mezcla $(T_{0,C}-T_{0,S})df_C/dx$ es invisible para cualquier pendiente within. Esta distinción es el centro metodológico del informe.
+
+\chapter{Limitación del modelo de datasheet}
+El baseline usa índices y longitudes de absorción constantes en el intervalo óptico del MPT. En ese modelo, la corrección espectral de velocidad de grupo es cero por construcción. La PDE sigue seleccionando longitudes de onda, pero el transporte no responde a ellas mediante $n(\lambda)$ ni $L_{abs}(\lambda)$. Por eso el baseline puede ser útil como control de regresión y no como descripción final del timing cromático.
+
+\ReportFigure{baseline_cherenkov_guiding_diagnostics.pdf}{Diagnóstico de guiado en el modelo constante baseline.}{fig:datasheet-baseline}
+\ReportFigure{v2_cherenkov_guiding_diagnostics.pdf}{Diagnóstico de guiado en la corrección v2.}{fig:datasheet-v2}
+
+\chapter{Mediciones dispersivas y campaña v2}
+Huggins et al. \cite{Huggins2026} proporcionan mediciones de $n(\lambda)$ y $L_{abs}(\lambda)$ para PVT comercial. EXEC\_46 usa BC--408 como análogo de EJ--200 y BC--404 como análogo de EJ--204. EJ--230 permanece constante porque no existe un análogo BC--420 válido en la fuente usada. Las velocidades de grupo son derivaciones del modelo, no números publicados por Huggins.
+
+\ReportTable{old_new_control}{Control old/v2 para las filas compartidas.}{tab:old-new}
+\ReportFigure{f4_f4_uv_clamp.pdf}{Clamps UV de la sensibilidad F4; no sustituye la campaña v2.}{fig:uv-clamp}
+\ReportFigure{f4_f4_caustic_time_selection.pdf}{Sensibilidad F4 de la selección temporal.}{fig:f4-selection}
+\ReportFigure{v2_cherenkov_angle_histograms.pdf}{Distribuciones angulares v2.}{fig:v2-angle-hist}
+
+El control EJ--230 es esencial: al no cambiar su MPT entre campañas, las filas old/v2 deben ser idénticas dentro de la representación registrada. Para EJ--200 y EJ--204 el aumento de la fracción Cherenkov del primer fotón no contradice la intuición inicial: el centelleo se frena más que el borde geométrico Cherenkov, modificando quién gana el mínimo.
+
+\chapter{Velocidad efectiva y comparación con test beam}
+El observable experimental es la pendiente de $\langle t_L-t_R\rangle$ frente a la posición. \cite{Betancourt2020} reporta \SI{15.5}{cm/ns} con MUSIC+SAMPIC y dCFD; \cite{Blondel2018} reporta una dependencia con posición en barras más largas. Las tablas siguientes separan el primer fotón, las convenciones de dos extremos y los modelos CFD.
+
+\ReportTable{veff_slopes}{Ajustes de pendiente del observable de diferencia temporal.}{tab:veff-slopes}
+\ReportTable{veff_conventions}{Velocidades one-end y two-end.}{tab:veff-conventions}
+\ReportTable{veff_contrast}{Contraste de velocidad, secantes locales y referencia experimental.}{tab:veff-contrast}
+\ReportTable{cfd_fits}{Formas de pulso CFD y velocidad efectiva.}{tab:cfd}
+\ReportFigure{baseline_g_by_boundary.pdf}{Velocidad efectiva por frontera en baseline.}{fig:veff-boundary}
+\ReportFigure{v2_g_by_boundary.pdf}{Velocidad efectiva por frontera en v2.}{fig:veff-boundary-v2}
+\ReportFigure{baseline_g_by_exit_angle.pdf}{Dependencia con ángulo de salida baseline.}{fig:veff-angle}
+\ReportFigure{v2_g_by_exit_angle.pdf}{Dependencia con ángulo de salida v2.}{fig:veff-angle-v2}
+
+La comparación es indicativa: MUSIC/SAMPIC no está parametrizado y el CFD usa formas de pulso analíticas. Además, $v_{eff}$ es una derivada del tiempo medio del estimador, no la velocidad de un fotón individual. Una distribución angular ancha hace que $\langle\sec\theta\rangle\ne\sec\langle\theta\rangle$; por ello no se puede cerrar la interpretación geométrica usando solo un ángulo efectivo.
+
+\chapter{Limitaciones}
+La primera limitación es la región UV 200--370 nm, no medida por la fuente dispersiva y tratada mediante clamp. La segunda es EJ--230 sin análogo medido válido. La tercera es que $\sigma_{mixture}$ no incluye SPTR, electrónica ni jitter de lectura. La cuarta es la diferencia entre barra de 1400 mm y test beam de 1500 mm, y entre energías de muón. La quinta es el muestreo espacial: hay una brecha entre 50 y 200 mm precisamente en la transición del régimen Cherenkov.
+
+La convolución ingenua de jitter tampoco es válida para una mezcla cuyo ganador puede cambiar evento a evento. La ausencia de WLS, pérdidas de acoplamiento realistas, medida propia de SPTR y parametrización MUSIC/SAMPIC debe anotarse como limitación, no como incertidumbre gaussiana añadida sin modelo. Los scripts con rutas de salida no aisladas por campaña son un riesgo de reproducibilidad y se tratan como deuda técnica.
+
+\chapter{Conclusiones y trabajo futuro}
+El primer resultado sólido es histórico y metodológico: GEN-1 era inválido porque destruía TIR; Fase 7 separa barra--aire y aire--reflector. El segundo resultado central es fotométrico: la geometría híbrida entrega \HybridNpePerEnd{} pe/end y pierde \TopInterceptedPct\% respecto de END-only por interceptación TOP. El tercer resultado físico es que los Cherenkov, aunque minoritarios en conteo, dominan el primer orden cerca del extremo.
+
+La identificación de Step 5 no justifica una afirmación causal fuerte: la especificación lineal produce un residuo, pero la curva pol2 y el LOO absorben esa estructura. La corrección dispersiva cambia la selección de poblaciones y debe compararse con el control EJ--230. La velocidad efectiva no se reduce a $c/n$ dividido por un camino medio; contiene selección de población y convención de estimador.
+
+El trabajo futuro tiene cuatro acciones cuantificables: añadir posiciones $|x|=560,600,640,670$ mm; medir $n(\lambda)$ en UV; parametrizar MUSIC/SAMPIC; y medir SPTR del AFBR-S4N66P024M. Opticks puede reducir el coste de transporte, pero no reemplaza la validación del modelo de superficie ni la procedencia de los datos.
+
+\appendix
+\chapter{Tablas completas y procedencia}
+Las 25 tablas generadas en este apéndice y en el cuerpo son copias de CSV registrados; no contienen recálculos. Las filas se conservan con las columnas seleccionadas para que el documento impreso pueda leerse sin abrir ROOT. Las tablas de inventario, censo, T6 y velocidad mantienen la separación baseline/v2/old.
+
+\ReportTable{inventory}{Inventario completo de celdas.}{app:inventory}
+\ReportTable{source_census}{Censo completo de fuentes disponible en el CSV.}{app:census}
+\ReportTable{t6_widths}{Tabla completa de anchuras T6.}{app:t6}
+\ReportTable{l2_guardrail}{Tabla completa del guardarraíl L2.}{app:l2}
+\ReportTable{veff_conventions}{Tabla completa de convenciones de velocidad.}{app:veff}
+
+\chapter{Reproducibilidad}
+La compilación se realiza desde \texttt{analysis/track\_mechanism\_20260915/report} con \texttt{latexmk -pdf}. La generación de valores ejecuta \texttt{build\_values.py}; las tablas se regeneran con \texttt{build\_report\_tables.py}. El documento no ejecuta Geant4, no modifica ROOT y no abre archivos de producción durante la compilación. Los hashes y versiones registrados en los sidecars permanecen como la fuente de reproducibilidad.
+
+\chapter{Pendientes y NOT\_AVAILABLE}
+Los tres valores históricos $1310.8$, $941.0$ y $701.3$ pe/end se conservan solo como estimaciones históricas de procedencia no reconstruida, porque \texttt{PROJECT\_STATE.md} declara que el diccionario literal de \texttt{napkin.py} no tiene procedencia de corrida. El valor central es \HybridNpePerEnd{} pe/end en geometría híbrida. \texttt{SE\_gap}, SPTR, jitter validado, WLS y MUSIC/SAMPIC son \NOTAVAILABLE cuando el informe no tiene una fuente cuantitativa.
+
+\chapter{Glosario}
+\begin{description}
+\item[END] Lectura en los dos extremos de la barra.
+\item[TOP] Lectura en la cara superior.
+\item[TIR] Reflexión interna total en una interfaz dieléctrica.
+\item[NPE] Número de fotoelectrones detectados.
+\item[BLUE] Best Linear Unbiased Estimator, combinación lineal con covarianza.
+\item[CFD] Constant Fraction Discriminator.
+\item[MPT] Material Properties Table de Geant4.
+\item[GEN-1] Configuración histórica inválida con skin `dielectric\_metal` sobre la barra.
+\item[v2] Campaña óptica corregida y separada del baseline constante.
+\end{description}
