@@ -9,7 +9,8 @@ OUT.mkdir(exist_ok=True)
 
 TABLES = [
     ('budget', '../top_npe_diag/top_npe_diag.csv', ['x', 'npe_end_per_face', 'npe_top_mean', 'npe_end_hybrid', 'npe_end_endonly', 'delta_pct'], None),
-    ('optical_properties', 'step6_v2/step2/material_optical_properties.csv', None, None),
+    ('optical_properties_index', 'step6_v2/step2/material_optical_properties.csv', ['material', 'opsc_code', 'rindex_wavelength_min_nm', 'rindex_wavelength_max_nm', 'rindex_min', 'rindex_max', 'rindex_constant'], None),
+    ('optical_properties_absorption', 'step6_v2/step2/material_optical_properties.csv', ['material', 'opsc_code', 'abs_wavelength_min_nm', 'abs_wavelength_max_nm', 'abs_length_min_mm', 'abs_length_max_mm', 'abs_length_constant'], None),
     ('inventory', 'step6_v2/exec46_inventory.csv', ['cell_id', 'material', 'x_mm', 'events', 'photons', 'mean_npe_end', 'all_gates_pass'], None),
     ('tau_diagnostics', 'step6_v2/exec46_tau_diagnostics.csv', None, None),
     ('source_census', 'step6_v2/exec46_source_census.csv', ['scope', 'face_type', 'source_label', 'count', 'denominator', 'fraction'], None),
@@ -39,6 +40,19 @@ TABLES = [
 def esc(value):
     return str(value).replace('&', r'\&').replace('%', r'\%').replace('_', r'\_').replace('#', r'\#')
 
+HEADER_LABELS = {
+    'rindex_wavelength_min_nm': r'$n$ $\lambda$ min [nm]',
+    'rindex_wavelength_max_nm': r'$n$ $\lambda$ max [nm]',
+    'rindex_min': r'$n$ min',
+    'rindex_max': r'$n$ max',
+    'rindex_constant': r'$n$ constante',
+    'abs_wavelength_min_nm': r'$L_{abs}$ $\lambda$ min [nm]',
+    'abs_wavelength_max_nm': r'$L_{abs}$ $\lambda$ max [nm]',
+    'abs_length_min_mm': r'$L_{abs}$ min [mm]',
+    'abs_length_max_mm': r'$L_{abs}$ max [mm]',
+    'abs_length_constant': r'$L_{abs}$ constante',
+}
+
 def render(name, relative, columns, predicate):
     source = ROOT / relative
     if not source.exists():
@@ -56,8 +70,9 @@ def render(name, relative, columns, predicate):
     with path.open('w') as stream:
         stream.write('% Generated from ' + relative + '; do not edit.\n')
         stream.write('\\scriptsize\n\\begin{longtable}{' + ' '.join(['p{0.13\\textwidth}'] * len(columns)) + '}\n')
-        stream.write('\\toprule\n' + ' & '.join(esc(column) for column in columns) + r' \\' + '\n\\midrule\\endfirsthead\n')
-        stream.write('\\toprule\n' + ' & '.join(esc(column) for column in columns) + r' \\' + '\n\\midrule\\endhead\n')
+        headers = [HEADER_LABELS.get(column, esc(column)) for column in columns]
+        stream.write('\\toprule\n' + ' & '.join(headers) + r' \\' + '\n\\midrule\\endfirsthead\n')
+        stream.write('\\toprule\n' + ' & '.join(headers) + r' \\' + '\n\\midrule\\endhead\n')
         for row in rows:
             stream.write(' & '.join(esc(row.get(column, '')) for column in columns) + r' \\' + '\n')
         stream.write('\\bottomrule\n\\end{longtable}\n\\normalsize\n')

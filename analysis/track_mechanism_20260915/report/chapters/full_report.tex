@@ -3,7 +3,8 @@ El detector T0 de SHiP se diseña para medir el tiempo de llegada de muones en e
 
 La lectura EndTop combina ocho SiPM por extremo y setenta en la cara superior. Los identificadores globales 0--7 y 8--15 corresponden a los extremos izquierdo y derecho; para cada extremo $y=(i-3.5)\times\SI{7.5}{mm}$. Los identificadores 16--85 son los canales superiores: treinta y cinco posiciones negativas centradas en $-692+20i$ mm y treinta y cinco positivas centradas en $12+20(i-35)$ mm. El sensor modelado es el Broadcom AFBR-S4N66P024M.
 
-\ReportTable{optical_properties}{Propiedades ópticas registradas por material y campaña.}{tab:intro-materials}
+\ReportTable{optical_properties_index}{Índice de refracción registrado por material y campaña.}{tab:intro-index}
+\ReportTable{optical_properties_absorption}{Longitud de absorción registrada por material y campaña.}{tab:intro-absorption}
 \ReportFigure{v2_baseline_reproduction.pdf}{Reproducción de la campaña v2. La etiqueta v2 indica el modelo óptico corregido; no se mezcla con baseline.}{fig:intro-reproduction}
 
 Los tres materiales son EJ--200/OPSC--100, EJ--204/OPSC--101 y EJ--230/OPSC--106. Sus rendimientos y constantes de centelleo se leen del MPT y de los macros OPSC; sus diferencias no deben atribuirse a una sola constante temporal. Las referencias experimentales principales son \cite{Betancourt2020,Blondel2018,Betancourt2017}. El principio rector del documento es que cada número del texto proviene de una fuente registrada; cuando no existe procedencia, se escribe \NOTAVAILABLE.
@@ -179,7 +180,19 @@ Las 25 tablas generadas en este apéndice y en el cuerpo son copias de CSV regis
 La compilación se realiza desde \texttt{analysis/track\_mechanism\_20260915/report} con \texttt{latexmk -pdf}. La generación de valores ejecuta \texttt{build\_values.py}; las tablas se regeneran con \texttt{build\_report\_tables.py}. El documento no ejecuta Geant4, no modifica ROOT y no abre archivos de producción durante la compilación. Los hashes y versiones registrados en los sidecars permanecen como la fuente de reproducibilidad.
 
 \chapter{Pendientes y NOT\_AVAILABLE}
-Los tres valores históricos $1310.8$, $941.0$ y $701.3$ pe/end se conservan solo como estimaciones históricas de procedencia no reconstruida, porque \texttt{PROJECT\_STATE.md} declara que el diccionario literal de \texttt{napkin.py} no tiene procedencia de corrida. El valor central es \HybridNpePerEnd{} pe/end en geometría híbrida. \texttt{SE\_gap}, SPTR, jitter validado, WLS y MUSIC/SAMPIC son \NOTAVAILABLE cuando el informe no tiene una fuente cuantitativa.
+Los tres valores históricos $1310.8$, $941.0$ y $701.3$ pe/end se conservan solo como estimaciones históricas de procedencia no reconstruida, porque \texttt{PROJECT\_STATE.md} declara que el diccionario literal de \texttt{napkin.py} no tiene procedencia de corrida. El valor central es \HybridNpePerEnd{} pe/end en geometría híbrida.
+
+\begin{description}
+\item[Presupuesto histórico.] Los tres valores anteriores no tienen procedencia de corrida reconstruible; no se usan como resultado central.
+\item[\texttt{SE\_gap}.] \NOTAVAILABLE: el guardarraíl L2 conserva el margen RMS, pero no una incertidumbre paired influence-function validada.
+\item[SPTR y jitter.] \NOTAVAILABLE: no hay medición del SPTR del AFBR-S4N66P024M ni una cadena electrónica MUSIC/SAMPIC parametrizada.
+\item[Región UV.] \NOTAVAILABLE entre 200 y 370 nm para las mediciones dispersivas; el MPT usa un clamp explícito.
+\item[EJ--230 dispersivo.] \NOTAVAILABLE: no existe un análogo BC--420 válido en las fuentes usadas; se mantiene como control constante.
+\item[WLS y pérdidas reales.] \NOTAVAILABLE: el MPT no incluye WLS ni una caracterización completa del acoplamiento y degradación del reflector.
+\item[Muestreo espacial.] \NOTAVAILABLE entre $d=50$ y $200$ mm; es una brecha justo en la transición del régimen Cherenkov.
+\item[Rutas aisladas.] Pendiente de reproducibilidad: seis scripts tienen rutas de salida no aisladas por campaña, según el registro de ways-of-working.
+\item[Comparación de test beam.] Indicativa: difieren la longitud de barra, la energía del muón y la cadena MUSIC/SAMPIC.
+\end{description}
 
 \chapter{Glosario}
 \begin{description}
