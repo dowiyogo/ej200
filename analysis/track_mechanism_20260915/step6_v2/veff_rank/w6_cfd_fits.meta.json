@@ -41,7 +41,7 @@
   "bin_ns": 0.02,
   "music_sampic_model_available": false,
   "comparison_155_mm_ns": "indicative only; no MUSIC/SAMPIC reproduction",
-  "ae1_theta_method": "weighted mean of per-cell theta quantiles from partials; raw event theta values were not persisted",
-  "ae2_geometry_method": "exact path/d_axial unavailable; proxy 1/cos(weighted median theta) reported",
-  "ae2_exact_ratio": "NOT_AVAILABLE"
+  "ae1_theta_method": "weighted mean of per-cell theta quantiles from partials",
+  "ae2_geometry_method": "event-level path/d_axial persisted in CFD partials; weighted mean by events used",
+  "ae2_exact_ratio": "AVAILABLE"
 }
