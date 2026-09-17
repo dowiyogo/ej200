@@ -12,9 +12,11 @@ def render(path, columns=None, digits=8):
     lines = ['| ' + ' | '.join(headers) + ' |', '|' + '|'.join(['---'] * len(headers)) + '|']
     for _, row in df.iterrows():
         vals = []
-        for value in row:
+        for key, value in zip(headers, row):
             if pd.isna(value): vals.append('')
-            elif isinstance(value, (float, int)): vals.append(f'{value:.{digits}f}')
+            elif isinstance(value, (float, int)):
+                fmt = '.8e' if 'cubic_a3' in key else f'.{digits}f'
+                vals.append(format(value, fmt))
             else: vals.append(str(value))
         lines.append('| ' + ' | '.join(vals) + ' |')
     return '\n'.join(lines)
