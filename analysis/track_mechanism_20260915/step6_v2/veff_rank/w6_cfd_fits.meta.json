@@ -1,0 +1,44 @@
+{
+  "numpy_version": "2.0.2",
+  "scipy_version": "1.13.1",
+  "scipy_import": "PASS",
+  "partial_count": 21,
+  "ad2_control": "PASS",
+  "ad2_control_max_abs_field_differences": {
+    "mean_time_ns": 0.0,
+    "n_events_used": 0.0,
+    "n_events_excluded": 0.0,
+    "median_n_boundary_encounters": 0.0,
+    "median_path_length_mm": 0.0,
+    "fraction_cherenkov": 0.0,
+    "theta_q05_deg": 7.105427357601002e-15,
+    "theta_median_deg": 7.105427357601002e-15,
+    "theta_q95_deg": 7.105427357601002e-15,
+    "sem_time_ns": 0.0
+  },
+  "pulse_models": [
+    [
+      "fastic_measured",
+      2.0,
+      3.0
+    ],
+    [
+      "penarodriguez_shortened",
+      2.0,
+      3.0
+    ],
+    [
+      "fast_contrast",
+      0.5,
+      2.0
+    ]
+  ],
+  "cfd_fractions": [
+    0.14,
+    0.24
+  ],
+  "window_ns": 8.0,
+  "bin_ns": 0.02,
+  "music_sampic_model_available": false,
+  "comparison_155_mm_ns": "indicative only; no MUSIC/SAMPIC reproduction"
+}
