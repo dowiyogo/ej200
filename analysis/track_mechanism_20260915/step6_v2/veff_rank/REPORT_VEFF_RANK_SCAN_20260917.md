@@ -244,7 +244,7 @@ Files: `partial/<cell_id>.csv`.
 
 ## AE2: geometry table
 
-The exact event-level `<path>/<d_axial>` was not persisted; it is `NOT_AVAILABLE`. The proxy `1/cos(theta_median)` and implied velocity are tabulated without compatibility calculations.
+For each threshold-crossing photon, `d_axial_mm = abs(x_SiPM - x_creation_mm)`, with `x_SiPM=-700 mm` for face 0 and `x_SiPM=+700 mm` for face 1. `path_over_daxial_exact` is the event-level `path_length_mm/d_axial_mm`, averaged over events used for that material, pulse model, fraction and extreme. `v_implied_mm_ns` is `v_group_MPT/path_over_daxial_exact`. The 35.4 degree value is a reference only; no compatibility calculation is made.
 
 | material | pulse_model | cfd_fraction | extreme | path_over_daxial_exact | v_group_MPT_mm_ns | v_implied_mm_ns | reference_experimental_theta_deg |
 |---|---|---|---|---|---|---|---|
