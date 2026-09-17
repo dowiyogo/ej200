@@ -1,0 +1,22 @@
+\chapter{El mecanismo Cherenkov}
+Las tablas de Step~2 y Step~4 separan la fracción Cherenkov del primer fotón de la población total. El ángulo de emisión y el ángulo crítico se calculan por longitud de onda cuando el runtime es dispersivo. Para un índice $n$, la identidad geométrica usada es
+\[
+\arccos(\sin\theta_C)=\arcsin(1/n)=\theta_{crit}.
+\]
+La condición geométrica de atrapamiento del cono se tabula junto con la velocidad axial del borde, sin parámetros libres adicionales.
+
+La caústica angular aparece en las distribuciones de ángulo de salida. La penalización temporal se tabula con la forma $\Delta t=d/v_g\,[\sec\alpha-\sec\alpha_{edge}]$. Las figuras se separan por campaña: las de `step4/` son baseline y las de `step6\_v2/step4/` son v2; todas las captions de este capítulo deben conservar ese prefijo al incorporar las figuras.
+
+La estadística de orden de emisión y los contrastes de multiplicidad están en los CSV de Step~4. La separación Cherenkov/centelleo se conserva como observable tabulado, no como una explicación única de todos los residuos.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{v2_cherenkov_edge_caustic.pdf}
+\caption{Caústica angular de la campaña v2 con óptica dispersiva.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.82\textwidth]{baseline_cherenkov_guiding_diagnostics.pdf}
+\caption{Diagnóstico de guiado Cherenkov de la campaña baseline con índice constante.}
+\end{figure}

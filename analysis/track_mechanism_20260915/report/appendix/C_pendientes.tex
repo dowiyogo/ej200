@@ -1,0 +1,11 @@
+\chapter{Pendientes}
+\begin{itemize}
+\item La bibliografía fue localizada como `exec46\_refs.bib` y copiada a `report/refs.bib`; contiene 39 entradas.
+\item La compilación LaTeX quedó pendiente: t0minidaq no dispone de `pdflatex`, `bibtex`, `latexmk`, `tex`, `xelatex` ni `lualatex`. Solo se detectó el paquete RPM `texlive-lib`.
+\item No existe una parametrización MUSIC/SAMPIC en `pulse_models.py`.
+\item Las tablas de velocidad efectiva CFD son indicativas respecto a Betancourt por esa ausencia.
+\item `SE_gap` no está implementado en el repositorio y se reporta como `NOT_AVAILABLE` en las tablas T6.
+\item Algunas tablas completas y figuras solicitadas requieren una revisión editorial posterior para incorporarse literalmente como longtables.
+\end{itemize}
+\textbf{Comando de compilación en un entorno con LaTeX:}\\
+\texttt{cd analysis/track\_mechanism\_20260915/report \\ latexmk -pdf main.tex}
