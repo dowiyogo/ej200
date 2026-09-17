@@ -16,11 +16,9 @@ import numpy as np
 import pandas as pd
 import uproot
 
+from dispersive_optics import (CAMPAIGN, campaign_tables, attach_optics, optical_summary,
+                               optical_markdown)
 from analyze_step1 import discover_cells
-from exec46_schema import (
-    CAMPAIGN_DIR, MATERIAL_BY_OPSC, SPEED_OF_LIGHT_MM_PER_NS,
-    load_material_config,
-)
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -44,11 +42,9 @@ CHERENKOV_EDGE_BIN_WIDTH_DEG = 0.02
 CHERENKOV_EDGE_RANGE_DEG = (30.0, 50.0)
 PRIMARY_LIKE_POSITION_TOLERANCE_MM = 0.001
 MIN_MICROSCOPIC_BIN_COUNT = 100
-REFERENCE_OPSC_CODE = "OPSC-100"
-N_REFRACTIVE = float(load_material_config(REFERENCE_OPSC_CODE)["rindex"][0])
-_CAMPAIGN_CONFIGURATION = json.loads((CAMPAIGN_DIR / "campaign.json").read_text())
-_REFERENCE_MACRO_TEXT = Path(
-    _CAMPAIGN_CONFIGURATION["cells"][0]["source_macro"]).read_text()
+_CAMPAIGN_CONFIGURATION = json.loads((CAMPAIGN / "campaign.json").read_text())
+_REFERENCE_MACRO_TEXT = (CAMPAIGN / "cells" /
+    _CAMPAIGN_CONFIGURATION["cells"][0]["cell_id"] / "run.mac").read_text()
 _GUN_ENERGY_MATCH = re.findall(
     r"^/gun/energy\s+([0-9.eE+-]+)\s+(MeV|GeV)\s*$",
     _REFERENCE_MACRO_TEXT, re.MULTILINE)
@@ -59,19 +55,6 @@ MUON_KINETIC_ENERGY_MEV = float(_GUN_ENERGY_MATCH[0][0]) * (
 MUON_MASS_MEV = 105.6583755
 MUON_GAMMA = (MUON_KINETIC_ENERGY_MEV + MUON_MASS_MEV) / MUON_MASS_MEV
 MUON_BETA = math.sqrt(1.0 - 1.0 / MUON_GAMMA ** 2)
-ANGLE_CRITICAL_DEG = math.degrees(math.asin(1.0 / N_REFRACTIVE))
-ANGLE_CHERENKOV_DEG = math.degrees(math.acos(1.0 / N_REFRACTIVE))
-ANGLE_CHERENKOV_FINITE_BETA_DEG = math.degrees(
-    math.acos(1.0 / (N_REFRACTIVE * MUON_BETA)))
-ANGLE_EDGE_FINITE_BETA_DEG = 90.0 - ANGLE_CHERENKOV_FINITE_BETA_DEG
-GROUP_VELOCITY_MM_PER_NS = SPEED_OF_LIGHT_MM_PER_NS / N_REFRACTIVE
-CHERENKOV_EDGE_VELOCITY_MM_PER_NS = (
-    SPEED_OF_LIGHT_MM_PER_NS * math.sqrt(1.0 - 1.0 / N_REFRACTIVE ** 2)
-    / N_REFRACTIVE
-)
-CHERENKOV_EDGE_VELOCITY_FINITE_BETA_MM_PER_NS = (
-    GROUP_VELOCITY_MM_PER_NS
-    * math.sin(math.radians(ANGLE_CHERENKOV_FINITE_BETA_DEG)))
 HISTORICAL_LOCAL_RANGES = {
     "EJ-200": (172.63, 183.57), "EJ-204": (175.04, 182.56),
     "EJ-230": (177.26, 182.76),
@@ -262,6 +245,7 @@ def combine_strata(path, category_columns):
 
 
 def cherenkov_diagnostics(first_frame):
+    first_frame = attach_optics(first_frame)
     near = first_frame[
         (first_frame["source_type"] == 2)
         & (((first_frame["gun_x_mm"] == -650) & (first_frame["face_type"] == 0))
@@ -282,6 +266,7 @@ def cherenkov_diagnostics(first_frame):
                 ("all_source_type_2", material_data),
                 ("primary_like_proxy", material_data[material_data["primary_like"]])):
             angles = selected["exit_angle_deg"].to_numpy()
+            prediction = optical_summary(selected)
             counts, _ = np.histogram(angles, bins=edges)
             maximum = int(np.argmax(counts))
             for index, count in enumerate(counts):
@@ -292,27 +277,73 @@ def cherenkov_diagnostics(first_frame):
                     "angle_high_deg": edges[index + 1],
                     "angle_center_deg": 0.5 * (edges[index] + edges[index + 1]),
                     "count": int(count), "fraction_total": count / len(angles),
+                    **prediction,
                 })
             summary_rows.append({
                 "material_code": material_code, "material": material,
                 "selection": selection, "n": len(angles),
                 "minimum_deg": angles.min(), "q001_deg": np.quantile(angles, 0.001),
                 "q01_deg": np.quantile(angles, 0.01), "median_deg": np.median(angles),
-                "fraction_below_critical": np.mean(angles < ANGLE_CRITICAL_DEG),
+                "fraction_below_critical": np.mean(angles < selected["opt_theta_critical_created_deg"]),
                 "fraction_below_critical_minus_half_bin": np.mean(
-                    angles < ANGLE_CRITICAL_DEG - CHERENKOV_EDGE_BIN_WIDTH_DEG / 2.0),
+                    angles < selected["opt_theta_critical_created_deg"] - CHERENKOV_EDGE_BIN_WIDTH_DEG / 2.0),
+                **prediction,
                 "modal_bin_low_deg": edges[maximum],
                 "modal_bin_high_deg": edges[maximum + 1],
             })
     return pd.DataFrame(histogram_rows), pd.DataFrame(summary_rows)
 
 
+def recover_selected_wavelengths(first_frame, cells, step_size="64 MB"):
+    """Read wavelengths for already-selected track IDs; never select photons again.
+
+    The unchanged Step 3 builder does not retain wavelengths. Join read-only
+    production hits by cell + event + END face + track, preserving row order
+    and all original columns. Missing/duplicate matches are fatal.
+    """
+    keys = ["event_id", "face_type", "track_id"]
+    wavelengths = ["wl_nm_created", "wl_nm"]
+    checks = ["source_type", "t_creation_ns", "t_detection_ns"]
+    require(not any(name in first_frame for name in wavelengths),
+            "unexpected wavelength columns in Step 3 builder output")
+    values = np.full((len(first_frame), 2), np.nan)
+    matched = np.zeros(len(first_frame), dtype=bool)
+    for cell in cells:
+        positions = np.flatnonzero(
+            (first_frame["material_code"].to_numpy() == MATERIAL_CODES[cell["material"]])
+            & (first_frame["gun_x_mm"].to_numpy() == cell["x_mm"]))
+        if not len(positions):
+            continue
+        selected = first_frame.iloc[positions]
+        index = pd.MultiIndex.from_frame(selected[keys])
+        require(index.is_unique, f"duplicate selected photon: {cell['cell_id']}")
+        with uproot.open(cell["root_path"]) as root_file:
+            for arrays in root_file["sipm_hits"].iterate(
+                    keys + wavelengths + checks, step_size=step_size, library="np"):
+                hits = pd.DataFrame(arrays)
+                locations = index.get_indexer(pd.MultiIndex.from_frame(hits[keys]))
+                keep = locations >= 0
+                target = positions[locations[keep]]
+                require(len(np.unique(target)) == len(target) and not matched[target].any(),
+                        f"duplicate production photon match: {cell['cell_id']}")
+                require(np.array_equal(hits.loc[keep, checks].to_numpy(),
+                                       first_frame.iloc[target][checks].to_numpy()),
+                        f"selected-photon provenance mismatch: {cell['cell_id']}")
+                values[target] = hits.loc[keep, wavelengths].to_numpy()
+                matched[target] = True
+    require(matched.all() and np.isfinite(values).all() and (values > 0).all(),
+            f"missing/invalid wavelengths for {np.count_nonzero(~matched)} selected photons")
+    result = first_frame.copy()
+    result[wavelengths] = values
+    return result
+
+
 def verify_gun_and_index():
-    cells = discover_cells(CAMPAIGN_DIR)
+    cells = discover_cells(CAMPAIGN)
     angles = []
     energies_mev = []
     for cell in cells:
-        text = Path(cell["source_macro"]).read_text()
+        text = (CAMPAIGN / "cells" / cell["cell_id"] / "run.mac").read_text()
         match = re.findall(r"^/muon/angle\s+([0-9.+-]+)\s*$", text, re.MULTILINE)
         require(len(match) == 1, f"ángulo ausente/duplicado: {cell['cell_id']}")
         angles.append(float(match[0]))
@@ -325,14 +356,8 @@ def verify_gun_and_index():
     require(set(angles) == {0.0}, f"ángulos de gun inesperados: {set(angles)}")
     require(set(energies_mev) == {MUON_KINETIC_ENERGY_MEV},
             f"energías de gun inesperadas: {set(energies_mev)}")
-    indices = []
-    for opsc_code in MATERIAL_BY_OPSC:
-        config = load_material_config(opsc_code)
-        require(np.all(config["rindex"] == config["rindex"][0]),
-                f"RINDEX no constante en {opsc_code}")
-        indices.append(float(config["rindex"][0]))
-    require(np.allclose(indices, N_REFRACTIVE, atol=0.0, rtol=0.0),
-            f"RINDEX inesperado: {indices}")
+    # Constant/dispersive is informative; mixed material models are expected.
+    _, indices = campaign_tables()
     return cells, angles, indices
 
 
@@ -496,10 +521,12 @@ def make_figures(combined, microscopic, boundary, angle, hist2d_data,
         for selection, group in subset.groupby("selection"):
             axis.step(group["angle_center_deg"], group["fraction_total"], where="mid",
                       label=selection.replace("_", " "))
-        axis.axvline(ANGLE_CRITICAL_DEG, color="black", ls="--", lw=1,
-                     label="theta critical" if material == MATERIALS[0] else None)
-        axis.axvline(ANGLE_EDGE_FINITE_BETA_DEG, color="purple", ls=":", lw=1,
-                     label="finite-beta edge" if material == MATERIALS[0] else None)
+        prediction = subset[subset["selection"] == "primary_like_proxy"].iloc[0]
+        for key, color, label in (("theta_critical_created_deg", "black", "critical(lambda_created)"),
+                                  ("edge_angle_deg", "purple", "finite-beta edge")):
+            axis.axvspan(prediction[key+"_q05"], prediction[key+"_q95"], color=color, alpha=.12)
+            axis.axvline(prediction[key+"_median"], color=color, ls="--", lw=1,
+                         label=label+" median [q05,q95]")
         axis.set_title(material)
         axis.set_yscale("log")
         axis.grid(alpha=0.2)
@@ -508,40 +535,35 @@ def make_figures(combined, microscopic, boundary, angle, hist2d_data,
     axes[0].legend(fontsize=7)
     save_bundle("cherenkov_edge_caustic", caustic, {
         "bin_width_deg": CHERENKOV_EDGE_BIN_WIDTH_DEG,
-        "theta_critical_deg": ANGLE_CRITICAL_DEG,
+        "optical_runtime": campaign_tables()[1],
         "finite_beta": MUON_BETA,
-        "finite_beta_edge_deg": ANGLE_EDGE_FINITE_BETA_DEG,
+        "edge_reference": "per-photon created-wavelength distribution in sidecar",
         "primary_like_tolerance_mm": PRIMARY_LIKE_POSITION_TOLERANCE_MM,
         "selection_note": "Proxy requires creation x at gun and y at zero; parent track is absent."
     }, fig)
 
 
 def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
-                  boundary, angle, hist2d_data, gun_angles, indices):
+                  boundary, angle, hist2d_data, gun_angles, indices, optical_rows):
     lines = [
         "# EXEC_46 Step 3 — pure transport g(d) and Cherenkov guiding",
         "", "Date: 2026-09-16", "",
         "## Checkpoint verdict", "",
         "Step 3 is complete. No simulation was run and all production ROOT files were read-only.",
-        "The source-separated result identifies the fast Cherenkov edge quantitatively: the",
-        f"first-Cherenkov linear slopes correspond to about 148 mm/ns, within 1.2% of the",
-        f"parameter-free cone-edge prediction {CHERENKOV_EDGE_VELOCITY_MM_PER_NS:.3f} mm/ns.",
+        "Source-separated fitted velocities are compared below with wavelength-resolved predictions.",
         "The all-photon means are much slower because they include recirculated paths. None of",
         "the low-order global models has acceptable absolute chi-square, so these slopes are",
         "diagnostic summaries rather than complete models of g(d).", "",
         "This is the required checkpoint. Step 4 has not been started.", "",
         "## Definitions and input checks", "",
         "The production macros contain `/muon/angle 0` in all 21 cells. The source maps this",
-        "to momentum `(0,0,-1)`, perpendicular to the bar x axis. The effective RINDEX read",
-        f"independently for all three materials is {indices[0]:.2f}. Thus theta_C =",
-        f"{ANGLE_CHERENKOV_DEG:.5f} deg, theta_crit = {ANGLE_CRITICAL_DEG:.5f} deg,",
-        f"c/n = {GROUP_VELOCITY_MM_PER_NS:.6f} mm/ns, and the Cherenkov cone-edge axial",
-        f"velocity is {CHERENKOV_EDGE_VELOCITY_MM_PER_NS:.6f} mm/ns.", "",
-        "The beta=1 identities are the requested a priori approximation. A 1 GeV kinetic-energy",
-        f"muon has beta={MUON_BETA:.6f}; without any fitted parameter this moves theta_C to",
-        f"{ANGLE_CHERENKOV_FINITE_BETA_DEG:.5f} deg, the axial lower edge to",
-        f"{ANGLE_EDGE_FINITE_BETA_DEG:.5f} deg, and its axial velocity to",
-        f"{CHERENKOV_EDGE_VELOCITY_FINITE_BETA_MM_PER_NS:.6f} mm/ns.", "",
+        "to momentum `(0,0,-1)`, perpendicular to the bar x axis. Each actual cell runtime",
+        "supplies its own RINDEX; constant and dispersive models are both accepted.",
+        "The unchanged Step 3 builder omits wavelengths. These are joined read-only from",
+        "sipm_hits by cell, event, face and selected track ID; timestamps and source labels",
+        "must match exactly. Photon choices and all original derived columns are preserved.",
+        f"The configured muon beta is {MUON_BETA:.9f}. There is no scalar material cone angle.",
+        "", optical_markdown(optical_rows), "",
         "For every photon:", "", "```text",
         "tprop = t_detection_ns - t_creation_ns",
         "d_direct = |x_detection - x_creation| in three dimensions",
@@ -564,17 +586,26 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
         "SEMs for first-by-source photons. The shaded bands in `g_d.pdf` span the two mirror",
         "means rather than pretending that a photon-IID error describes an event cluster.", "",
         "### Linear summaries", "",
-        "| sample | material | source | v [mm/ns] | chi2/ndf | vs cone edge | vs c/n |",
+        "| sample | material | source | v [mm/ns] | chi2/ndf | vs first-source transport edge median [q05,q95] | vs first-source vg median [q05,q95] |",
         "|---|---|---|---:|---:|---:|---:|",
     ]
     linear = fits[fits["model"] == "linear_origin"]
     for _, row in linear.iterrows():
+        # The all-photon builders retain moments, not a wavelength distribution.
+        # Label the first-source reference explicitly rather than inventing an all-hit distribution.
+        prediction = next(item for item in optical_rows
+            if item["material"] == row["material"] and item["source_type"] == row["source_type"]
+            and item["sample"] == ("first_overall" if row["sample"] == "first_overall" else "first_by_source"))
+        def fractional_comparison(key):
+            values = [100*(row['v_linear_mm_per_ns']/prediction[key+suffix]-1)
+                      for suffix in ('_median', '_q95', '_q05')]
+            return f"{values[0]:+.2f}% [{values[1]:+.2f}, {values[2]:+.2f}]"
         lines.append(
             f"| {row['sample']} | {row['material']} | {row['source']} | "
             f"{row['v_linear_mm_per_ns']:.3f} +/- {row['v_linear_error']:.3f} | "
             f"{row['chi2']:.1f}/{int(row['ndf'])} = {row['chi2_ndf']:.1f}* | "
-            f"{100*(row['v_linear_mm_per_ns']/CHERENKOV_EDGE_VELOCITY_MM_PER_NS-1):+.2f}% | "
-            f"{100*(row['v_linear_mm_per_ns']/GROUP_VELOCITY_MM_PER_NS-1):+.2f}% |")
+            f"{fractional_comparison('transport_edge_mm_ns')} | "
+            f"{fractional_comparison('group_speed_mm_ns')} |")
     lines += ["", "`*` marks an inadequate absolute fit (all entries above).", "",
               "### Curvature tests", "",
               "| sample | material | source | Delta chi2 linear->quadratic | |b2|/err | quadratic chi2/ndf | cubic chi2/ndf |",
@@ -606,10 +637,9 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
                      f"{velocity('first_overall',0):.3f} | {velocity('first_by_source',1):.3f} | "
                      f"{velocity('first_by_source',2):.3f} |")
     lines += ["", "The source-specific Cherenkov value is not expected to equal the historical",
-              "mixed estimator. Its agreement target is the cone-edge speed, which it meets to",
-              "better than 1.2% in all three materials. The scintillation-only first photon is",
-              "near 186 mm/ns and therefore close to c/n, as expected for the earliest isotropic",
-              "photons selected from a large population.", "",
+              "mixed estimator. Comparisons use photon-weighted group-speed and transport-edge",
+              "distributions, not c/n. The all-photon rows use explicitly labelled first-source",
+              "reference distributions; aggregate all-photon moments cannot reconstruct spectra.", "",
               "## B2 — mirror consistency", "",
               "The full table is `mirror_consistency.csv`: 84 source-separated rows plus 21",
               "first-overall diagnostic rows. Compact maxima are:", "",
@@ -623,7 +653,7 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
               "## B3 — direct Cherenkov edge test", "",
               "The primary-cone geometry applies because the gun is perpendicular to x. The",
               "identity with theta_crit is exact only in the beta=1 limit; the configured finite",
-              f"beta predicts the lower edge at {ANGLE_EDGE_FINITE_BETA_DEG:.3f} deg.",
+              "beta predicts a wavelength-dependent lower edge, tabulated in cherenkov_edge_summary.csv.",
               "However, `source_type==2` records the creator process and not parent track identity.",
               "It therefore includes Cherenkov photons made by secondary charged particles. The",
               "`primary_like_proxy` requires creation x within 0.001 mm of gun x and creation y",
@@ -635,33 +665,19 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
                      f"{row['q001_deg']:.3f} | {row['median_deg']:.3f} | "
                      f"{100*row['fraction_below_critical']:.4f}% | "
                      f"{row['modal_bin_low_deg']:.2f}--{row['modal_bin_high_deg']:.2f} |")
-    lines += ["", f"The finite-beta edge at {ANGLE_EDGE_FINITE_BETA_DEG:.3f} deg lies inside a",
-              "partly filled histogram bin. The modal 39.50--39.52 deg bin immediately to its",
-              "right therefore does not imply a 0.019-deg discrepancy; the agreement is limited",
-              "by the 0.02-deg binning and exhibits the expected caustic pile-up. Isolated",
-              "41--43 deg teeth contain about one photon per bin and are Poisson noise, not",
-              "angular discretization. The upper edge of the selected angular window is temporal",
-              "selection, not a second geometric cone boundary. In the beta=1 limit the cone-edge",
-              "and END critical angles coincide exactly through arccos(sin(theta_C)) = arcsin(1/n).",
-              "The undifferentiated source-type-2",
-              "population fails the strict lower-bound",
-              "test: about 11.5--11.8% lies below theta_crit. The primary-like proxy satisfies",
-              "the bound for 99.97% or more of photons and displays the expected edge pile-up.",
-              "The few remaining proxy violations show that a creation-position cut cannot prove",
-              "parentage. The direct test therefore confirms the primary-cone mechanism while",
-              "also measuring the secondary contamination that prevents applying the identity to",
-              "all source-type-2 photons.", "",
+    lines += ["", "The finite-beta edge is a distribution for dispersive tables. Its modal bin",
+              "must be compared with photon-wise edge predictions, not a single 39.5-degree bin.",
+              "The upper selected angular window is temporal selection, not another cone boundary.",
+              "The beta=1 identity is exact at each wavelength. The fraction below the critical",
+              "angle above uses each photon's created wavelength. A primary-like proxy does not",
+              "establish parent track identity; secondary contamination remains a limitation.", "",
               "## B4 — source-separated transport", "",
-              f"The predicted beta=1 edge velocity is {CHERENKOV_EDGE_VELOCITY_MM_PER_NS:.3f}",
-              f"mm/ns, the finite-beta value is {CHERENKOV_EDGE_VELOCITY_FINITE_BETA_MM_PER_NS:.3f}",
-              f"mm/ns, and the group velocity is {GROUP_VELOCITY_MM_PER_NS:.3f} mm/ns. The fitted first-",
-              "Cherenkov velocities are listed above: they are 0.65--1.12% above the edge",
-              "beta=1 prediction, 0.96--1.43% above the finite-beta prediction, and 21.7--22.1%",
-              "below c/n. This closes the axial guiding mechanism at",
-              "the precision allowed by a global linear summary. Its quadratic residual is still",
-              "statistically significant, so the cone edge is not the whole detected population.", "",
-              "All detected Cherenkov photons yield much lower linear summaries (111--120 mm/ns),",
-              "while all scintillation photons give 135--139 mm/ns. These are path-population",
+              "The prediction distributions above give phase speed, group transport, and finite-beta",
+              "cone-edge transport references separately. The fitted-velocity comparison reports",
+              "median [q05,q95] differences; no agreement verdict from the old constant-index",
+              "campaign is carried over. Significant fitted curvature remains a limitation of a",
+              "single global linear summary.", "",
+              "All detected photon linear summaries are path-population",
               "means, not material group velocities. `g_by_boundary.pdf` separates them into the",
               "mandated 0, 1--2, 3--5, 6--10 and >10 encounter families; `g_by_exit_angle.pdf`",
               "shows the corresponding final-angle stratification.", "",
@@ -685,13 +701,24 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
 
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    _, gun_angles, indices = verify_gun_and_index()
+    cells, gun_angles, indices = verify_gun_and_index()
     all_photons = pd.read_csv(OUTPUT_DIR / "all_photon_cell_face.csv")
     all_photons["material_code"] = all_photons["material"].map(MATERIAL_CODES)
     all_photons["face_type"] = all_photons["face"].map({"left": 0, "right": 1})
     all_photons["gun_x_mm"] = all_photons["x_mm"]
     with uproot.open(OUTPUT_DIR / "first_by_source.root") as root_file:
         first = pd.DataFrame(root_file["first_by_source"].arrays(library="np"))
+    first = recover_selected_wavelengths(first, cells)
+    # Predictions are appended to selected photons; estimator and fitting logic is unchanged.
+    optical_rows = []
+    for sample, selected in (("first_by_source", first), ("first_overall", add_first_overall(first))):
+        selected = attach_optics(selected)
+        for (code, source), group in selected.groupby(["material_code", "source_type"]):
+            optical_rows.append({"material": MATERIALS[int(code)], "sample": sample,
+                "source_type": int(source), "population": f"{sample}, source {source}",
+                **optical_summary(group)})
+    pd.DataFrame(optical_rows).to_csv(OUTPUT_DIR / "optical_predictions.csv", index=False)
+    (OUTPUT_DIR / "optical_runtime.json").write_text(json.dumps(indices, indent=2)+"\n")
     first_source_rows = grouped_first_rows(first)
     first_overall = add_first_overall(first)
     first_overall_rows = grouped_first_rows(first_overall)
@@ -725,16 +752,14 @@ def main():
                            float_format="%.12g")
     make_figures(combined, microscopic, boundary, angle, hist2d_data, caustic, fits)
     render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
-                  boundary, angle, hist2d_data, gun_angles, indices)
+                  boundary, angle, hist2d_data, gun_angles, indices, optical_rows)
     summary = {
         "report": str(REPORT_PATH.resolve()),
         "fit_rows": len(fits), "mirror_rows": len(mirror),
         "microscopic_rows": len(microscopic),
         "first_rows": len(first),
-        "theta_critical_deg": ANGLE_CRITICAL_DEG,
-        "cherenkov_edge_velocity_mm_per_ns": CHERENKOV_EDGE_VELOCITY_MM_PER_NS,
-        "cherenkov_edge_velocity_finite_beta_mm_per_ns":
-            CHERENKOV_EDGE_VELOCITY_FINITE_BETA_MM_PER_NS,
+        "optical_runtime": campaign_tables()[1],
+        "optical_prediction_distributions": optical_rows,
         "report_sha256": sha256(REPORT_PATH),
     }
     (OUTPUT_DIR / "analysis_summary.json").write_text(

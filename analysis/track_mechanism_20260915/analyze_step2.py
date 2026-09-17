@@ -13,6 +13,9 @@ import numpy as np
 import ROOT
 import uproot
 
+from dispersive_optics import (campaign_tables, photon_optics, distribution_summary,
+                               optical_markdown)
+
 
 BASE_DIR = Path(__file__).resolve().parent
 STEP2_DIR = BASE_DIR / "step2"
@@ -382,12 +385,14 @@ def guiding_mask(arrays, material_code, scope, face_name):
     return base & (arrays["x_mm"] == 650)
 
 
-def make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg):
+def make_guiding_diagnostics(arrays, sources):
     path_stem = STEP2_DIR / "cherenkov_guiding_diagnostics"
     root_file = ROOT.TFile(str(path_stem.with_suffix(".root")), "RECREATE")
     canvas = ROOT.TCanvas("c_guiding", "Cherenkov guiding diagnostics", 1500, 900)
     canvas.Divide(3, 2)
     rows, object_names = [], []
+    optics = {(selection, face): photon_optics(arrays, f"{selection}_{face}_", "x_mm")
+              for selection in ("first", "random") for face in ("left", "right")}
     histograms = {}
     for material_code, material in MATERIAL_CODES.items():
         boundary_values_for_range = []
@@ -404,12 +409,13 @@ def make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg):
         boundary_max = math.ceil(boundary_max / 10.0) * 10.0
         for selection in ("first", "random"):
             for source_label, source_code in SOURCE_CODES.items():
-                angle_parts, boundary_parts = [], []
+                angle_parts, boundary_parts, critical_parts = [], [], []
                 for face_name in ("left", "right"):
                     mask = guiding_mask(arrays, material_code, "all_end", face_name)
                     source = arrays[f"{selection}_{face_name}_source_type"]
                     selected = mask & (source == source_code)
                     angle_parts.append(arrays[f"{selection}_{face_name}_exit_angle_deg"][selected])
+                    critical_parts.append(optics[(selection, face_name)]["theta_critical_detected_deg"][selected])
                     boundary_parts.append(
                         arrays[f"{selection}_{face_name}_n_boundary_encounters"][selected])
                 angles = np.concatenate(angle_parts)
@@ -421,7 +427,7 @@ def make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg):
                              **{f"exit_angle_{key}_deg": value for key, value in angle_stats.items()},
                              **{f"boundary_{key}": value for key, value in boundary_stats.items()},
                              "fraction_exit_angle_above_TIR_critical": float(
-                                 np.mean(angles > tir_critical_angle_deg))})
+                                 np.mean(angles > np.concatenate(critical_parts)))})
                 tag = f"{material.replace('-', '_')}_{selection}_{source_label}"
                 h_angle = make_histogram("exit_angle_" + tag, angles, ANGLE_BINS,
                                          ANGLE_MIN_DEG, ANGLE_MAX_DEG)
@@ -437,12 +443,13 @@ def make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg):
         for scope in ("near_end_650",):
             for selection in ("first", "random"):
                 for source_label, source_code in SOURCE_CODES.items():
-                    angle_parts, boundary_parts = [], []
+                    angle_parts, boundary_parts, critical_parts = [], [], []
                     for face_name in ("left", "right"):
                         mask = guiding_mask(arrays, material_code, scope, face_name)
                         source = arrays[f"{selection}_{face_name}_source_type"]
                         selected = mask & (source == source_code)
                         angle_parts.append(arrays[f"{selection}_{face_name}_exit_angle_deg"][selected])
+                        critical_parts.append(optics[(selection, face_name)]["theta_critical_detected_deg"][selected])
                         boundary_parts.append(arrays[f"{selection}_{face_name}_n_boundary_encounters"][selected])
                     angles = np.concatenate(angle_parts)
                     boundaries = np.concatenate(boundary_parts).astype(np.float64)
@@ -452,7 +459,7 @@ def make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg):
                                  **{f"exit_angle_{key}_deg": value for key, value in angle_stats.items()},
                                  **{f"boundary_{key}": value for key, value in boundary_stats.items()},
                                  "fraction_exit_angle_above_TIR_critical": float(
-                                     np.mean(angles > tir_critical_angle_deg))})
+                                     np.mean(angles > np.concatenate(critical_parts)))})
 
         for row_offset, variable in enumerate(("angle", "boundary")):
             canvas.cd(material_code + 1 + 3 * row_offset)
@@ -543,7 +550,7 @@ def point_lookup(points, clock, material, x_mm):
 
 def build_report(metadata, material_rows, cells, points, fits, clock_maxima, boundaries,
                  boundary_correlation, point_correlation, guiding_rows,
-                 cherenkov_angle_deg, tir_critical_angle_deg):
+                 optical_rows):
     boundary_differences = [cher - ratio for _, ratio, cher in boundaries]
     if boundary_correlation <= 0.0:
         boundary_verdict = (
@@ -617,15 +624,16 @@ def build_report(metadata, material_rows, cells, points, fits, clock_maxima, bou
               "| Quantity | max abs difference [ns] |", "|---|---:|"]
     for key, value in clock_maxima.items():
         lines.append(f"| {key} | {value:.17g} |")
-    lines += ["", "## A1 — optical-property limitation", "",
-              "| Material | RINDEX, 200--800 nm | ABSLENGTH, 200--800 nm | spectral dependence |",
-              "|---|---:|---:|---|"]
+    lines += ["", "## A1 — runtime optical properties", "",
+              "| Cell | RINDEX min–max | type | ABSLENGTH min–max [mm] |",
+              "|---|---|---|---|"]
     for row in material_rows:
-        lines.append(f"| {row['material']} | {float(row['rindex_min']):.2f} | {float(row['abs_length_min_mm']):.0f} mm | RINDEX constant; ABSLENGTH constant |")
-    lines += ["",
-              "The group-velocity spectral correction is identically zero by construction. "
-              "ABSLENGTH also has no wavelength dependence in these tables, so this model cannot produce wavelength-selective bulk attenuation. "
-              "The wavelength-dependent PDE remains active and is the only modeled spectral selection among these proposed paths.", "",
+        lines.append(f"| {row['cell_id']} | {row['rindex_min']:.6f}–{row['rindex_max']:.6f} | "
+                     f"{'constant' if row['rindex_constant'] else 'dispersive'} | "
+                     f"{row['abs_length_min_mm']:.2f}–{row['abs_length_max_mm']:.2f} |")
+    lines += ["", optical_markdown(optical_rows), "",
+              "Numerical GROUPVEL is differentiated on each actual runtime energy mesh. "
+              "ABSLENGTH spectral dependence is read from the same cell runtime. PDE remains active.", "",
               "## A2 — Cherenkov and robust-width boundaries", "",
               "Both boundaries use linear interpolation inside the sparse -650 to -500 mm bracket: ratio=0.5 and first-left Cherenkov fraction=0.5.", "",
               "| Material | ratio boundary [mm] | Cherenkov boundary [mm] | Cher - ratio [mm] |",
@@ -639,7 +647,8 @@ def build_report(metadata, material_rows, cells, points, fits, clock_maxima, bou
               "With only three materials and one 150 mm transition interval, the boundary correlation is descriptive. "
               "No causal identity is forced from the point correlation alone.", "",
               "## A3 — Cherenkov guiding diagnostic", "",
-              f"For the configured n={float(material_rows[0]['rindex_min']):.2f} and beta approximately one, theta_C={cherenkov_angle_deg:.2f} deg relative to the primary direction and theta_critical={tir_critical_angle_deg:.2f} deg relative to a boundary normal.", "",
+              "There is no unique material cone angle; the A1 distributions use each photon wavelength. "
+              "Comparisons to the final SiPM-normal angle use theta_critical(lambda_detected).", "",
               "The stored `exit_angle_deg` is relative to the SiPM normal at final detection. It is not the incidence angle at the large bar face and cannot directly prove the proposed TIR-cone inequality. "
               "The angle and boundary-count contrasts are therefore indirect tests; a direct test requires per-boundary angle history.", "",
               "All-END summary (mean with median in parentheses):", "",
@@ -684,19 +693,29 @@ def main():
     metadata = json.loads(DERIVED_META_PATH.read_text())
     sources = [{"path": row["root_path"], "sha256": row["root_sha256"]}
                for row in metadata["cells"]]
-    material_rows = list(csv.DictReader(MATERIAL_PROPERTIES_PATH.open()))
-    configured_indices = [float(row["rindex_min"]) for row in material_rows]
-    require(all(row["rindex_constant"] == "True" for row in material_rows),
-            "RINDEX no constante: revisar A1")
-    require(max(configured_indices) == min(configured_indices),
-            "RINDEX difiere entre materiales: revisar A1")
-    refractive_index = configured_indices[0]
-    cherenkov_angle_deg = math.degrees(math.acos(1.0 / refractive_index))
-    tir_critical_angle_deg = math.degrees(math.asin(1.0 / refractive_index))
+    _, material_rows = campaign_tables()
     with uproot.open(DERIVED_PATH) as root_file:
         tree = root_file["derived_events"]
         require(tree.num_entries == EXPECTED_ENTRIES, "conteo derivado incorrecto")
         arrays = tree.arrays(library="np")
+    optical_rows = []
+    for selection in ("first", "random"):
+        for source, source_code in SOURCE_CODES.items():
+            parts = {key: [] for key in MATERIAL_CODES}
+            for face in ("left", "right"):
+                optics = photon_optics(arrays, f"{selection}_{face}_", "x_mm")
+                for code in MATERIAL_CODES:
+                    mask = ((arrays["material_code"] == code)
+                            & (arrays[f"{selection}_{face}_source_type"] == source_code))
+                    parts[code].append({key: value[mask] for key, value in optics.items()})
+            for code, material in MATERIAL_CODES.items():
+                values = {key: np.concatenate([part[key] for part in parts[code]])
+                          for key in parts[code][0]}
+                optical_rows.append({"material": material,
+                    "population": f"{selection} {source}, both ENDs",
+                    **distribution_summary(values)})
+    write_csv(STEP2_DIR / "optical_predictions.csv", optical_rows)
+    (STEP2_DIR / "optical_runtime.json").write_text(json.dumps(material_rows, indent=2)+"\n")
     analysis_root = ROOT.TFile(str(ANALYSIS_ROOT_PATH), "RECREATE")
     time_result = analyze_clock(arrays, "time_ns", "t_left_ns", "t_right_ns",
                                 "t0_ns", analysis_root)
@@ -729,10 +748,10 @@ def main():
     make_baseline_figure(points, fits, sources)
     _, boundaries, boundary_correlation, point_correlation = make_cherenkov_boundary(
         arrays, sources)
-    guiding_rows = make_guiding_diagnostics(arrays, sources, tir_critical_angle_deg)
+    guiding_rows = make_guiding_diagnostics(arrays, sources)
     report = build_report(metadata, material_rows, cells, points, fits, clock_maxima, boundaries,
                           boundary_correlation, point_correlation, guiding_rows,
-                          cherenkov_angle_deg, tir_critical_angle_deg)
+                          optical_rows)
     REPORT_PATH.write_text(report)
     EXTERNAL_REPORT_PATH.write_text(report)
     print(json.dumps({"status": "PASS", "entries": EXPECTED_ENTRIES,

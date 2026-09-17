@@ -14,7 +14,9 @@ import numpy as np
 import pandas as pd
 import uproot
 
-from exec46_schema import SPEED_OF_LIGHT_MM_PER_NS, load_material_config
+from exec46_schema import load_material_config
+from dispersive_optics import (campaign_tables, attach_optics, optical_summary,
+                               optical_markdown)
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -35,28 +37,13 @@ MATERIAL_CODES = {name: index for index, name in enumerate(MATERIALS)}
 OPSC_CODES = {"EJ-200": "OPSC-100", "EJ-204": "OPSC-101", "EJ-230": "OPSC-106"}
 FACE_NAMES = {0: "left", 1: "right"}
 NOMINAL_DISTANCES_MM = np.asarray([50, 200, 500, 700, 900, 1200, 1350])
-N_REFRACTIVE = float(load_material_config("OPSC-100")["rindex"][0])
-GROUP_VELOCITY_MM_PER_NS = SPEED_OF_LIGHT_MM_PER_NS / N_REFRACTIVE
-MUON_MASS_MEV = 105.6583755
-MUON_KINETIC_ENERGY_MEV = 1000.0
-MUON_GAMMA = (MUON_KINETIC_ENERGY_MEV + MUON_MASS_MEV) / MUON_MASS_MEV
-MUON_BETA = math.sqrt(1.0 - 1.0 / MUON_GAMMA ** 2)
-CHERENKOV_ANGLE_FINITE_BETA_DEG = math.degrees(
-    math.acos(1.0 / (N_REFRACTIVE * MUON_BETA)))
-AXIAL_EDGE_ANGLE_DEG = 90.0 - CHERENKOV_ANGLE_FINITE_BETA_DEG
-AXIAL_EDGE_VELOCITY_BETA1 = (
-    SPEED_OF_LIGHT_MM_PER_NS * math.sqrt(1.0 - 1.0 / N_REFRACTIVE ** 2)
-    / N_REFRACTIVE)
-AXIAL_EDGE_VELOCITY_FINITE_BETA = (
-    GROUP_VELOCITY_MM_PER_NS
-    * math.sin(math.radians(CHERENKOV_ANGLE_FINITE_BETA_DEG)))
 BOOTSTRAP_REPLICATES = 2000
 BOOTSTRAP_BATCH = 100
 BOOTSTRAP_SEED = 0x46B00757A4
 ORDER_EXPONENT_GRID = np.linspace(0.1, 1.5, 2801)
 IQR_NORMALIZATION = 1.349
 ANGLE_HISTOGRAM_WIDTH_DEG = 0.02
-ANGLE_HISTOGRAM_MIN_DEG = 38.0
+ANGLE_HISTOGRAM_MIN_DEG = 30.0
 ANGLE_HISTOGRAM_MAX_DEG = 90.0
 PRIMARY_LIKE_TOLERANCE_MM = 0.001
 PAIR_VARIABLES = {
@@ -229,7 +216,7 @@ def cherenkov_nc_scan(frame):
     )
     for selection, prefix, count_column in selections:
         valid = frame[f"{prefix}_track_id"] >= 0
-        selected = frame[valid].copy()
+        selected = attach_optics(frame[valid], prefix+"_")
         selected["tprop_ns"] = (selected[f"{prefix}_t_detection_ns"]
                                 - selected[f"{prefix}_t_creation_ns"])
         selected["d_axial_mm"] = np.abs(selected[f"{prefix}_x_mm"]
@@ -249,13 +236,13 @@ def cherenkov_nc_scan(frame):
                     "mean_n_cherenkov": values[count_column].mean(),
                     "mean_v_axial_mm_per_ns": values["v_axial_mm_per_ns"].mean(),
                     "se_v_axial_mm_per_ns": values["v_axial_mm_per_ns"].sem(),
+                    **optical_summary(values),
                     "median_v_axial_mm_per_ns": values["v_axial_mm_per_ns"].median(),
                     "mean_alpha_axial_deg": values["alpha_axial_deg"].mean(),
                     "distance_to_beta1_edge_mm_per_ns": (
-                        values["v_axial_mm_per_ns"].mean() - AXIAL_EDGE_VELOCITY_BETA1),
+                        (values["v_axial_mm_per_ns"] - values["opt_transport_edge_beta1_mm_ns"]).mean()),
                     "distance_to_finite_beta_edge_mm_per_ns": (
-                        values["v_axial_mm_per_ns"].mean()
-                        - AXIAL_EDGE_VELOCITY_FINITE_BETA),
+                        (values["v_axial_mm_per_ns"] - values["opt_transport_edge_mm_ns"]).mean()),
                 })
     return pd.DataFrame(rows)
 
@@ -280,27 +267,30 @@ def cherenkov_angle_window(frame):
     rows, histogram_rows = [], []
     for selection, prefix in (("all_source_type_2", "first_cherenkov"),
                               ("primary_like_proxy", "first_primary_cherenkov")):
-        selected = frame[frame[f"{prefix}_track_id"] >= 0].copy()
+        selected = attach_optics(frame[frame[f"{prefix}_track_id"] >= 0], prefix+"_")
         selected["alpha_axial_deg"] = folded_angle(selected[f"{prefix}_exit_angle_deg"])
         selected["tprop_ns"] = (selected[f"{prefix}_t_detection_ns"]
                                 - selected[f"{prefix}_t_creation_ns"])
         selected["d_axial_mm"] = np.abs(selected[f"{prefix}_x_mm"]
                                            - selected[f"{prefix}_x_creation_mm"])
         alpha_rad = np.radians(selected["alpha_axial_deg"])
-        edge_rad = math.radians(AXIAL_EDGE_ANGLE_DEG)
+        edge_rad = np.radians(selected["opt_edge_angle_deg"])
         selected["angle_penalty_pred_ns"] = (
-            selected["d_axial_mm"] / GROUP_VELOCITY_MM_PER_NS
-            * (1.0 / np.cos(alpha_rad) - 1.0 / math.cos(edge_rad)))
+            selected["d_axial_mm"] / selected["opt_group_speed_mm_ns"]
+            * (1.0 / np.cos(alpha_rad) - 1.0 / np.cos(edge_rad)))
         selected["edge_excess_observed_ns"] = (
             selected["tprop_ns"]
-            - selected["d_axial_mm"] / AXIAL_EDGE_VELOCITY_FINITE_BETA)
+            - selected["d_axial_mm"] / selected["opt_transport_edge_mm_ns"])
         for (material_code, distance), group in selected.groupby(
                 ["material_code", "nominal_d_mm"], sort=True):
             alpha95 = group["alpha_axial_deg"].quantile(0.95)
             d_mean = group["d_axial_mm"].mean()
-            predicted = (d_mean / GROUP_VELOCITY_MM_PER_NS
+            # q95(angle) counterfactual evaluated for each observed wavelength/distance,
+            # then averaged; reproduces the old mean-d formula for a constant table.
+            predicted_values = (group["d_axial_mm"] / group["opt_group_speed_mm_ns"]
                          * (1.0 / math.cos(math.radians(alpha95))
-                            - 1.0 / math.cos(edge_rad)))
+                            - 1.0 / np.cos(np.radians(group["opt_edge_angle_deg"]))))
+            predicted = predicted_values.mean()
             rows.append({
                 "selection": selection, "material_code": int(material_code),
                 "material": MATERIALS[int(material_code)],
@@ -309,6 +299,10 @@ def cherenkov_angle_window(frame):
                 "q50_alpha_axial_deg": group["alpha_axial_deg"].median(),
                 "mean_d_axial_mm": d_mean,
                 "predicted_penalty_at_q95_ns": predicted,
+                **optical_summary(group),
+                "predicted_penalty_at_q95_q05_ns": predicted_values.quantile(.05),
+                "predicted_penalty_at_q95_median_ns": predicted_values.median(),
+                "predicted_penalty_at_q95_q95_ns": predicted_values.quantile(.95),
                 "empirical_q95_edge_excess_ns": group["edge_excess_observed_ns"].quantile(0.95),
                 "corr_predicted_observed_penalty": group[
                     ["angle_penalty_pred_ns", "edge_excess_observed_ns"]].corr().iloc[0, 1],
@@ -318,6 +312,7 @@ def cherenkov_angle_window(frame):
                                   ANGLE_HISTOGRAM_MAX_DEG
                                   + ANGLE_HISTOGRAM_WIDTH_DEG / 2.0,
                                   ANGLE_HISTOGRAM_WIDTH_DEG)
+                prediction = optical_summary(group)
                 counts, _ = np.histogram(group["alpha_axial_deg"], bins=edges)
                 total = len(group)
                 for index, count in enumerate(counts):
@@ -329,6 +324,7 @@ def cherenkov_angle_window(frame):
                         "bin_high_deg": edges[index + 1],
                         "bin_center_deg": 0.5 * (edges[index] + edges[index + 1]),
                         "count": int(count),
+                        **prediction,
                         "density_per_deg": count / (total * ANGLE_HISTOGRAM_WIDTH_DEG),
                     })
     return pd.DataFrame(rows), pd.DataFrame(histogram_rows)
@@ -339,6 +335,7 @@ def cherenkov_angle_by_count(frame):
     prefix = "first_primary_cherenkov"
     selected = frame[(frame[f"{prefix}_track_id"] >= 0)
                      & (frame["nominal_d_mm"] <= 500)].copy()
+    selected = attach_optics(selected, prefix+"_")
     selected["alpha_axial_deg"] = folded_angle(selected[f"{prefix}_exit_angle_deg"])
     rows = []
     for (material_code, distance), group in selected.groupby(
@@ -357,8 +354,8 @@ def cherenkov_angle_by_count(frame):
                 "max_n_primary_cherenkov": values["npe_primary_cherenkov"].max(),
                 "q50_alpha_axial_deg": values["alpha_axial_deg"].median(),
                 "q95_alpha_axial_deg": values["alpha_axial_deg"].quantile(0.95),
-                "q95_minus_edge_deg": (values["alpha_axial_deg"].quantile(0.95)
-                                         - AXIAL_EDGE_ANGLE_DEG),
+                **optical_summary(values),
+                "q95_minus_edge_deg": ((values["alpha_axial_deg"] - values["opt_edge_angle_deg"]).quantile(0.95)),
             })
     return pd.DataFrame(rows)
 
@@ -570,15 +567,15 @@ def near_end_mixture(frame):
             original = widths[(widths["material"] == material)
                               & (widths["x_mm"] == gun_x)
                               & (widths["observable"] == observable)].iloc[0]
-            cher_group = group[source == 2]
+            cher_group = attach_optics(group[source == 2], "first_")
             alpha = folded_angle(cher_group["first_exit_angle_deg"])
             tprop = (cher_group["first_t_detection_ns"]
                      - cher_group["first_t_creation_ns"])
             d_axial = np.abs(cher_group["first_x_mm"]
                              - cher_group["first_x_creation_mm"])
-            penalty = (d_axial / GROUP_VELOCITY_MM_PER_NS
+            penalty = (d_axial / cher_group["opt_group_speed_mm_ns"]
                        * (1.0 / np.cos(np.radians(alpha))
-                          - 1.0 / math.cos(math.radians(AXIAL_EDGE_ANGLE_DEG))))
+                          - 1.0 / np.cos(np.radians(cher_group["opt_edge_angle_deg"]))))
             rows.append({
                 "material_code": material_code, "material": material,
                 "gun_x_mm": gun_x, "face_type": face, "face": FACE_NAMES[face],
@@ -592,6 +589,7 @@ def near_end_mixture(frame):
                 "qwidth_total_ns": robust_width(times),
                 "original_sigma_gaussian_ns": original["sigma_G_ns"],
                 "original_gaussian_chi2_ndf": original["chi2_ndf"],
+                **optical_summary(cher_group),
                 "corr_cherenkov_tprop_angle_penalty": np.corrcoef(tprop, penalty)[0, 1],
                 "q95_cherenkov_folded_angle_deg": np.quantile(alpha, 0.95),
             })
@@ -639,8 +637,8 @@ def save_bundle(stem, frame, metadata, figure):
         "materials": list(MATERIALS),
         "optical_model": {
             "material_codes": OPSC_CODES,
-            "rindex": N_REFRACTIVE,
-            "rindex_model": "constant over the configured energy range",
+            "cell_runtime_tables": campaign_tables()[1],
+            "wavelengths": "created for cone; detected for group transport",
         },
         "plot_scale": metadata.get("plot_scale", "linear unless stated otherwise"),
         "binning": metadata.get("binning", "tabulated points; no histogram binning"),
@@ -718,7 +716,10 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
             for distance, values in group.groupby("nominal_d_mm"):
                 axis.plot(values["mean_n_cherenkov"], values["mean_v_axial_mm_per_ns"],
                           marker="o", ms=2, lw=0.8, label=str(distance))
-            axis.axhline(AXIAL_EDGE_VELOCITY_FINITE_BETA, color="black", ls="--", lw=0.8)
+                axis.plot(values["mean_n_cherenkov"], values["transport_edge_mm_ns_median"],
+                          ls="--", lw=.8)
+                axis.fill_between(values["mean_n_cherenkov"], values["transport_edge_mm_ns_q05"],
+                                  values["transport_edge_mm_ns_q95"], alpha=.08)
             axis.set_title(f"{material}, {selection.replace('_', ' ')}")
             axis.grid(alpha=0.2)
     for axis in axes[-1]: axis.set_xlabel("mean N_C in quintile")
@@ -726,7 +727,7 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
     axes[0, 0].legend(title="d [mm]", fontsize=6)
     save_bundle("cherenkov_nc_velocity", nc_scan, {
         "count_bins": "five equal-population bins per material and distance",
-        "finite_beta_edge_velocity_mm_per_ns": AXIAL_EDGE_VELOCITY_FINITE_BETA,
+        "finite_beta_edge_velocity": "photon-weighted median/q05/q95 per plotted group",
     }, fig)
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharex=True, sharey=True)
@@ -734,25 +735,29 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         group = angle_window[(angle_window["material"] == material)
                              & (angle_window["selection"] == "primary_like_proxy")]
         axis.plot(group["nominal_d_mm"], group["q95_alpha_axial_deg"], marker="o")
-        axis.axhline(AXIAL_EDGE_ANGLE_DEG, color="black", ls="--", lw=0.8)
+        axis.plot(group["nominal_d_mm"], group["edge_angle_deg_median"], color="black", ls="--", lw=.8)
+        axis.fill_between(group["nominal_d_mm"], group["edge_angle_deg_q05"],
+                          group["edge_angle_deg_q95"], color="black", alpha=.1)
         axis.set_title(material); axis.grid(alpha=0.2)
     for axis in axes: axis.set_xlabel("nominal END distance [mm]")
     axes[0].set_ylabel("q95 folded axial exit angle [deg]")
     save_bundle("cherenkov_angle_window", angle_window, {
         "angle_definition": "min(exit_angle_deg, 180-exit_angle_deg)",
-        "finite_beta_edge_deg": AXIAL_EDGE_ANGLE_DEG,
-        "penalty_formula": "d/(c/n)*(1/cos(alpha)-1/cos(alpha_edge))",
+        "finite_beta_edge": "median/q05/q95 in plotted population sidecar",
+        "penalty_formula": "d/vg(lambda_det)*(1/cos(alpha)-1/cos(alpha_edge(lambda_created,beta)))",
     }, fig)
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharex=True, sharey=True)
     for axis, material in zip(axes, MATERIALS):
         group = angle_histograms[angle_histograms["material"] == material]
         for distance, values in group.groupby("nominal_d_mm", sort=True):
-            visible = values[(values["bin_center_deg"] >= 39.3)
+            visible = values[(values["bin_center_deg"] >= 30.0)
                              & (values["bin_center_deg"] <= 56.0)]
             axis.step(visible["bin_center_deg"], visible["density_per_deg"],
                       where="mid", lw=0.8, label=f"{int(distance)}")
-        axis.axvline(AXIAL_EDGE_ANGLE_DEG, color="black", ls="--", lw=0.8)
+            prediction = values.iloc[0]
+            axis.axvspan(prediction["edge_angle_deg_q05"], prediction["edge_angle_deg_q95"], alpha=.05)
+            axis.axvline(prediction["edge_angle_deg_median"], ls="--", lw=.5)
         axis.set_title(material); axis.set_yscale("log"); axis.grid(alpha=0.2)
         axis.set_xlabel("folded axial exit angle [deg]")
     axes[0].set_ylabel("density [deg^-1]")
@@ -763,7 +768,7 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         "bin_width_deg": ANGLE_HISTOGRAM_WIDTH_DEG,
         "histogram_range_deg": [ANGLE_HISTOGRAM_MIN_DEG,
                                 ANGLE_HISTOGRAM_MAX_DEG],
-        "finite_beta_edge_deg": AXIAL_EDGE_ANGLE_DEG,
+        "finite_beta_edge": "median/q05/q95 in plotted population sidecar",
         "plot_scale": "logarithmic y, linear x",
     }, fig)
 
@@ -773,7 +778,10 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         for distance, values in group.groupby("nominal_d_mm", sort=True):
             axis.plot(values["mean_n_primary_cherenkov"],
                       values["q95_alpha_axial_deg"], marker="o", label=f"{int(distance)}")
-        axis.axhline(AXIAL_EDGE_ANGLE_DEG, color="black", ls="--", lw=0.8)
+            axis.plot(values["mean_n_primary_cherenkov"], values["edge_angle_deg_median"],
+                      ls="--", lw=.8)
+            axis.fill_between(values["mean_n_primary_cherenkov"], values["edge_angle_deg_q05"],
+                              values["edge_angle_deg_q95"], alpha=.08)
         axis.set_title(material); axis.grid(alpha=0.2)
         axis.set_xlabel("mean primary-like N_C in quintile")
     axes[0].set_ylabel("q95 folded axial angle [deg]")
@@ -782,7 +790,7 @@ def make_figures(distributions, paired, enrichment, nc_scan, angle_window,
         "selection": "first primary-like Cherenkov; d <= 500 mm",
         "stratification": "N_C quintiles independently at fixed material and distance",
         "prediction": "q95 approaches the finite-beta edge as N_C increases",
-        "finite_beta_edge_deg": AXIAL_EDGE_ANGLE_DEG,
+        "finite_beta_edge": "median/q05/q95 in plotted population sidecar",
     }, fig)
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
@@ -915,8 +923,10 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
         "photons. `first_scint` and `first_cherenkov` are minima in detection time within each",
         "source. No scintillation lifetime law is applied to Cherenkov.", "",
         "## C0a — Cherenkov multiplicity and the cone edge", "",
-        f"The requested beta=1 edge is {AXIAL_EDGE_VELOCITY_BETA1:.3f} mm/ns. The configured",
-        f"1 GeV muon gives beta={MUON_BETA:.6f} and {AXIAL_EDGE_VELOCITY_FINITE_BETA:.3f} mm/ns.",
+        "The cone angle uses each selected photon created wavelength; transport uses its detected wavelength.",
+        "Group velocities are numerical Geant4 mesh values; c/n is retained only as a phase speed.",
+        optical_markdown([dict(row, population=f"{row['selection']}, d={row['nominal_d_mm']:.0f} mm")
+                          for row in angle_window.to_dict("records")]),
         "Axial velocity is the measured axial displacement divided by pure propagation time.", "",
         "| material | d [mm] | proxy N_C low/high quintile | v low/high [mm/ns] | high-edge [mm/ns] |",
         "|---|---:|---:|---:|---:|"]
@@ -935,16 +945,21 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
               "Cherenkov; both results are retained in `cherenkov_nc_velocity.csv`.", "",
               "## C0b — angular window versus distance", "",
               "The timing formula is tested without a fitted speed:", "", "```text",
-              "Delta t(alpha,d) = d/(c/n) * [1/cos(alpha) - 1/cos(alpha_edge)]", "```", "",
+              "Delta t(alpha,d,lambda) = d/vg(lambda_det) * [1/cos(alpha) - 1/cos(alpha_edge(lambda_created,beta))]", "```", "",
               "The stored final angle is folded to the axial magnitude because the penalty uses",
               "|cos(alpha)|. The upper window is a selection in arrival time, not a second cone",
-              "boundary.", "", "| material | d [mm] | q95 alpha proxy [deg] | predicted penalty [ps] | empirical q95 excess [ps] |",
-              "|---|---:|---:|---:|---:|"]
+              "boundary. At q95(alpha), the prediction averages the individual wavelength/distance",
+              "counterfactuals; its median/q05/q95 are retained in the CSV. This is not the quantile",
+              "of each photon actual penalty.", "", "| material | d [mm] | q95 alpha proxy [deg] | predicted penalty mean [ps] | predicted penalty median [q05,q95] [ns] | empirical q95 excess [ps] |",
+              "|---|---:|---:|---:|---:|---:|"]
     window = angle_window[angle_window["selection"] == "primary_like_proxy"]
     for _, row in window.iterrows():
         lines.append(f"| {row['material']} | {int(row['nominal_d_mm'])} | "
                      f"{row['q95_alpha_axial_deg']:.3f} | "
                      f"{1000*row['predicted_penalty_at_q95_ns']:.2f} | "
+                     f"{row['predicted_penalty_at_q95_median_ns']:.5f} "
+                     f"[{row['predicted_penalty_at_q95_q05_ns']:.5f}, "
+                     f"{row['predicted_penalty_at_q95_q95_ns']:.5f}] | "
                      f"{1000*row['empirical_q95_edge_excess_ns']:.2f} |")
     lines += ["", "This distance-only comparison is not a valid rejection of angular selection:",
               "the low-N_C quintile is N_C=1 at d >= 700 mm, where no order statistic exists.",
