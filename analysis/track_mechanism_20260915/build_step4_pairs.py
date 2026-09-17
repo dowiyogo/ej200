@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import multiprocessing as mp
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,9 +23,9 @@ from exec46_schema import (
 )
 
 
-OUTPUT_DIR = Path(__file__).resolve().parent / "step4"
-OUTPUT_ROOT = OUTPUT_DIR / "step4_event_pairs.root"
-OUTPUT_META = OUTPUT_DIR / "step4_event_pairs.meta.json"
+OUTPUT_DIR = None
+OUTPUT_ROOT = None
+OUTPUT_META = None
 EXPECTED_EVENTS = 10_000
 EXPECTED_CELLS = 21
 PROCESS_COUNT = 4
@@ -238,10 +239,16 @@ def analyze_cell(payload):
 
 
 def main():
+    global OUTPUT_DIR, OUTPUT_ROOT, OUTPUT_META
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign", type=Path, default=CAMPAIGN_DIR)
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory receiving step4_event_pairs.root and metadata")
     parser.add_argument("--processes", type=int, default=PROCESS_COUNT)
     args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
+    OUTPUT_ROOT = OUTPUT_DIR / "step4_event_pairs.root"
+    OUTPUT_META = OUTPUT_DIR / "step4_event_pairs.meta.json"
     require(args.processes >= 1, "processes debe ser positivo")
     start = datetime.now(timezone.utc)
     cells = discover_cells(args.campaign.resolve())
