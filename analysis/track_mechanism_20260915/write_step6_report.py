@@ -2,9 +2,9 @@ from pathlib import Path
 import json
 import pandas as pd
 
-ROOT = Path('analysis/track_mechanism_20260915')
-OUT = ROOT / 'step6_v2'
-REPORT = ROOT / 'REPORT_STEP6_V2_TABLES_20260917.md'
+ROOT = Path('analysis/track_mechanism_20260915/step6_v2')
+OUT = ROOT
+REPORT = Path('analysis/track_mechanism_20260915/REPORT_STEP6_V2_TABLES_20260917.md')
 
 def table(path, columns=None, digits=8):
     if Path(path).suffix == '.json':
