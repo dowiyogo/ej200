@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Cuantifica el sesgo de primer fotón y los tests C0--C4 de EXEC_46."""
 
+import argparse
 import hashlib
 import json
 import math
@@ -21,10 +22,10 @@ from dispersive_optics import (campaign_tables, attach_optics, optical_summary,
 
 
 BASE_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP4_DIR", str(BASE_DIR / "step4")))
-INPUT_ROOT = OUTPUT_DIR / "step4_event_pairs.root"
+OUTPUT_DIR = None
+INPUT_ROOT = None
 ORDER_WIDTHS = Path("analysis/order_stat_weight_20260915/sources/part_a_widths.csv")
-REPORT_PATH = OUTPUT_DIR / "REPORT_FIRSTPHOTON_SELECTION_20260916.md"
+REPORT_PATH = None
 BUILD_COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
     "analysis/track_mechanism_20260915/build_step4_pairs.py --processes 4"
@@ -1136,6 +1137,14 @@ def render_report(paired, enrichment, nc_scan, angle_window, handicap, order_poi
 
 
 def main():
+    global OUTPUT_DIR, INPUT_ROOT, REPORT_PATH
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory containing step4_event_pairs.root and receiving analysis outputs")
+    args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
+    INPUT_ROOT = OUTPUT_DIR / "step4_event_pairs.root"
+    REPORT_PATH = OUTPUT_DIR / "REPORT_FIRSTPHOTON_SELECTION_20260916.md"
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     require(INPUT_ROOT.is_file(), f"falta {INPUT_ROOT}")
     require(ORDER_WIDTHS.is_file(), f"falta {ORDER_WIDTHS}")
