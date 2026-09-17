@@ -1,0 +1,37 @@
+{
+  "start_utc": "2026-09-17T07:39:51.496952+00:00",
+  "end_utc": "2026-09-17T07:45:57.954051+00:00",
+  "command": "analysis/track_mechanism_20260915/analyze_step1.py --campaign /home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2 --output-dir analysis/track_mechanism_20260915/step6_v2 --processes 4",
+  "constants": {
+    "step_size": "256 MB",
+    "processes": 4,
+    "expected_events": 10000,
+    "path_tolerance_mm": 1e-06,
+    "time_tolerance_ns": 1e-12,
+    "speed_tolerance_mm": 1e-06,
+    "gun_position_tolerance_mm": 1e-09,
+    "npe_reference_sigma_multiplier": 5.0,
+    "npe_reference_rounding_tolerance": 0.005,
+    "tau_diagnostic_multipliers": [
+      3.0,
+      4.0,
+      5.0,
+      8.0,
+      12.0,
+      20.0
+    ],
+    "tau_gate_multipliers": [
+      3.0,
+      4.0,
+      5.0
+    ],
+    "tau_local_half_width_mm": 0.1,
+    "tau_min_contributing_events": 200,
+    "tau_compatibility_relative": 0.03
+  },
+  "cells": 21,
+  "analyzed_cells": 21,
+  "campaign_cells": 21,
+  "campaign_complete": true,
+  "all_gates_pass": true
+}

@@ -1,0 +1,23 @@
+{
+  "baseline_fits": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step2/baseline_fits.csv",
+  "baseline_fits_sha256": "2ecab713d3009ad031eaa22e542a769b3170fef2dc3eb8896bed499311c01b0c",
+  "baseline_points": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step2/baseline_points.csv",
+  "baseline_points_sha256": "73588171d4862230cf39c58d224995d7c224cad7e741ccdb7280a90549544eb2",
+  "bootstrap_replicates": 2000,
+  "bootstrap_seed": 460516,
+  "causal": false,
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
+  "created_utc": "2026-09-17T09:06:03.957222+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step5/residual_mirrors.csv",
+  "error": "paired cell-stratified event bootstrap including center and fitted between slope",
+  "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step2/exec46_derived_events.root",
+  "input_sha256": "764c643e6ccfc3d0b96c7fc20d6753e86139233599ca19359c8d95e585844290",
+  "materials": [
+    "EJ-200",
+    "EJ-204",
+    "EJ-230"
+  ],
+  "new_simulation": false,
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step5/residual_mirrors.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step5/residual_mirrors.root"
+}

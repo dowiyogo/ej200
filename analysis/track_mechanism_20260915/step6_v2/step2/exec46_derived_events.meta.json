@@ -1,0 +1,235 @@
+{
+  "start_utc": "2026-09-17T07:46:08.216570+00:00",
+  "end_utc": "2026-09-17T07:50:14.619423+00:00",
+  "command": "analysis/track_mechanism_20260915/build_step2_derived.py --campaign /home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2 --processes 4",
+  "input_mode": "READ",
+  "new_simulation": false,
+  "tree": "derived_events",
+  "entries": 210000,
+  "cells": [
+    {
+      "cell_code": 0,
+      "cell_id": "EJ200_xm650",
+      "material": "EJ-200",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xm650/attempts/397938f5676a479ca27baf2729058772/photon_hits_run000.root",
+      "root_sha256": "4acec57272a60327cf3048d116ee6f903554926163dd976fccd630592b190fdc"
+    },
+    {
+      "cell_code": 1,
+      "cell_id": "EJ200_xm500",
+      "material": "EJ-200",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xm500/attempts/c8183dcd28194a578f427f57455b2594/photon_hits_run000.root",
+      "root_sha256": "ae26354ab40900d9834902eb1bad7ff627e3e2122cee13013fcd704701f2c89d"
+    },
+    {
+      "cell_code": 2,
+      "cell_id": "EJ200_xm200",
+      "material": "EJ-200",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xm200/attempts/11d2809e715248b980ccc790ab1ab234/photon_hits_run000.root",
+      "root_sha256": "d207b908e55896750c36e3d86f9419a2e4f08d295879afaf4c3fd41dca9a8031"
+    },
+    {
+      "cell_code": 3,
+      "cell_id": "EJ200_xp0",
+      "material": "EJ-200",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xp0/attempts/3802ce3ac60342378682cb4111ba62a6/photon_hits_run000.root",
+      "root_sha256": "66a69dc5d1f02312ce1d8b416031b9517f677a5c246d0fc53bb3545b85040df4"
+    },
+    {
+      "cell_code": 4,
+      "cell_id": "EJ200_xp200",
+      "material": "EJ-200",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xp200/attempts/c16e18cfb75247f685899932666376ea/photon_hits_run000.root",
+      "root_sha256": "8bb964c22cc85525ff9daffff945f5dec4675a4e384639ea294eb6a7dc1befc1"
+    },
+    {
+      "cell_code": 5,
+      "cell_id": "EJ200_xp500",
+      "material": "EJ-200",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xp500/attempts/0d429924edab4ed3be1666bf9c0fdc32/photon_hits_run000.root",
+      "root_sha256": "332696a8e9f666b9d8c8bd4e4deb80d29f329088792a87a159ed7ad1ada647e9"
+    },
+    {
+      "cell_code": 6,
+      "cell_id": "EJ200_xp650",
+      "material": "EJ-200",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ200_xp650/attempts/7dd7738638d34bbd933259733456e747/photon_hits_run000.root",
+      "root_sha256": "5e0f69cefb5a9bfa5623223ceb74d06729713f75b604e3aa7acb8b0798551669"
+    },
+    {
+      "cell_code": 7,
+      "cell_id": "EJ204_xm650",
+      "material": "EJ-204",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xm650/attempts/0c742a195a4d4eaf98d5ab87b7493f7b/photon_hits_run000.root",
+      "root_sha256": "05504aecb07c5255d28163346484b13e980d695a348e34978c3d3618177a69f6"
+    },
+    {
+      "cell_code": 8,
+      "cell_id": "EJ204_xm500",
+      "material": "EJ-204",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xm500/attempts/5211f38f918941a0abd17d66e76fa37c/photon_hits_run000.root",
+      "root_sha256": "b6fe205168db1b0ca829c054d9cfad4e7eaae311e4d0806047de7edfb1a13915"
+    },
+    {
+      "cell_code": 9,
+      "cell_id": "EJ204_xm200",
+      "material": "EJ-204",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xm200/attempts/9a748d0a360e4d129817553a53358cc8/photon_hits_run000.root",
+      "root_sha256": "ec704abbe3b9b7764a50114962f2743e07e47f21b925445ee2bc6671d6020010"
+    },
+    {
+      "cell_code": 10,
+      "cell_id": "EJ204_xp0",
+      "material": "EJ-204",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xp0/attempts/ac741a39577a4d958ebb68716fbbce06/photon_hits_run000.root",
+      "root_sha256": "320e4f45d10bed6b8491ef8f5453e4ccadace84755dbdff823cb82f2f8a94374"
+    },
+    {
+      "cell_code": 11,
+      "cell_id": "EJ204_xp200",
+      "material": "EJ-204",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xp200/attempts/00cd3ba1e07540a180744becbc62af21/photon_hits_run000.root",
+      "root_sha256": "34230e591bb934e1db8d8b8a1018093a43b6838d133307c1390e4fe82d9240eb"
+    },
+    {
+      "cell_code": 12,
+      "cell_id": "EJ204_xp500",
+      "material": "EJ-204",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xp500/attempts/ccdbb1dede41485cbce7dd2887e94a10/photon_hits_run000.root",
+      "root_sha256": "e229c1286eaa324fc87cc9eb626e6820697b62fc4c6e9aaa540c2a0536632f01"
+    },
+    {
+      "cell_code": 13,
+      "cell_id": "EJ204_xp650",
+      "material": "EJ-204",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ204_xp650/attempts/7cfe7bfd2d9140b682a3e3157ebcf237/photon_hits_run000.root",
+      "root_sha256": "fc541f3692780cafb406056e6b84c2ad28d64daab992392cc590bfcf09eee256"
+    },
+    {
+      "cell_code": 14,
+      "cell_id": "EJ230_xm650",
+      "material": "EJ-230",
+      "x_mm": -650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xm650/attempts/6e0b254358c444daa17306a784154b74/photon_hits_run000.root",
+      "root_sha256": "e0de53732d3f2837e147f40125db3092280ecb080c8c00d4a06627769642c253"
+    },
+    {
+      "cell_code": 15,
+      "cell_id": "EJ230_xm500",
+      "material": "EJ-230",
+      "x_mm": -500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xm500/attempts/73c9aea974224a7bb9fd72f557d8cf28/photon_hits_run000.root",
+      "root_sha256": "81888c7c81442f61e74b195eea2c1177ffb6546c555c594b084c1ad30c308bdc"
+    },
+    {
+      "cell_code": 16,
+      "cell_id": "EJ230_xm200",
+      "material": "EJ-230",
+      "x_mm": -200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xm200/attempts/1e2483b4fd644358bff06d8bbea5c710/photon_hits_run000.root",
+      "root_sha256": "e039297e5381c12852b90fdc11bed7d385fc82bee28bba50f57232bf68d9a585"
+    },
+    {
+      "cell_code": 17,
+      "cell_id": "EJ230_xp0",
+      "material": "EJ-230",
+      "x_mm": 0,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xp0/attempts/13b525e236174c7698e9d9490eba6b96/photon_hits_run000.root",
+      "root_sha256": "ca77bd6f0385402139c092ead7775bf3ab3c57cca458fcebf87dc2ec702a82e1"
+    },
+    {
+      "cell_code": 18,
+      "cell_id": "EJ230_xp200",
+      "material": "EJ-230",
+      "x_mm": 200,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xp200/attempts/9b53b9bdda0e4c2d863e9a965c0a792b/photon_hits_run000.root",
+      "root_sha256": "bddf5b0eefc7f921cbc83aecdf3a7547b3746e5377b029aee92b02dce4020d18"
+    },
+    {
+      "cell_code": 19,
+      "cell_id": "EJ230_xp500",
+      "material": "EJ-230",
+      "x_mm": 500,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xp500/attempts/c9a2ca3b1a2f4d8eb77aab2a44123c35/photon_hits_run000.root",
+      "root_sha256": "425b21bf9491f45c7f6ec423b3f5524883bef9fd5753f2137d7bbdadad4bb807"
+    },
+    {
+      "cell_code": 20,
+      "cell_id": "EJ230_xp650",
+      "material": "EJ-230",
+      "x_mm": 650,
+      "root_path": "/home/rrios/exec46_20260916/full_grid_bc408_bc404_3800_v2/cells/EJ230_xp650/attempts/8e2c787777d84fba9fae2023e92d5538/photon_hits_run000.root",
+      "root_sha256": "4409de815b9c737d35b048569a4d9070f6bab1b5840cfc54defc3671cb2e4643"
+    }
+  ],
+  "random_control": {
+    "algorithm": "minimum splitmix64 priority per event and END face",
+    "seed_hex": "0x46a2c0de5eed1234",
+    "unit": "one photon uniformly selected from each event and END face"
+  },
+  "material_properties": [
+    {
+      "material": "EJ-200",
+      "opsc_code": "OPSC-100",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.55723888331,
+      "rindex_max": 1.65180294747,
+      "rindex_constant": false,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 28.23,
+      "abs_length_max_mm": 3800.0,
+      "abs_length_constant": false,
+      "rindex_path": "/home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4/data/oscnt/opsc-100/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260915/f4_bc408_sensitivity/visible_current_3800mm/sslg4/data/oscnt/opsc-100/absLength.txt"
+    },
+    {
+      "material": "EJ-204",
+      "opsc_code": "OPSC-101",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.58465562483,
+      "rindex_max": 1.63312274008,
+      "rindex_constant": false,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 26.58,
+      "abs_length_max_mm": 3800.0,
+      "abs_length_constant": false,
+      "rindex_path": "/home/rrios/exec46_20260916/i2_bc404_validation/EJ204_xm650/sslg4/data/oscnt/opsc-101/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260916/i2_bc404_validation/EJ204_xm650/sslg4/data/oscnt/opsc-101/absLength.txt"
+    },
+    {
+      "material": "EJ-230",
+      "opsc_code": "OPSC-106",
+      "rindex_wavelength_min_nm": 200.0,
+      "rindex_wavelength_max_nm": 800.0,
+      "rindex_min": 1.58,
+      "rindex_max": 1.58,
+      "rindex_constant": true,
+      "abs_wavelength_min_nm": 200.0,
+      "abs_wavelength_max_nm": 800.0,
+      "abs_length_min_mm": 1200.0,
+      "abs_length_max_mm": 1200.0,
+      "abs_length_constant": true,
+      "rindex_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/rIndex.txt",
+      "absorption_path": "/home/rrios/exec46_20260915/build_baseline/sslg4/data/oscnt/opsc-106/absLength.txt"
+    }
+  ],
+  "derived_root_sha256": "764c643e6ccfc3d0b96c7fc20d6753e86139233599ca19359c8d95e585844290"
+}

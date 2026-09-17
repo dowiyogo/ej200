@@ -4,6 +4,7 @@
 import hashlib
 import json
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,10 +17,11 @@ import uproot
 
 
 BASE_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = BASE_DIR / "step5"
-DERIVED_ROOT = BASE_DIR / "step2" / "exec46_derived_events.root"
-BASELINE_POINTS = BASE_DIR / "step2" / "baseline_points.csv"
-BASELINE_FITS = BASE_DIR / "step2" / "baseline_fits.csv"
+OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP5_DIR", str(BASE_DIR / "step5")))
+STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
+DERIVED_ROOT = STEP2_DIR / "exec46_derived_events.root"
+BASELINE_POINTS = STEP2_DIR / "baseline_points.csv"
+BASELINE_FITS = STEP2_DIR / "baseline_fits.csv"
 REPORT_PATH = OUTPUT_DIR / "REPORT_CHAINRULE_IDENTIFICATION_20260916.md"
 COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "

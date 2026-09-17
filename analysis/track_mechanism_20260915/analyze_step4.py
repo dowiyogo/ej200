@@ -4,6 +4,7 @@
 import hashlib
 import json
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,7 +21,7 @@ from dispersive_optics import (campaign_tables, attach_optics, optical_summary,
 
 
 BASE_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = BASE_DIR / "step4"
+OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP4_DIR", str(BASE_DIR / "step4")))
 INPUT_ROOT = OUTPUT_DIR / "step4_event_pairs.root"
 ORDER_WIDTHS = Path("analysis/order_stat_weight_20260915/sources/part_a_widths.csv")
 REPORT_PATH = OUTPUT_DIR / "REPORT_FIRSTPHOTON_SELECTION_20260916.md"

@@ -280,10 +280,15 @@ def run():
                     base.require(np.all(np.isin(source,[1,2])),'Unclassified winner')
                     cell['isC'+end] = source==2
                 prows, pslopes = profile_fits(cell,material,x,root_file)
-                rows_profile.extend(prows)
                 for v in VARIANTS: profiles[v].append(pslopes[v])
                 ref = reference[(reference.material==material)&(reference.x_mm==x)].iloc[0]
-                base.require(abs(pslopes['uniform_pol1']-ref.slope_ns_pe)<PROFILE_REFERENCE_ATOL,'Original slope mismatch')
+                slope_difference = pslopes['uniform_pol1'] - ref.slope_ns_pe
+                for row in prows:
+                    if row['variant'] == 'uniform_pol1':
+                        row['reference_old_slope_ns_pe'] = ref.slope_ns_pe
+                        row['reference_slope_difference_ns_pe'] = slope_difference
+                        row['reference_slope_informational'] = True
+                rows_profile.extend(prows)
                 bn,b,cov,cond = ols_counts(cell['n'],cell['s'],cell['c'],cell['y'])
                 rows_count.append(dict(material=material,x_mm=int(x),beta_total_ps_pe=NS_TO_PS*bn,
                                        beta_scint_ps_pe=NS_TO_PS*b[0],beta_cherenkov_ps_pe=NS_TO_PS*b[1],

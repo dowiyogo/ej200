@@ -1,0 +1,12 @@
+{
+  "angle_definition": "Final direction relative to the END SiPM outward normal.",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step3.py",
+  "created_utc": "2026-09-17T08:53:00.354277+00:00",
+  "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step3/g_by_exit_angle.csv",
+  "pdf": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step3/g_by_exit_angle.pdf",
+  "root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step3/g_by_exit_angle.root",
+  "source_hashes": {
+    "first_by_source.root": "78019362ebd49e8d14eb91471b8f43fa043d742675c32d56176b20c76f647b02",
+    "microscopic_transport_bins.npz": "186bdfde4d2f91e092287245164c05d7ef2b7aa3b2d27494ec97b94b37316a2d"
+  }
+}
