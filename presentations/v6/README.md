@@ -31,7 +31,7 @@ del 6×6 mm² NUV-MT (Lee et al., IEEE TRPMS 9(4) 2025): 137±4 ps FWHM intríns
 (σ≈58 ps); 172 ps FWHM con electrónica (σ≈73 ps); Vbias=48 V (~15.5 V OV).
 Conversiones FWHM→σ explicitadas en la diapositiva. Fórmula de promedio marcada como
 pendiente (estadístico de orden ≠ promedio). Crosstalk óptico 23% añadido a efectos
-no incluidos. Ver `docs/branch_diagnosis/SPTR_PROVENANCE.md`.
+no incluidos. Ver `docs/literature/SPTR_PROVENANCE.md`.
 
 **SPTR diapositiva I1 — actualización disponible (banco propio, 2026-09-01):** El barrido
 de intensidad láser a V_OV = 10 V (punto de operación real) y umbral FastIC+ = 35 da,
@@ -40,7 +40,7 @@ Coherente con Lee 2025 (58 ps a 15.5 V OV): SPTR empeora al bajar OV, dirección
 El valor original ~100 ps (sin procedencia) resultó razonable como cota conservadora.
 La diapositiva I1 puede actualizarse con el rango propio indicando OV y carácter derivado.
 **No editar el `.tex` hasta que la medida formal con datos de EOS esté disponible.**
-Ver `analysis/timing/TODO.md` y `docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md`.
+Ver `analysis/timing/TODO.md` y `docs/literature/ELECTRONICS_PARAMETERS.md`.
 
 **Reflectividad R = 0.95 en datos históricos (corregida en `c7acb7a`):** Los datasets
 `scan_end_vikuiti` y `scan_end_vik_sparse_top_v2` fueron producidos con `REFLECTIVITY=0.95`

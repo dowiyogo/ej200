@@ -42,7 +42,7 @@ El script imprime esta advertencia en cada ejecución.
 **Nota sobre 30 ps en `analyze_dCFD.py`:**  
 El valor de 30 ps era la resolución temporal esperada de un detector completo diferente
 (teja EJ-228 con SiPM FBK de 2 mm²), no el jitter del FastIC+. Ver
-`docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md`.
+`docs/literature/ELECTRONICS_PARAMETERS.md`.
 
 ---
 

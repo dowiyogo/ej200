@@ -1,0 +1,436 @@
+% =====================================================================
+% Bibliografia para el reporte EXEC_46 - SHiP Timing Detector
+% Generada 2026-09-17
+%
+% NOTA DE VERIFICACION: las entradas marcadas con % VERIFICAR tienen
+% algun campo que no pude confirmar desde el PDF original. Revisar
+% antes de usar en la tesis.
+% =====================================================================
+
+% ---------------------------------------------------------------------
+% SHiP Timing Detector - referencias directas del experimento
+% ---------------------------------------------------------------------
+
+@article{Betancourt2020,
+  author  = {Betancourt, C. and Korzenev, A. and Mermod, P. and others},
+  title   = {A prototype for the {SHiP} timing detector},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {979},
+  pages   = {164398},
+  year    = {2020},
+  doi     = {10.1016/j.nima.2020.164398},
+  note    = {v_eff = 15.5 cm/ns, theta_eff = 35.4 deg, 85 ps por barra, EJ-200 150x6x1 cm, MUSIC+SAMPIC, dCFD}
+}
+
+@article{Blondel2018,
+  author  = {Blondel, A. and Korzenev, A. and Mermod, P. and others},
+  title   = {Study of timing characteristics of a 3 m long plastic scintillator counter},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {877},
+  pages   = {9--15},
+  year    = {2018},
+  doi     = {10.1016/j.nima.2017.09.027},
+  note    = {dCFD 14 por ciento; v_eff = 16.1 cm/ns centro, ~14 cm/ns para x<20cm; fotones Cherenkov directos a angulos <50 deg}
+}
+
+@article{Betancourt2017,
+  author  = {Betancourt, C. and Korzenev, A. and Mermod, P. and others},
+  title   = {Application of large area {SiPMs} for the readout of a plastic scintillator based timing detector},
+  journal = {Journal of Instrumentation},
+  volume  = {12},
+  pages   = {P11023},
+  year    = {2017},
+  doi     = {10.1088/1748-0221/12/11/P11023}
+}
+
+% ---------------------------------------------------------------------
+% Propiedades opticas medidas de centelladores PVT
+% ---------------------------------------------------------------------
+
+@article{Huggins2026,
+  author  = {Huggins, Fergus M. and Johnson, Micah S. and Buckner, Matthew Q.},
+  title   = {Optical Characterization Measurements of Commercial Polyvinyltoluene Scintillators for Accurate {Geant4} Detector Modeling},
+  journal = {arXiv preprint},
+  eprint  = {2608.13710},
+  archivePrefix = {arXiv},
+  primaryClass = {physics.ins-det},
+  year    = {2026},
+  month   = {8},
+  note    = {Primeras mediciones de n(lambda) y L_abs(lambda) para BC-400/404/408/418/422/430 en 370-660 nm}
+}
+
+@article{Nakamura2015,
+  author  = {Nakamura, Hidehito and Shirakawa, Yoshiyuki and Sato, Nobuhiro and Kitamura, Hisashi and Shinji, Osamu and Saito, Katashi and Takahashi, Sentaro},
+  title   = {Optical characteristics of pure poly(vinyltoluene) for scintillation applications},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {770},
+  pages   = {131--134},
+  year    = {2015},
+  doi     = {10.1016/j.nima.2014.10.018}
+}
+
+@techreport{SaintGobainBC418,
+  author      = {{Saint-Gobain Crystals}},
+  title       = {{BC-418}, {BC-420}, {BC-422} Premium Plastic Scintillators Data Sheet},
+  institution = {Saint-Gobain Ceramics and Plastics, Inc.},
+  year        = {2018},
+  note        = {BC-420: atenuacion bulk 110 cm, rise 0.5 ns, decay 1.5 ns, emision 391 nm, n=1.58}
+}
+
+@techreport{EljenEJ228,
+  author      = {{Eljen Technology}},
+  title       = {{EJ-228}, {EJ-230} Fast Timing Plastic Scintillator Data Sheet},
+  institution = {Eljen Technology},
+  year        = {2023},
+  note        = {EJ-230: 9700 fotones/MeV, rise 0.5 ns, decay 1.5 ns, atenuacion 120 cm, n=1.58}
+}
+
+@techreport{EljenEJ200,
+  author      = {{Eljen Technology}},
+  title       = {General Purpose {EJ-200}, {EJ-204}, {EJ-208}, {EJ-212} Plastic Scintillator Data Sheet},
+  institution = {Eljen Technology},
+  year        = {2023},
+  note        = {EJ-200: 10000 fotones/MeV, rise 0.9 ns, decay 2.1 ns, emision 425 nm. EJ-204: 10400, 0.7 ns, 1.8 ns, 408 nm}
+}
+
+% ---------------------------------------------------------------------
+% Timing con centelladores plasticos y SiPM
+% ---------------------------------------------------------------------
+
+@article{Onda2019,
+  author  = {Onda, R. and Ieki, K. and Iwamoto, T. and Kobayashi, S. and Matsuzawa, N. and Mori, Toshinori and Nakao, M. and Nishimura, M. and Ogawa, S. and Ootani, W. and Uchiyama, Y.},
+  title   = {Optimal design of plastic scintillator counter with multiple {SiPM} readouts for best time resolution},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {936},
+  pages   = {563--564},
+  year    = {2019},
+  doi     = {10.1016/j.nima.2018.10.070},
+  note    = {CLAVE: rise time nominal 0.5 ns para BC-420 y EJ-230, pero medido ~2 ns y ~1 ns respectivamente. Resolucion 42 ps vs 28 ps}
+}
+
+@article{Steinberger2019,
+  author  = {Steinberger, W. M. and Ruch, M. L. and Di-Fulvio, A. and Clarke, S. D. and Pozzi, S. A.},
+  title   = {Timing performance of organic scintillators coupled to silicon photomultipliers},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {922},
+  pages   = {185--192},
+  year    = {2019},
+  doi     = {10.1016/j.nima.2018.11.099},
+  note    = {Comparacion DCFD vs DIACFD; EJ-200/EJ-204/EJ-228 con SensL y KETEK}
+}
+
+@article{Rizzo2018,
+  author  = {Rizzo, A. and Narici, L. and Messi, R. and others},
+  title   = {A compact Time-Of-Flight detector for space applications: The {LIDAL} system},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {898},
+  pages   = {98--104},
+  year    = {2018},
+  doi     = {10.1016/j.nima.2018.05.009},
+  note    = {EJ-230 con PMT, colas no gaussianas atribuidas a reflexiones multiples internas}
+}
+
+@article{Guckes2020,
+  author  = {Guckes, A. and Green, J. A. and Tinsley, J. and Baker, S. and Schwellenbach, D.},
+  title   = {Impulse response measurements of fast scintillator-based current mode detectors},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {982},
+  pages   = {164579},
+  year    = {2020},
+  doi     = {10.1016/j.nima.2020.164579},
+  note    = {Efecto del acabado superficial (reflectivo vs absorbente) sobre respuesta temporal}
+}
+
+@article{Wen2020,
+  author  = {Wen, Xianfei and Hayward, Jason P.},
+  title   = {Time resolution measurements of {EJ-232Q} with single and dual-sided readouts},
+  journal = {IEEE Transactions on Nuclear Science},
+  year    = {2020},
+  note    = {VERIFICAR volumen y paginas. Degradacion de resolucion con longitud; metodo de tiempo medio}
+}
+
+@article{Moskal2016,
+  author  = {Moskal, P. and others},
+  title   = {Time resolution of the plastic scintillator strips with matrix photomultiplier readout for {J-PET} tomograph},
+  journal = {Physics in Medicine and Biology},
+  volume  = {61},
+  pages   = {2025--2047},
+  year    = {2016},
+  doi     = {10.1088/0031-9155/61/5/2025},
+  note    = {Modelo de emision de Moszynski-Bengtson para plasticos ternarios; estadistica de orden; curva mu_eff(lambda) para EJ-230 escalada de poliestireno}
+}
+
+@article{Moszynski1979,
+  author  = {Moszynski, M. and Bengtson, B.},
+  title   = {Status of timing with plastic scintillation detectors},
+  journal = {Nuclear Instruments and Methods},
+  volume  = {158},
+  pages   = {1--31},
+  year    = {1979},
+  doi     = {10.1016/S0029-554X(79)90170-8}
+}
+
+@article{Moszynski1977,
+  author  = {Moszynski, M. and Bengtson, B.},
+  title   = {Light pulse shapes from plastic scintillators},
+  journal = {Nuclear Instruments and Methods},
+  volume  = {142},
+  pages   = {417--434},
+  year    = {1977},
+  doi     = {10.1016/0029-554X(77)90671-8}
+}
+
+% ---------------------------------------------------------------------
+% Cherenkov en centelladores y separacion Cherenkov/centelleo
+% ---------------------------------------------------------------------
+
+@article{Kratochwil2025,
+  author  = {Kratochwil, N. and Roncali, E. and Ari{\~n}o-Estrada, G.},
+  title   = {Statistical model of the first detected photon in mixed Cherenkov-scintillation emitters},
+  journal = {arXiv preprint},
+  eprint  = {2510.05461},
+  archivePrefix = {arXiv},
+  primaryClass = {physics.ins-det},
+  year    = {2025},
+  note    = {VERIFICAR titulo exacto. PDF conjunta del primer foton: PDF_Cher,first*(1-F_scint) + PDF_scint,first*(1-F_Cher)}
+}
+
+@article{Kaptanoglu2019,
+  author  = {Kaptanoglu, T. and Luo, M. and Klein, J.},
+  title   = {Cherenkov and scintillation light separation using wavelength in {LAB} based liquid scintillator},
+  journal = {Journal of Instrumentation},
+  volume  = {14},
+  pages   = {T05001},
+  year    = {2019},
+  doi     = {10.1088/1748-0221/14/05/T05001}
+}
+
+@article{Aberle2014,
+  author  = {Aberle, C. and Elagin, A. and Frisch, H. J. and Wetstein, M. and Winslow, L.},
+  title   = {Measuring directionality in double-beta decay and neutrino interactions with kiloton-scale scintillation detectors},
+  journal = {Journal of Instrumentation},
+  volume  = {9},
+  pages   = {P06012},
+  year    = {2014},
+  eprint  = {1307.5813},
+  archivePrefix = {arXiv},
+  doi     = {10.1088/1748-0221/9/06/P06012}
+}
+
+% ---------------------------------------------------------------------
+% Reflectores, envoltura y transporte optico
+% ---------------------------------------------------------------------
+
+@article{PROSPECT2015,
+  author  = {Ashenfelter, J. and others},
+  title   = {Light Collection and Pulse-Shape Discrimination in Elongated Scintillator Cells for the {PROSPECT} Reactor Antineutrino Experiment},
+  journal = {Journal of Instrumentation},
+  volume  = {10},
+  pages   = {P11004},
+  year    = {2015},
+  eprint  = {1508.06575},
+  archivePrefix = {arXiv},
+  note    = {Acoplar reflector ESR con glicerina reduce 14 por ciento la colecccion total: TIR con gap de aire es superior}
+}
+
+@article{SANDD2019,
+  author  = {Sweany, M. and others},
+  title   = {A prototype for {SANDD}: A highly-segmented pulse-shape-sensitive plastic scintillator detector incorporating silicon photomultiplier arrays},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  year    = {2019},
+  eprint  = {1903.11668},
+  archivePrefix = {arXiv},
+  note    = {VERIFICAR volumen/paginas. Envoltura de Teflon: sube yield pero degrada uniformidad axial en barras de alta relacion de aspecto}
+}
+
+@article{SiPMonTile2021,
+  author  = {Belloni, F. and others},
+  title   = {Test Beam Study of {SiPM-on-Tile} Configurations},
+  journal = {Journal of Instrumentation},
+  year    = {2021},
+  eprint  = {2102.08499},
+  archivePrefix = {arXiv},
+  note    = {VERIFICAR autores exactos. EJ-200 con ESR; sistematica de 3 por ciento por reproducibilidad del acoplamiento optico}
+}
+
+% ---------------------------------------------------------------------
+% Geant4 y simulacion optica
+% ---------------------------------------------------------------------
+
+@article{Agostinelli2003,
+  author  = {Agostinelli, S. and others},
+  title   = {{Geant4} --- a simulation toolkit},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {506},
+  number  = {3},
+  pages   = {250--303},
+  year    = {2003},
+  doi     = {10.1016/S0168-9002(03)01368-8}
+}
+
+@article{Allison2006,
+  author  = {Allison, J. and others},
+  title   = {{Geant4} developments and applications},
+  journal = {IEEE Transactions on Nuclear Science},
+  volume  = {53},
+  number  = {1},
+  pages   = {270--278},
+  year    = {2006},
+  doi     = {10.1109/TNS.2006.869826}
+}
+
+@article{Allison2016,
+  author  = {Allison, J. and others},
+  title   = {Recent developments in {Geant4}},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {835},
+  pages   = {186--225},
+  year    = {2016},
+  doi     = {10.1016/j.nima.2016.06.125}
+}
+
+@inproceedings{Levin1996,
+  author    = {Levin, A. and Moisan, C.},
+  title     = {A more physical approach to model the surface treatment of scintillation counters and its implementation into {DETECT}},
+  booktitle = {IEEE Nuclear Science Symposium Conference Record},
+  volume    = {2},
+  pages     = {702--706},
+  year      = {1996},
+  doi       = {10.1109/NSSMIC.1996.591410},
+  note      = {Modelo UNIFIED de superficies opticas usado por Geant4}
+}
+
+@article{Hiver2026,
+  author  = {Hiver, C. and Matejska-Minda, M. and Duda, D. and Napiorkowski, P. J. and Bednarczyk, P. and Kulessa, P. and Sowicki, B. and Zi{\k{e}}bli{\'n}ski, M.},
+  title   = {{Geant4}-based optical photon distribution modeling in a segmented silicon-photomultiplier scintillator detector for the Recoil Filter Detector optimization},
+  journal = {Acta Physica Polonica B Proceedings Supplement},
+  volume  = {19},
+  pages   = {1-A30},
+  year    = {2026},
+  doi     = {10.5506/APhysPolBSupp.19.1-A30}
+}
+
+% ---------------------------------------------------------------------
+% Fotosensores y electronica
+% ---------------------------------------------------------------------
+
+@techreport{HamamatsuS13360,
+  author      = {{Hamamatsu Photonics}},
+  title       = {{MPPC} {S13360} series datasheet},
+  institution = {Hamamatsu Photonics K.K.},
+  year        = {2022}
+}
+
+@article{Gomez2022,
+  author  = {G{\'o}mez, S. and Gasc{\'o}n, D. and others},
+  title   = {{FastIC}: a fast integrated circuit for the readout of high performance detectors},
+  journal = {Journal of Instrumentation},
+  volume  = {17},
+  pages   = {C05027},
+  year    = {2022},
+  doi     = {10.1088/1748-0221/17/05/C05027},
+  note    = {SPTR del HPK S13360-3050CS medido ~140 ps FWHM a 9.9 V de sobrevoltaje}
+}
+
+@article{Delagnes2015,
+  author  = {Delagnes, E. and Breton, D. and others},
+  title   = {The {SAMPIC} waveform and time to digital converter},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  year    = {2015},
+  note    = {VERIFICAR volumen/paginas. Jitter intrinseco < 5 ps RMS}
+}
+
+% ---------------------------------------------------------------------
+% Estadistica y metodologia
+% ---------------------------------------------------------------------
+
+@article{Lyons1988,
+  author  = {Lyons, L. and Gibaut, D. and Clifford, P.},
+  title   = {How to combine correlated estimates of a single physical quantity},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {270},
+  pages   = {110--117},
+  year    = {1988},
+  doi     = {10.1016/0168-9002(88)90018-6}
+}
+
+@article{Valassi2003,
+  author  = {Valassi, A.},
+  title   = {Combining correlated measurements of several different physical quantities},
+  journal = {Nuclear Instruments and Methods in Physics Research A},
+  volume  = {500},
+  pages   = {391--405},
+  year    = {2003},
+  doi     = {10.1016/S0168-9002(03)00329-2}
+}
+
+@article{Nisius2014,
+  author  = {Nisius, R.},
+  title   = {On the combination of correlated estimates of a physics observable},
+  journal = {European Physical Journal C},
+  volume  = {74},
+  pages   = {3004},
+  year    = {2014},
+  eprint  = {1402.4016},
+  archivePrefix = {arXiv},
+  doi     = {10.1140/epjc/s10052-014-3004-2}
+}
+
+@incollection{Boggs1990,
+  author    = {Boggs, P. T. and Rogers, J. E.},
+  title     = {Orthogonal distance regression},
+  booktitle = {Statistical Analysis of Measurement Error Models and Applications},
+  series    = {Contemporary Mathematics},
+  volume    = {112},
+  pages     = {186--194},
+  year      = {1990}
+}
+
+% ---------------------------------------------------------------------
+% Libros de referencia
+% ---------------------------------------------------------------------
+
+@book{Knoll2010,
+  author    = {Knoll, Glenn F.},
+  title     = {Radiation Detection and Measurement},
+  edition   = {4},
+  publisher = {John Wiley and Sons},
+  address   = {Hoboken, NJ},
+  year      = {2010}
+}
+
+@book{Leo1994,
+  author    = {Leo, William R.},
+  title     = {Techniques for Nuclear and Particle Physics Experiments: A How-to Approach},
+  edition   = {2},
+  publisher = {Springer-Verlag},
+  address   = {Berlin},
+  year      = {1994}
+}
+
+@book{Hamel2021,
+  editor    = {Hamel, Matthieu},
+  title     = {Plastic Scintillators: Chemistry and Applications},
+  series    = {Topics in Applied Physics},
+  publisher = {Springer Nature Switzerland},
+  year      = {2021},
+  doi       = {10.1007/978-3-030-73488-6}
+}
+
+@article{Derenzo2014,
+  author  = {Derenzo, S. E. and Choong, W.-S. and Moses, W. W.},
+  title   = {Fundamental limits of scintillation detector timing precision},
+  journal = {Physics in Medicine and Biology},
+  volume  = {59},
+  pages   = {3261--3286},
+  year    = {2014},
+  doi     = {10.1088/0031-9155/59/13/3261}
+}
+
+@phdthesis{Wijnsema2023,
+  author  = {Wijnsema, Rutger},
+  title   = {Characterisation of the timing detector for the {SHiP} experiment},
+  school  = {University of Groningen},
+  year    = {2023},
+  note    = {VERIFICAR titulo e institucion exactos}
+}

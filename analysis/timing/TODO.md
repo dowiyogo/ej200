@@ -87,7 +87,7 @@ Son incompatibles; alguien mezcló convenciones al fijar el parámetro.
 vino de una medida propia (en qué unidades) o de una referencia publicada.
 
 **Sin resolver:** no usar 106 ps en análisis propios sin aclarar la convención.
-Ver `docs/branch_diagnosis/ELECTRONICS_PARAMETERS.md §Referencia de la colaboración`.
+Ver `docs/literature/ELECTRONICS_PARAMETERS.md §Referencia de la colaboración`.
 
 ---
 
