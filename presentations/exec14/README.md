@@ -38,5 +38,5 @@ preservan los números sin necesidad de reejecutar el análisis sobre los ROOT f
 
 Importado desde `https://github.com/dowiyogo/ej200_orchestrator` (19 commits, rama main).
 Deck canónico: `exec14_deck_aclarado.tex` (615 líneas, commit EXEC_13 close + EXEC_15).
-Documentación de QA: `docs/branch_diagnosis/exec14_qa/`.
+Documentación de QA: `presentations/exec14/EXEC_14_guia_slide_por_slide.md` y `docs/execution_logs/prompts/PLAN_QA0.md`.
 Framework de análisis: `analysis/exec14/`.

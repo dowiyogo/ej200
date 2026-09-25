@@ -79,4 +79,4 @@ Requiere regenerar desde `analysis/exec14/` o recuperar del historial.
 - Los PDF compilados se conservan si existen (registro de lo presentado).
 - Los archivos auxiliares LaTeX (`*.aux`, `*.nav`, `*.toc`, `*.snm`, `*.fls`, `*.fdb_latexmk`, `*.synctex.gz`) están excluidos por `.gitignore`.
 - El framework de análisis de exec14 está en `analysis/exec14/`.
-- La documentación QA de exec14 está en `docs/branch_diagnosis/exec14_qa/`.
+- La documentación QA de exec14 está en `presentations/exec14/EXEC_14_guia_slide_por_slide.md` y `docs/execution_logs/prompts/PLAN_QA0.md`.
