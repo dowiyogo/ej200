@@ -1,0 +1,185 @@
+{
+  "utc": "2026-09-12T15:45:16.456274+00:00",
+  "status": "STOP \u2014 CHECKPOINT SCRIPT HASH MISMATCH",
+  "gate_status": "PASS",
+  "conditions": [
+    {
+      "condition": "G-P.1",
+      "status": "PASS",
+      "evidence": {
+        "sigma_END_ps": 119.90401871014716,
+        "fit_used_end": true,
+        "chi2_ndf": 0.6626944280583688,
+        "n_eff": 10000,
+        "minimum": 20
+      }
+    },
+    {
+      "condition": "G-P.2",
+      "status": "PASS",
+      "evidence": {
+        "TRAIN_even": 20,
+        "EVAL_odd": 20
+      }
+    },
+    {
+      "condition": "G-P.3",
+      "status": "PASS",
+      "evidence": {
+        "efficiency": 1.0,
+        "efficiency_floor": 0.05,
+        "winning_N": 1
+      }
+    },
+    {
+      "condition": "G-P.4",
+      "status": "PASS",
+      "evidence": {
+        "analysis.root_hash": true,
+        "analysis.csv_hash": true,
+        "root_csv_row_count": true,
+        "root_csv_values": true,
+        "all_generated_end_events": true,
+        "metadata_complete": true,
+        "simulation_provenance": true,
+        "stage_exit_codes": true,
+        "analysis_scripts_match": true,
+        "readme_end_to_end_command": true,
+        "native_input_name": true,
+        "separate_arm_results": true,
+        "finite_uncertainties": true
+      }
+    },
+    {
+      "condition": "G-P.5",
+      "status": "PASS",
+      "evidence": {
+        "b_minus_c_ps": -0.0715375416082944
+      }
+    }
+  ],
+  "HEAD": "d99f994807a882b12ff63e649888dbbb31f1256c",
+  "branch": "diag/exec33-20260911",
+  "git_status": "clean",
+  "rollback_tag": "pre-exec34c-20260912",
+  "canonical_train_parity": "even",
+  "pilot_winning_N": 1,
+  "hash_checks": [
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/analyze.py",
+      "expected": "21162b4282e95133f75c5e779507777e50130dd9dcc2c2896fd886804abf0379",
+      "actual": "21162b4282e95133f75c5e779507777e50130dd9dcc2c2896fd886804abf0379",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/end_bridge.h",
+      "expected": "c592f419eb6d76b1651123dbc7becf2c7f63979633aa3f939c5ca5e4b8df2684",
+      "actual": "c592f419eb6d76b1651123dbc7becf2c7f63979633aa3f939c5ca5e4b8df2684",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/gate.py",
+      "expected": "3ce5c1e76fb75543d15f59c633d4473c7219befbbd7d138f477cc855a24b2a84",
+      "actual": "3ce5c1e76fb75543d15f59c633d4473c7219befbbd7d138f477cc855a24b2a84",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/grid.py",
+      "expected": "0f070550191c2a1c46b4415e113b4d9bfe55f1beead47537c3aaf8a707055be9",
+      "actual": "fab55aca362ce281a98fbbdca3d3c184786904a76101669dfd9f0de77c9b6169",
+      "match": false
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/run_cell.py",
+      "expected": "91b18a7957681339e0a4a3250671659b4fd37ed8aa54c199386a3cb64dd057cd",
+      "actual": "91b18a7957681339e0a4a3250671659b4fd37ed8aa54c199386a3cb64dd057cd",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/run_simulation.py",
+      "expected": "f3d2bdb161ec7a2cdd49f25797aa4e95f873c0af21874cd760ceec36eb4eb6a3",
+      "actual": "f3d2bdb161ec7a2cdd49f25797aa4e95f873c0af21874cd760ceec36eb4eb6a3",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/test_end_bridge.py",
+      "expected": "baed0d5eb7725f5d770dab47750886e4f3621320d6b7f588356a4905f1b35561",
+      "actual": "baed0d5eb7725f5d770dab47750886e4f3621320d6b7f588356a4905f1b35561",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/test_grid.py",
+      "expected": "e4f32f280750a70eec30ce868cd7d523b28252608248f4fa03ef9e18228c93e3",
+      "actual": "c7610697a3be5a930410a380b3fd23ab237d59e96a8ed25218b4ab3da078d039",
+      "match": false
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/test_top_split.py",
+      "expected": "3b3bde67f23155bc0442b19f74ad095ec2961091ac28a22919029d65d9dfd8bc",
+      "actual": "3b3bde67f23155bc0442b19f74ad095ec2961091ac28a22919029d65d9dfd8bc",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/orchestration/top_split.py",
+      "expected": "ee9dd1a9a64b80160107d2687431c6c9de06e5363664b4070f689eda473592c1",
+      "actual": "ee9dd1a9a64b80160107d2687431c6c9de06e5363664b4070f689eda473592c1",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/lib/__init__.py",
+      "expected": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/lib/fit_engine.py",
+      "expected": "788a540d47dccd4b36d04a8e4e7b1ef8b312452c363c43d1cf4dfdd266b00834",
+      "actual": "788a540d47dccd4b36d04a8e4e7b1ef8b312452c363c43d1cf4dfdd266b00834",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/lib/gates.py",
+      "expected": "3b93c054a8bd061992df3c805eee7b11bce1b83e0311cd7447db3a6d19a54bf6",
+      "actual": "3b93c054a8bd061992df3c805eee7b11bce1b83e0311cd7447db3a6d19a54bf6",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/lib/robust_seeds.py",
+      "expected": "d6f8fcf026567ebe937dc21df9e34b45cead2eb3b4677e7ea55cac187b0d6f9a",
+      "actual": "d6f8fcf026567ebe937dc21df9e34b45cead2eb3b4677e7ea55cac187b0d6f9a",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/lib/sidecar.py",
+      "expected": "2d4f15f194f5a4d94960f87af404982713cb080e57296e69a9a4aee8c0dd777d",
+      "actual": "2d4f15f194f5a4d94960f87af404982713cb080e57296e69a9a4aee8c0dd777d",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/analysis_core/timing_fit_pipeline.py",
+      "expected": "3506c32191ab0bf97c0a06cc90d3aa8846a7540ec7a8f85b87bb409b63b26202",
+      "actual": "3506c32191ab0bf97c0a06cc90d3aa8846a7540ec7a8f85b87bb409b63b26202",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/related/420addf/analysis/congruent_sum4_timing.C",
+      "expected": "d35146cccd3ae4487f3ded8b1bf66f8dfbc2a8b55708f9f4bf12758f7f2cafb7",
+      "actual": "d35146cccd3ae4487f3ded8b1bf66f8dfbc2a8b55708f9f4bf12758f7f2cafb7",
+      "match": true
+    },
+    {
+      "path": "/home/rrios/ej200_exec33_20260911/analysis/sigma_t/upstream/related/420addf/analysis/tb_mirror_sigma_vs_x.C",
+      "expected": "5f22a5aabfc08fdf4c1bfc47024c5ce67f75aa7c9b13bd1130c99590a17cb653",
+      "actual": "5f22a5aabfc08fdf4c1bfc47024c5ce67f75aa7c9b13bd1130c99590a17cb653",
+      "match": true
+    }
+  ],
+  "PDE_path": "/home/rrios/ej200_exec33_20260911/data/sipm/AFBR-S4N66P024M_pde.txt",
+  "PDE_sha256": "6360bd80eabf1ade77ea0dd80f8e56ed99b6ea8dcbc2ce94bf5269108f2b28e7",
+  "campaign_inputs_read": false,
+  "analysis_executed": false,
+  "simulations_launched": false,
+  "cells_complete": 0,
+  "cells_failed": 0,
+  "cells_not_run": 21
+}

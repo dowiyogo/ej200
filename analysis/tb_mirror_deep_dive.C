@@ -126,7 +126,7 @@ tbmirror::LandauFit DrawNpe(const EventSet& events, int x, const std::string& ou
 }
 }  // namespace deepdive
 
-void tb_mirror_deep_dive(const char* auditPath = "scan_resume_2_audit.csv",
+void tb_mirror_deep_dive(const char* auditPath = "docs/execution_logs/scan_resume_2_audit.csv",
                          const char* outputDir =
                              "results/analysis_sigma_vs_x_2026-06-10/deep_dive") {
     using namespace deepdive;

@@ -1,0 +1,31 @@
+=== status --short --branch ===
+## feat/endonly-mylar...origin/feat/endonly-mylar
+ M CMakeLists.txt
+ M resume_scan_2.sh
+ M scripts/run_exec07_scan.sh
+ M scripts/run_scan.sh
+?? build_t0minidaq/
+
+=== remote -v ===
+origin	https://github.com/dowiyogo/ej200 (fetch)
+origin	https://github.com/dowiyogo/ej200 (push)
+
+=== branch -vv ===
+* feat/endonly-mylar 6942ee6 [origin/feat/endonly-mylar] fix(optics): replace reflector volumes with bar skin surface
+  main               84e902c [origin/main] fix(optics): replace reflector volumes with bar skin surface
+
+=== log --oneline --decorate -8 ===
+6942ee6 (HEAD -> feat/endonly-mylar, origin/feat/endonly-mylar) fix(optics): replace reflector volumes with bar skin surface
+7347db6 audit: add FINAL_PHYSICS_AUDIT.md, C++/OpenMP bootstrap skeleton, group-velocity validator
+8b65786 verify: extend checks — range sensitivity, budget closure, 1-R, σ_eq, no 'same attenuation', M2 bootstrap, v_app
+20653d8 regen: regenerate End-only Mylar deck from corrected pipeline; all verify_deck checks pass
+1ef8ddf deck: fix physics framework, NPE display, photon budget, velocity/timing interpretation
+6e128af analysis: constrained M2 fit, AIC/BIC, bootstrap, photon-budget and group-velocity corrections
+bf41a16 pre-audit: snapshot of End-only Mylar files before EXEC FINAL corrections
+9a97f16 verify: extend checks for three-model fits, datasheet properties, no ±0.0
+
+=== upstream ===
+origin/feat/endonly-mylar
+
+=== ahead/behind ===
+0	0

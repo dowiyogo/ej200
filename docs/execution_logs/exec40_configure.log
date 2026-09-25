@@ -1,0 +1,36 @@
+-- The C compiler identification is GNU 11.5.0
+-- The CXX compiler identification is GNU 11.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found EXPAT: /usr/lib64/libexpat.so (found suitable version "2.5.0", minimum required is "2.5.0")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found X11: /usr/include
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so;/usr/lib64/libXext.so
+-- Looking for XOpenDisplay in /usr/lib64/libX11.so;/usr/lib64/libXext.so - found
+-- Looking for gethostbyname
+-- Looking for gethostbyname - found
+-- Looking for connect
+-- Looking for connect - found
+-- Looking for remove
+-- Looking for remove - found
+-- Looking for shmat
+-- Looking for shmat - found
+-- Looking for IceConnectionNumber in ICE
+-- Looking for IceConnectionNumber in ICE - found
+-- Found OpenGL: /usr/lib64/libOpenGL.so
+-- Found Geant4: /home/tdship/opt/geant4-v11.4.0-install/lib64/cmake/Geant4/Geant4Config.cmake (found version "11.4.0")
+-- Geant4 GDML no disponible en esta instalacion: export_endtop_gdml desactivado.
+-- Found Python3: /usr/bin/python3.9 (found version "3.9.25") found components: Interpreter
+-- Configuring done (0.9s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/rrios/exec40_20260913/build_off

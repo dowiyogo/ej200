@@ -25,7 +25,7 @@ from run_simulation import memory, now, sha
 
 HERE = Path(__file__).resolve()
 SOURCE = Path('/home/rrios/exec34b_20260911/campaign.json')
-HANDOFF = Path('/home/rrios/EXEC34_HANDOFF_20260911.json')
+HANDOFF = Path('/home/rrios/ej200/docs/execution_logs/EXEC34_HANDOFF_20260911.json')
 SCALING = Path('/home/rrios/exec33_20260911/scaling.json')
 REPRO = Path('/home/rrios/exec33_20260911/event_reproducibility.json')
 DEFAULT = Path('/home/rrios/exec34r_20260912')

@@ -1,0 +1,36 @@
+=== status --short --branch ===
+## feat/endtop-sslg4...origin/feat/endtop-sslg4
+M  .gitignore
+M  CMakeLists.txt
+ M src/RunAction.cc
+?? macros/t0minidaq_scan_5000/
+?? runs/
+?? scripts/analyze_propagation_velocity.py
+?? scripts/analyze_t0minidaq_endtop_corefit.py
+?? scripts/analyze_t0minidaq_endtop_simple_std.py
+?? scripts/run_analysis_t0minidaq_endtop_corefit.sh
+?? scripts/run_analysis_t0minidaq_endtop_simple_std.sh
+?? scripts/run_t0minidaq_endtop_scan_5000.sh
+
+=== remote -v ===
+origin	https://github.com/dowiyogo/ej200.git (fetch)
+origin	https://github.com/dowiyogo/ej200.git (push)
+
+=== branch -vv ===
+* feat/endtop-sslg4 a0368c4 [origin/feat/endtop-sslg4] fix(tests): replace escape-fraction guard with sipm-entry guard
+
+=== log --oneline --decorate -8 ===
+a0368c4 (HEAD -> feat/endtop-sslg4, origin/feat/endtop-sslg4) fix(tests): replace escape-fraction guard with sipm-entry guard
+f39b84c fix(optics): replace reflector volumes with bar skin surface
+c6e7843 EXEC_13 delivery fix: nombres de macro sin dígitos (fuga en portada); sigma_core robusto (MAD) + chi2 visible; caption F5; nota SPTR
+a7d22a3 EXEC_13: resolución núcleo-vs-cola del Top nearest + frame de conclusión (datos EJ-204)
+015b4e7 EXEC_13: ediciones manuales de escalas/recorte LaTeX (R. Ríos), no del agente
+b956102 EXEC_13 closeout: closing/provenance frames, footer & author fix, double-pass compile
+c030e88 EXEC_13: fixed-scale tN (10 ps bins), cluster <tn> dispersion, Top Npe/timing profiles for x = -690/-400/0 (EJ-204)
+5783a0d (tag: checkpoint/pre-pairscan-2026-06-11) checkpoint: preserve validated EXEC_12b timing analysis
+
+=== upstream ===
+origin/feat/endtop-sslg4
+
+=== ahead/behind ===
+0	0

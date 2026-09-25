@@ -1,0 +1,69 @@
+repo,path,branch,remote,ahead,behind,modified_count,untracked_count,staged_count,unstaged_count,risk_pull,priority,build_dir_mb,data_dir_gb,recommended_action
+ej200,/home/rrios/ej200,exp/pair-scan-2026-06-11,https://github.com/dowiyogo/ej200,0,0,42,1,0,42,MEDIO,NORMAL,5.7,0,commit CMakeLists+macros+run_script then pull
+ej200_end,/home/rrios/ej200_end,feat/endonly-mylar,https://github.com/dowiyogo/ej200,0,0,4,1,0,4,BAJO,BAJO,6.6,0,commit scripts+CMakeLists then pull
+ej204,/home/rrios/ej204,feat/endtop-sslg4,https://github.com/dowiyogo/ej200.git,0,0,3,10,2,1,BAJO,PRIORITARIO,8.1,2.6,commit RunAction.cc+staged+scripts+macros then pull
+ej230,/home/rrios/ej230,feat/ej230-sslg4,https://github.com/dowiyogo/ej200,0,0,10,1,0,10,BAJO-MEDIO,NORMAL,5.6,0,commit scripts then pull
+ej230_end,/home/rrios/ej230_end,feat/ej230-endonly-mylar,https://github.com/dowiyogo/ej200,0,0,27,2,0,27,ALTO,URGENTE,5.5,2.4,move output/ then commit scripts then pull
+
+repo,path,file,git_status,category,keep_in_git,recommendation
+ej200,/home/rrios/ej200,CMakeLists.txt,M_unstaged,CONFIG_BUILD,YES,commit
+ej200,/home/rrios/ej200,scripts/run_pair_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej200,/home/rrios/ej200,macros/pairscan/pairscan_x-*.mac (41 files),M_unstaged,MACRO,YES,commit as block
+ej200,/home/rrios/ej200,build_t0minidaq/,UNTRACKED,GENERATED_BUILD,NO,add to .gitignore
+ej200_end,/home/rrios/ej200_end,CMakeLists.txt,M_unstaged,CONFIG_BUILD,YES,commit
+ej200_end,/home/rrios/ej200_end,resume_scan_2.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej200_end,/home/rrios/ej200_end,scripts/run_exec07_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej200_end,/home/rrios/ej200_end,scripts/run_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej200_end,/home/rrios/ej200_end,build_t0minidaq/,UNTRACKED,GENERATED_BUILD,NO,add to .gitignore
+ej204,/home/rrios/ej204,.gitignore,M_STAGED,CONFIG_BUILD,YES,already staged - include in next commit
+ej204,/home/rrios/ej204,CMakeLists.txt,M_STAGED,CONFIG_BUILD,YES,already staged - include in next commit
+ej204,/home/rrios/ej204,src/RunAction.cc,M_unstaged,SOURCE_CODE,YES,git add then commit - CRITICAL FIX
+ej204,/home/rrios/ej204,macros/t0minidaq_scan_5000/ (31 files),UNTRACKED,MACRO,YES,commit
+ej204,/home/rrios/ej204,scripts/run_t0minidaq_endtop_scan_5000.sh,UNTRACKED,RUN_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,scripts/analyze_t0minidaq_endtop_corefit.py,UNTRACKED,ANALYSIS_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,scripts/run_analysis_t0minidaq_endtop_corefit.sh,UNTRACKED,RUN_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,scripts/analyze_propagation_velocity.py,UNTRACKED,ANALYSIS_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,scripts/analyze_t0minidaq_endtop_simple_std.py,UNTRACKED,ANALYSIS_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,scripts/run_analysis_t0minidaq_endtop_simple_std.sh,UNTRACKED,RUN_SCRIPT,YES,commit
+ej204,/home/rrios/ej204,runs/ (2.6GB 5 run dirs),UNTRACKED,RAW_DATA,NO,add to .gitignore - do not commit
+ej204,/home/rrios/ej204,build_t0minidaq/,UNTRACKED,GENERATED_BUILD,NO,add to .gitignore
+ej230,/home/rrios/ej230,scripts/build_report_msi.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/make_beamer_ej230.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_analysis_t0minidaq.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_center.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_center_msi_16t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_center_t0minidaq_24t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_exec07_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_scan_msi_16t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,scripts/run_scan_t0minidaq_24t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230,/home/rrios/ej230,build_t0minidaq/,UNTRACKED,GENERATED_BUILD,NO,add to .gitignore
+ej230_end,/home/rrios/ej230_end,resume_scan_2.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/audit_beamer_assets.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/audit_beamer_numbers.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/audit_exec14b_raster_text.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/build_report_msi.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/check_exec14b_asset_parity.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/check_exec14b_figure_frame_consistency.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/check_exec14b_frame_parity.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/diag_exec14d_endtop_ratio.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/generate_exec14b_tables.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/generate_exec14d_nominal_parameters.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/make_beamer_ej230.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/preflight_exec14b_pdf.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/rebuild_exec14b_report.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_analysis_t0minidaq.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_center.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_center_msi_16t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_center_t0minidaq_24t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_exec07_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_exec14b_main_analysis_repair.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_exec14b_special_analysis.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_exec14b_special_sims.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_exec14b_strict_preflight.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_scan.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_scan_msi_16t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/run_scan_t0minidaq_24t.sh,M_unstaged,RUN_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,scripts/validate_exec14b_roots.py,M_unstaged,ANALYSIS_SCRIPT,YES,commit
+ej230_end,/home/rrios/ej230_end,build_t0minidaq/,UNTRACKED,GENERATED_BUILD,NO,add to .gitignore
+ej230_end,/home/rrios/ej230_end,output/ (2.4GB 101 files 31 ROOT),UNTRACKED,RESULT_OUTPUT,NO,move to /home/rrios/results_ej230_end_backup/ then add to .gitignore

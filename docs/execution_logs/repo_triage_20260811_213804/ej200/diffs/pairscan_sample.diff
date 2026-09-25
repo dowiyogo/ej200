@@ -1,0 +1,13 @@
+diff --git a/macros/pairscan/pairscan_x-422.0mm.mac b/macros/pairscan/pairscan_x-422.0mm.mac
+index b81bdbb..a962982 100644
+--- a/macros/pairscan/pairscan_x-422.0mm.mac
++++ b/macros/pairscan/pairscan_x-422.0mm.mac
+@@ -6,7 +6,7 @@
+ /run/verbose 0
+ /event/verbose 0
+ /tracking/verbose 0
+-/run/numberOfThreads 16
++/run/numberOfThreads 24
+ /det/readout Top
+ /det/scintillator OPSC-101
+ /sipm/model AFBR-S4N66P024M

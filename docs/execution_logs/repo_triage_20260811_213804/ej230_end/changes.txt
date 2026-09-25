@@ -1,0 +1,422 @@
+=== diff --name-status ===
+M	resume_scan_2.sh
+M	scripts/audit_beamer_assets.py
+M	scripts/audit_beamer_numbers.py
+M	scripts/audit_exec14b_raster_text.py
+M	scripts/build_report_msi.sh
+M	scripts/check_exec14b_asset_parity.py
+M	scripts/check_exec14b_figure_frame_consistency.py
+M	scripts/check_exec14b_frame_parity.py
+M	scripts/diag_exec14d_endtop_ratio.py
+M	scripts/generate_exec14b_tables.py
+M	scripts/generate_exec14d_nominal_parameters.py
+M	scripts/make_beamer_ej230.py
+M	scripts/preflight_exec14b_pdf.py
+M	scripts/rebuild_exec14b_report.py
+M	scripts/run_analysis_t0minidaq.sh
+M	scripts/run_center.sh
+M	scripts/run_center_msi_16t.sh
+M	scripts/run_center_t0minidaq_24t.sh
+M	scripts/run_exec07_scan.sh
+M	scripts/run_exec14b_main_analysis_repair.sh
+M	scripts/run_exec14b_special_analysis.sh
+M	scripts/run_exec14b_special_sims.sh
+M	scripts/run_exec14b_strict_preflight.sh
+M	scripts/run_scan.sh
+M	scripts/run_scan_msi_16t.sh
+M	scripts/run_scan_t0minidaq_24t.sh
+M	scripts/validate_exec14b_roots.py
+
+=== diff --stat ===
+ resume_scan_2.sh                                  | 0
+ scripts/audit_beamer_assets.py                    | 0
+ scripts/audit_beamer_numbers.py                   | 0
+ scripts/audit_exec14b_raster_text.py              | 0
+ scripts/build_report_msi.sh                       | 0
+ scripts/check_exec14b_asset_parity.py             | 0
+ scripts/check_exec14b_figure_frame_consistency.py | 0
+ scripts/check_exec14b_frame_parity.py             | 0
+ scripts/diag_exec14d_endtop_ratio.py              | 0
+ scripts/generate_exec14b_tables.py                | 0
+ scripts/generate_exec14d_nominal_parameters.py    | 0
+ scripts/make_beamer_ej230.py                      | 0
+ scripts/preflight_exec14b_pdf.py                  | 0
+ scripts/rebuild_exec14b_report.py                 | 0
+ scripts/run_analysis_t0minidaq.sh                 | 0
+ scripts/run_center.sh                             | 0
+ scripts/run_center_msi_16t.sh                     | 0
+ scripts/run_center_t0minidaq_24t.sh               | 0
+ scripts/run_exec07_scan.sh                        | 0
+ scripts/run_exec14b_main_analysis_repair.sh       | 0
+ scripts/run_exec14b_special_analysis.sh           | 0
+ scripts/run_exec14b_special_sims.sh               | 0
+ scripts/run_exec14b_strict_preflight.sh           | 0
+ scripts/run_scan.sh                               | 3 ++-
+ scripts/run_scan_msi_16t.sh                       | 0
+ scripts/run_scan_t0minidaq_24t.sh                 | 0
+ scripts/validate_exec14b_roots.py                 | 0
+ 27 files changed, 2 insertions(+), 1 deletion(-)
+
+=== untracked ===
+build_t0minidaq/data/sipm/AFBR-S4N66P024M_pde.txt
+build_t0minidaq/macros/crosscheck_thickness.mac
+build_t0minidaq/macros/diag_optical.mac
+build_t0minidaq/macros/diag_scan5.mac
+build_t0minidaq/macros/edge_scan_smoke.mac
+build_t0minidaq/macros/print_optical_processes.mac
+build_t0minidaq/macros/run.mac
+build_t0minidaq/macros/run_1000.mac
+build_t0minidaq/macros/scan.mac
+build_t0minidaq/macros/scan_angle_step.mac
+build_t0minidaq/macros/scan_edge.mac
+build_t0minidaq/macros/scan_edge_air.mac
+build_t0minidaq/macros/scan_edge_black.mac
+build_t0minidaq/macros/scan_edge_neg.mac
+build_t0minidaq/macros/scan_edge_step.mac
+build_t0minidaq/macros/scan_step.mac
+build_t0minidaq/macros/test.mac
+build_t0minidaq/macros/vis.mac
+build_t0minidaq/macros/vis_photon_traces_xz.mac
+build_t0minidaq/physics_baseline_check
+build_t0minidaq/readout_config_check
+build_t0minidaq/sslg4/data/README.txt
+build_t0minidaq/sslg4/data/iscnt/isc-1000/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-1000/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-1001/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-1001/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2000/absLength.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2000/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2000/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2001/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2001/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2002/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2002/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2003/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2003/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2004/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-2004/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3000/absLength.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3000/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3000/rsLength.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3000/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3000/scntComp2.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/aScntYield.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/absLength.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/eScntYield.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/iScntYield.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3001/scntComp2.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3002/absLength.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3002/rIndex.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3002/scntComp1.txt
+build_t0minidaq/sslg4/data/iscnt/isc-3002/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntAlphaYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntCarbonYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntDeuteronYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntElectronYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntProtonYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-100/scntTritonYield.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-101/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-101/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-101/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-102/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-102/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-102/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-103/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-103/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-103/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-104/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-104/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-104/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-105/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-105/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-105/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-106/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-106/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-106/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-107/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-107/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-108/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-108/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-109/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-109/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-110/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-110/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-111/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-111/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-111/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-112/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-112/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-112/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-113/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-113/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-113/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-114/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-114/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/rsLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-200/wlsComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/rsLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-201/wlsComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/rsLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-202/wlsComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/rsLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-203/wlsComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/rsLength.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/scntComp2.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/scntComp3.txt
+build_t0minidaq/sslg4/data/oscnt/olsc-204/wlsComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-100/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-100/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-100/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-101/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-101/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-101/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-102/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-102/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-102/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-103/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-103/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-103/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-104/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-104/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-105/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-105/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-106/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-106/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-106/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-107/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-107/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-107/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-108/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-108/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-109/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-109/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-110/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-110/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-111/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-111/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-112/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-112/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-113/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-113/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-113/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-114/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-114/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-114/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-115/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-115/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-115/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-116/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-116/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-116/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-117/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-117/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-117/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-118/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-118/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-119/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-119/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-120/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-120/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-121/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-121/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-122/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-122/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-123/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-123/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-123/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-123/wlsAbsLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-123/wlsComp.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-124/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-124/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-124/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-125/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-125/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-126/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-126/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-127/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-127/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-128/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-128/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-129/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-129/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-130/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-130/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-131/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-131/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-132/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-132/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-133/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-133/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-133/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-200/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-200/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-201/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-201/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-300/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-300/scntComp1.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-400/absLength.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-400/rIndex.txt
+build_t0minidaq/sslg4/data/oscnt/opsc-400/scntComp1.txt
+build_t0minidaq/sslg4/macros/README.txt
+build_t0minidaq/sslg4/macros/iscnt/isc-1000.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-1001.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-2000.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-2001.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-2002.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-2003.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-2004.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-3000.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-3001.mac
+build_t0minidaq/sslg4/macros/iscnt/isc-3002.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-100.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-101.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-102.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-103.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-104.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-105.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-106.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-107.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-108.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-109.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-110.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-111.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-112.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-113.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-114.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-200.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-201.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-202.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-203.mac
+build_t0minidaq/sslg4/macros/oscnt/olsc-204.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-100.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-101.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-102.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-103.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-104.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-105.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-106.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-107.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-108.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-109.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-110.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-111.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-112.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-113.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-114.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-115.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-116.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-117.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-118.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-119.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-120.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-121.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-122.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-123.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-124.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-125.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-126.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-127.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-128.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-129.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-130.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-131.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-132.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-133.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-200.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-201.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-300.mac
+build_t0minidaq/sslg4/macros/oscnt/opsc-400.mac
+output/endonly_mylar_t0minidaq_20260614_173944/analysis/analysis_metadata.txt
+output/endonly_mylar_t0minidaq_20260614_173944/run_metadata.txt
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-100mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-100mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-150mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-150mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-200mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-200mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-250mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-250mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-300mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-300mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-350mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-350mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-400mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-400mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-450mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-450mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-500mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-500mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-50mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-50mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-550mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-550mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-600mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-600mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-650mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-650mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-670mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-670mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-690mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x-690mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x0mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x0mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x100mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x100mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x150mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x150mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x200mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x200mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x250mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x250mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x300mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x300mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x350mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x350mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x400mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x400mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x450mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x450mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x500mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x500mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x50mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x50mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x550mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x550mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x600mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x600mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x650mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x650mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x670mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x670mm/sslg4
+output/endonly_mylar_t0minidaq_20260614_173944/work_x690mm/run.mac
+output/endonly_mylar_t0minidaq_20260614_173944/work_x690mm/sslg4

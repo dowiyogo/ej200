@@ -5,7 +5,7 @@
 // pero NO implementa una correccion de time-walk (HOOK_WALK pendiente).
 //
 // Uso:
-// root -l -b -q 'analysis/tb_mirror_sigma_vs_x.C("scan_resume_2_audit.csv","results/analysis_sigma_vs_x_2026-06-10")'
+// root -l -b -q 'analysis/tb_mirror_sigma_vs_x.C("docs/execution_logs/scan_resume_2_audit.csv","results/analysis_sigma_vs_x_2026-06-10")'
 
 #include "congruent_sum4_timing.C"
 
@@ -246,7 +246,7 @@ void SaveSummaryPlots(const std::vector<Result>& results, const std::string& out
 }
 }  // namespace tbmirror
 
-void tb_mirror_sigma_vs_x(const char* auditPath = "scan_resume_2_audit.csv",
+void tb_mirror_sigma_vs_x(const char* auditPath = "docs/execution_logs/scan_resume_2_audit.csv",
                           const char* outputDir = "results/analysis_sigma_vs_x_2026-06-10") {
     using namespace tbmirror;
     gStyle->SetOptStat(0);

@@ -1,0 +1,33 @@
+/home/rrios/ej200/analysis/track_mechanism_20260915/analyze_step5.py:134: FutureWarning: Starting in version 5.7.0, Uproot will default to writing RNTuples instead of TTrees. You will need to use `mktree` to explicitly create a TTree. This can be done by changing `file['tree_name'] = data` to `file.mktree('tree_name', data)`. Please update your code accordingly.
+  root_file[tree_name] = columns
+Processing EJ-200
+Processing EJ-204
+Processing EJ-230
+{
+  "created_utc": "2026-09-16T09:31:47.492506+00:00",
+  "status": "CHAIN_RULE_WITHIN_SLOPE_REFUTED",
+  "completed_steps": [
+    "5.1",
+    "5.3",
+    "5.4",
+    "5.5"
+  ],
+  "cancelled_steps": [
+    "5.2"
+  ],
+  "steps_not_run": [
+    "6"
+  ],
+  "gate": "AWAITING_STEP_6_APPROVAL",
+  "input_sha256": "816c302c3ed37f7eb29855bcad7e734a1b6a77238f60a30361635b68377e341d",
+  "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step5.py",
+  "bootstrap": {
+    "method": "ordinary paired event resampling within each cell; independent cells",
+    "replicates": 2000,
+    "seed": 460516
+  },
+  "report": "/home/rrios/ej200/analysis/track_mechanism_20260915/step5/REPORT_CHAINRULE_IDENTIFICATION_20260916.md",
+  "report_sha256": "dbdcd98076daa3daf81dc761f0112fa0c94ba5b36540aa90a510488f3e035514",
+  "analysis_script_sha256": "0056bbc1d3a0840dad5dcd55fc47134fb3d066b5d36e55b6eeb9751fbdce4e18",
+  "between_slope_interpretation": "descriptive fit to same cell means; reabsorption is not explanation"
+}

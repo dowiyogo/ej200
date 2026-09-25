@@ -860,7 +860,7 @@ RNG: master seeds and eventModulo from the simulation manifest; bootstrap numpy.
 
 | Artifact | SHA256 |
 | --- | --- |
-| [EXEC34_HANDOFF_20260911.json](/home/rrios/EXEC34_HANDOFF_20260911.json) | `ad60420f42472145f124e0cc13c2d29f916f15e0979a6b1aebaed433b4832183` |
+| [EXEC34_HANDOFF_20260911.json](/home/rrios/ej200/docs/execution_logs/EXEC34_HANDOFF_20260911.json) | `ad60420f42472145f124e0cc13c2d29f916f15e0979a6b1aebaed433b4832183` |
 | [manifest.jsonl](/home/rrios/exec34r_20260912/manifest.jsonl) | `b7fa1855722f99da9082494957f0bdd13f3242bf3bfc0a86bdd91ac9b16e91eb` |
 | [input_index.json](/home/rrios/exec34c_20260912/input_index.json) | `1d17292241ee812db7f182bfd7e73fe50d0bea3bf47c4fc2544204fb72a90620` |
 | [verified_inputs.json](/home/rrios/exec34c_20260912/verified_inputs.json) | `fc398172442bda0fd08ba0ef142f23739b3d80883103db80c29ac07ee8378331` |

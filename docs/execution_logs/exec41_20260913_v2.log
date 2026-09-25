@@ -1,0 +1,45 @@
+/home/rrios/ej200_exec40_20260913/analysis/validation/analyze_exec41_v2.py:47: FutureWarning: Starting in version 5.7.0, Uproot will default to writing RNTuples instead of TTrees. You will need to use `mktree` to explicitly create a TTree. This can be done by changing `file['tree_name'] = data` to `file.mktree('tree_name', data)`. Please update your code accordingly.
+  root["data"] = data
+{
+  "H1": {
+    "value": 0.2568982359252689,
+    "se": 7.075999152758862e-05,
+    "numerator": 10140104,
+    "denominator": 39471287,
+    "lower_3se": 0.2566859559506861,
+    "lower_bound": 0.226172,
+    "status": "PASS"
+  },
+  "H2": {
+    "status": "DESCRIPTIVE_NO_PASS_FAIL",
+    "uniform": {
+      "chi_square_event_bootstrap": 4251944.444882358,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "old_flux_p_2mu": {
+      "chi_square_event_bootstrap": 4249308.52761883,
+      "rank": 19,
+      "p_value": 0.0
+    },
+    "low_mu": {
+      "range": [
+        0.0,
+        0.2
+      ],
+      "observed_probability": 0.10358314386860504,
+      "uniform_probability": 0.2,
+      "difference": -0.09641685613139497,
+      "bootstrap_se": 5.695359433144309e-05
+    },
+    "mean_cosine_binned": 0.5734322426578085,
+    "photons": 39471287
+  },
+  "mechanism": {
+    "nearest_Z_escaped": 7988192,
+    "other_faces_escaped": 2151912,
+    "other_faces_share_of_escaped": 0.21221794174892092,
+    "aggregate_excess_over_bound": 0.03072623592526888,
+    "interpretation": "Arithmetic decomposition only; unresolved WorldPV rows are not assigned to +Y or +/-X."
+  }
+}

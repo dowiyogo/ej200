@@ -1,0 +1,168 @@
+START EJ200_xm650 rows=201279794
+DONE EJ200_xm650 selected=190114712
+START EJ200_xm500 rows=201686986
+DONE EJ200_xm500 selected=190539851
+START EJ200_xm200 rows=202763400
+DONE EJ200_xm200 selected=191570765
+START EJ200_xp0 rows=202014290
+DONE EJ200_xp0 selected=190849985
+START EJ200_xp200 rows=202480330
+DONE EJ200_xp200 selected=191308844
+START EJ200_xp500 rows=201497084
+DONE EJ200_xp500 selected=190346524
+START EJ200_xp650 rows=202309773
+DONE EJ200_xp650 selected=191116188
+START EJ204_xm650 rows=209806298
+DONE EJ204_xm650 selected=198633308
+START EJ204_xm500 rows=209184782
+DONE EJ204_xm500 selected=198041813
+START EJ204_xm200 rows=209091968
+DONE EJ204_xm200 selected=197959136
+START EJ204_xp0 rows=208955278
+DONE EJ204_xp0 selected=197849752
+START EJ204_xp200 rows=209066941
+DONE EJ204_xp200 selected=197951188
+START EJ204_xp500 rows=209319312
+DONE EJ204_xp500 selected=198180454
+START EJ204_xp650 rows=208966712
+DONE EJ204_xp650 selected=197813552
+START EJ230_xm650 rows=195054268
+DONE EJ230_xm650 selected=183980543
+START EJ230_xm500 rows=195180606
+DONE EJ230_xm500 selected=184123285
+START EJ230_xm200 rows=194835465
+DONE EJ230_xm200 selected=183817322
+START EJ230_xp0 rows=195663049
+DONE EJ230_xp0 selected=184614426
+START EJ230_xp200 rows=194767910
+DONE EJ230_xp200 selected=183749468
+START EJ230_xp500 rows=195522081
+DONE EJ230_xp500 selected=184459861
+START EJ230_xp650 rows=195312834
+DONE EJ230_xp650 selected=184223642
+{
+  "M2": {
+    "status": "EXCLUDED",
+    "n_effective_spread": 4.440892098500626e-16,
+    "threshold": 0.0001,
+    "optical_properties": [
+      {
+        "material": "EJ-200",
+        "opsc_code": "opsc-100",
+        "emission_peak_nm": 425.97,
+        "emission_mean_nm": 440.5231827394137,
+        "n_effective": 1.58,
+        "geometric_escape": 0.22577576286718837,
+        "measured_escape_mean_x": 0.25820488384466705,
+        "measured_escape_min_x": 0.256163013561464,
+        "measured_escape_max_x": 0.2627308979643827,
+        "measured_Z_conditional_escape": 0.22574669476325443,
+        "attenuation_mm": 3800.0,
+        "rindex_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/rIndex.txt",
+        "rindex_sha256": "9dc7dcfd4e5271c19a194e84f8a788a2816557c5e39f01676d4392719bc41995",
+        "spectrum_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/scntComp1.txt",
+        "spectrum_sha256": "51ca62754a8469c5e70e35492697124ae42ec4f1bd499cd5705087bfb7770310",
+        "absorption_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-100/absLength.txt",
+        "absorption_sha256": "a8051a1e98da5053d7731eccda420cf9fa3ea418482e9db046db1ddf82caa171"
+      },
+      {
+        "material": "EJ-204",
+        "opsc_code": "opsc-101",
+        "emission_peak_nm": 408.8,
+        "emission_mean_nm": 419.8493547498853,
+        "n_effective": 1.5800000000000005,
+        "geometric_escape": 0.22577576286718826,
+        "measured_escape_mean_x": 0.25861920827234197,
+        "measured_escape_min_x": 0.25658881117702614,
+        "measured_escape_max_x": 0.26309471456232686,
+        "measured_Z_conditional_escape": 0.22633167604258422,
+        "attenuation_mm": 1600.0,
+        "rindex_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/rIndex.txt",
+        "rindex_sha256": "8d2319c133a05d11a05484007725e00a3acc6bb703a1041bda26152c758b3252",
+        "spectrum_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/scntComp1.txt",
+        "spectrum_sha256": "7b83d48b7ffda869c8695bdd16d6fa789d4a97704a9d03b6c31d7c1e509082e8",
+        "absorption_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-101/absLength.txt",
+        "absorption_sha256": "150b365ff4e7e72fd85ab9d982981b8e5dcea64a1c5709226926e72804abd1b5"
+      },
+      {
+        "material": "EJ-230",
+        "opsc_code": "opsc-106",
+        "emission_peak_nm": 388.684,
+        "emission_mean_nm": 401.31401573028455,
+        "n_effective": 1.58,
+        "geometric_escape": 0.22577576286718837,
+        "measured_escape_mean_x": 0.2588413520147275,
+        "measured_escape_min_x": 0.2568583933564215,
+        "measured_escape_max_x": 0.26324082768920615,
+        "measured_Z_conditional_escape": 0.22665299967366032,
+        "attenuation_mm": 1200.0,
+        "rindex_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/rIndex.txt",
+        "rindex_sha256": "d3042cd86cab09ba7e8f08a97b94d2435aa2858c99aed7341d012362b4d555f6",
+        "spectrum_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/scntComp1.txt",
+        "spectrum_sha256": "5fffb1884a217c4522c1d5841f4d6ccb843603818dc560c86e103a4653227721",
+        "absorption_path": "/home/rrios/exec40_20260913/build_off/sslg4/data/oscnt/opsc-106/absLength.txt",
+        "absorption_sha256": "c956af7f218aa28fa3382ee23d9860dfa6465370ae93332243a28eec86f0fd81"
+      }
+    ]
+  },
+  "M1": {
+    "status": "CONFIRMED_WITHIN_PERSISTED_DATA_LIMITS",
+    "directional_path_status": "PASS",
+    "directional_comparisons_pass": 84,
+    "directional_comparisons_total": 84,
+    "survival_ordering_status": "PASS",
+    "adjacent_absent_pairs_pass": 14,
+    "adjacent_absent_pairs_total": 14,
+    "quantitative_closure_status": "PASS",
+    "closure_cells_pass": 14,
+    "closure_cells_total": 14,
+    "exact_full_path_distribution": "NOT_EVALUABLE_FROM_PRODUCTION_SCHEMA"
+  },
+  "position_dependence": [
+    {
+      "material_a": "EJ-200",
+      "material_b": "EJ-204",
+      "arithmetic_mean_difference": -0.00041432442767488524,
+      "GLS_constant": -0.0004137522740157416,
+      "minimum_difference": -0.00048756823834378293,
+      "maximum_difference": -0.00032067946793795654,
+      "peak_to_peak": 0.0001668887704058264,
+      "fractional_peak_to_peak": 0.4027973232048528,
+      "chi_square": 8.152326084817236,
+      "covariance_rank": 7,
+      "dof": 6,
+      "p_value": 0.22715462477818557,
+      "position_dependence": "NOT_RESOLVED"
+    },
+    {
+      "material_a": "EJ-200",
+      "material_b": "EJ-230",
+      "arithmetic_mean_difference": -0.0006364681700604669,
+      "GLS_constant": -0.0006335883874102223,
+      "minimum_difference": -0.0007403751329729258,
+      "maximum_difference": -0.0004938170534439235,
+      "peak_to_peak": 0.00024655807952900233,
+      "fractional_peak_to_peak": 0.38738477606127325,
+      "chi_square": 21.755895128778548,
+      "covariance_rank": 7,
+      "dof": 6,
+      "p_value": 0.0013405641016616611,
+      "position_dependence": "RESOLVED"
+    },
+    {
+      "material_a": "EJ-204",
+      "material_b": "EJ-230",
+      "arithmetic_mean_difference": -0.00022214374238558162,
+      "GLS_constant": -0.00022369391012093225,
+      "minimum_difference": -0.00031457751741076345,
+      "maximum_difference": -0.00014611312687928812,
+      "peak_to_peak": 0.00016846439053147533,
+      "fractional_peak_to_peak": 0.7583575783965437,
+      "chi_square": 11.30920210964515,
+      "covariance_rank": 7,
+      "dof": 6,
+      "p_value": 0.07927751330695558,
+      "position_dependence": "NOT_RESOLVED"
+    }
+  ]
+}

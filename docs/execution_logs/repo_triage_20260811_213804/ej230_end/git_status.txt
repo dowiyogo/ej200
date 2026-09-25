@@ -1,0 +1,55 @@
+=== status --short --branch ===
+## feat/ej230-endonly-mylar...origin/feat/ej230-endonly-mylar
+ M resume_scan_2.sh
+ M scripts/audit_beamer_assets.py
+ M scripts/audit_beamer_numbers.py
+ M scripts/audit_exec14b_raster_text.py
+ M scripts/build_report_msi.sh
+ M scripts/check_exec14b_asset_parity.py
+ M scripts/check_exec14b_figure_frame_consistency.py
+ M scripts/check_exec14b_frame_parity.py
+ M scripts/diag_exec14d_endtop_ratio.py
+ M scripts/generate_exec14b_tables.py
+ M scripts/generate_exec14d_nominal_parameters.py
+ M scripts/make_beamer_ej230.py
+ M scripts/preflight_exec14b_pdf.py
+ M scripts/rebuild_exec14b_report.py
+ M scripts/run_analysis_t0minidaq.sh
+ M scripts/run_center.sh
+ M scripts/run_center_msi_16t.sh
+ M scripts/run_center_t0minidaq_24t.sh
+ M scripts/run_exec07_scan.sh
+ M scripts/run_exec14b_main_analysis_repair.sh
+ M scripts/run_exec14b_special_analysis.sh
+ M scripts/run_exec14b_special_sims.sh
+ M scripts/run_exec14b_strict_preflight.sh
+ M scripts/run_scan.sh
+ M scripts/run_scan_msi_16t.sh
+ M scripts/run_scan_t0minidaq_24t.sh
+ M scripts/validate_exec14b_roots.py
+?? build_t0minidaq/
+?? output/
+
+=== remote -v ===
+origin	https://github.com/dowiyogo/ej200 (fetch)
+origin	https://github.com/dowiyogo/ej200 (push)
+
+=== branch -vv ===
+* feat/ej230-endonly-mylar e4110ce [origin/feat/ej230-endonly-mylar] DIAGNOSTIC: Add PrintGroupVelDiagnostic() to investigate GROUPVEL propagation velocity anomaly
+  main                     84e902c [origin/main] fix(optics): replace reflector volumes with bar skin surface
+
+=== log --oneline --decorate -8 ===
+e4110ce (HEAD -> feat/ej230-endonly-mylar, origin/feat/ej230-endonly-mylar) DIAGNOSTIC: Add PrintGroupVelDiagnostic() to investigate GROUPVEL propagation velocity anomaly
+f22de30 EXEC_14: análisis completo EJ-230 End-only+Mylar (ADDENDUM FINAL aplicado)
+7e18117 fix(readout): elimina selector residual de midpoint TOP
+5c85a40 docs: README + nota AFBR P024M/P014M
+ef8c4de chore(scripts): run_msi.sh (16t) y run_t0minidaq.sh (24t)
+0c02e00 build: GDML opcional (compila sin GDML)
+b1c738d refactor(readout): canales solo END; limpia referencias TOP
+5668bab feat(geom): Mylar en todas las caras salvo extremos (misma def. que feat/endonly-mylar)
+
+=== upstream ===
+origin/feat/ej230-endonly-mylar
+
+=== ahead/behind ===
+0	0
