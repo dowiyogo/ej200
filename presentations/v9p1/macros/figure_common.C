@@ -162,10 +162,10 @@ void makeEndVsTop() {
 
 void makeFitGridEJ230() {
   style();TFile in("sources/t0_fit_diagnostics.root","READ");std::vector<int> xs={-650,-500,-200,0,200,500,650};
-  TCanvas c("fit_grid_ej230","",1450,760);c.Divide(4,2,.002,.002);TFile out("figures/fit_grid_ej230.root","RECREATE");
+  TCanvas c("fit_grid_ej230_v9","",1450,760);c.Divide(4,2,.002,.002);TFile out("figures/fit_grid_ej230_v9.root","RECREATE");
   for(size_t j=0;j<xs.size();j++){c.cd(j+1);gPad->SetLeftMargin(.15);gPad->SetBottomMargin(.15);std::string id=xs[j]<0?"EJ230_xm"+std::to_string(-xs[j]):"EJ230_xp"+std::to_string(xs[j]);auto*h=(TH1D*)in.Get((id+"/t0_histogram").c_str());auto*f=(TF1*)in.Get((id+"/gaussian_fit").c_str());if(!h||!f)throw std::runtime_error("Missing "+id);auto*hc=(TH1D*)h->Clone(("hist_"+id).c_str());auto*fc=(TF1*)f->Clone(("fit_"+id).c_str());hc->SetDirectory(&out);hc->SetMarkerStyle(20);hc->SetMarkerSize(.35);hc->GetXaxis()->SetTitle("T_{0} [ns]");hc->GetYaxis()->SetTitle("events / bin");fc->SetLineColor(kRed+1);fc->SetLineWidth(3);hc->Draw("E");fc->Draw("SAME");auto*box=new TPaveText(.14,.69,.72,.91,"NDC");box->SetFillColor(kWhite);box->SetBorderSize(1);box->SetTextAlign(12);box->SetTextSize(.043);box->AddText(Form("x = %+d mm",xs[j]));box->AddText(Form("#sigma_{G}=%.2f#pm%.2f ps",1000*fc->GetParameter(2),1000*fc->GetParError(2)));box->AddText(Form("#chi^{2}/ndf=%.2f",fc->GetChisquare()/fc->GetNDF()));box->Draw();out.cd();hc->Write();fc->Write();}
   c.cd(8);gPad->Range(0,0,1,1);TLatex tx;tx.SetTextFont(42);tx.SetTextSize(.065);tx.DrawLatex(.10,.78,"EJ-230: all seven positions");tx.SetTextSize(.052);tx.DrawLatex(.10,.62,"Exact central histograms used");tx.DrawLatex(.10,.53,"for the quoted resolution.");tx.DrawLatex(.10,.37,"Common two-pass fit policy:");tx.DrawLatex(.10,.28,"final window = #mu #pm 2#sigma.");
-  c.SaveAs("figures/fit_grid_ej230.pdf");out.cd();c.Write();provenance(out,"Seven exact T0 histograms and stored ROOT TF1 fits used in timing_summary for EJ-230");out.Close();writeMeta("fit_grid_ej230","Are the seven EJ-230 Gaussian fits stable?","Exact stored T0 histograms and ROOT TF1 Gaussian fits, one panel per x");
+  c.SaveAs("figures/fit_grid_ej230_v9.pdf");out.cd();c.Write();provenance(out,"Seven exact T0 histograms and stored ROOT TF1 fits used in timing_summary for EJ-230");out.Close();writeMeta("fit_grid_ej230_v9","Are the seven EJ-230 Gaussian fits stable?","Exact stored T0 histograms and ROOT TF1 Gaussian fits, one panel per x");
 }
 
 void makeMirrorOverlaysEJ230() {
