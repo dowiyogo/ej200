@@ -1,0 +1,694 @@
+# TAREA: EXEC_34A — implementar el análisis sigma_t, ejecutar el piloto y validar G-P
+
+Esta es la PRIMERA PARTE de EXEC_34.
+
+Tu responsabilidad termina después de:
+1. auditar el estado inicial;
+2. implementar la nueva orquestación necesaria para el procedimiento TOP (c);
+3. ejecutar la celda piloto completa;
+4. evaluar automáticamente el gate G-P;
+5. dejar un checkpoint reproducible para que otro agente continúe con la grilla.
+
+NO ejecutes todavía la grilla completa de 21 celdas.
+
+IMPORTANTE:
+Esta instrucción reemplaza específicamente la regla anterior de
+"G-P PASA → continúa al Bloque B en la misma sesión".
+En esta ejecución, si G-P PASA, debes preparar el handoff y DETENERTE.
+No es necesario pedir aprobación.
+
+---
+
+## Base
+
+- Simulación: main `420addf`.
+- Worktree de trabajo:
+  `/home/rrios/ej200_exec33_20260911`
+- Rama de EXEC_33, HEAD inicial esperado: `1a9bba5`.
+- Pipeline importado sin modificaciones en `analysis/sigma_t/`
+  (`30eba3b`, `fde610f`, `1a9bba5`).
+
+Benchmark EXEC_33:
+- 1/4/12/24 workers dan N_pe/end idéntico:
+  397.1525, diferencia exacta cero.
+- 24 workers = 11.51×.
+- 12 workers = 10.09×, 84 % de eficiencia.
+
+La máquina está disponible en exclusiva.
+No restrinjas paralelismo por cortesía; sí por memoria.
+
+---
+
+# RESTRICCIONES GIT
+
+Prohibido:
+
+- push
+- merge a main
+- borrar ramas
+- borrar tags
+- reset
+- rebase
+
+Antes de editar:
+
+1. inspecciona `git status`, rama, HEAD y worktree;
+2. crea un TAG DE ROLLBACK;
+3. registra ese tag en el reporte/checkpoint.
+
+Los comandos potencialmente destructivos se IMPRIMEN pero NO se ejecutan.
+
+No modifiques historia existente.
+
+---
+
+# PRINCIPIO GENERAL
+
+No reinterpretar decisiones físicas o metodológicas cerradas por René.
+
+Primero inspecciona la implementación existente y reutiliza sus primitivas.
+
+La nueva funcionalidad de procedimiento TOP (c) debe ser una capa de
+orquestación sobre primitivas preservadas.
+
+NO modifiques las primitivas importadas de `analysis/sigma_t/`.
+
+La implementación de (c) debe quedar en un COMMIT SEPARADO y claramente
+identificado como nueva orquestación.
+
+---
+
+# TOP
+
+## Rango
+
+N = 1..20.
+
+Agrupamiento:
+
+`TOP_SUM4`
+
+= los cuatro canales TOP de mayor conteo agregado.
+
+Para cada N debes reportar:
+
+- sigma;
+- incertidumbre;
+- eficiencia;
+- fit_status;
+- n_eff y demás calidad disponible.
+
+El sigma es condicional al corte:
+
+"eventos con menos de N hits se omiten"
+
+Por lo tanto jamás reportes sigma(N) sin su eficiencia.
+
+---
+
+# Procedimientos TOP
+
+Debes producir los tres.
+
+## (a)
+
+Curva completa sigma(N), N=1..20, por separado para:
+
+- TRAIN;
+- EVAL.
+
+## (b)
+
+Mínimo por posición sobre los mismos eventos.
+
+Debe quedar explícitamente etiquetado como:
+
+`biased by selection`
+
+Se mantiene solamente por continuidad histórica.
+
+## (c) — RESULTADO PRIMARIO
+
+Split determinista 50/50 mediante paridad de `event_id`.
+
+Define explícitamente y registra cuál paridad es TRAIN y cuál EVAL.
+No debe depender del orden de lectura del ROOT.
+
+En TRAIN:
+
+1. calcula el ranking TOP;
+2. selecciona los cuatro canales TOP_SUM4;
+3. calcula sigma(N), N=1..20;
+4. determina N ganador;
+5. realiza cualquier calibración que dependa de datos.
+
+Luego CONGELA todo aquello aprendido en TRAIN:
+
+- identidad/ranking de los cuatro canales TOP;
+- N ganador;
+- calibración de walk si existiera;
+- semillas o parámetros derivados de datos;
+- cualquier otro estado data-driven.
+
+En EVAL:
+
+- aplica exactamente los cuatro canales congelados;
+- aplica N ganador congelado;
+- aplica cualquier calibración congelada;
+- NO recalcules el ranking;
+- NO vuelvas a optimizar N;
+- NO vuelvas a entrenar nada.
+
+Reporta claramente qué fue congelado y de qué mitad provino.
+
+La cantidad primaria de (c) es el sigma obtenido en EVAL usando la
+selección aprendida en TRAIN.
+
+La diferencia:
+
+(b) - (c)
+
+es un RESULTADO buscado.
+
+Debe calcularse y reportarse.
+
+No tratarla como discrepancia o error.
+
+---
+
+# END
+
+Ajuste primario:
+
+`FitCore`
+
+tomado de `congruent_sum4_timing.C`
+
+- ventana iterativa ±2 sigma.
+
+Sistemático:
+
+`FitPeakSeeded`
+
+tomado de `tb_mirror_sigma_vs_x.C`
+
+- ventana fija ±2 ns.
+
+Reporta ambos y:
+
+`FitPeakSeeded - FitCore`
+o la convención equivalente, pero declara explícitamente el signo.
+
+## Mapeo fijo
+
+`HOOK_MAP`
+
+Izquierda:
+
+- {0,1,2,3}
+- {4,5,6,7}
+
+Derecha:
+
+- {8,9,10,11}
+- {12,13,14,15}
+
+## Reducción
+
+`HOOK_ENDRED`
+
+= primer clúster que cruza en cada extremo.
+
+Evento aceptado solamente si ambos extremos son finitos.
+
+## Pulso y threshold
+
+- rise = 0.5 ns
+- fall = 5 ns
+- threshold = 4 PE-equivalentes de amplitud sumada
+
+NO introducir:
+
+- SPTR
+- corrección de walk
+- corte ToT
+
+Rotula el resultado como:
+
+`INTRINSIC timing resolution — electronics not included`
+
+Registra también el motivo:
+
+hay al menos cuatro versiones vivas de electrónica con ambigüedad
+FWHM/sigma sin resolver y `SPTR_PROVENANCE.md` indica que la propagación
+sqrt(kN) no está establecida para estadísticos de orden.
+
+La electrónica queda explícitamente fuera de EXEC_34.
+
+---
+
+# Normalizaciones END
+
+Reporta SIEMPRE las dos:
+
+Primaria:
+
+`sigma(DeltaT_LR)`
+
+Derivada:
+
+`sigma(DeltaT_LR) / sqrt(2)`
+
+La segunda debe estar etiquetada con el supuesto:
+
+"equal and statistically independent timing contributions from the two
+ends"
+
+y debe declararse que dicho supuesto NO ha sido verificado aquí.
+
+---
+
+# PROHIBICIONES DEL ADAPTADOR
+
+1. NO renombres ni enlaces el ROOT para hacerlo pasar por el constructor
+   histórico.
+
+   El token `_300ev_` está hardcodeado en
+   `timing_fit_pipeline.py:74`.
+
+   El nuevo adaptador debe aceptar el nombre nativo:
+
+   `photon_hits_run000.root`
+
+   y debe utilizar un denominador EXPLÍCITO de eventos GENERADOS.
+
+2. NO ejecutes `phase_sparse_top.py`.
+   Calcula BLUE internamente.
+
+3. NO uses el main completo de `congruent_sum4_timing.C`.
+
+   Solo reutiliza sus primitivas END.
+
+   El main contiene:
+   - otro observable TOP;
+   - la línea histórica de 88 ps.
+
+4. Todo N_pe incluye los eventos generados con cero hits.
+
+   Para el piloto:
+   denominador = 10000.
+
+   `np.unique(event_id)` NO establece el denominador.
+
+5. Ninguna comparación contra valores históricos.
+
+6. Ninguna corrección BLUE.
+
+7. Ninguna combinación de sigma_TOP con sigma_END.
+
+8. En MSI utilizar explícitamente:
+
+   `python3.12`
+
+   NO `python3` sin calificar.
+
+---
+
+# BLOQUE A — PILOTO
+
+Configuración:
+
+- EndTop
+- N_TOP = 70
+- material EJ-204
+- código OPSC-101
+- mu- 1 GeV vertical
+- x = 0 mm
+- N_generated = 10000
+- semillas = 26092601, 8349041
+- `EJ200_ENABLE_DIAGNOSTICS=OFF`
+- 1 proceso
+- 24 workers
+- eventModulo = 1
+
+Cadena completa:
+
+simulación
+→ ROOT
+→ adaptador
+→ pipeline
+→ sigma_TOP
+→ sigma_END
+→ sidecars
+→ gate
+
+No omitir etapas.
+
+---
+
+# SIDECARS DEL PILOTO
+
+Cada resultado debe quedar asociado a:
+
+- `.root`
+- `.csv`
+- `.meta.json`
+
+Verifica que existan y sean legibles.
+
+El `.meta.json` debe contener como mínimo:
+
+- commit simulación;
+- commit pipeline;
+- commit de nueva orquestación;
+- versión Geant4;
+- semillas;
+- N_generated = 10000;
+- material;
+- código OPSC;
+- configuración;
+- N_TOP;
+- posición;
+- workers;
+- eventModulo;
+- procedimiento TOP a/b/c;
+- regla exacta del split TRAIN/EVAL;
+- qué información fue congelada desde TRAIN;
+- identidad exacta del estimador;
+- identidad exacta de FitCore;
+- identidad exacta de FitPeakSeeded;
+- ruta del archivo PDE;
+- SHA256 del archivo PDE;
+- comando exacto de cada etapa;
+- timestamps UTC;
+- exit code de cada etapa;
+- información RNG disponible.
+
+---
+
+# AUTOTEST DE LA IMPLEMENTACIÓN DE (c)
+
+El resto de este prompt exige congelar TRAIN→EVAL, pero nada verifica que
+se haya congelado. Estos tres chequeos lo verifican con datos.
+
+Se ejecutan sobre el MISMO ROOT del piloto, re-corriendo únicamente la
+etapa de análisis. NO re-simules.
+
+## 1. Simetría de partición
+
+Corre (c) dos veces sobre el mismo ROOT:
+
+- TRAIN = par, EVAL = impar
+- TRAIN = impar, EVAL = par
+
+Los dos sigma(c) deben ser estadísticamente compatibles.
+
+Reporta ambos, su diferencia y la significancia de esa diferencia.
+
+Una diferencia grande indica leakage en la implementación, o que media
+muestra es insuficiente. No la ocultes ni promedies los dos valores.
+
+Declara cuál de las dos orientaciones es la canónica para el resto de
+EXEC_34 y regístrala en el checkpoint. EXEC_34B debe usar esa misma.
+
+## 2. Sesgo interno medido
+
+Reporta:
+
+- sigma en TRAIN evaluado en el N ganador;
+- sigma en EVAL evaluado en el MISMO N ganador.
+
+La diferencia entre ambos es el sesgo de selección medido DENTRO del
+split.
+
+Debe ser del mismo orden de magnitud y del mismo signo que (b)-(c).
+
+Que dos estimaciones independientes del mismo sesgo coincidan es la
+verificación más fuerte de que (c) está bien implementado.
+
+Si no coinciden en orden o signo, repórtalo explícitamente: es evidencia
+de un defecto en la implementación de (c), no un resultado físico.
+
+## 3. Planitud de la curva
+
+Reporta la curvatura de sigma(N) en el entorno del mínimo: los valores de
+sigma en N_ganador-1, N_ganador y N_ganador+1, con sus incertidumbres.
+
+Si la variación entre esos tres puntos es comparable a sus barras de
+error, el N ganador está dominado por ruido.
+
+En ese caso (b)-(c) sigue siendo válido como medida de sesgo de
+selección, pero el N ganador NO es interpretable como un óptimo físico.
+
+Dilo explícitamente si ocurre.
+
+Los tres resultados van al reporte y al checkpoint JSON.
+
+---
+
+# MEMORIA Y PERFORMANCE
+
+Durante el piloto mide:
+
+1. RSS máxima por proceso;
+2. tiempo de arranque antes del procesamiento normal de eventos,
+   incluyendo construcción de geometría y tablas de física;
+3. wall time total.
+
+No estimes RSS desde herramientas indirectas si puedes medirla.
+
+Registra también:
+
+- memoria RAM total;
+- memoria disponible justo antes de la campaña;
+- método utilizado para medir RSS.
+
+Estos valores determinarán el paralelismo de EXEC_34B.
+
+A partir de la RSS observada, calcula de forma conservadora:
+
+`max_parallel_processes_by_memory`
+
+para procesos independientes de 1 worker.
+
+No lances todavía esos procesos.
+
+---
+
+# GATE G-P
+
+Cita literalmente este criterio en el informe/checkpoint:
+
+> El piloto PASA si y solo si se cumplen las cinco condiciones:
+> 1. sigma_END finito, con `fit_used_end` verdadero, chi2/ndf registrado
+>    y n_eff por encima del mínimo del ajuste.
+> 2. sigma_TOP finito con `fit_status` válido en al menos 10 de los 20
+>    índices N, en AMBAS mitades de la partición.
+> 3. Eficiencia por encima del `EFFICIENCY_FLOOR` configurado para el N
+>    ganador de (c).
+> 4. Los tres sidecars completos y el comando de extremo a extremo
+>    reproducible desde el README.
+> 5. La diferencia (b) − (c) es finita y calculable.
+>
+> NO hay criterio sobre el VALOR de sigma_t: no existe referencia válida
+> contra la cual juzgarlo. Un valor inesperado no es un fallo.
+
+Evalúa las cinco condiciones mediante datos, no por inspección subjetiva.
+
+Produce una tabla:
+
+| condition | PASS/FAIL | evidence |
+
+No inventes un criterio adicional sobre el valor de sigma_t.
+
+---
+
+# SI G-P FALLA
+
+DETENTE.
+
+NO ejecutes ninguna celda de la grilla.
+
+Produce el checkpoint/report explicando:
+
+- condición o condiciones que fallaron;
+- evidencia cuantitativa;
+- archivos producidos;
+- comandos ejecutados;
+- exit codes.
+
+No intentes "arreglar" el resultado físico para hacerlo pasar.
+
+---
+
+# SI G-P PASA
+
+NO lances todavía la grilla.
+
+Prepara la campaña completa de EXEC_34B.
+
+Debe quedar posible lanzarla sin reinterpretar decisiones.
+
+Como mínimo deja:
+
+1. runner/orquestador para la grilla;
+2. adaptador validado;
+3. README reproducible;
+4. directorio de salida definido;
+5. manifest incremental preparado;
+6. mecanismo de resume;
+7. configuración completa de materiales y posiciones;
+8. cálculo de concurrencia por memoria;
+9. checkpoint formal.
+
+---
+
+# EJ-200 OPSC
+
+Durante esta fase localiza el código OPSC de EJ-200 en fuentes existentes.
+
+NO lo inventes.
+
+Registra:
+
+- archivo;
+- línea/contexto;
+- evidencia.
+
+Si no puedes encontrarlo, deja el estado explícito:
+
+`EJ200_OPSC_CODE = NOT_FOUND`
+
+EXEC_34B deberá entonces correr solo EJ-204 y EJ-230.
+
+---
+
+# CHECKPOINT OBLIGATORIO
+
+Fuera de los repositorios crea:
+
+`EXEC34_HANDOFF_<UTC-date>.md`
+
+y preferiblemente además:
+
+`EXEC34_HANDOFF_<UTC-date>.json`
+
+El JSON debe permitir validación automática.
+
+Incluye como mínimo:
+
+- `gate_status`: PASS o FAIL
+- resultado individual de G-P.1 ... G-P.5
+- worktree
+- branch
+- HEAD inicial
+- HEAD final
+- rollback tag
+- commit nueva orquestación
+- dirty/clean status
+- rutas absolutas de scripts relevantes
+- ruta ROOT del piloto
+- sidecars
+- hashes SHA256
+- ruta PDE + hash
+- Geant4 version
+- configuración piloto
+- TRAIN parity
+- EVAL parity
+- frozen TOP channel IDs
+- winning N(c)
+- efficiency en winning N(c)
+- sigma_TOP(c) EVAL
+- sigma_TOP(b)
+- b_minus_c
+- canonical_train_parity
+- sigma_c_train_even
+- sigma_c_train_odd
+- partition_symmetry_difference
+- sigma_train_at_winning_N
+- sigma_eval_at_winning_N
+- internal_selection_bias
+- curvature_check: sigma en N-1, N, N+1 con incertidumbres
+- curve_flat: true/false
+- FitCore END
+- FitPeakSeeded END
+- ambas normalizaciones
+- RSS máxima
+- startup time
+- wall time
+- memoria disponible
+- max_parallel_processes_by_memory
+- OPSC code de EJ-200 o NOT_FOUND
+- ruta y formato esperado del manifest de EXEC_34B
+- comandos exactos para comenzar y reanudar la campaña
+
+Incluye hashes SHA256 de los scripts de campaña que EXEC_34B utilizará.
+
+---
+
+# COMMIT
+
+La implementación de (c) debe estar en un commit separado.
+
+Puedes hacer otros commits de infraestructura/orquestación si son necesarios,
+pero:
+
+- no mezcles cambios conceptualmente distintos;
+- no modifiques primitivas importadas;
+- no hagas push.
+
+Antes de terminar ejecuta:
+
+- tests disponibles;
+- `git diff --check`;
+- inspección de `git status`.
+
+---
+
+# SALIDA FINAL EN TERMINAL/CHAT
+
+Al acabar muestra un resumen compacto:
+
+EXEC_34A
+G-P: PASS/FAIL
+
+G-P.1 ...
+G-P.2 ...
+G-P.3 ...
+G-P.4 ...
+G-P.5 ...
+
+Pilot sigma_TOP(c):
+winning N:
+efficiency:
+sigma_TOP(b):
+(b)-(c):
+
+END FitCore:
+END FitPeakSeeded:
+systematic difference:
+
+RSS peak:
+startup:
+pilot wall time:
+max grid processes by memory:
+
+EJ-200 OPSC:
+handoff:
+HEAD:
+git status:
+
+Si G-P PASS:
+
+`READY FOR EXEC_34B — GRID NOT STARTED`
+
+Si G-P FAIL:
+
+`EXEC_34 STOPPED — GRID MUST NOT BE STARTED`
+
+DETENTE.
+
+No edites ningún deck.
+No merge a main.
+No electrónica.
+No combinación TOP/END.
