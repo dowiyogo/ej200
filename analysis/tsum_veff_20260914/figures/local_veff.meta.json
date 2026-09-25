@@ -1,0 +1,8 @@
+{
+  "figure": "local_veff",
+  "created_utc": "2026-09-14",
+  "question": "How does the data-driven local effective velocity vary with distance?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Adjacent-distance finite differences after inverse-variance LEFT/RIGHT combination",
+  "generator": "CERN ROOT macro macros/local_veff.C"
+}

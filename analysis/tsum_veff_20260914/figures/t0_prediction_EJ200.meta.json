@@ -1,0 +1,8 @@
+{
+  "figure": "t0_prediction_EJ200",
+  "created_utc": "2026-09-14",
+  "question": "Does the quadratic propagation fit predict the observed T0 position dependence?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Direct event means overlaid with algebraic prediction from g2(d)",
+  "generator": "CERN ROOT macro macros/t0_prediction_EJ200.C"
+}

@@ -1,0 +1,9 @@
+{
+  "figure": "sigma_x_vs_x",
+  "created_utc": "2026-09-14",
+  "question": "What longitudinal resolution follows from differential timing?",
+  "inputs": ["sources/timing_summary.csv", "sources/material_summary.csv", "sources/timing_events.root"],
+  "configuration": "EndTop; 16 END and 70 TOP SiPMs; vertical 1 GeV mu-; SPTR=0; no electronics; N=10000 per cell; corrected current transport",
+  "method": "sigma_x=v_eff sigma_DeltaT/2 with propagated fit uncertainties",
+  "generator": "CERN ROOT macro macros/sigma_x_vs_x.C"
+}

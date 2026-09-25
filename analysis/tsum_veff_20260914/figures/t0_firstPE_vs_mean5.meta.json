@@ -1,0 +1,8 @@
+{
+  "figure": "t0_firstPE_vs_mean5",
+  "created_utc": "2026-09-14",
+  "question": "Does mean-first-five reduce residual position dependence as well as width?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "EJ-230 mean first-PE and mean-first-five T0 relative to their own centers",
+  "generator": "CERN ROOT macro macros/t0_firstPE_vs_mean5.C"
+}

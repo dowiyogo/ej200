@@ -1,0 +1,8 @@
+{
+  "figure": "fit_grid_EJ200",
+  "created_utc": "2026-09-14",
+  "question": "What distribution produces each timing-width point?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "Seven normalized T0 histograms with identical relative range/binning and stored baseline Gaussian fits",
+  "generator": "CERN ROOT macro macros/fit_grid_EJ200.C"
+}

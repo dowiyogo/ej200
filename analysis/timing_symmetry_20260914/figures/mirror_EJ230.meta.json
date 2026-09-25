@@ -1,0 +1,8 @@
+{
+  "figure": "mirror_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "Do mirrored T0 distributions have different shapes?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "Median-centered normalized overlays and density differences using common range, bins and y limits",
+  "generator": "CERN ROOT macro macros/mirror_EJ230.C"
+}

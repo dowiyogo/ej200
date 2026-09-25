@@ -1,0 +1,8 @@
+{
+  "figure": "propagation_residuals_EJ200",
+  "created_utc": "2026-09-14",
+  "question": "Do linear or quadratic propagation fits leave systematic residuals?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Residuals of fourteen LEFT/RIGHT means around the two required propagation models",
+  "generator": "CERN ROOT macro macros/propagation_residuals_EJ200.C"
+}

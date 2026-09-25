@@ -1,0 +1,8 @@
+{
+  "figure": "veff_vs_distance_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "What distance dependence would the required quadratic model imply?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Derivative of quadratic propagation fit with covariance band; model inadequacy explicitly retained",
+  "generator": "CERN ROOT macro macros/veff_vs_distance_EJ230.C"
+}

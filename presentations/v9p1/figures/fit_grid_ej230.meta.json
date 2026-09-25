@@ -1,0 +1,9 @@
+{
+  "figure": "fit_grid_ej230",
+  "created_utc": "2026-09-14",
+  "question": "Are the seven EJ-230 Gaussian fits stable?",
+  "inputs": ["sources/timing_summary.csv", "sources/material_summary.csv", "sources/timing_events.root"],
+  "configuration": "EndTop; 16 END and 70 TOP SiPMs; vertical 1 GeV mu-; SPTR=0; no electronics; N=10000 per cell; corrected current transport",
+  "method": "Exact stored T0 histograms and ROOT TF1 Gaussian fits, one panel per x",
+  "generator": "CERN ROOT macro macros/fit_grid_ej230.C"
+}

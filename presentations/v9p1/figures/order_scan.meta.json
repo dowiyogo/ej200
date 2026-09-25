@@ -1,0 +1,9 @@
+{
+  "figure": "order_scan",
+  "created_utc": "2026-09-14",
+  "question": "Is the first detected photon the best END estimator?",
+  "inputs": ["sources/timing_summary.csv", "sources/material_summary.csv", "sources/timing_events.root"],
+  "configuration": "EndTop; 16 END and 70 TOP SiPMs; vertical 1 GeV mu-; SPTR=0; no electronics; N=10000 per cell; corrected current transport",
+  "method": "k=1..20 order statistic and mean-first-m scans at EJ-230 x=0; central ROOT Gaussian widths",
+  "generator": "CERN ROOT macro macros/order_scan.C"
+}

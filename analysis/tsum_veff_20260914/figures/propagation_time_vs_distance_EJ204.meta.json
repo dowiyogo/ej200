@@ -1,0 +1,8 @@
+{
+  "figure": "propagation_time_vs_distance_EJ204",
+  "created_utc": "2026-09-14",
+  "question": "Do LEFT and RIGHT collapse onto one propagation curve, and is it linear?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Fourteen side-tagged means; common linear and quadratic ROOT fits",
+  "generator": "CERN ROOT macro macros/propagation_time_vs_distance_EJ204.C"
+}

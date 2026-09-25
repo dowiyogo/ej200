@@ -1,0 +1,23 @@
+{
+  "status": "COMPLETE",
+  "date": "2026-09-15",
+  "scope": "analysis-only; no simulation",
+  "command": "cd /home/rrios/ej200/analysis/order_stat_weight_20260915 && root -l -b -q 'macros/order_stat_weight.C+'",
+  "root_version": "6.40.02",
+  "input": "/home/rrios/ej200/analysis/tsum_veff_20260914/sources/tsum_veff.root",
+  "input_mode": "READ",
+  "input_sha256": "96fc575b583cad37f523dcab7bc8c1c0873f258e39fdb375bfa5739bf7ac78af",
+  "entries": 210000,
+  "cells": 21,
+  "corrected_l2_guard_passed": 21,
+  "x0_sanity_flags_passed": 9,
+  "gaussian_fits_total": 63,
+  "gaussian_fits_unreliable_chi2_ndf_gt_5": 6,
+  "profiles_total": 21,
+  "profile_fits_unreliable_chi2_ndf_gt_5": 12,
+  "ratio_threshold": 0.5,
+  "part_b_executed": true,
+  "new_simulation": false,
+  "chain_rule_assumption": "Direct seven-point measured Npe_END profile, even-symmetrized; no parametric attenuation fit; trapezoidal integral of local TProfile slopes.",
+  "uncertainty_note": "L2 guard uses paired influence-function delta-method SE. Chain-rule fractions are point estimates because local linear profiles have poor fit quality in 12/21 cells."
+}

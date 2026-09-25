@@ -1,0 +1,8 @@
+{
+  "figure": "sigma68_vs_x",
+  "created_utc": "2026-09-14",
+  "question": "What robust timing resolution does the corrected optical model predict?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "q68=(q84-q16)/2 for first-PE T0; 500 deterministic event-bootstrap replicas",
+  "generator": "CERN ROOT macro macros/sigma68_vs_x.C"
+}

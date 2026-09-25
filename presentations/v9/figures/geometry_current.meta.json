@@ -1,0 +1,9 @@
+{
+  "figure": "geometry_current",
+  "created_utc": "2026-09-14",
+  "question": "What detector geometry is evaluated?",
+  "inputs": ["sources/timing_summary.csv", "sources/material_summary.csv", "sources/timing_events.root"],
+  "configuration": "EndTop; 16 END and 70 TOP SiPMs; vertical 1 GeV mu-; SPTR=0; no electronics; N=10000 per cell; corrected current transport",
+  "method": "Schematic drawn with ROOT primitives; dimensions are physical configuration values",
+  "generator": "CERN ROOT macro macros/geometry_current.C"
+}

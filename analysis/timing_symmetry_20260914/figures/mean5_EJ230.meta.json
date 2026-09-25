@@ -1,0 +1,8 @@
+{
+  "figure": "mean5_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "Does the mean-first-five improvement persist away from x=0?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "Seven-position first-PE versus mean-first-five comparison using robust q68 and 500 event bootstraps",
+  "generator": "CERN ROOT macro macros/mean5_EJ230.C"
+}

@@ -1,0 +1,175 @@
+\begin{frame}{Backup: dataset and common configuration}
+\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Cells & 3 materials $\times$ 7 positions = \NCells; \NPerCell{} generated events per cell\\
+Geometry & $1400\times60\times10\mm^3$ EndTop bar; 8 SiPMs on each END; 70 TOP SiPMs\\
+Beam & vertical 1 GeV $\mu^-$; $x=0,\pm200,\pm500,\pm650\mm$\\
+Transport & corrected navigation guard; dielectric-metal air-wrap reflector with $R=0.98$\\
+Electronics & SPTR = 0; no pulse formation, threshold, TDC or clock jitter\\
+Statistics & 210,000 events; all cells readable and complete\\
+\bottomrule
+\end{tabularx}
+\vspace{7pt}
+The analysis reuses the validated production ROOTs. No Geant4 simulation was launched for the symmetry diagnosis.
+\Source{Simulation commit \texttt{b35ee84}; seeds 26092601/8349041; four workers; \texttt{eventModulo=1}.}
+\end{frame}
+
+\begin{frame}{Backup: exact observable and width definitions}
+\small
+For each event, pool the detected photoelectrons over the eight SiPMs at each END and sort by \texttt{time\_ns}:
+\[
+t_L^{(k)},\quad t_R^{(k)},\qquad
+T_0(k)=\tfrac12[t_L^{(k)}+t_R^{(k)}],\quad
+\Delta t(k)=t_R^{(k)}-t_L^{(k)}.
+\]
+Global IDs 0--7 form LEFT and 8--15 form RIGHT. Both sides use the same sorting and event-validity rule; zero count mismatches were found in 210,000 events.
+\vspace{5pt}
+
+\begin{tabular}{@{}ll@{}}
+\toprule
+Primary & $\sigma_{68}=(q_{84}-q_{16})/2$, 500 event bootstraps\\
+Tail diagnostic & global RMS, 500 event bootstraps\\
+Core diagnostic & Gaussian $\sigma_G$, ROOT fit covariance\\
+\bottomrule
+\end{tabular}
+\Source{Bootstrap seed series begins at 26091443.}
+\end{frame}
+
+\begin{frame}{Backup: all seven EJ-200 distributions and fits}
+\centering
+\includegraphics[height=0.82\textheight]{figures/fit_grid_EJ200.pdf}
+\Source{Common 4 ps bins, median-relative $\pm0.32$ ns display, unit-area normalization and median $\pm2\sigma_{68}$ fit window.}
+\end{frame}
+
+\begin{frame}{Backup: all seven EJ-204 distributions and fits}
+\centering
+\includegraphics[height=0.82\textheight]{figures/fit_grid_EJ204.pdf}
+\Source{The stored ROOT file contains every histogram, TF1 Gaussian, fit covariance, status and quality flag.}
+\end{frame}
+
+\begin{frame}{Backup: all seven EJ-230 distributions and fits}
+\centering
+\includegraphics[height=0.82\textheight]{figures/fit_grid_EJ230.pdf}
+\Source{All fits returned status 0 and covariance quality 3. Non-Gaussian tails increase toward the endpoints.}
+\end{frame}
+
+\begin{frame}{Backup: centered mirror shapes---EJ-200}
+\centering
+\includegraphics[height=0.82\textheight]{figures/mirror_EJ200.pdf}
+\Source{Median-centered, identical 4 ps bins, $[-0.32,+0.32]$ ns range, normalization and vertical limits; lower panels show $+x$ minus $-x$.}
+\end{frame}
+
+\begin{frame}{Backup: centered mirror shapes---EJ-230}
+\centering
+\includegraphics[height=0.82\textheight]{figures/mirror_EJ230.pdf}
+\Source{Across median and mean centering, ROOT KS $p=0.284$--0.979 and Anderson--Darling $p=0.183$--0.940 for all materials.}
+\end{frame}
+
+\begin{frame}{Backup: the width definition controls visible asymmetry}
+\begin{columns}[T]
+\column{0.50\textwidth}
+\includegraphics[width=\linewidth]{figures/width_methods_EJ200.pdf}
+\column{0.50\textwidth}
+\includegraphics[width=\linewidth]{figures/width_methods_EJ230.pdf}
+\end{columns}
+\vspace{3pt}
+The isolated EJ-200 Gaussian excess at $|x|=200$ is not reproduced with comparable significance by RMS or $\sigma_{68}$. No sign repeats coherently across material and position.
+\Source{Gaussian covariance errors; RMS/$\sigma_{68}$ use 500 deterministic event bootstraps.}
+\end{frame}
+
+\begin{frame}{Backup: EJ-204 width-method comparison}
+\centering
+\includegraphics[height=0.79\textheight]{figures/width_methods_EJ204.pdf}
+\Source{The robust curve is used in the corrected main result; points have not been reflected, averaged or smoothed.}
+\end{frame}
+
+\begin{frame}{Backup: Gaussian fit stability}
+\centering
+\includegraphics[height=0.76\textheight]{figures/fit_stability_EJ200.pdf}
+\Source{Bins 2/4/8 ps with 0/half-bin origins; windows $\pm1.5/2/2.5\sigma_{68}$; chi-square, likelihood and unbinned RooFit.}
+\end{frame}
+
+\begin{frame}{Backup: mirrored-width differences}
+\fontsize{5.7}{7}\selectfont
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+ & $|x|$ & $\Delta\sigma_G$ [ps] & $z_G$ & $\Delta$RMS [ps] & $z_R$ & $\Delta\sigma_{68}$ [ps] & $z_{68}$\\
+\midrule
+EJ-200 & 200 & $+4.25\pm1.27$ & +3.34 & $+1.51\pm0.82$ & +1.85 & $+1.77\pm1.04$ & +1.70\\
+EJ-200 & 500 & $-0.16\pm1.30$ & -0.12 & $+0.48\pm0.79$ & +0.61 & $+0.82\pm1.02$ & +0.80\\
+EJ-200 & 650 & $+2.99\pm1.27$ & +2.35 & $+0.61\pm0.77$ & +0.78 & $+0.33\pm1.10$ & +0.30\\
+EJ-204 & 200 & $-0.44\pm1.17$ & -0.38 & $-0.44\pm0.74$ & -0.59 & $+0.29\pm0.96$ & +0.30\\
+EJ-204 & 500 & $+0.91\pm1.27$ & +0.72 & $-0.09\pm0.83$ & -0.10 & $+1.27\pm1.15$ & +1.11\\
+EJ-204 & 650 & $-2.30\pm1.27$ & -1.82 & $+0.25\pm0.86$ & +0.29 & $-0.44\pm1.12$ & -0.39\\
+EJ-230 & 200 & $+0.28\pm1.13$ & +0.24 & $+0.89\pm0.70$ & +1.28 & $+0.90\pm0.93$ & +0.96\\
+EJ-230 & 500 & $+2.30\pm1.24$ & +1.86 & $+1.29\pm0.82$ & +1.58 & $+2.16\pm1.07$ & +2.01\\
+EJ-230 & 650 & $+0.56\pm1.23$ & +0.46 & $+0.45\pm0.94$ & +0.48 & $+1.31\pm1.30$ & +1.01\\
+\bottomrule
+\end{tabular}
+\vspace{5pt}
+
+Differences are $+|x|$ minus $-|x|$. The single $z_{68}=2.01$ fluctuation is not reproduced by RMS, adjacent positions, or a coherent material pattern.
+\Source{Exact table: \texttt{sources/symmetry\_metrics.csv}; independent-cell errors added in quadrature.}
+\end{frame}
+
+\begin{frame}{Backup: Gate 1 decision}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Distribution evidence}
+\begin{itemize}
+\item centered mirror shapes compatible;
+\item RMS and $\sigma_{68}$ have no coherent asymmetry;
+\item identical left/right construction.
+\end{itemize}
+\column{0.48\textwidth}
+\textbf{Fit evidence}
+\begin{itemize}
+\item fit-window shifts reach 8.67 ps;
+\item fit-method shifts reach 2.56 ps;
+\item initialization is numerically stable;
+\item nominal Gaussian errors omit method spread.
+\end{itemize}
+\end{columns}
+\vspace{8pt}
+\centering
+\Result{ASYMMETRY\_SOURCE = FIT\_DEFINITION}
+
+\texttt{GAUSSIAN\_FIT\_UNSTABLE}; no high-statistics simulation required.
+\Source{Verdict fixed before changing the main v9 result.}
+\end{frame}
+
+\begin{frame}{Backup: mean-first-five remains effective across x}
+\begin{columns}[T]
+\column{0.62\textwidth}
+\includegraphics[width=\linewidth]{figures/mean5_EJ230.pdf}
+\column{0.35\textwidth}
+\small
+At EJ-230, $x=0$:
+\[
+\sigma_G: 68.23\to58.68\ps
+\]
+under one fixed Gaussian policy.
+\[
+\sigma_{68}: 66.95\to59.92\ps.
+\]
+All mirrored mean-five Gaussian differences have $|z|<0.64$.
+\end{columns}
+\Source{Same 10,000 events per position; arithmetic mean of the first five sorted PEs on each END; no position-dependent optimization.}
+\end{frame}
+
+\begin{frame}{Backup: complete provenance}
+\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Fit objects & \texttt{sources/timing\_fit\_stability.root}; all 21 histograms, TF1 objects and covariance matrices\\
+Fit table & \texttt{sources/timing\_fit\_stability.csv}; 354 fit configurations\\
+Mirror shapes & \texttt{sources/mirror\_diagnostics.root/csv}; both median and mean centering\\
+Widths & \texttt{sources/timing\_widths.csv}; Gaussian, RMS and $\sigma_{68}$ with errors\\
+Symmetry & \texttt{sources/symmetry\_metrics.root/csv}; all mirrored differences and z values\\
+Report & \texttt{/home/rrios/REPORT\_TIMING\_SYMMETRY\_20260914.md}\\
+\bottomrule
+\end{tabularx}
+\vspace{6pt}
+Every displayed diagnostic has a ROOT macro, ROOT object file, PDF and JSON metadata sidecar. The original v9 and production datasets remain unchanged.
+\end{frame}

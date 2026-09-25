@@ -1,0 +1,8 @@
+{
+  "figure": "short_long_spectra_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "Do short- and long-distance detected spectra differ?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Normalized ROOT spectra at the shortest and longest sampled distances",
+  "generator": "CERN ROOT macro macros/short_long_spectra_EJ230.C"
+}

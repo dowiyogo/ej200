@@ -1,0 +1,8 @@
+{
+  "figure": "mean_t0_vs_x_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "Is the mean timing estimator position independent?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Seven event means with SEM; constant and even-quadratic ROOT fits; x in metres",
+  "generator": "CERN ROOT macro macros/mean_t0_vs_x_EJ230.C"
+}

@@ -1,0 +1,8 @@
+{
+  "figure": "light_yield_correlations_EJ230",
+  "created_utc": "2026-09-14",
+  "question": "Is first-arrival timing correlated with detected light yield?",
+  "input": "current corrected-transport event data; N=10000/cell",
+  "method": "Descriptive event-level Pearson correlations; full per-cell TProfiles retained in source ROOT",
+  "generator": "CERN ROOT macro macros/light_yield_correlations_EJ230.C"
+}

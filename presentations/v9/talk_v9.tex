@@ -1,0 +1,351 @@
+\documentclass[aspectratio=169,9pt]{beamer}
+\usecolortheme{seahorse}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\leavevmode\hbox to \paperwidth{\hfill\raisebox{2pt}{\tiny\insertframenumber}\hspace{2mm}}\vskip1pt}
+\usepackage{amsmath,amssymb,booktabs,tabularx,graphicx}
+\input{results_macros_v9}
+\definecolor{endblue}{RGB}{30,90,180}
+\definecolor{topgreen}{RGB}{20,145,80}
+\definecolor{fastred}{RGB}{200,55,45}
+\newcommand{\ps}{\,\mathrm{ps}}
+\newcommand{\ns}{\,\mathrm{ns}}
+\newcommand{\mm}{\,\mathrm{mm}}
+\newcommand{\Source}[1]{\par\vfill{\scriptsize\color{gray}#1\par}}
+\newcommand{\Result}[1]{{\Large\bfseries\color{endblue}#1}}
+
+\title{What performance does the corrected optical model predict?}
+\subtitle{Timing, light collection and longitudinal position in the current EndTop bar}
+\author{René Ríos --- Universidad de La Serena}
+\date{\DeckDate}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\vspace{-6pt}
+\centering\small Optical transport only: no SPTR, front-end, threshold or clock jitter.
+\end{frame}
+
+\begin{frame}{What are we trying to optimise?}
+\begin{columns}[T]
+\column{0.58\textwidth}
+\includegraphics[width=\linewidth]{figures/geometry_current.pdf}
+\column{0.38\textwidth}
+\vspace{8pt}
+\Result{Best optical time}\\[3pt]
+with the fewest channels and a robust estimator.
+\vspace{10pt}
+\begin{tabular}{@{}ll@{}}
+END & $8+8$ SiPMs\\
+TOP & $70$ SiPMs\\
+bar & $1400\times60\times10\,\mathrm{mm}^3$\\
+scan & $x=0,\pm200,\pm500,\pm650\,\mathrm{mm}$
+\end{tabular}
+\vspace{9pt}
+
+The comparison is between three plastics under one common geometry.
+\end{columns}
+\Source{Current corrected-transport grid; $N=\NPerCell$ per material and position.}
+\end{frame}
+
+\begin{frame}{From one muon to about 20,000 photons}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\centering
+\vspace{9pt}
+{\Large vertical 1 GeV $\mu^-$}\\[10pt]
+\[
+E_{\rm dep}\simeq 1.93\ \mathrm{MeV}
+\]
+\[
+N_\gamma \simeq E_{\rm dep}\,Y
+          \simeq (1.93)(9.7\mbox{--}10.4)\times10^3
+\]
+\Result{$N_\gamma\simeq 1.88$--$2.01\times10^4$}
+\column{0.48\textwidth}
+\vspace{8pt}
+The detected population is shaped sequentially by
+\begin{enumerate}
+\item emission time and wavelength;
+\item bulk absorption;
+\item total internal reflection and wrapping;
+\item active area and wavelength-dependent PDE.
+\end{enumerate}
+Only the earliest surviving photons determine the first-PE timing used here.
+\end{columns}
+\Source{Current data: mean $E_{\rm dep}=1.925$--$1.936$ MeV and $N_\gamma=18,781$--$20,070$ at $x=0$; event means.}
+\end{frame}
+
+\begin{frame}{How fast can information propagate?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Napkin prediction before Monte Carlo}
+\[
+v_{\max}=\frac{c}{n}=\COverN
+\]
+\[
+t_{\min}(x=0)=\frac{700\mm}{189.74\mm/\ns}=\AxialTime
+\]
+This is the axial limit: $u_x=1$, no transverse motion.
+\column{0.48\textwidth}
+For a real ray,
+\[
+s=\frac{d}{|u_x|},\qquad P_{\rm bulk}=e^{-s/\lambda_{\rm att}}.
+\]
+Transverse components and reflections lengthen the path, so
+\[
+v_{\rm eff}<c/n.
+\]
+The current EJ-230 first-PE estimator gives $\langle T_0\rangle=\TZeroMeanTwoThirty$, about 0.41 ns above the axial limit.
+\end{columns}
+\Source{Analytical estimate uses $n=1.58$; measured time is current EJ-230, $x=0$, $N=\NPerCell$.}
+\end{frame}
+
+\begin{frame}{How much light reaches the END readout?}
+\begin{columns}[T]
+\column{0.64\textwidth}
+\includegraphics[width=\linewidth]{figures/npe_vs_x.pdf}
+\column{0.33\textwidth}
+At $x=0$:
+\begin{align*}
+\text{EJ-200: }&\NpeTwoHundred\ \mathrm{pe/end}\\
+\text{EJ-204: }&\NpeTwoOhFour\ \mathrm{pe/end}\\
+\text{EJ-230: }&\NpeTwoThirty\ \mathrm{pe/end}
+\end{align*}
+Long attenuation wins the light budget: EJ-200 collects the most END light.
+
+Near an end, the close arm gains strongly while the far arm remains photon-starved; the average yield rises but the timing balance worsens.
+\end{columns}
+\Source{Mean $(N_{pe,L}+N_{pe,R})/2\pm$ event-level SEM; current grid, $N=\NPerCell$/point.}
+\end{frame}
+
+\begin{frame}{The measured effective speed is about 182 mm/ns}
+\begin{columns}[T]
+\column{0.64\textwidth}
+\includegraphics[width=\linewidth]{figures/delta_t_vs_x.pdf}
+\column{0.33\textwidth}
+\[
+\Delta t\equiv t_R-t_L\simeq-\frac{2x}{v_{\rm eff}}
+\]
+\begin{tabular}{@{}lc@{}}
+EJ-200 & $\VeffTwoHundred$\\
+EJ-204 & $\VeffTwoOhFour$\\
+EJ-230 & $\VeffTwoThirty$
+\end{tabular}
+\vspace{8pt}
+
+This is 4.0--4.3\% below $c/n$. Interpreted as a single effective angle,
+$\cos\beta_{\rm eff}=v_{\rm eff}/(c/n)$ gives $\beta_{\rm eff}=16.2$--$16.8^\circ$.
+\end{columns}
+\Source{ROOT linear fits to seven positions per material. The tiny statistical errors expose small non-linearity; $v_{\rm eff}$ is an effective slope, not a ray velocity.}
+\end{frame}
+
+\begin{frame}{Two times carry two different observables}
+\begin{align*}
+t_L &= t_0+\frac{L/2+x}{v_{\rm eff}}+\epsilon_L,
+&t_R &= t_0+\frac{L/2-x}{v_{\rm eff}}+\epsilon_R.
+\end{align*}
+\begin{columns}[T]
+\column{0.47\textwidth}
+\centering
+{\large\color{endblue}\textbf{Interaction time}}
+\[
+T_0\equiv\frac{t_L+t_R}{2}
+\simeq t_0+\frac{L}{2v_{\rm eff}}.
+\]
+The first-order position dependence cancels.
+\column{0.47\textwidth}
+\centering
+{\large\color{fastred}\textbf{Longitudinal position}}
+\[
+\Delta t\equiv t_R-t_L\simeq-\frac{2x}{v_{\rm eff}},
+\quad
+\sigma_x=\frac{v_{\rm eff}}{2}\sigma_{\Delta t}.
+\]
+The time difference is the position coordinate.
+\end{columns}
+\vspace{8pt}
+Baseline here: $t_L$ and $t_R$ are the first detected photoelectron among the eight SiPMs on each END.
+\Source{Definitions used event by event for every result that follows.}
+\end{frame}
+
+\begin{frame}{What does one timing distribution look like?}
+\centering
+\includegraphics[height=0.76\textheight]{figures/t0_fit_ej230_x0.pdf}
+\vspace{-3pt}
+
+The central Gaussian is physically adequate ($\chi^2/\mathrm{ndf}=\TZeroChiTwoThirty$); the global RMS, $\TZeroRmsTwoThirty$, is retained as a tail-sensitive cross-check.
+\Source{EJ-230, $x=0$, $N=\NPerCell$; ROOT TF1 Gaussian refit over $\mu\pm2\sigma$; all entries shown in the left panel.}
+\end{frame}
+
+\begin{frame}{Optical timing is 67--84 ps across the bar}
+\begin{columns}[T]
+\column{0.65\textwidth}
+\includegraphics[width=\linewidth]{figures/sigma_t0_vs_x.pdf}
+\column{0.32\textwidth}
+At the center:
+\begin{align*}
+\mathrm{EJ\!\!-200}:&\ \SigmaCenterTwoHundred\\
+\mathrm{EJ\!\!-204}:&\ \SigmaCenterTwoOhFour\\
+\mathrm{EJ\!\!-230}:&\ \SigmaCenterTwoThirty
+\end{align*}
+EJ-230 is fastest despite having the fewest PE.
+\vspace{5pt}
+
+Resolution worsens near the ends because $T_0$ averages one close arm with one long, weakly populated arm.
+\vspace{5pt}
+
+\textbf{Symmetry check:} every mirrored RMS and robust-width difference is below $2\sigma$; the visible residual wiggles are dominated by the Gaussian fit convention and finite statistics.
+\end{columns}
+\Source{Central Gaussian $\sigma(T_0)$ with ROOT fit uncertainty; current transport, first-PE END estimator, $N=\NPerCell$/point.}
+\end{frame}
+
+\begin{frame}{Why are the materials different?}
+\begin{columns}[T]
+\column{0.60\textwidth}
+\includegraphics[width=\linewidth]{figures/material_comparison.pdf}
+\column{0.37\textwidth}
+Light yields are $10.0/10.4/9.7\times10^3$ photons/MeV; rise times are $0.9/0.7/0.5\ns$.
+\vspace{4pt}
+
+\textbf{EJ-200:} $\lambda_{att}=\AttTwoHundred$ preserves the most light, but $\tau_d=\DecayTwoHundred$ broadens early emission.
+\vspace{5pt}
+
+\textbf{EJ-230:} $\lambda_{att}=\AttTwoThirty$ yields the fewest PE, yet its $0.5\ns$ rise and $\tau_d=\DecayTwoThirty$ give the narrowest $T_0$ core.
+\vspace{5pt}
+
+The timing depends on the emph{early-photon} population, not the integrated PE count alone.
+\end{columns}
+\Source{Configured material constants; measured $N_{pe}$/end and central Gaussian timing at $x=0$ from the current grid.}
+\end{frame}
+
+\begin{frame}{Differential timing gives 11--15 mm longitudinal resolution}
+\begin{columns}[T]
+\column{0.65\textwidth}
+\includegraphics[width=\linewidth]{figures/sigma_x_vs_x.pdf}
+\column{0.32\textwidth}
+\[
+\sigma_x=\frac{v_{\rm eff}}{2}\sigma(\Delta t)
+\]
+At $x=0$:
+\begin{align*}
+\mathrm{EJ\!\!-200}:&\ \SigmaXTwoHundred\\
+\mathrm{EJ\!\!-204}:&\ \SigmaXTwoOhFour\\
+\mathrm{EJ\!\!-230}:&\ \SigmaXTwoThirty
+\end{align*}
+The best central point is EJ-230; all materials approach 15 mm near an end.
+\end{columns}
+\Source{Central ROOT Gaussian width of $\Delta t$; uncertainty propagates the $\sigma_{\Delta t}$ and slope-fit errors.}
+\end{frame}
+
+\begin{frame}{More light is not necessarily better timing}
+\begin{columns}[T]
+\column{0.58\textwidth}
+\includegraphics[width=\linewidth]{figures/npe_vs_sigma.pdf}
+\column{0.39\textwidth}
+Two conceptual populations contribute:
+\begin{itemize}
+\item \textbf{TIR-guided photons}: early, shorter optical paths;
+\item \textbf{reflector-recovered photons}: rescued light, often after more encounters and longer paths.
+\end{itemize}
+Current post-repair reflector A/B:
+\begin{align*}
+G_{\rm END-only}&=\EndOnlyReflectorGain,\\
+G_{\rm EndTop}&=\EndTopReflectorGain.
+\end{align*}
+The reflector adds far more END light when the bar is fully wrapped; it does not guarantee a narrower early-time distribution.
+\end{columns}
+\Source{Plot: all 21 current cells. Reflector A/B: EJ-204, $x=0$, $N=2000$/arm, corrected transport; approximate independent-arm SEM.}
+\end{frame}
+
+\begin{frame}{Why should the first photon be optimal?}
+\begin{columns}[T]
+\column{0.64\textwidth}
+\includegraphics[width=\linewidth]{figures/order_scan.pdf}
+\column{0.33\textwidth}
+\[
+T_0(k)=\frac{t_L^{(k)}+t_R^{(k)}}{2}
+\]
+The optimum is
+\[
+m=\BestMeanM:\quad \BestMeanSigma.
+\]
+Against the first PE ($\FirstKSigma$), the gain is $\MeanImprovement$
+($\MeanImprovementPct$). The k-th photon alone has only a shallow minimum at
+$k=\BestK$: $\BestKSigma$.
+\vspace{4pt}
+
+Averaging the first few arrivals suppresses first-photon fluctuations; including too many eventually admits the broader late population.
+\end{columns}
+\Source{EJ-230, $x=0$, $N=\NPerCell$; k-th and arithmetic mean-of-first-m scans on the same events; no position-dependent selection.}
+\end{frame}
+
+\begin{frame}{TOP contains early timing information---but at a high channel cost}
+\begin{columns}[T]
+\column{0.59\textwidth}
+\includegraphics[width=\linewidth]{figures/end_vs_top.pdf}
+\column{0.38\textwidth}
+At $x=0$, TOP detects $4.1$--$5.2\times10^3$ PE across 70 sensors, versus 304--528 PE per eight-sensor END.
+\vspace{5pt}
+
+The plotted 2.9--3.1 ps TOP width is the 	extbf{global first photon among all 70 channels}: an optical lower bound with a position-local sensor.
+\vspace{5pt}
+
+No validated threshold, pulse shape or channel-combination estimator exists yet. These data do not establish an END+TOP detector resolution.
+\end{columns}
+\Source{Current $x=0$ cells, $N=\NPerCell$; END and TOP observables are deliberately kept separate.}
+\end{frame}
+
+\begin{frame}{Current optical performance}
+\centering
+\small Common configuration: EndTop, $16+70$ SiPMs, $x=0$ unless stated, first-PE END estimator.
+\vspace{7pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+ & EJ-200 & EJ-204 & \textbf{EJ-230}\\
+\midrule
+$N_{pe}$/end at center & $\NpeTwoHundred$ & $\NpeTwoOhFour$ & $\NpeTwoThirty$\\
+$v_{\rm eff}$ & $\VeffTwoHundred$ & $\VeffTwoOhFour$ & $\VeffTwoThirty$\\
+$\sigma_{T_0}$ at center & $\SigmaCenterTwoHundred$ & $\SigmaCenterTwoOhFour$ & \textbf{$\SigmaCenterTwoThirty$}\\
+$\sigma_{T_0}$ over x scan & $\SigmaRangeTwoHundred$ & $\SigmaRangeTwoOhFour$ & $\SigmaRangeTwoThirty$\\
+$\sigma_x$ at center & $\SigmaXTwoHundred$ & $\SigmaXTwoOhFour$ & \textbf{$\SigmaXTwoThirty$}\\
+\bottomrule
+\end{tabular}
+\vspace{10pt}
+
+\Result{EJ-230 gives the best intrinsic END timing and position resolution.}
+
+EJ-200 remains the light-yield winner. These are optical widths, not experimental detector resolutions.
+\Source{All entries recomputed from current corrected-transport ROOTs; $N=\NPerCell$/cell; uncertainties as defined on preceding slides.}
+\end{frame}
+
+\begin{frame}{What should we optimise next?}
+\begin{columns}[T]
+\column{0.48\textwidth}
+\textbf{Physics already measured}
+\begin{itemize}
+\item END first-PE baseline: 67--84 ps;
+\item the mean of the first five END PE improves 67.1 to 57.6 ps;
+\item TOP carries very early local information;
+\item attenuation controls light, decay time controls early timing.
+\end{itemize}
+\column{0.48\textwidth}
+\textbf{Design question still open}
+\begin{itemize}
+\item build one electronics-aware TOP estimator;
+\item compare fixed channel counts and thresholds;
+\item validate SPTR, pulse shape and TDC together;
+\item optimise $\sigma_t$ against channel count and complexity.
+\end{itemize}
+\end{columns}
+\vspace{9pt}
+\centering
+\Result{The next decision is not ``more sensors?'' but ``how much validated timing per channel?''}
+\Source{No electronics-convolved or experimental resolution is inferred in this presentation.}
+\end{frame}
+
+\appendix
+\input{backup_v9}
+
+\end{document}

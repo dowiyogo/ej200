@@ -1,0 +1,127 @@
+\begin{frame}{Backup: dataset and common configuration}
+\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Cells & 3 materials $\times$ 7 positions = \NCells; \NPerCell{} generated events per cell\\
+Geometry & $1400\times60\times10\mm^3$ EndTop bar; 8 SiPMs on each END; 70 TOP SiPMs\\
+Beam & vertical 1 GeV $\mu^-$; $x=0,\pm200,\pm500,\pm650\mm$\\
+Timing content & individual detected-PE time, SiPM and face; event-level yields and energy deposition\\
+Electronics & SPTR = 0; no pulse formation, threshold, TDC or clock jitter\\
+Statistics & 210,000 events; all cells readable and complete\\
+\bottomrule
+\end{tabularx}
+\vspace{7pt}
+Each input was checked against its recorded geometry, material, seeds, event count and binary before analysis. No new simulation was required.
+\Source{Technical dataset audit is retained in the v9 source directory.}
+\end{frame}
+
+\begin{frame}{Backup: exact observable and fit convention}
+\small
+For each event, pool the detected photoelectrons over the eight SiPMs at each END and sort by arrival time:
+\[
+t_L^{(k)},\quad t_R^{(k)},\qquad
+T_0(k)=\tfrac12[t_L^{(k)}+t_R^{(k)}],\quad
+\Delta t(k)=t_R^{(k)}-t_L^{(k)}.
+\]
+Baseline: $k=1$. Resolution: central Gaussian $\sigma$ from a ROOT TF1 fit. The first pass uses the median $\pm2(q_{84}-q_{16})/2$; the reported refit uses $\mu\pm2\sigma$.
+\vspace{5pt}
+
+The global RMS is calculated on all events. The robust cross-check is
+$q_w=(q_{84}-q_{16})/2$. RMS and $q_w$ errors use 300 deterministic event-bootstrap replicas; Gaussian errors come from the ROOT fit.
+\vspace{5pt}
+
+The construction is explicitly symmetric: global IDs 0--7 form left END and 8--15 right END, then $T_0$ averages the two arms with equal weight.
+\end{frame}
+
+\begin{frame}{Backup: all seven EJ-230 fits}
+\centering
+\includegraphics[height=0.79\textheight]{figures/fit_grid_ej230.pdf}
+\Source{Exact histograms and stored ROOT TF1 objects used by the quoted resolution; $N=\NPerCell$ each.}
+\end{frame}
+
+\begin{frame}{Backup: EJ-230 fit diagnostics}
+\scriptsize
+\begin{tabular}{@{}rcccccc@{}}
+\toprule
+$x$ [mm] & $\sigma_G$ [ps] & fit mean [ns] & $\chi^2$/ndf & fit window [ns] & RMS [ps] & $q_w$ [ps]\\
+\midrule
+-650 & $81.27\pm0.92$ & 4.0912 & 1.65 & [3.929,4.255] & 85.05 & 84.98\\
+-500 & $76.13\pm0.87$ & 4.0981 & 1.24 & [3.946,4.252] & 79.22 & 78.51\\
+-200 & $69.38\pm0.81$ & 4.0968 & 1.15 & [3.959,4.235] & 69.21 & 69.33\\
+0 & $67.14\pm0.77$ & 4.0964 & 1.17 & [3.962,4.231] & 67.77 & 66.95\\
++200 & $69.32\pm0.78$ & 4.0989 & 1.34 & [3.960,4.238] & 70.11 & 70.22\\
++500 & $78.04\pm0.89$ & 4.1014 & 1.58 & [3.945,4.259] & 80.51 & 80.67\\
++650 & $81.65\pm0.92$ & 4.0929 & 1.96 & [3.930,4.257] & 85.50 & 86.29\\
+\bottomrule
+\end{tabular}
+\vspace{8pt}
+
+All 21 material/position records, including fit status and both width uncertainties, are stored in the numerical sidecar. Every ROOT fit status is zero.
+\Source{$q_w=(q_{84}-q_{16})/2$; RMS and $q_w$ errors are omitted from this compact table and retained in the sidecar.}
+\end{frame}
+
+\begin{frame}{Backup: mirrored EJ-230 shapes}
+\centering
+\includegraphics[width=0.98\linewidth]{figures/mirror_overlays_ej230.pdf}
+
+After centering each distribution at its own mean, the mirrored shapes overlap. All panels use the same $[-0.30,+0.30]$ ns range, 120 bins and unit-area normalization.
+\Source{Current EJ-230 ROOT events; $N=\NPerCell$ per position. No refit or width rescaling is applied.}
+\end{frame}
+
+\begin{frame}{Backup: the width definition controls the visible wiggles}
+\begin{columns}[T]
+\column{0.64\textwidth}
+\includegraphics[width=\linewidth]{figures/width_estimators_ej230.pdf}
+\column{0.33\textwidth}
+For EJ-230, every mirrored difference is below $1.9\sigma$ for all three definitions.
+\vspace{6pt}
+
+Across all nine mirrored pairs:
+\begin{itemize}
+\item RMS: $|z|<1.94$;
+\item robust $q_w$: $|z|<1.90$;
+\item Gaussian: two EJ-200 pairs reach $2.14\sigma$ and $3.06\sigma$.
+\end{itemize}
+The robust definitions support left--right symmetry; the largest visible Gaussian deviations are fit sensitivity plus finite statistics.
+\end{columns}
+\Source{RMS/$q_w$: 300 event-bootstrap replicas; Gaussian: ROOT fit covariance. Differences are $+x$ minus $-x$.}
+\end{frame}
+
+\begin{frame}{Backup: mirrored-width differences for all materials}
+\fontsize{5.8}{7}\selectfont
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+ & $|x|$ & $\Delta\sigma_G$ [ps] & $z_G$ & $\Delta$RMS [ps] & $z_R$ & $\Delta q_w$ [ps] & $z_q$\\
+\midrule
+EJ-200 & 200 & $+3.89\pm1.27$ & +3.06 & $+1.51\pm0.78$ & +1.94 & $+1.77\pm1.05$ & +1.69\\
+EJ-200 & 500 & $-0.64\pm1.30$ & -0.49 & $+0.48\pm0.77$ & +0.63 & $+0.82\pm0.99$ & +0.83\\
+EJ-200 & 650 & $+2.72\pm1.27$ & +2.14 & $+0.61\pm0.79$ & +0.76 & $+0.33\pm1.06$ & +0.31\\
+EJ-204 & 200 & $+0.08\pm1.16$ & +0.07 & $-0.44\pm0.71$ & -0.61 & $+0.29\pm0.94$ & +0.31\\
+EJ-204 & 500 & $+1.30\pm1.29$ & +1.00 & $-0.09\pm0.82$ & -0.11 & $+1.27\pm1.10$ & +1.15\\
+EJ-204 & 650 & $-1.18\pm1.34$ & -0.88 & $+0.25\pm0.89$ & +0.28 & $-0.44\pm1.20$ & -0.37\\
+EJ-230 & 200 & $-0.06\pm1.12$ & -0.05 & $+0.89\pm0.71$ & +1.26 & $+0.90\pm0.95$ & +0.94\\
+EJ-230 & 500 & $+1.91\pm1.24$ & +1.54 & $+1.29\pm0.87$ & +1.48 & $+2.16\pm1.14$ & +1.89\\
+EJ-230 & 650 & $+0.38\pm1.30$ & +0.29 & $+0.45\pm0.92$ & +0.49 & $+1.31\pm1.26$ & +1.04\\
+\bottomrule
+\end{tabular}
+\vspace{5pt}
+
+No RMS or robust-width difference reaches $2\sigma$. There is no coherent sign across material or position.
+\Source{$\Delta w=w(+|x|)-w(-|x|)$. Bootstrap seed series begins at 26091443.}
+\end{frame}
+
+\begin{frame}{Backup: scope after the symmetry check}
+\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Reproduced & Optical END $T_0$ and $\Delta t$; k-th and mean-first-m scans; Gaussian, RMS and robust widths; mirrored-pair diagnostics.\\
+\midrule
+Construction check & left IDs 0--7, right IDs 8--15; equal-weight $T_0$; zero hit-count mismatches in 210,000 events; mirrored yields and mean times swap within finite-sample fluctuations.\\
+\midrule
+Unavailable & validated END+TOP estimator; electronics-convolved or experimental resolution; full per-track TIR/recovered timing split; physically validated weighted channel mean.\\
+\bottomrule
+\end{tabularx}
+\vspace{6pt}
+Historical v6/v7 timing values remain excluded. The current main curve keeps the central Gaussian convention, with the robust symmetry cross-check stated explicitly.
+\Source{Exact software provenance remains in the v8 validation deck and the v9 technical report; no new simulation was run.}
+\end{frame}

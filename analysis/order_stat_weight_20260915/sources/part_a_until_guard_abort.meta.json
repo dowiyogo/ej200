@@ -1,0 +1,9 @@
+{
+  "status": "HARD_ABORT_PART_A_GUARDRAIL",
+  "failed_cell": "EJ200_xm650",
+  "cells_examined": 1,
+  "expected_total_cells": 21,
+  "part_b_executed": false,
+  "input_mode": "READ",
+  "input": "/home/rrios/ej200/analysis/tsum_veff_20260914/sources/tsum_veff.root"
+}

@@ -1,0 +1,8 @@
+{
+  "figure": "fit_stability_EJ200",
+  "created_utc": "2026-09-14",
+  "question": "Which technical choice moves the Gaussian width?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "Binning/offset and window envelopes, chi2/likelihood/unbinned methods, and initialization convergence",
+  "generator": "CERN ROOT macro macros/fit_stability_EJ200.C"
+}

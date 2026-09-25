@@ -1,0 +1,8 @@
+{
+  "schema": "metrics_v9.dataset_audit.v1",
+  "cells": 21,
+  "decision": "NO_NEW_SIMULATION_REQUIRED",
+  "reason": "All 21 validated current-transport ROOT files contain individual detected-PE time_ns with event and SiPM identifiers, plus event-level light and energy quantities.",
+  "verification": "state.json and run.mac for every cell; ROOT schema inspected directly; all ROOT files will be opened and event counts checked by build_timing_dataset.C",
+  "output_sha256": "816a7c5c7d30da3b4fcf2027ffcb75ce5f25982f53868367926480e688d4d22a"
+}

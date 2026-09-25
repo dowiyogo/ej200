@@ -1,0 +1,9 @@
+{
+  "figure": "end_vs_top",
+  "created_utc": "2026-09-14",
+  "question": "What information is available from END and TOP readout?",
+  "inputs": ["sources/timing_summary.csv", "sources/material_summary.csv", "sources/timing_events.root"],
+  "configuration": "EndTop; 16 END and 70 TOP SiPMs; vertical 1 GeV mu-; SPTR=0; no electronics; N=10000 per cell; corrected current transport",
+  "method": "x=0: END T0 versus ideal global first TOP PE; estimators are intentionally distinguished",
+  "generator": "CERN ROOT macro macros/end_vs_top.C"
+}

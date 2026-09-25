@@ -1,0 +1,8 @@
+{
+  "figure": "width_methods_EJ200",
+  "created_utc": "2026-09-14",
+  "question": "Is the timing-width asymmetry physical or definition-dependent?",
+  "input": "current corrected-transport timing events, N=10000/cell",
+  "method": "Gaussian, global RMS and robust q68 curves with statistical uncertainties",
+  "generator": "CERN ROOT macro macros/width_methods_EJ200.C"
+}
