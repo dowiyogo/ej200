@@ -1,3 +1,4 @@
+# CUARENTENA 2026-09-25 — Ver AUDITORIA_REPO_20260925.md §8: Segundo script one-off que añadía ae1_theta_cfd_by_position.csv a REPORT_VEFF_RANK_SCAN_20260917.md (causando la duplicación que obligó a crear clean_ae_report.py); modifica in-place REPORT_VEFF_RANK_SCAN_20260917.md (superado por 61528c1).
 from pathlib import Path
 import pandas as pd
 base=Path('analysis/track_mechanism_20260915/step6_v2/veff_rank'); report=base/'REPORT_VEFF_RANK_SCAN_20260917.md'

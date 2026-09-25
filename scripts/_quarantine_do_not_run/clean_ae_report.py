@@ -1,3 +1,4 @@
+# CUARENTENA 2026-09-25 — Ver AUDITORIA_REPO_20260925.md §8: Tercer parche one-off (suelto en la raíz de ej200) que trunca REPORT_VEFF_RANK_SCAN_20260917.md en ## AE1 y reescribe AE1–AE5 con el texto antiguo NOT_AVAILABLE para AE2; si se ejecuta hoy, borra la tabla AE2 AVAILABLE añadida en 61528c1.
 from pathlib import Path
 import pandas as pd
 base=Path('analysis/track_mechanism_20260915/step6_v2/veff_rank'); report=base/'REPORT_VEFF_RANK_SCAN_20260917.md'; text=report.read_text().split('\n## AE1: theta_eff tables')[0]
