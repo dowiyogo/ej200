@@ -1,3 +1,8 @@
+# CUARENTENA 2026-09-25 — Este script fue identificado en
+# AUDITORIA_REPO_20260925.md como potencialmente dañino si se ejecuta
+# sin revisión (puede sobrescribir resultados). NO ejecutar sin antes
+# leer docs/execution_logs/ correspondiente. Movido y neutralizado por
+# la reorganización de 2026-09-25.
 # CUARENTENA 2026-09-25 — Ver AUDITORIA_REPO_20260925.md §8: Tercer parche one-off (suelto en la raíz de ej200) que trunca REPORT_VEFF_RANK_SCAN_20260917.md en ## AE1 y reescribe AE1–AE5 con el texto antiguo NOT_AVAILABLE para AE2; si se ejecuta hoy, borra la tabla AE2 AVAILABLE añadida en 61528c1.
 from pathlib import Path
 import pandas as pd

@@ -1,3 +1,8 @@
+# CUARENTENA 2026-09-25 — Este script fue identificado en
+# AUDITORIA_REPO_20260925.md como potencialmente dañino si se ejecuta
+# sin revisión (puede sobrescribir resultados). NO ejecutar sin antes
+# leer docs/execution_logs/ correspondiente. Movido y neutralizado por
+# la reorganización de 2026-09-25.
 # CUARENTENA 2026-09-25 — Ver AUDITORIA_REPO_20260925.md §8: Script one-off que calculaba ae1_theta_cfd_by_extreme.csv y concatenaba (+=) las secciones AE1–AE5 al final de REPORT_VEFF_RANK_SCAN_20260917.md; modifica in-place REPORT_VEFF_RANK_SCAN_20260917.md (no idempotente, superado por 61528c1).
 from pathlib import Path
 import pandas as pd
