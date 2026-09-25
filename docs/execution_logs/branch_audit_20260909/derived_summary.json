@@ -1,0 +1,653 @@
+[
+  {
+    "name": "diag/phase7-delta-2026-08-31",
+    "ref": "diag/phase7-delta-2026-08-31",
+    "local": true,
+    "sha": "a18e863bab76cb54ca96a86c9e871ff3501d434c",
+    "behind": 93,
+    "ahead": 6,
+    "decks": [
+      "analysis/presentation_v6/talk_v6.tex"
+    ],
+    "figs": [
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig1_kscan",
+        "base": "analysis/presentation_v6/figs/fig1_kscan",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "figM1_mat_sigma_end",
+        "base": "analysis/presentation_v6/figs/figM1_mat_sigma_end",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "figM2_mat_npe",
+        "base": "analysis/presentation_v6/figs/figM2_mat_npe",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_bulk_survival",
+        "base": "analysis/presentation_v6/figs/fig_bulk_survival",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_end_mscan",
+        "base": "analysis/presentation_v6/figs/fig_end_mscan",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_npe_x",
+        "base": "analysis/presentation_v6/figs/fig_npe_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_ntop_scan_full",
+        "base": "analysis/presentation_v6/figs/fig_ntop_scan_full",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_sigma_t_x",
+        "base": "analysis/presentation_v6/figs/fig_sigma_t_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "fig_survival_RN",
+        "base": "analysis/presentation_v6/figs/fig_survival_RN",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "v5_pareto",
+        "base": "analysis/presentation_v6/figs/v5_pareto",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "v5_sigma_vs_x",
+        "base": "analysis/presentation_v6/figs/v5_sigma_vs_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "v5_top_position_loo",
+        "base": "analysis/presentation_v6/figs/v5_top_position_loo",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "v5_veff_fit",
+        "base": "analysis/presentation_v6/figs/v5_veff_fit",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "analysis/presentation_v6/talk_v6.tex",
+        "stem": "v5_veff_residual",
+        "base": "analysis/presentation_v6/figs/v5_veff_residual",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      }
+    ]
+  },
+  {
+    "name": "docs/branch-diagnosis-2026-08-31",
+    "ref": "docs/branch-diagnosis-2026-08-31",
+    "local": true,
+    "sha": "2a9645fde563abfd20cfdde810124038e312f85e",
+    "behind": 93,
+    "ahead": 4,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "exp/pair-scan-2026-06-11",
+    "ref": "exp/pair-scan-2026-06-11",
+    "local": true,
+    "sha": "f19c0933133c6ba25e2c4d968d03361fd804fd90",
+    "behind": 115,
+    "ahead": 30,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/bar-end-vikuiti",
+    "ref": "feat/bar-end-vikuiti",
+    "local": true,
+    "sha": "50cf02e34cd7dddfb847739f6249afd1a600478f",
+    "behind": 74,
+    "ahead": 0,
+    "decks": [
+      "presentations/v6/talk_v6.tex"
+    ],
+    "figs": [
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig1_kscan",
+        "base": "presentations/v6/figs/fig1_kscan",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "figM1_mat_sigma_end",
+        "base": "presentations/v6/figs/figM1_mat_sigma_end",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "figM2_mat_npe",
+        "base": "presentations/v6/figs/figM2_mat_npe",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_bulk_survival",
+        "base": "presentations/v6/figs/fig_bulk_survival",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_end_mscan",
+        "base": "presentations/v6/figs/fig_end_mscan",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_npe_x",
+        "base": "presentations/v6/figs/fig_npe_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_ntop_scan_full",
+        "base": "presentations/v6/figs/fig_ntop_scan_full",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_sigma_t_x",
+        "base": "presentations/v6/figs/fig_sigma_t_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_survival_RN",
+        "base": "presentations/v6/figs/fig_survival_RN",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_pareto",
+        "base": "presentations/v6/figs/v5_pareto",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_sigma_vs_x",
+        "base": "presentations/v6/figs/v5_sigma_vs_x",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_top_position_loo",
+        "base": "presentations/v6/figs/v5_top_position_loo",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_veff_fit",
+        "base": "presentations/v6/figs/v5_veff_fit",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_veff_residual",
+        "base": "presentations/v6/figs/v5_veff_residual",
+        "pdf": false,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      }
+    ]
+  },
+  {
+    "name": "feat/bar-vikuiti",
+    "ref": "feat/bar-vikuiti",
+    "local": true,
+    "sha": "219fbe385d43629c523c29b4a8d550783b469f35",
+    "behind": 115,
+    "ahead": 36,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej204-bar-tir-only",
+    "ref": "feat/ej204-bar-tir-only",
+    "local": true,
+    "sha": "09f8b1828889f50881639b6a44a137b4a8b27ef5",
+    "behind": 115,
+    "ahead": 32,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej204-event-display-tracks",
+    "ref": "origin/feat/ej204-event-display-tracks",
+    "local": false,
+    "sha": "47a9a4fb31118ecb6f68cb658d40ec282c6da99f",
+    "behind": 110,
+    "ahead": 4,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej228-cylinder",
+    "ref": "origin/feat/ej228-cylinder",
+    "local": false,
+    "sha": "66b674ce94c443a9e14c1c8b64a4df9f07ad5e6e",
+    "behind": 103,
+    "ahead": 3,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej228-tir-only",
+    "ref": "origin/feat/ej228-tir-only",
+    "local": false,
+    "sha": "0006919fe047258228e4eb81e8f96e301458a848",
+    "behind": 103,
+    "ahead": 4,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej230-bar-tir-only",
+    "ref": "feat/ej230-bar-tir-only",
+    "local": true,
+    "sha": "b281aea71845a115290458928c542dad5c24b5ac",
+    "behind": 115,
+    "ahead": 34,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej230-endonly-mylar",
+    "ref": "origin/feat/ej230-endonly-mylar",
+    "local": false,
+    "sha": "04a80473a2ed9aec206af9e0eb1c70a7e25f84d1",
+    "behind": 115,
+    "ahead": 42,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/ej230-sslg4",
+    "ref": "origin/feat/ej230-sslg4",
+    "local": false,
+    "sha": "5b93f4cb6b3b0d002a1fd6739cdf770091877005",
+    "behind": 115,
+    "ahead": 34,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/endonly-mylar",
+    "ref": "origin/feat/endonly-mylar",
+    "local": false,
+    "sha": "fb3749def29716dc84a33fcad53a21086bc96822",
+    "behind": 110,
+    "ahead": 23,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feat/endtop-sslg4",
+    "ref": "feat/endtop-sslg4",
+    "local": true,
+    "sha": "55766876ffa66e44e8a42461029d6276ff14d164",
+    "behind": 103,
+    "ahead": 2,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "feature/sipm-electronics-response",
+    "ref": "origin/feature/sipm-electronics-response",
+    "local": false,
+    "sha": "bb4cf6a1f80d9c14a3306d98f0274213f9f8a7cf",
+    "behind": 163,
+    "ahead": 15,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "main",
+    "ref": "main",
+    "local": true,
+    "sha": "8349041140958226a0ac1cb3bb3e30aff2303435",
+    "behind": 0,
+    "ahead": 0,
+    "decks": [
+      "presentations/v6/talk_v6.tex"
+    ],
+    "figs": [
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig1_kscan",
+        "base": "presentations/v6/figs/fig1_kscan",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "figM1_mat_sigma_end",
+        "base": "presentations/v6/figs/figM1_mat_sigma_end",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "figM2_mat_npe",
+        "base": "presentations/v6/figs/figM2_mat_npe",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_bulk_survival",
+        "base": "presentations/v6/figs/fig_bulk_survival",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_end_mscan",
+        "base": "presentations/v6/figs/fig_end_mscan",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_npe_x",
+        "base": "presentations/v6/figs/fig_npe_x",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_ntop_scan_full",
+        "base": "presentations/v6/figs/fig_ntop_scan_full",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_sigma_t_x",
+        "base": "presentations/v6/figs/fig_sigma_t_x",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "fig_survival_RN",
+        "base": "presentations/v6/figs/fig_survival_RN",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_pareto",
+        "base": "presentations/v6/figs/v5_pareto",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_sigma_vs_x",
+        "base": "presentations/v6/figs/v5_sigma_vs_x",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_top_position_loo",
+        "base": "presentations/v6/figs/v5_top_position_loo",
+        "pdf": true,
+        "root": false,
+        "csv": true,
+        "meta": false,
+        "altmeta": true,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_veff_fit",
+        "base": "presentations/v6/figs/v5_veff_fit",
+        "pdf": true,
+        "root": false,
+        "csv": true,
+        "meta": false,
+        "altmeta": true,
+        "elsewhere": []
+      },
+      {
+        "deck": "presentations/v6/talk_v6.tex",
+        "stem": "v5_veff_residual",
+        "base": "presentations/v6/figs/v5_veff_residual",
+        "pdf": true,
+        "root": false,
+        "csv": false,
+        "meta": false,
+        "altmeta": false,
+        "elsewhere": []
+      }
+    ]
+  },
+  {
+    "name": "wip/host-stash-endtop-junio",
+    "ref": "wip/host-stash-endtop-junio",
+    "local": true,
+    "sha": "9710f340f239e9cc40be9ad7d7d360fd701dee76",
+    "behind": 136,
+    "ahead": 1,
+    "decks": [],
+    "figs": []
+  },
+  {
+    "name": "wip/host-uncommitted-2026-08-31",
+    "ref": "wip/host-uncommitted-2026-08-31",
+    "local": true,
+    "sha": "d2c8d4cb69e7067e2ae18f9dd498c9d603bb6c90",
+    "behind": 93,
+    "ahead": 2,
+    "decks": [],
+    "figs": []
+  }
+]
