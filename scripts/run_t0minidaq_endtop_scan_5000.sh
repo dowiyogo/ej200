@@ -24,7 +24,7 @@ set -o pipefail
 
 # ── Configurable ─────────────────────────────────────────────
 STOP_ON_ERROR=${STOP_ON_ERROR:-1}
-REPO_DIR="/home/rrios/ej204"
+REPO_DIR="${EJ204_CAMPAIGN_DIR:-/home/rrios/ej200/data/ej200_campaigns/raw/OPSC-101_EJ204_endtop_scans_202606_08_from_ej204}"
 BUILD_DIR="${REPO_DIR}/build_t0minidaq"
 GEANT4_SETUP="/home/tdship/opt/geant4-v11.4.0-install/bin/geant4.sh"
 EXPECTED_BRANCH="feat/endtop-sslg4"
@@ -299,7 +299,7 @@ if [[ $SMOKE -eq 1 ]]; then
         echo ""
         echo "  Listo para el scan completo:"
         echo "    tmux new -s ej204_scan_5000"
-        echo "    cd /home/rrios/ej204"
+        echo "    cd ${REPO_DIR}"
         echo "    source /home/tdship/opt/geant4-v11.4.0-install/bin/geant4.sh"
         echo "    ./scripts/run_t0minidaq_endtop_scan_5000.sh"
     else

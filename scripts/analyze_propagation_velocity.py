@@ -96,8 +96,15 @@ def fit_line(xs, ys, errs):
 
 
 def main():
+    default_repo = os.environ.get(
+        "EJ204_CAMPAIGN_DIR",
+        "/home/rrios/ej200/data/ej200_campaigns/raw/OPSC-101_EJ204_endtop_scans_202606_08_from_ej204",
+    )
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run-dir", required=True)
+    parser.add_argument(
+        "--run-dir",
+        default=f"{default_repo}/runs/t0minidaq_endtop_scan_20260618_204959",
+    )
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
 

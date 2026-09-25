@@ -2,8 +2,8 @@
 set -u
 set -o pipefail
 
-REPO=/home/rrios/ej204
-RUN_DIR=${RUN_DIR:-/home/rrios/ej204/runs/t0minidaq_endtop_scan_20260618_204959}
+REPO="${EJ204_CAMPAIGN_DIR:-/home/rrios/ej200/data/ej200_campaigns/raw/OPSC-101_EJ204_endtop_scans_202606_08_from_ej204}"
+RUN_DIR=${RUN_DIR:-$REPO/runs/t0minidaq_endtop_scan_20260618_204959}
 OUT_DIR=${OUT_DIR:-$RUN_DIR/analysis_simple_std}
 
 cd "$REPO" || exit 1

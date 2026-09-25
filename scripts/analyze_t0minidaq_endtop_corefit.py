@@ -420,8 +420,15 @@ def write_root_output(all_results, out_root):
 
 # ── main ─────────────────────────────────────────────────────
 def main():
+    default_repo = os.environ.get(
+        "EJ204_CAMPAIGN_DIR",
+        "/home/rrios/ej200/data/ej200_campaigns/raw/OPSC-101_EJ204_endtop_scans_202606_08_from_ej204",
+    )
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run-dir",     required=True)
+    parser.add_argument(
+        "--run-dir",
+        default=f"{default_repo}/runs/t0minidaq_endtop_scan_20260618_204959",
+    )
     parser.add_argument("--out-dir",     required=True)
     parser.add_argument("--bin-ps",      type=float, default=10.0)
     parser.add_argument("--n-bootstrap", type=int,   default=200)
