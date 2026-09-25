@@ -41,7 +41,7 @@ The comparison passed these checks before the mechanism was accepted:
 | Single-PE pulse | `analysis/congruent_sum4_timing.C:45-47,155-167`: normalized double exponential, 0.5/5 ns. |
 | LE algorithm | `analysis/congruent_sum4_timing.C:170-213`; exact Python port in `analysis/exec07_photon_budget.py:146-185`. |
 | Time-walk correction | None in either campaign: `analysis/congruent_sum4_timing.C:305-315`, `analysis/tb_mirror_sigma_vs_x.C:3-5`, and `analysis/tb_mirror_physical_fits.py:209-214`. |
-| Hit-time convention | `src/SiPMSD.cc:75-80`: Geant4 global time plus configured jitter. EXEC_07 scan fixes jitter to zero at `scripts/run_exec07_scan.sh:57-67`. |
+| Hit-time convention | `src/SiPMSD.cc:75-80`: Geant4 global time plus configured jitter. EXEC_07 scan fixes jitter to zero at `sim/scripts/run_exec07_scan.sh:57-67`. |
 | Primary t=0 | Same particle gun definition, position and direction at `src/PrimaryGeneratorAction.cc:18-23`; `gun_x_mm` only records the vertex x coordinate at `src/EventAction.cc:15-20`. |
 | ROOT schema | Both compared files expose identical `event_id`, `global_id`, `time_ns`, and `gun_x_mm` branches and types. |
 

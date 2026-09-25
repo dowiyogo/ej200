@@ -2,7 +2,7 @@
 # EXEC_07 phase 2 campaign. Do not run without explicit phase-2 approval.
 set -euo pipefail
 
-repo="$(cd "$(dirname "$0")/.." && pwd)"
+repo="$(cd "$(dirname "$0")/../.." && pwd)"
 build_dir="${BUILD_DIR:-$repo/build-exec07}"
 sim="$build_dir/ej200_bar_sim"
 output_dir="${OUTPUT_DIR:-$repo/results/exec07_endtop_2000}"

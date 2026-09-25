@@ -188,7 +188,7 @@ Ramas que estan en GitHub pero **no existen localmente**:
 
 ## Observaciones operativas
 
-- El worktree actual tiene cambios no trackeados previos al informe: `GROUP_VELOCITY_AUDIT.md` y `runs/`.
+- El worktree actual tiene cambios no trackeados previos al informe: `docs/reports/GROUP_VELOCITY_AUDIT.md` y `runs/`.
 - Varias entradas de `git worktree list` bajo `/tmp/...` aparecen como `prunable` porque apuntan a rutas inexistentes. Eso no cambia los commits ni la sincronizacion con `origin`, pero conviene limpiar esos worktrees si molestan en operaciones futuras.
 - `feat/ej204-event-display-tracks` tiene una rama remota con el mismo hash, pero no aparece con upstream configurado en `git branch -vv`; funcionalmente esta sincronizada, aunque se podria configurar tracking si se va a trabajar ahi.
 

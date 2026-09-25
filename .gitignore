@@ -49,6 +49,7 @@ results/
 runs/
 output/
 out/
+data/ej200_campaigns/
 
 # Diagnostic script outputs
 diag/yield_audit_report.txt

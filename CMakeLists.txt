@@ -40,7 +40,7 @@ add_executable(ej200_bar_sim main.cc ${sources} ${headers})
 configure_ej200_target(ej200_bar_sim)
 
 file(COPY macros DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY data DESTINATION ${CMAKE_CURRENT_BINARY_DIR} PATTERN "ej200_campaigns" EXCLUDE)
 
 enable_testing()
 add_test(NAME smoke_test COMMAND ej200_bar_sim -m macros/test.mac)

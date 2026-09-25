@@ -129,7 +129,7 @@ Manual Phase-1 smoke macros:
 ## Phase 2 artifacts
 
 The re-entrant 31-position, 2000-event-per-point campaign is prepared in
-`scripts/run_exec07_scan.sh`. It writes `photon_hits_x{pos}mm.root`, validates
+`sim/scripts/run_exec07_scan.sh`. It writes `photon_hits_x{pos}mm.root`, validates
 completed positions with uproot, and resumes without accepting interrupted ROOT
 files. Do not launch it until Phase 2 is explicitly approved.
 

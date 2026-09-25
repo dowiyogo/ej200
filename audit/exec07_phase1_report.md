@@ -101,7 +101,7 @@ rg -n '16-35|16–35|16\.\.35|16…35|16, 36|range\(16, 36\)|N_TOP_SIPMS=20|fNTo
 
 ## Prepared but deliberately not run
 
-- `scripts/run_exec07_scan.sh`: resumable 31-position campaign, 2,000
+- `sim/scripts/run_exec07_scan.sh`: resumable 31-position campaign, 2,000
   events/position and 16 workers.
 - `analysis/exec07_photon_budget.py`: N_pe/Poisson, arrival-time/FPT, position
   trends, End DeltaT and Top timing-estimator outputs.
