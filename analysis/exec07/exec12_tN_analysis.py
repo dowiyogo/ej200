@@ -27,7 +27,7 @@ Output:
   analysis/exec07/figs/exec12_tN_{x}mm.png   -- 6-panel figure per key position
   analysis/exec07/figs/exec12_tN_summary.png  -- sigma_fit vs x synthesis
   analysis/exec07/exec12_tN_summary.csv       -- one row per (x, group, N)
-  audit/exec12_tN_check.md                    -- consistency check report
+  docs/reports/audit_exec07_12/exec12_tN_check.md -- consistency check report
 """
 
 from __future__ import annotations
@@ -556,8 +556,8 @@ def main() -> int:
     output_dir = args.output_dir
     figs_dir = output_dir / "figs"
     figs_dir.mkdir(parents=True, exist_ok=True)
-    audit_dir = pathlib.Path(__file__).resolve().parents[2] / "audit"
-    audit_dir.mkdir(exist_ok=True)
+    audit_dir = pathlib.Path(__file__).resolve().parents[2] / "docs" / "reports" / "audit_exec07_12"
+    audit_dir.mkdir(parents=True, exist_ok=True)
 
     all_rows: list[dict] = []
 

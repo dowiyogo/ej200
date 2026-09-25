@@ -11,13 +11,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 ARCHIVE = Path(__file__).resolve().parent
 CAMPAIGNS = {
-    "exec40": (Path("/home/rrios/exec40_20260913"), [Path("/home/rrios/REPORT_EXEC40_20260913.md")]),
-    "exec41": (Path("/home/rrios/exec41_20260913"), [Path("/home/rrios/REPORT_EXEC41_20260913.md")]),
+    "exec40": (Path("/home/rrios/exec40_20260913"), [Path("/home/rrios/ej200/docs/reports/REPORT_EXEC40_20260913.md")]),
+    "exec41": (Path("/home/rrios/exec41_20260913"), [Path("/home/rrios/ej200/docs/reports/REPORT_EXEC41_20260913.md")]),
     "exec42": (
         Path("/home/rrios/exec42_20260913"),
-        [Path("/home/rrios/REPORT_EXEC42A_20260913.md"), Path("/home/rrios/REPORT_EXEC42_20260914.md")],
+        [Path("/home/rrios/ej200/docs/reports/REPORT_EXEC42A_20260913.md"), Path("/home/rrios/ej200/docs/reports/REPORT_EXEC42_20260914.md")],
     ),
-    "exec43": (Path("/home/rrios/exec43_20260914"), [Path("/home/rrios/REPORT_EXEC43_20260914.md")]),
+    "exec43": (Path("/home/rrios/exec43_20260914"), [Path("/home/rrios/ej200/docs/reports/REPORT_EXEC43_20260914.md")]),
 }
 ALLOWED_SUFFIXES = {".csv", ".json", ".png", ".pdf", ".svg"}
 

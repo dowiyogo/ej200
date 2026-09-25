@@ -182,7 +182,7 @@ def main() -> int:
         "Alternative hypotheses to test in a future dedicated audit (not changed here): record optical-photon creation time and path length; inspect Geant4's effective GROUPVEL generated from the SSLG4 RINDEX table; and fit local distance ranges instead of forcing one line over 1--139 cm.",
         "The source RINDEX table is constant at 1.58 from 200--800 nm, so the apparent FPT value above c/n is not explained by the documented phase index alone.",
     ]
-    audit = args.output_dir.parent.parent / "audit" / "exec10_veff_diagnosis.md"
+    audit = args.output_dir.parent.parent / "docs" / "reports" / "audit_exec07_12" / "exec10_veff_diagnosis.md"
     audit.write_text("\n".join(report) + "\n")
     print("\n".join(report))
     return 0

@@ -21,7 +21,7 @@ con `REFLECTIVITY=0.95` — error de configuración. La discrepancia fue declara
 Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Nuevas simulaciones con
 R=0.98 serán directamente comparables con el napkin sin factor de escala correctivo.
 Las figuras actuales del deck corresponden a R=0.95 y son históricas.
-Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md §5`.
+Ver `docs/reports/branch_diagnosis/REFLECTIVITY_CHANGE.md §5`.
 
 ## Por qué se conserva
 

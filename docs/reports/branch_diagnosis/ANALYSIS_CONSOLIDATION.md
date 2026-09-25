@@ -2,7 +2,7 @@
 # Consolidación de feature/sipm-electronics-response → main
 
 Fecha: 2026-09-01  
-Auditoría completa: `docs/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md`
+Auditoría completa: `docs/reports/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md`
 
 ---
 

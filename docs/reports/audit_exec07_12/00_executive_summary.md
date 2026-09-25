@@ -87,9 +87,9 @@ created under `audit/`.
 
 ## Audit Outputs
 
-- `audit/01_branch_inventory.txt`
-- `audit/02_physics_per_branch.md`
-- `audit/03_cross_branch_coherence.md`
-- `audit/04_drift_classification.md`
-- `audit/05_remediation_plan.md`
+- `docs/execution_logs/01_branch_inventory_20260607.txt`
+- `docs/reports/audit_exec07_12/02_physics_per_branch.md`
+- `docs/reports/audit_exec07_12/03_cross_branch_coherence.md`
+- `docs/reports/audit_exec07_12/04_drift_classification.md`
+- `docs/execution_logs/prompts/05_remediation_plan.md`
 

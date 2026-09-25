@@ -238,7 +238,7 @@ def main() -> int:
         "",
         "The CSV is intended as future input for comparison with test-beam Landau MPVs through the pending ToT(NPE) calibration.",
     ]
-    (args.output_dir.parent.parent / "audit" / "exec10_landau_analysis.md").write_text("\n".join(report) + "\n")
+    (args.output_dir.parent.parent / "docs" / "reports" / "audit_exec07_12" / "exec10_landau_analysis.md").write_text("\n".join(report) + "\n")
     print("\n".join(report))
     return 0
 

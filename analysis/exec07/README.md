@@ -38,7 +38,7 @@ python analysis/exec07/exec09_timing_mechanism.py \
 It writes a block-jackknife metric table and the normalized log-y comparison
 used to establish preferential late-photon drainage through the Top windows.
 The full trace and anti-artifact check are in
-`audit/exec09_timing_mechanism.md`.
+`docs/reports/audit_exec07_12/exec09_timing_mechanism.md`.
 
 EXEC_10 adds:
 
@@ -77,7 +77,7 @@ nearest-channel/maximum-profile cross-check unambiguous.
 The localization gate is strict outside the known window-track pattern. At
 positions `x % 20 == 10`, the maximum may be the nearest or second-nearest
 window when the nearest deficit is at most 15%; see
-`audit/exec08b_window_dip.md`. Outside that pattern, a non-nearest maximum is
+`docs/reports/audit_exec07_12/exec08b_window_dip.md`. Outside that pattern, a non-nearest maximum is
 accepted only when statistically compatible with the nearest at one sigma.
 
 ## SUM4 leading edge
@@ -131,7 +131,7 @@ The first command computes t_N (time of N-th detected photon, N=4 and N=20)
 for nearest Top, End near, and End far groups at all 31 positions, performs
 a Gaussian core fit, runs the sigma(t_4)/sigma_group consistency check, and
 writes `exec12_tN_summary.csv`, 7 per-position PNG figures, and
-`audit/exec12_tN_check.md`.
+`docs/reports/audit_exec07_12/exec12_tN_check.md`.
 
 The second command assembles `exec12_report_full.pdf` (≥75 pages) with:
 Key-positions section (7 × 3 slides), t_N synthesis, photon-budget statistics

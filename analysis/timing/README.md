@@ -2,7 +2,7 @@
 
 Scripts de reconstrucción de timestamp y análisis de resolución temporal σ_t.
 Todos leen el TTree `sipm_hits` de los archivos ROOT de Fase 7 (ver §2.1 de
-`docs/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md`).
+`docs/reports/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md`).
 
 ---
 
@@ -117,7 +117,7 @@ al núcleo; `RMS`: RMS puro; `coreSigma`: σ del núcleo (sin colas).
 
 ## Datos disponibles vs geometría
 
-Ver también `docs/branch_diagnosis/ANALYSIS_CONSOLIDATION.md §5`.
+Ver también `docs/reports/branch_diagnosis/ANALYSIS_CONSOLIDATION.md §5`.
 
 Los scripts que hacen referencia a `N_TOP_SIPMS` o IDs de top SiPMs asumen la geometría
 con la que fueron desarrollados. Main tiene `kNTopSiPMs = 70` (IDs 16–85). Los scripts

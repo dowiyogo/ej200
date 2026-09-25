@@ -19,4 +19,4 @@ and CSV artifacts are copied into `sources/` for the deck. The event-level
 and is not duplicated.
 
 Every diagnostic figure has a `.C`, `.root`, `.pdf`, and `.meta.json` artifact.
-The external report is `/home/rrios/REPORT_TIMING_SYMMETRY_20260914.md`.
+The external report is `/home/rrios/ej200/docs/reports/REPORT_TIMING_SYMMETRY_20260914.md`.

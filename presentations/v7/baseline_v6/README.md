@@ -47,9 +47,9 @@ Ver `analysis/timing/TODO.md` y `docs/literature/ELECTRONICS_PARAMETERS.md`.
 en `CreateBarSkinReflector()`. Los números del deck (σ_END=53.68 ps, σ_BLUE=15.21 ps,
 σ_TOP=15.20 ps) corresponden a R=0.95 y necesitan re-simulación con R=0.98 para validarse.
 Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01).
-Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
+Ver `docs/reports/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
 
-Inconsistencias narrativas documentadas en `docs/branch_diagnosis/TALKV6_CONSISTENCY.md`:
+Inconsistencias narrativas documentadas en `docs/reports/branch_diagnosis/TALKV6_CONSISTENCY.md`:
 
 - Figuras figM1/M2/fig_sigma_t_x/fig_npe_x etiquetadas como "GEN-2" en CONFIGURATION_AUDIT.md
   pero provienen de `scan_end_vikuiti` con `build_end_vikuiti` Fase 7 (GEN-3 física, END-only).

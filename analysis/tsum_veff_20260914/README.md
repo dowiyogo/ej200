@@ -16,4 +16,4 @@ can take several minutes. Set `SKIP_SPECTRAL=1` to reuse an existing
 `sources/spectral_check.root`; the script aborts if that artifact is absent.
 
 The external report is
-`/home/rrios/REPORT_TSUM_VEFF_POSITION_20260914.md`.
+`/home/rrios/ej200/docs/reports/REPORT_TSUM_VEFF_POSITION_20260914.md`.

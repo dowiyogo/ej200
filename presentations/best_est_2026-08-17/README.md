@@ -14,7 +14,7 @@ Fase 7 (commit `5576687`, 2026-08-14); geometría END-only + END+TOP sparse.
 en `CreateBarSkinReflector()` — error de configuración; spec Vikuiti 3M ESR es R≈0.98.
 Corregido en `Materials.cc:354` (commit `c7acb7a`, 2026-09-01). Los números canónicos
 σ_END=53.68 ps, σ_BLUE=15.21 ps, σ_TOP=15.20 ps corresponden a R=0.95; necesitan
-re-simulación con R=0.98 para validarse. Ver `docs/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
+re-simulación con R=0.98 para validarse. Ver `docs/reports/branch_diagnosis/REFLECTIVITY_CHANGE.md`.
 
 Los números de este deck son los mismos que aparecen en FINAL_NUMBERS.md de v6 y en
 talk_v6.tex (B1/B2 slides).

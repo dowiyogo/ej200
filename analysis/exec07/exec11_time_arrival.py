@@ -565,7 +565,7 @@ reaches {args.le_threshold_pe:.0f} PE (SUM4 leading-edge discriminator fire time
        fraction $f(t>30\,\mathrm{ns})$ is non-zero for all positions —
        the window captures the full tail visible in EXEC\_09.
  \item Top-nearest selection verified against \texttt{per\_position\_exec07.csv}
-       for all 31 positions; agreement confirmed in \texttt{audit/exec11\_arrival.md}.
+       for all 31 positions; agreement confirmed in \texttt{docs/reports/audit\_exec07\_12/exec11\_arrival.md}.
  \item No $\sigma_\mathrm{group}$ metric recomputed or modified.
  \item \texttt{runs/} is byte-identical; EXEC\_09/10 PDFs untouched.
 \end{itemize}
@@ -613,7 +613,7 @@ def write_audit(
     mode: str,
     args: argparse.Namespace,
 ) -> None:
-    """Write audit/exec11_arrival.md with trace and anti-artifact checks."""
+    """Write docs/reports/audit_exec07_12/exec11_arrival.md with trace and anti-artifact checks."""
     metrics = pd.DataFrame(all_metrics)
     lines: list[str] = [
         "# EXEC_11 photon-arrival audit",
@@ -653,7 +653,7 @@ def write_audit(
             f"Mean N_pe at t_max={args.t_max_end:.0f} ns across End groups and positions: "
             f"{mean_n:.1f} PE.",
             "The 50 ns End window was chosen to exceed the >30 ns late-tail cutoff established "
-            "in EXEC_09 (`exec09_timing_mechanism.py`, `audit/exec09_timing_mechanism.md`). "
+            "in EXEC_09 (`exec09_timing_mechanism.py`, `docs/reports/audit_exec07_12/exec09_timing_mechanism.md`). "
             "N_at_tmax is the cumulative N_pe at the window edge; values well above the "
             "FPT level confirm the window captures late-arriving photons.",
             "",
@@ -725,7 +725,7 @@ def write_audit(
         "- runs/ directory is byte-identical to the checkpoint tag.",
     ]
     (audit_dir / "exec11_arrival.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"wrote audit/exec11_arrival.md")
+    print(f"wrote docs/reports/audit_exec07_12/exec11_arrival.md")
 
 
 # ---------------------------------------------------------------------------
@@ -773,8 +773,8 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
     figs_dir = output_dir / "figs"
     figs_dir.mkdir(exist_ok=True)
-    audit_dir = pathlib.Path(__file__).resolve().parents[2] / "audit"
-    audit_dir.mkdir(exist_ok=True)
+    audit_dir = pathlib.Path(__file__).resolve().parents[2] / "docs" / "reports" / "audit_exec07_12"
+    audit_dir.mkdir(parents=True, exist_ok=True)
 
     print("Running blocking ROOT validation...", flush=True)
     validate_inputs(args.data_dir)

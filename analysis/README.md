@@ -82,7 +82,7 @@ Geometría de referencia (main): `kNEndSiPMs = 8` por lado (IDs 0–15),
 - Los scripts de este nivel fueron desarrollados con `kNTopSiPMs = 70`. Los scripts de
   `timing/` fueron importados de una rama con `kNTopSiPMs = 20`. Antes de correr los
   scripts de `timing/` sobre datos de 86 canales, verificar el rango de `global_id`
-  asumido. Ver `docs/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md §2.5b`.
+  asumido. Ver `docs/reports/branch_diagnosis/ANALYSIS_CONSOLIDATION_AUDIT.md §2.5b`.
 
 - `edge_resolution.py` importa desde `resolution_vs_x_fixed.py` (mismo nivel):
   `from resolution_vs_x_fixed import fit_fpt_distribution, gauss, load_event_level_data`.

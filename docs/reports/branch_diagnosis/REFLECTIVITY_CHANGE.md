@@ -84,7 +84,7 @@ con los nuevos datos, una validación directa sin factor de corrección.
 
 ## 6. REFLECTOR_LABEL.md — superado (§3a)
 
-`docs/branch_diagnosis/REFLECTOR_LABEL.md` proponía sustituir "Vikuiti ESR" en el deck
+`docs/reports/branch_diagnosis/REFLECTOR_LABEL.md` proponía sustituir "Vikuiti ESR" en el deck
 por "specular reflector R=0.95 (Vikuiti ESR as physical candidate)" para señalar la
 discrepancia R=0.95 (código) vs R≈0.98 (spec).
 
