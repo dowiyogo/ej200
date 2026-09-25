@@ -1,8 +1,23 @@
-# ej200_v2 - EXEC_07 EndTop optical simulation
+# ej200_v2 - SHiP Timing Detector (T0) Optical Simulation & Analysis
 
-Geant4 simulation of the SHiP timing-detector scintillator bar. The EXEC_07
-configuration combines End and Top readout, uses SSLG4/OPSim for the active
-scintillator, and uses the Broadcom AFBR-S4N66P024M PDE curve.
+Geant4 11.x + SSLG4/OPSim simulation and ROOT/PyROOT timing analysis of the SHiP timing-detector plastic scintillator bar (`EJ-200` / `OPSC-100`, `EJ-204` / `OPSC-101`, `EJ-230` / `OPSC-106`) read out by Broadcom `AFBR-S4N66P024M` SiPMs. The baseline `EXEC_07` configuration combines End and Top readout (86 SiPM channels) and produces `.root` files containing the `sipm_hits` `TTree`.
+
+## Repository Structure (Reorganized 2026-09-25)
+
+- **Critical Coupling Catalog (ROOT `.C` macros & Python/CMake modules):** [`docs/catalogo_macros.md`](docs/catalogo_macros.md)
+- **Reorganization Execution Log & SHA-256 Verification Ledger:** [`docs/execution_logs/REORG_20260925.md`](docs/execution_logs/REORG_20260925.md)
+
+| Directory | Contents & Active Entry-Points |
+|---|---|
+| `src/`, `include/`, `main.cc`, `CMakeLists.txt` | Core Geant4 11.x C++ simulation (`ej200_bar_sim`), detector geometry (`DetectorConstruction`), sensitive detector (`SiPMSD`), and vendored `src/external/{OPSimTool,SSLG4}`. |
+| `macros/`, `sslg4/` | Geant4 runtime macros (`run.mac`, `scan_*.mac`, `endtop_smoke_*.mac`) and SSLG4 optical property tables (`OPSC-100`, `OPSC-101`, `OPSC-106`). **Protected by `CMakeLists.txt` `file(COPY ...)`** — do not move without updating `CMakeLists.txt` and CTest. |
+| `sim/scripts/` | Active standalone simulation scan runners: `sim/scripts/run_exec07_scan.sh`, `sim/scripts/run_end_tir_scan.sh`, `sim/scripts/run_end_vikuiti_scan.sh`, `sim/scripts/post_end_vikuiti.sh`. |
+| `scripts/` | Build/CTest/CI helpers (`scripts/build.sh`, `scripts/verify_reproducibility.sh`), CMake-coupled runner (`scripts/run_scan.sh`), and subdirectories:<br>• `scripts/legacy/`: Archived non-active scripts (`resume_scan_2.sh`).<br>• `scripts/_quarantine_do_not_run/`: Quarantined non-executable (`chmod -x`) one-off/scratch scripts that would overwrite reports or CSVs if executed. |
+| `analysis/` | Active ROOT/PyROOT and `uproot` analysis pipelines:<br>• `analysis/track_mechanism_20260915/`: **EXEC_46** mechanism & dispersive-optics pipeline (`prepare_campaign.py`, `analyze_step1.py`, `build_step2_derived.py`, `analyze_step2.py`, `build_step3_transport.py`, `analyze_step3.py`, `build_step4_pairs.py`, `analyze_step4.py`, `analyze_step5.py`, `analyze_step5_revision.py`, `analyze_step6_widths.py`, `analyze_veff_rank_cfd.py`, `aggregate_cfd_report.py`, and LaTeX report in `report/main.tex`). All step scripts enforce explicit `--campaign-dir` and `--output-dir` CLI flags.<br>• `analysis/tsum_veff_20260914/`: Effective velocity & $t_{\text{sum}}$ study (`rebuild.sh`, `macros/*.C`).<br>• `analysis/timing_symmetry_20260914/` & `analysis/order_stat_weight_20260915/`: Timing symmetry and order-statistic weighting macros (`macros/*.C`).<br>• `analysis/sigma_t/orchestration/`: Campaign grid orchestrator (`detached_grid.py`, `prepare_grid.py`).<br>• `analysis/validation/`: Statistical validation suite (`run_exec32_suite.py`, `exec31_stats.py`).<br>• `analysis/timing/`: Waveform + dCFD (`sipm_waveform_dcfd.py`, `sipm_waveform_dcfd.cpp`, `pulse_models.py`) and arrival-time estimators.<br>• `analysis/optim/`, `analysis/exec07/`, `analysis/exec13/`, `analysis/exec14/`: Historical campaign pipelines and estimators (`resolution_vs_x_fixed.py`, `edge_resolution.py`, `grouped_resolution.py`, `ResolutionScan_v2.C`). |
+| `presentations/` | Self-contained compilable LaTeX Beamer decks:<br>• `presentations/v9p1/` (`talk_v9p1.tex`, `rebuild_v9p1.sh`)<br>• `presentations/v9/` (`talk_v9.tex`, `rebuild_v9.sh`)<br>• `presentations/v8/` (`talk_v8.tex`, `rebuild_v8.sh`)<br>• `presentations/v7/` (`talk_v7.tex`, `slides/*.tex`)<br>• `presentations/v6/`, `v5/`, `v4/`, `napkin_first_principles/`, `exec14/` |
+| `data/` | Tracked SiPM PDE curves (`data/sipm/AFBR-S4N66P024M_pde.txt`) and untracked consolidated campaign storage (`data/ej200_campaigns/{raw,derived,quarantine_corrupt_or_duplicate}`, ignored by Git and excluded from CMake `file(COPY)`):<br>• `raw/OPSC-106_EJ230_endtop_exec13_from_ej230/`<br>• `raw/OPSC-101_EJ204_endonly_mylar_20260614_from_ej200_end/`<br>• `raw/OPSC-106_EJ230_endonly_mylar_20260614_from_ej230_end/`<br>• `raw/OPSC-101_EJ204_endtop_scans_202606_08_from_ej204/`<br>• `raw/EJ228_cylinder_tir_vs_vikuiti_20260815_from_ej204/` |
+| `docs/` | Project documentation:<br>• `docs/catalogo_macros.md`: Complete coupling catalog of 115 ROOT macros and Python/CMake modules.<br>• `docs/execution_logs/REORG_20260925.md`: Master reorganization log, SHA-256 verification ledger, and manual cleanup commands.<br>• `docs/reports/`: Consolidated technical audit reports (`GROUP_VELOCITY_AUDIT.md`, `REPORT_branch_status_*.md`).<br>• `docs/branch_diagnosis/` & `docs/literature/`: Branch consolidation records and literature notes. |
+| `tests/` | CTest C++ and Python regression tests (`check_endtop_balance.py`, `readout_config_check.cc`, `sslg4_properties_check.cc`). |
 
 ## Geometry
 
