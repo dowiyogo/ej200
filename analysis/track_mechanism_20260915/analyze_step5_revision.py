@@ -246,6 +246,10 @@ def save_frame(name, frame):
 
 
 def run():
+    global OUT
+    OUT = base.OUTPUT_DIR
+    base.require(OUT is not None and base.STEP2_DIR is not None,
+                 'Must configure --campaign-dir and --output-dir before running Step 5')
     OUT.mkdir(parents=True,exist_ok=True)
     before_hash = base.sha256(base.DERIVED_ROOT)
     with uproot.open(base.DERIVED_ROOT) as f:
@@ -257,7 +261,7 @@ def run():
     slopes, points, curves, summary = base.analyze(arrays,pd.read_csv(base.BASELINE_POINTS),pd.read_csv(base.BASELINE_FITS))
     base.make_figures(slopes,points,curves,summary)
     save_frame('identification_residual_points',points)
-    reference = pd.read_csv(base.BASE_DIR/'step2/baseline_cells.csv').query('clock == "time_ns"')
+    reference = pd.read_csv(base.BASELINE_CELLS).query('clock == "time_ns"')
     rows_profile, rows_count, rows_cells, rows_intervals, rows_mix = [], [], [], [], []
     rows_sensitive, rows_fits, rows_signif, rows_boot, rows_local = [], [], [], [], []
     rows_between_specs, rows_between_models = [], []
@@ -941,3 +945,13 @@ def write_report(fr,summary,points,stats):
         'Rollback tag before edits: `pre-exec46-step5-e1-e5-20260916`.', '',
         '**Step 6 has not run and still requires René’s explicit approval. No push was performed.**','']
     base.REPORT_PATH.write_text('\n'.join(lines))
+
+
+def main():
+    args = base.parse_args()
+    base.configure_paths(args.campaign_dir, args.output_dir, args.step2_dir)
+    run()
+
+
+if __name__ == '__main__':
+    main()

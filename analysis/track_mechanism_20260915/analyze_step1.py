@@ -29,12 +29,12 @@ from exec46_schema import (
 )
 
 
-OUTPUT_DIR = Path(__file__).resolve().parent
-INVENTORY_PATH = OUTPUT_DIR / "exec46_inventory.csv"
-SOURCE_CENSUS_PATH = OUTPUT_DIR / "exec46_source_census.csv"
-TAU_DIAGNOSTICS_PATH = OUTPUT_DIR / "exec46_tau_diagnostics.csv"
-SCHEMA_DUMP_PATH = OUTPUT_DIR / "exec46_schema_dump.json"
-AUDIT_PATH = OUTPUT_DIR / "exec46_step1_audit.json"
+OUTPUT_DIR = None
+INVENTORY_PATH = Path("exec46_inventory.csv")
+SOURCE_CENSUS_PATH = Path("exec46_source_census.csv")
+TAU_DIAGNOSTICS_PATH = Path("exec46_tau_diagnostics.csv")
+SCHEMA_DUMP_PATH = Path("exec46_schema_dump.json")
+AUDIT_PATH = Path("exec46_step1_audit.json")
 STEP_SIZE = "256 MB"
 PROCESS_COUNT = 4
 EXPECTED_EVENTS = 10_000
@@ -515,17 +515,22 @@ def write_csv(path, rows):
 
 
 def main():
+    global OUTPUT_DIR
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--campaign", type=Path, default=CAMPAIGN_DIR)
-    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory receiving step1 validation outputs and metadata")
     parser.add_argument("--sha-file", type=Path,
                         help="salida sha256sum ya calculada; si falta, calcula cada hash")
     parser.add_argument("--processes", type=int, default=PROCESS_COUNT)
     parser.add_argument("--cell", action="append",
                         help="limita una sonda de hard-abort; repetible")
     args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
     start = datetime.now(timezone.utc)
-    cells = discover_cells(args.campaign.resolve())
+    cells = discover_cells(args.campaign_dir.resolve())
     schema_dump = validate_schema(cells)
     campaign_cells = cells
     campaign_cell_count = len(campaign_cells)

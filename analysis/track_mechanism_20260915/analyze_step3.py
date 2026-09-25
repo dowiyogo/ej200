@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Analiza g(d), sus familias de transporte y el borde Cherenkov de EXEC_46."""
 
+import argparse
 import csv
 import hashlib
 import json
@@ -23,9 +24,9 @@ from analyze_step1 import discover_cells
 
 
 BASE_DIR = Path(__file__).resolve().parent
-STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
-OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP3_DIR", str(BASE_DIR / "step3")))
-REPORT_PATH = OUTPUT_DIR / "REPORT_TPROP_GD_20260916.md"
+STEP2_DIR = None
+OUTPUT_DIR = None
+REPORT_PATH = None
 BUILD_COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
     "analysis/track_mechanism_20260915/build_step3_transport.py --processes 4"
@@ -701,6 +702,21 @@ def render_report(combined, fits, mirror_summary, caustic_summary, first_rows,
 
 
 def main():
+    global CAMPAIGN, STEP2_DIR, OUTPUT_DIR, REPORT_PATH
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory containing first_by_source.root and receiving step3 outputs")
+    parser.add_argument("--step2-dir", type=Path, default=None,
+                        help="optional step2 directory if needed")
+    args = parser.parse_args()
+    CAMPAIGN = args.campaign_dir.resolve()
+    os.environ["EXEC46_CAMPAIGN_DIR"] = str(CAMPAIGN)
+    OUTPUT_DIR = args.output_dir.resolve()
+    STEP2_DIR = args.step2_dir.resolve() if args.step2_dir else (OUTPUT_DIR.parent / "step2")
+    REPORT_PATH = OUTPUT_DIR / "REPORT_TPROP_GD_20260916.md"
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     cells, gun_angles, indices = verify_gun_and_index()
     all_photons = pd.read_csv(OUTPUT_DIR / "all_photon_cell_face.csv")
@@ -713,7 +729,7 @@ def main():
     # Predictions are appended to selected photons; estimator and fitting logic is unchanged.
     optical_rows = []
     for sample, selected in (("first_by_source", first), ("first_overall", add_first_overall(first))):
-        selected = attach_optics(selected)
+        selected = attach_optics(selected, str(CAMPAIGN))
         for (code, source), group in selected.groupby(["material_code", "source_type"]):
             optical_rows.append({"material": MATERIALS[int(code)], "sample": sample,
                 "source_type": int(source), "population": f"{sample}, source {source}",

@@ -26,11 +26,10 @@ from exec46_schema import (
 )
 
 
-OUTPUT_DIR = Path(os.environ.get(
-    "EXEC46_STEP2_DIR", str(Path(__file__).resolve().parent / "step2")))
-DERIVED_PATH = OUTPUT_DIR / "exec46_derived_events.root"
-META_PATH = OUTPUT_DIR / "exec46_derived_events.meta.json"
-MATERIAL_PATH = OUTPUT_DIR / "material_optical_properties.csv"
+OUTPUT_DIR = None
+DERIVED_PATH = None
+META_PATH = None
+MATERIAL_PATH = None
 EXPECTED_EVENTS = 10_000
 EXPECTED_CELLS = 21
 PROCESS_COUNT = 4
@@ -249,13 +248,22 @@ def write_material_properties():
 
 
 def main():
+    global OUTPUT_DIR, DERIVED_PATH, META_PATH, MATERIAL_PATH
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--campaign", type=Path, default=CAMPAIGN_DIR)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory receiving exec46_derived_events.root and metadata")
     parser.add_argument("--processes", type=int, default=PROCESS_COUNT)
     args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
+    DERIVED_PATH = OUTPUT_DIR / "exec46_derived_events.root"
+    META_PATH = OUTPUT_DIR / "exec46_derived_events.meta.json"
+    MATERIAL_PATH = OUTPUT_DIR / "material_optical_properties.csv"
     require(args.processes >= 1, "processes debe ser positivo")
     start = datetime.now(timezone.utc)
-    cells = discover_cells(args.campaign.resolve())
+    cells = discover_cells(args.campaign_dir.resolve())
     require(len(cells) == EXPECTED_CELLS, "se esperaban 21 celdas")
     cells.sort(key=lambda cell: (cell["material"], int(cell["x_mm"])))
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

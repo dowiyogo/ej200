@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Reproduce la línea base EXEC_46 y ejecuta los diagnósticos A1--A3."""
 
+import argparse
 import csv
 import hashlib
 import json
@@ -19,13 +20,13 @@ from dispersive_optics import (campaign_tables, photon_optics, distribution_summ
 
 
 BASE_DIR = Path(__file__).resolve().parent
-STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
-DERIVED_PATH = STEP2_DIR / "exec46_derived_events.root"
-DERIVED_META_PATH = STEP2_DIR / "exec46_derived_events.meta.json"
-MATERIAL_PROPERTIES_PATH = STEP2_DIR / "material_optical_properties.csv"
-ANALYSIS_ROOT_PATH = STEP2_DIR / "exec46_step2_analysis.root"
-REPORT_PATH = STEP2_DIR / "REPORT_BASELINE_REPRODUCTION_20260915.md"
-EXTERNAL_REPORT_PATH = Path("/home/rrios/REPORT_BASELINE_REPRODUCTION_20260915.md")
+OUTPUT_DIR = None
+STEP2_DIR = None
+DERIVED_PATH = None
+DERIVED_META_PATH = None
+MATERIAL_PROPERTIES_PATH = None
+ANALYSIS_ROOT_PATH = None
+REPORT_PATH = None
 EXPECTED_ENTRIES = 210_000
 EXPECTED_EVENTS_PER_CELL = 10_000
 PROFILE_BINS = 40
@@ -688,13 +689,30 @@ def build_report(metadata, material_rows, cells, points, fits, clock_maxima, bou
 
 
 def main():
+    global OUTPUT_DIR, STEP2_DIR, DERIVED_PATH, DERIVED_META_PATH
+    global MATERIAL_PROPERTIES_PATH, ANALYSIS_ROOT_PATH, REPORT_PATH
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory containing exec46_derived_events.root and receiving step2 outputs")
+    args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
+    STEP2_DIR = OUTPUT_DIR
+    DERIVED_PATH = STEP2_DIR / "exec46_derived_events.root"
+    DERIVED_META_PATH = STEP2_DIR / "exec46_derived_events.meta.json"
+    MATERIAL_PROPERTIES_PATH = STEP2_DIR / "material_optical_properties.csv"
+    ANALYSIS_ROOT_PATH = STEP2_DIR / "exec46_step2_analysis.root"
+    REPORT_PATH = STEP2_DIR / "REPORT_BASELINE_REPRODUCTION_20260915.md"
+    os.environ["EXEC46_CAMPAIGN_DIR"] = str(args.campaign_dir.resolve())
     ROOT.gROOT.SetBatch(True)
     ROOT.gStyle.SetOptStat(0)
     require(DERIVED_PATH.is_file(), f"falta {DERIVED_PATH}")
     metadata = json.loads(DERIVED_META_PATH.read_text())
     sources = [{"path": row["root_path"], "sha256": row["root_sha256"]}
                for row in metadata["cells"]]
-    _, material_rows = campaign_tables()
+    _, material_rows = campaign_tables(str(args.campaign_dir.resolve()))
     with uproot.open(DERIVED_PATH) as root_file:
         tree = root_file["derived_events"]
         require(tree.num_entries == EXPECTED_ENTRIES, "conteo derivado incorrecto")
@@ -754,7 +772,6 @@ def main():
                           boundary_correlation, point_correlation, guiding_rows,
                           optical_rows)
     REPORT_PATH.write_text(report)
-    EXTERNAL_REPORT_PATH.write_text(report)
     print(json.dumps({"status": "PASS", "entries": EXPECTED_ENTRIES,
                       "clock_maxima": clock_maxima,
                       "boundary_correlation": boundary_correlation,

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """EXEC_46 Step 5: descriptive identification checks, revised by E1--E5."""
 
+import argparse
 import hashlib
 import json
 import math
@@ -17,12 +18,14 @@ import uproot
 
 
 BASE_DIR = Path(__file__).resolve().parent
-OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP5_DIR", str(BASE_DIR / "step5")))
-STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
-DERIVED_ROOT = STEP2_DIR / "exec46_derived_events.root"
-BASELINE_POINTS = STEP2_DIR / "baseline_points.csv"
-BASELINE_FITS = STEP2_DIR / "baseline_fits.csv"
-REPORT_PATH = OUTPUT_DIR / "REPORT_CHAINRULE_IDENTIFICATION_20260916.md"
+CAMPAIGN_DIR = None
+OUTPUT_DIR = None
+STEP2_DIR = None
+DERIVED_ROOT = None
+BASELINE_POINTS = None
+BASELINE_FITS = None
+BASELINE_CELLS = None
+REPORT_PATH = None
 COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
     "analysis/track_mechanism_20260915/analyze_step5.py"
@@ -387,7 +390,35 @@ def make_figures(slopes, points, curves, summary):
                    float_format="%.12g")
 
 
+def configure_paths(campaign_dir, output_dir, step2_dir=None):
+    global CAMPAIGN_DIR, OUTPUT_DIR, STEP2_DIR, DERIVED_ROOT
+    global BASELINE_POINTS, BASELINE_FITS, BASELINE_CELLS, REPORT_PATH
+    CAMPAIGN_DIR = Path(campaign_dir).resolve()
+    OUTPUT_DIR = Path(output_dir).resolve()
+    STEP2_DIR = (Path(step2_dir).resolve()
+                 if step2_dir is not None else (OUTPUT_DIR.parent / "step2").resolve())
+    DERIVED_ROOT = STEP2_DIR / "exec46_derived_events.root"
+    BASELINE_POINTS = STEP2_DIR / "baseline_points.csv"
+    BASELINE_FITS = STEP2_DIR / "baseline_fits.csv"
+    BASELINE_CELLS = STEP2_DIR / "baseline_cells.csv"
+    REPORT_PATH = OUTPUT_DIR / "REPORT_CHAINRULE_IDENTIFICATION_20260916.md"
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory receiving step5 analysis outputs")
+    parser.add_argument("--step2-dir", type=Path, default=None,
+                        help="directory containing exec46_derived_events.root and baseline_*.csv (defaults to <output-dir>/../step2)")
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
+    configure_paths(args.campaign_dir, args.output_dir, args.step2_dir)
     # E1--E5 supersede the circular majority-artifact gate; Step 6 stays gated.
     from analyze_step5_revision import run
     run()

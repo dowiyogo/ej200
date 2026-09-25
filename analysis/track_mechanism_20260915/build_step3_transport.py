@@ -16,8 +16,7 @@ from analyze_step1 import discover_cells
 from exec46_schema import CAMPAIGN_DIR, LEFT_FACE, RIGHT_FACE, TREE_NAME
 
 
-OUTPUT_DIR = Path(os.environ.get(
-    "EXEC46_STEP3_DIR", str(Path(__file__).resolve().parent / "step3")))
+OUTPUT_DIR = None
 EXPECTED_EVENTS = 10_000
 EXPECTED_CELLS = 21
 PROCESS_COUNT = 4
@@ -296,13 +295,19 @@ def write_csv(path, rows):
 
 
 def main():
+    global OUTPUT_DIR
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--campaign", type=Path, default=CAMPAIGN_DIR)
+    parser.add_argument("--campaign-dir", "--campaign", dest="campaign_dir",
+                        type=Path, required=True,
+                        help="campaign directory containing campaign.json and cells/")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="directory receiving step3 transport outputs and metadata")
     parser.add_argument("--processes", type=int, default=PROCESS_COUNT)
     args = parser.parse_args()
+    OUTPUT_DIR = args.output_dir.resolve()
     require(args.processes >= 1, "processes debe ser positivo")
     start = datetime.now(timezone.utc)
-    cells = discover_cells(args.campaign.resolve())
+    cells = discover_cells(args.campaign_dir.resolve())
     require(len(cells) == EXPECTED_CELLS, "se esperaban 21 celdas")
     cells.sort(key=lambda item: (item["material"], int(item["x_mm"])))
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -371,7 +376,7 @@ def main():
         "command": ("env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
                     "analysis/track_mechanism_20260915/build_step3_transport.py --processes "
                     f"{args.processes}"),
-        "campaign": str(args.campaign.resolve()), "cells": EXPECTED_CELLS,
+        "campaign": str(args.campaign_dir.resolve()), "cells": EXPECTED_CELLS,
         "events_per_cell": EXPECTED_EVENTS, "processes": args.processes,
         "step_size": STEP_SIZE, "sources": SOURCE_NAMES,
         "d_edges_mm": D_EDGES_MM.tolist(),
