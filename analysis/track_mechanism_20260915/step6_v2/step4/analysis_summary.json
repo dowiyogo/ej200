@@ -1,7 +1,7 @@
 {
   "angle_window_rows": 42,
   "bootstrap_replicates": 2000,
-  "created_utc": "2026-09-17T09:00:44.861079+00:00",
+  "created_utc": "2026-09-17T12:49:10.165467+00:00",
   "input_sha256": "4944b39da5afbd4fd9d1a52f23a98a4ae78cfaafb14a7777cac44a49e5188d1d",
   "mixture_rows": 6,
   "nc_scan_rows": 210,

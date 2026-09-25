@@ -1,7 +1,7 @@
 {
   "binning": "80 equal bins over pooled 0.5--99.5% range per material and variable; binary source flag uses two exact bins",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
-  "created_utc": "2026-09-17T09:00:37.908334+00:00",
+  "created_utc": "2026-09-17T12:49:03.074717+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/paired_distributions.csv",
   "display_material": "EJ-204",
   "histogram_quantiles": [

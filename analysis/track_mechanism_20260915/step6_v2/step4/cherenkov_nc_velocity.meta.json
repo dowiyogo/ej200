@@ -2,7 +2,7 @@
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
   "count_bins": "five equal-population bins per material and distance",
-  "created_utc": "2026-09-17T09:00:39.399776+00:00",
+  "created_utc": "2026-09-17T12:49:04.600558+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/cherenkov_nc_velocity.csv",
   "finite_beta_edge_velocity": "photon-weighted median/q05/q95 per plotted group",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/step4_event_pairs.root",

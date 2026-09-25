@@ -3,7 +3,7 @@
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
   "correction": "t_creation-(5 mm-z_creation)/c",
-  "created_utc": "2026-09-17T09:00:43.723872+00:00",
+  "created_utc": "2026-09-17T12:49:09.033891+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/muon_transit_order_correction.csv",
   "gun_direction": "(0,0,-1)",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/step4_event_pairs.root",

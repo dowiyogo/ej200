@@ -2,7 +2,7 @@
   "angle_definition": "min(exit_angle_deg, 180-exit_angle_deg)",
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
-  "created_utc": "2026-09-17T09:00:39.698915+00:00",
+  "created_utc": "2026-09-17T12:49:04.908357+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/cherenkov_angle_window.csv",
   "finite_beta_edge": "median/q05/q95 in plotted population sidecar",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/step4_event_pairs.root",

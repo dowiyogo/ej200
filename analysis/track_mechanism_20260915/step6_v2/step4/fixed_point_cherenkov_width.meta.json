@@ -1,7 +1,7 @@
 {
   "binning": "tabulated points; no histogram binning",
   "command": "env PYTHONPATH=analysis/track_mechanism_20260915 python3 analysis/track_mechanism_20260915/analyze_step4.py",
-  "created_utc": "2026-09-17T09:00:43.995206+00:00",
+  "created_utc": "2026-09-17T12:49:09.308500+00:00",
   "csv": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/fixed_point_cherenkov_width.csv",
   "input_root": "/home/rrios/ej200/analysis/track_mechanism_20260915/step6_v2/step4/step4_event_pairs.root",
   "input_sha256": "4944b39da5afbd4fd9d1a52f23a98a4ae78cfaafb14a7777cac44a49e5188d1d",
