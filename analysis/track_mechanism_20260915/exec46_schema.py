@@ -2,6 +2,7 @@
 """Esquema y configuración compartidos por el análisis fotón-a-fotón EXEC_46."""
 
 from collections import OrderedDict
+import os
 from pathlib import Path
 import re
 
@@ -9,8 +10,15 @@ import numpy as np
 
 
 TREE_NAME = "sipm_hits"
-CAMPAIGN_DIR = Path("/home/rrios/exec46_20260915/full_grid")
-SSLG4_DIR = Path("/home/rrios/exec46_20260915/build_baseline/sslg4")
+CAMPAIGN_DIR = Path(os.environ.get(
+    "EXEC46_CAMPAIGN_DIR", "/home/rrios/exec46_20260915/full_grid"))
+SSLG4_DIR = Path(os.environ.get(
+    "EXEC46_SSLG4_DIR", "/home/rrios/exec46_20260915/build_baseline/sslg4"))
+MATERIAL_SSLG4_DIRS = {
+    "OPSC-100": Path(os.environ.get("EXEC46_SSLG4_OPSC100", str(SSLG4_DIR))),
+    "OPSC-101": Path(os.environ.get("EXEC46_SSLG4_OPSC101", str(SSLG4_DIR))),
+    "OPSC-106": Path(os.environ.get("EXEC46_SSLG4_OPSC106", str(SSLG4_DIR))),
+}
 MATERIAL_BY_OPSC = {
     "OPSC-100": "EJ-200",
     "OPSC-101": "EJ-204",
@@ -91,14 +99,16 @@ def sensor_geometry(global_id):
 SENSOR_MAP = {global_id: sensor_geometry(global_id) for global_id in range(N_SENSORS)}
 
 
-def material_paths(opsc_code):
+def material_paths(opsc_code, runtime_dir=None):
     """Resuelve los archivos de propiedades desde la instalación usada por la campaña."""
     stem = opsc_code.lower()
+    runtime_dir = (MATERIAL_SSLG4_DIRS[opsc_code]
+                   if runtime_dir is None else Path(runtime_dir))
     return {
-        "macro": SSLG4_DIR / "macros" / "oscnt" / f"{stem}.mac",
-        "rindex": SSLG4_DIR / "data" / "oscnt" / stem / "rIndex.txt",
-        "emission": SSLG4_DIR / "data" / "oscnt" / stem / "scntComp1.txt",
-        "absorption": SSLG4_DIR / "data" / "oscnt" / stem / "absLength.txt",
+        "macro": runtime_dir / "macros" / "oscnt" / f"{stem}.mac",
+        "rindex": runtime_dir / "data" / "oscnt" / stem / "rIndex.txt",
+        "emission": runtime_dir / "data" / "oscnt" / stem / "scntComp1.txt",
+        "absorption": runtime_dir / "data" / "oscnt" / stem / "absLength.txt",
     }
 
 
@@ -116,9 +126,9 @@ def _const_property_ns(macro_path, property_name):
     return float(value) * (1.0e-3 if unit == "ps" else 1.0)
 
 
-def load_material_config(opsc_code):
+def load_material_config(opsc_code, runtime_dir=None):
     """Lee tiempos, RINDEX y ABSLENGTH sin heredar valores entre materiales."""
-    paths = material_paths(opsc_code)
+    paths = material_paths(opsc_code, runtime_dir)
     for path in paths.values():
         if not path.is_file():
             raise FileNotFoundError(path)

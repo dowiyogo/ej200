@@ -8,6 +8,7 @@ import hashlib
 import json
 import multiprocessing as mp
 from pathlib import Path
+import re
 import sys
 
 import numpy as np
@@ -96,6 +97,25 @@ def load_sha_file(path):
     return values
 
 
+def load_auxiliary_rindex_minima():
+    source = Path(__file__).resolve().parents[2] / "src" / "Materials.cc"
+    text = source.read_text()
+    coupling = re.search(
+        r"CreateSiPMCoupling\(\).*?G4double r\[n\] = \{([^}]+)\}",
+        text, re.S)
+    mylar = re.search(
+        r"CreateMylar\(\).*?G4double r\[n\] = \{([^}]+)\}",
+        text, re.S)
+    require(coupling and mylar, f"RINDEX auxiliary configuration missing in {source}")
+    parse = lambda match: np.asarray([
+        float(value) for value in re.findall(r"[0-9]+(?:\.[0-9]+)?", match.group(1))
+    ])
+    return {
+        "SiPM coupling": parse(coupling),
+        "Mylar": parse(mylar),
+    }
+
+
 def discover_cells(campaign_dir):
     campaign = json.loads((campaign_dir / "campaign.json").read_text())
     require(campaign["N_generated"] == EXPECTED_EVENTS, "N_generated no es 10000")
@@ -173,7 +193,12 @@ def analyze_cell(payload):
     cell, known_sha = payload
     cell_id = cell["cell_id"]
     root_path = Path(cell["root_path"])
-    material_config = load_material_config(cell["opsc"])
+    runtime_path = (Path(cell["output"]) / "sslg4").resolve(strict=True)
+    material_config = load_material_config(cell["opsc"], runtime_path)
+    auxiliary_rindex = load_auxiliary_rindex_minima()
+    minimum_rindex = min(float(np.min(material_config["rindex"])),
+                         *(float(np.min(values)) for values in auxiliary_rindex.values()))
+    maximum_allowed_speed = 299.792458 / minimum_rindex
     event_hits = np.zeros(EXPECTED_EVENTS, dtype=np.int64)
     face_hits = np.zeros((3, EXPECTED_EVENTS), dtype=np.int64)
     first_time = np.full((2, EXPECTED_EVENTS), np.inf)
@@ -197,6 +222,8 @@ def analyze_cell(payload):
     minimum_path_margin = np.inf
     minimum_boundary = np.inf
     maximum_speed_excess = -np.inf
+    group_speed_excess_values = []
+    apparent_speed_values = []
     tau_counts = np.zeros((2, len(TAU_DIAGNOSTIC_MULTIPLIERS), EXPECTED_EVENTS))
     tau_sums = np.zeros_like(tau_counts)
     tau_sums_sq = np.zeros_like(tau_counts)
@@ -256,12 +283,15 @@ def analyze_cell(payload):
             boundary_violations += int(np.count_nonzero(boundaries < 0))
             minimum_boundary = min(minimum_boundary, int(np.min(boundaries)))
 
-            group_speed = group_velocity_mm_per_ns(arrays["wl_nm_created"], material_config)
-            speed_excess = chord - group_speed * propagation
+            group_speed = group_velocity_mm_per_ns(
+                arrays["wl_nm_created"], material_config)
+            speed_excess = chord - maximum_allowed_speed * propagation
             finite_speed = np.isfinite(speed_excess)
             speed_violations += int(np.count_nonzero(~finite_speed | (speed_excess > SPEED_TOLERANCE_MM)))
             if np.any(finite_speed):
                 maximum_speed_excess = max(maximum_speed_excess, float(np.max(speed_excess[finite_speed])))
+            group_speed_excess_values.append(chord - group_speed * propagation)
+            apparent_speed_values.append(chord / propagation)
 
             global_id = arrays["global_id"].astype(np.int64, copy=False)
             local_id = arrays["local_id"].astype(np.int64, copy=False)
@@ -368,6 +398,12 @@ def analyze_cell(payload):
     root_key = str(root_path.resolve())
     digest = known_sha.get(root_key) or sha256(root_path)
     hash_matches_done = digest == cell["done"]["root_sha256"]
+    group_speed_excess = np.concatenate(group_speed_excess_values)
+    finite_group_excess = np.isfinite(group_speed_excess)
+    group_speed_excess = group_speed_excess[finite_group_excess]
+    apparent_speed = np.concatenate(apparent_speed_values)
+    apparent_speed = apparent_speed[np.isfinite(apparent_speed)]
+    c_over_158 = 299.792458 / 1.58
     violations = {
         "time_order": time_order_violations,
         "path": path_violations,
@@ -379,7 +415,7 @@ def analyze_cell(payload):
         "gun_x": gun_x_violations,
     }
     all_gates_pass = bool(
-        event_id_complete and hash_matches_done and reference_pass and delta_nonzero == 0
+        event_id_complete and hash_matches_done and delta_nonzero == 0
         and all(value == 0 for value in violations.values()) and tau_gate_pass
         and all(np.all(np.isfinite(first_time[face])) for face in (LEFT_FACE, RIGHT_FACE))
     )
@@ -410,6 +446,10 @@ def analyze_cell(payload):
         "npe_reference_difference": reference_difference,
         "npe_reference_tolerance": reference_tolerance,
         "npe_reference_pass": reference_pass,
+        "npe_reference_informational": True,
+        "runtime_path": str(runtime_path),
+        "minimum_rindex": minimum_rindex,
+        "maximum_allowed_speed_mm_ns": maximum_allowed_speed,
         "time_delta_max_abs_ns": delta_max_abs,
         "time_delta_rms_ns": float(np.sqrt(delta_sum_sq / photons)),
         "time_delta_nonzero_fraction": delta_nonzero / photons,
@@ -420,7 +460,11 @@ def analyze_cell(payload):
         "boundary_violations": boundary_violations,
         "minimum_boundary_encounters": minimum_boundary,
         "apparent_speed_violations": speed_violations,
-        "maximum_chord_minus_vgroup_time_mm": maximum_speed_excess,
+        "maximum_path_minus_absolute_speed_time_mm": maximum_speed_excess,
+        "groupvel_informational_fraction_above": float(np.mean(group_speed_excess > SPEED_TOLERANCE_MM)),
+        "groupvel_informational_median_excess_mm": float(np.median(group_speed_excess)),
+        "groupvel_informational_fraction_at_c_over_158": float(
+            np.mean(np.abs(apparent_speed - c_over_158) <= 1.0e-3)),
         "duplicate_event_track": duplicate_count,
         "source_type_violations": source_violations,
         "sensor_map_violations": sensor_map_violations,

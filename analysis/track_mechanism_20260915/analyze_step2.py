@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import math
+import os
 import sys
 from array import array
 from pathlib import Path
@@ -18,7 +19,7 @@ from dispersive_optics import (campaign_tables, photon_optics, distribution_summ
 
 
 BASE_DIR = Path(__file__).resolve().parent
-STEP2_DIR = BASE_DIR / "step2"
+STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
 DERIVED_PATH = STEP2_DIR / "exec46_derived_events.root"
 DERIVED_META_PATH = STEP2_DIR / "exec46_derived_events.meta.json"
 MATERIAL_PROPERTIES_PATH = STEP2_DIR / "material_optical_properties.csv"

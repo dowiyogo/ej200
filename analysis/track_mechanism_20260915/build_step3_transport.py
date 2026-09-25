@@ -5,6 +5,7 @@ import argparse
 import csv
 import json
 import multiprocessing as mp
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,7 +16,8 @@ from analyze_step1 import discover_cells
 from exec46_schema import CAMPAIGN_DIR, LEFT_FACE, RIGHT_FACE, TREE_NAME
 
 
-OUTPUT_DIR = Path(__file__).resolve().parent / "step3"
+OUTPUT_DIR = Path(os.environ.get(
+    "EXEC46_STEP3_DIR", str(Path(__file__).resolve().parent / "step3")))
 EXPECTED_EVENTS = 10_000
 EXPECTED_CELLS = 21
 PROCESS_COUNT = 4

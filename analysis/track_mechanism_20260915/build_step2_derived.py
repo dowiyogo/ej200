@@ -6,6 +6,7 @@ import csv
 import hashlib
 import json
 import multiprocessing as mp
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,7 +26,8 @@ from exec46_schema import (
 )
 
 
-OUTPUT_DIR = Path(__file__).resolve().parent / "step2"
+OUTPUT_DIR = Path(os.environ.get(
+    "EXEC46_STEP2_DIR", str(Path(__file__).resolve().parent / "step2")))
 DERIVED_PATH = OUTPUT_DIR / "exec46_derived_events.root"
 META_PATH = OUTPUT_DIR / "exec46_derived_events.meta.json"
 MATERIAL_PATH = OUTPUT_DIR / "material_optical_properties.csv"

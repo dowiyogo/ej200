@@ -36,6 +36,10 @@ MATERIAL_OPTICAL_STATUS = {
     "EJ-204": "CORRECTED_BC404_3800_VALIDATED_I2",
     "EJ-230": "UNCORRECTED_CONSTANT_RINDEX_NO_MEASURED_ANALOG",
 }
+CORRECTED_SSLG4_BY_MATERIAL = {
+    "EJ-200": F4_3800_SSLG4,
+    "EJ-204": I2_BC404_SSLG4,
+}
 
 
 def sha256(path):
@@ -104,6 +108,8 @@ def prepare(output, binary, corrected_sslg4_source=None):
     output.mkdir(parents=True)
     (output / "cells").mkdir()
     (output / "grid_logs").mkdir()
+    runtime_links = output / "runtime_by_cell"
+    runtime_links.mkdir()
     cells = []
     for source_cell in source_cells:
         source_macro = SOURCE_GRID / "cells" / source_cell["cell_id"] / "run.mac"
@@ -123,10 +129,19 @@ def prepare(output, binary, corrected_sslg4_source=None):
         target = output / "cells" / source_cell["cell_id"]
         target.mkdir()
         shutil.copyfile(source_macro, target / "run.mac")
-        runtime_sslg4 = (corrected_sslg4_source
-                         if source_cell["material"] in ("EJ-200", "EJ-204")
-                         and corrected_sslg4_source is not None else binary.parent / "sslg4")
-        (target / "sslg4").symlink_to(runtime_sslg4, target_is_directory=True)
+        runtime_source = (CORRECTED_SSLG4_BY_MATERIAL[source_cell["material"]]
+                  if source_cell["material"] in CORRECTED_SSLG4_BY_MATERIAL
+                  and corrected_sslg4_source is not None
+                  else binary.parent / "sslg4")
+        runtime_link = runtime_links / source_cell["cell_id"]
+        runtime_link.symlink_to(runtime_source, target_is_directory=True)
+        runtime_sslg4 = runtime_link
+        local_sslg4 = target / "sslg4"
+        local_sslg4.symlink_to(runtime_sslg4, target_is_directory=True)
+        readlink_target = Path(os.readlink(local_sslg4))
+        require(readlink_target.name == source_cell["cell_id"]
+            and re.fullmatch(r"EJ(?:200|204|230)_x(?:m|p)\d+", readlink_target.name),
+            f"{source_cell['cell_id']}: invalid SSLG4 symlink target {readlink_target}")
         cells.append({
             "cell_id": source_cell["cell_id"], "material": source_cell["material"],
             "opsc": source_cell["opsc"], "x_mm": source_cell["x_mm"],

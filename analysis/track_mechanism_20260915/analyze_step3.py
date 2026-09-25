@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import math
+import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,8 +23,8 @@ from analyze_step1 import discover_cells
 
 
 BASE_DIR = Path(__file__).resolve().parent
-STEP2_DIR = BASE_DIR / "step2"
-OUTPUT_DIR = BASE_DIR / "step3"
+STEP2_DIR = Path(os.environ.get("EXEC46_STEP2_DIR", str(BASE_DIR / "step2")))
+OUTPUT_DIR = Path(os.environ.get("EXEC46_STEP3_DIR", str(BASE_DIR / "step3")))
 REPORT_PATH = OUTPUT_DIR / "REPORT_TPROP_GD_20260916.md"
 BUILD_COMMAND = (
     "env PYTHONPATH=analysis/track_mechanism_20260915 python3 "
