@@ -1,0 +1,2 @@
+x_mm,n_events,n_triggered_lr,trigger_efficiency,mean_delta_lr_ns,sigma_lr_core_ps,sigma_lr_core_error_ps,sigma_lr_rms_ps,sigma_single_ps,sigma_single_error_ps,sigma_total_default_readout_ps,physical_ordering_pass,fit_used
+0.0,200,200,1.0,0.0032811809098341684,181.60389134058897,25.251296973645466,216.66039917027942,128.41334305679538,17.855363323820054,129.96148150518374,True,True

@@ -1,0 +1,9 @@
+run_tag,volume,n_steps
+rough_R0_ground_s0p20,AirGapYMinusLV,206457
+rough_R0_ground_s0p20,AirGapYPlusLV,206303
+rough_R0_ground_s0p20,AirGapZMinusLV,779635
+rough_R0_ground_s0p20,AirGapZPlusLV,773554
+rough_R0_ground_s0p20,BarLV,2021490
+rough_R0_ground_s0p20,EndSiPMLV,51
+rough_R0_ground_s0p20,MylarZMinusLV,408
+rough_R0_ground_s0p20,MylarZPlusLV,304

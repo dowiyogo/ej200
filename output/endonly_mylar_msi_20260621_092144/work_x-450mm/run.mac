@@ -1,0 +1,19 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/det/readout EndTop
+/ship/geom/topSurface mylar
+/ship/geom/mylar/reflectivity 0.90
+/ship/geom/mylar/specularLobe 1.0
+/ship/geom/mylar/sigmaAlpha 0.1 deg
+/det/scintillator OPSC-101
+/sipm/model AFBR-S4N66P024M
+/run/initialize
+/sipm/jitterSigma 0 ns
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+/random/setSeeds 736054 942102
+/muon/gunX -450 mm
+/run/beamOn 500

@@ -1,0 +1,4 @@
+x_mm,n_events,n_triggered_lr,sigma_end_ps,sigma_boot_ps,fit_used
+-690.0,300,0,nan,nan,False
+-300.0,300,0,nan,nan,False
+0.0,300,0,nan,nan,False

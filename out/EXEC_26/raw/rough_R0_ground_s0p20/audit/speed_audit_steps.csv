@@ -1,0 +1,9 @@
+run_tag,volume,material,n_steps,max_ratio,superluminal_fraction,missing_rindex
+rough_R0_ground_s0p20,AirGapYMinusLV,G4_AIR,206457,1,0,0
+rough_R0_ground_s0p20,AirGapYPlusLV,G4_AIR,206303,1,0,0
+rough_R0_ground_s0p20,AirGapZMinusLV,G4_AIR,779635,1,0,0
+rough_R0_ground_s0p20,AirGapZPlusLV,G4_AIR,773554,1,0,0
+rough_R0_ground_s0p20,BarLV,opsc-101,2021490,1,0,0
+rough_R0_ground_s0p20,EndSiPMLV,G4_SILICON_DIOXIDE,51,1,0,0
+rough_R0_ground_s0p20,MylarZMinusLV,G4_MYLAR,408,1,0,0
+rough_R0_ground_s0p20,MylarZPlusLV,G4_MYLAR,304,1,0,0

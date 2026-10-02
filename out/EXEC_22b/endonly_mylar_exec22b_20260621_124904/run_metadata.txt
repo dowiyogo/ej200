@@ -1,0 +1,12 @@
+commit=9b8361f189712fd8dba332a47e2ed685f194f1c1
+git_dirty=11
+host=exec22b
+threads=1
+events_per_position=300
+positions_file=/mnt/d/SHiP/ej200_endonly/out/EXEC_22b/positions.txt
+positions=0 -300 -690
+top_surface=mylar
+mylar_reflectivity=0.95
+mylar_specular_lobe=1.0
+mylar_sigma_alpha_deg=0.1
+start=2026-06-21T12:49:04+02:00

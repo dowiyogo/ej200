@@ -1,0 +1,31 @@
+{
+  "exec_id": "EXEC_22b",
+  "finish_tested": "groundbackpainted",
+  "reflectivity": 0.95,
+  "surface_rindex": 1.0,
+  "speed_gate": {
+    "pass": true,
+    "max_ratio_scintillator": 1.0,
+    "superluminal_fraction_scintillator": 0.0
+  },
+  "end_center": {
+    "npe_before_exec22": 0.38,
+    "sigma_before_exec22_ps": 985,
+    "npe_after": 0.75,
+    "sigma_after_ps": null
+  },
+  "points": [
+    {
+      "x_mm": 0.0,
+      "n_events": 300,
+      "npe_end": 0.75,
+      "npe_end_l": 0.38,
+      "npe_end_r": 0.37,
+      "n_triggered_lr": 0,
+      "sigma_end_ps": null,
+      "sigma_boot_ps": null,
+      "fit_used": false
+    }
+  ],
+  "verdict": "NO FUNCIONA"
+}

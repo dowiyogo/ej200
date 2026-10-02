@@ -1,0 +1,3 @@
+events_per_position=500
+positions=0 -300 -690 690
+reflectivity=0.95

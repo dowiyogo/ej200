@@ -1,0 +1,4 @@
+side,n0_pe,n0_error_pe,lambda_eff_cm,lambda_eff_error_cm,n_points,status
+left,nan,nan,nan,nan,1,insufficient_points
+right,nan,nan,nan,nan,1,insufficient_points
+combined,nan,nan,nan,nan,2,insufficient_points

@@ -1,0 +1,6 @@
+{
+  "run_tag": "rough_R0_ground_s0p20_val100_x0",
+  "n_detected_rows": 19838,
+  "n_tracked_histories": 2060458,
+  "n_boundary_categories": 262
+}

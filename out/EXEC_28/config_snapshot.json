@@ -1,0 +1,11 @@
+{
+  "scint_air_finish": "ground",
+  "sigma_alpha_rad": 0.2,
+  "reflector_R": 0.95,
+  "surface_loss": 0.1,
+  "air_gap_mm": 0.1,
+  "pde_mode": "nominal",
+  "scintillator": "OPSC-101",
+  "readout": "End",
+  "top_surface": "mylar"
+}

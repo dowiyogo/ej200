@@ -1,0 +1,11 @@
+run_tag,volume,n_steps
+loss_R095_0p0,AirGapYMinusLV,1490504
+loss_R095_0p0,AirGapYPlusLV,1490528
+loss_R095_0p0,AirGapZMinusLV,5273271
+loss_R095_0p0,AirGapZPlusLV,5268627
+loss_R095_0p0,BarLV,10618895
+loss_R095_0p0,EndSiPMLV,442
+loss_R095_0p0,MylarYMinusLV,430153
+loss_R095_0p0,MylarYPlusLV,430050
+loss_R095_0p0,MylarZMinusLV,1134028
+loss_R095_0p0,MylarZPlusLV,1134714

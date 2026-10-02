@@ -1,0 +1,13 @@
+{
+  "positions_mm": [
+    0.0
+  ],
+  "n_steps_total": 6102095,
+  "n_steps_scintillator": 6102091,
+  "max_ratio_scintillator": 1.0,
+  "max_ratio_air": null,
+  "superluminal_fraction_scintillator": 0.0,
+  "missing_rindex": {},
+  "pass": true,
+  "histogram": "out/EXEC_22b/ground_variant/speed_ratio_hist.png"
+}

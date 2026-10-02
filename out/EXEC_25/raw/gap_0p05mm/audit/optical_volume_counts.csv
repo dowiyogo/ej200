@@ -1,0 +1,11 @@
+run_tag,volume,n_steps
+gap_0p05mm,AirGapYMinusLV,1703664
+gap_0p05mm,AirGapYPlusLV,1703331
+gap_0p05mm,AirGapZMinusLV,7079333
+gap_0p05mm,AirGapZPlusLV,7071873
+gap_0p05mm,BarLV,15464162
+gap_0p05mm,EndSiPMLV,627
+gap_0p05mm,MylarYMinusLV,418099
+gap_0p05mm,MylarYPlusLV,418041
+gap_0p05mm,MylarZMinusLV,776222
+gap_0p05mm,MylarZPlusLV,775840

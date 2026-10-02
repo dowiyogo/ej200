@@ -1,0 +1,14 @@
+commit=6942ee6c8f4d11acda3eb3c15b2ef28a6e5353e6
+git_dirty=7
+host=msi
+threads=16
+events_per_position=500
+positions_file=/mnt/d/SHiP/ej200_endonly/scripts/endonly_positions.txt
+positions=-690 -670 -650 -600 -550 -500 -450 -400 -350 -300 -250 -200 -150 -100 -50 0 50 100 150 200 250 300 350 400 450 500 550 600 650 670 690
+top_surface=mylar
+mylar_reflectivity=0.90
+mylar_specular_lobe=1.0
+mylar_sigma_alpha_deg=0.1
+start=2026-06-20T22:27:23+02:00
+end=2026-06-20T22:30:47+02:00
+status=complete

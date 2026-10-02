@@ -1,0 +1,2 @@
+x_mm,n_events,distance_left_mm,distance_right_mm,npe_left_mean,npe_left_sem,npe_right_mean,npe_right_sem,n_end_hits,n_top_hits
+0.0,200,700.0,700.0,78.335,1.6303539939929128,79.105,1.7646642953765692,31488,0

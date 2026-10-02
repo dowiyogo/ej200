@@ -1,0 +1,14 @@
+commit=898c9ebe378ad696f2136c61c0a44826b79fc870
+git_dirty=0
+host=codex_smoke
+threads=16
+events_per_position=200
+positions_file=/tmp/endonly_pos_smoke.txt
+positions=0
+top_surface=mylar
+mylar_reflectivity=0.90
+mylar_specular_lobe=1.0
+mylar_sigma_alpha_deg=0.1
+start=2026-06-13T22:38:17+02:00
+end=2026-06-13T22:38:43+02:00
+status=complete

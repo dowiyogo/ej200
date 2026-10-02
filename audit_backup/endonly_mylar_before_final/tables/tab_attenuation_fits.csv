@@ -1,0 +1,7 @@
+Model,Side,N_0 or A (PE),lambda (cm),C (PE),chi^2/mathrm{ndf}
+Single-exp,Left,811pm106,32.2pm1.9,---,2321
+Exp+offset,Left,1502pm146,20.6pm1.1,19.2pm2.0,954
+"lambda_mathrm{tail} (d>40,cm)",Left,429pm21,41.7pm0.9,---,96.5
+Single-exp,Right,853pm110,31.4pm1.8,---,2475
+Exp+offset,Right,1501pm142,20.5pm1.1,19.5pm2.1,1023
+"lambda_mathrm{tail} (d>40,cm)",Right,423pm21,42.0pm0.9,---,93.6

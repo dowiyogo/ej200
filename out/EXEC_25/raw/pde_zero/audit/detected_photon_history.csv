@@ -1,0 +1,1 @@
+run_tag,event_id,track_id,global_id,detected_end_side,n_reflections_scint_air,n_reflections_air_reflector,n_total_internal_reflections,visited_air_gap,visited_reflector_boundary,first_detection_time_ns,gun_x_mm

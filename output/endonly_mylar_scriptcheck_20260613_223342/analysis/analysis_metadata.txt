@@ -1,0 +1,8 @@
+readout=END-only global IDs 0..15; TOP hits ignored and counted
+sum4={0..3},{4..7},{8..11},{12..15}
+spr_rise_ns=0.5
+spr_fall_ns=5.0
+leading_edge_threshold_pe=4.0
+end_time=earliest SUM4 threshold crossing per end
+estimator=sigma(deltaT_LR)/sqrt(2)
+time_origin=Geant4 event start; input time_ns

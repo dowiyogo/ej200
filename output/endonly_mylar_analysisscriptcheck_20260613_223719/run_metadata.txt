@@ -1,0 +1,14 @@
+commit=ccc256d20c220882a7fd194b2d12f1e013b9eb88
+git_dirty=2
+host=analysisscriptcheck
+threads=2
+events_per_position=2
+positions_file=/tmp/endonly_pos_smoke.txt
+positions=0
+top_surface=mylar
+mylar_reflectivity=0.90
+mylar_specular_lobe=1.0
+mylar_sigma_alpha_deg=0.1
+start=2026-06-13T22:37:19+02:00
+end=2026-06-13T22:37:24+02:00
+status=complete

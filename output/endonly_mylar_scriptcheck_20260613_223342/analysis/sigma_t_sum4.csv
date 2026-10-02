@@ -1,0 +1,2 @@
+x_mm,n_events,n_triggered_lr,trigger_efficiency,mean_delta_lr_ns,sigma_lr_core_ps,sigma_lr_core_error_ps,sigma_lr_rms_ps,sigma_single_ps,sigma_single_error_ps,fit_used
+0.0,2,2,1.0,0.05054722183650551,405.2134203588013,nan,405.2134203588013,286.5291573635034,nan,False
