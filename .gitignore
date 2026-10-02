@@ -110,3 +110,6 @@ env/
 Thumbs.db
 desktop.ini
 build_t0minidaq/
+
+# informes de procedencia de figuras (CSV grandes; viven en disco y en el espejo MSI)
+docs/reports/figures_provenance_*/
