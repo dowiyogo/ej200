@@ -1,0 +1,388 @@
+
+**************************************************************
+ Geant4 version Name: geant4-11-04 [MT]   (5-December-2025)
+  << in Multi-threaded mode >> 
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+Accumulable registered as "NEndLeft"
+Accumulable registered as "NEndRight"
+Accumulable registered as "NTop"
+Accumulable registered as "NEventsWithHits"
+Accumulable registered as "NScintPhotons"
+Checking overlaps for volume BarPV:0 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorYMinusPV:0 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorZMinusPV:3 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorZPlusPV:4 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorYPlusPV:5 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:0 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:8 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:1 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:9 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:2 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:10 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:3 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:11 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:4 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:12 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:5 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:13 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:6 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:14 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:7 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:15 (G4Box) ... OK! 
+### Birks coefficients used in run time
+G4WT1 > Accumulable registered as "NEndLeft"
+G4WT1 > Accumulable registered as "NEndRight"
+G4WT1 > Accumulable registered as "NTop"
+G4WT1 > Accumulable registered as "NEventsWithHits"
+G4WT1 > Accumulable registered as "NScintPhotons"
+G4WT13 > Accumulable registered as "NEndLeft"
+G4WT13 > Accumulable registered as "NEndRight"
+G4WT13 > Accumulable registered as "NTop"
+G4WT13 > Accumulable registered as "NEventsWithHits"
+G4WT13 > Accumulable registered as "NScintPhotons"
+G4WT12 > Accumulable registered as "NEndLeft"
+G4WT12 > Accumulable registered as "NEndRight"
+G4WT12 > Accumulable registered as "NTop"
+G4WT12 > Accumulable registered as "NEventsWithHits"
+G4WT12 > Accumulable registered as "NScintPhotons"
+G4WT15 > Accumulable registered as "NEndLeft"
+G4WT15 > Accumulable registered as "NEndRight"
+G4WT15 > Accumulable registered as "NTop"
+G4WT15 > Accumulable registered as "NEventsWithHits"
+G4WT15 > Accumulable registered as "NScintPhotons"
+G4WT5 > Accumulable registered as "NEndLeft"
+G4WT5 > Accumulable registered as "NEndRight"
+G4WT5 > Accumulable registered as "NTop"
+G4WT5 > Accumulable registered as "NEventsWithHits"
+G4WT5 > Accumulable registered as "NScintPhotons"
+G4WT10 > Accumulable registered as "NEndLeft"
+G4WT10 > Accumulable registered as "NEndRight"
+G4WT10 > Accumulable registered as "NTop"
+G4WT10 > Accumulable registered as "NEventsWithHits"
+G4WT10 > Accumulable registered as "NScintPhotons"
+G4WT0 > Accumulable registered as "NEndLeft"
+G4WT0 > Accumulable registered as "NEndRight"
+G4WT0 > Accumulable registered as "NTop"
+G4WT0 > Accumulable registered as "NEventsWithHits"
+G4WT8 > Accumulable registered as "NEndLeft"
+G4WT8 > Accumulable registered as "NEndRight"
+G4WT8 > Accumulable registered as "NTop"
+G4WT8 > Accumulable registered as "NEventsWithHits"
+G4WT4 > Accumulable registered as "NEndLeft"
+G4WT4 > Accumulable registered as "NEndRight"
+G4WT4 > Accumulable registered as "NTop"
+G4WT4 > Accumulable registered as "NEventsWithHits"
+G4WT4 > Accumulable registered as "NScintPhotons"
+G4WT0 > Accumulable registered as "NScintPhotons"
+G4WT2 > Accumulable registered as "NEndLeft"
+G4WT2 > Accumulable registered as "NEndRight"
+G4WT2 > Accumulable registered as "NTop"
+G4WT2 > Accumulable registered as "NEventsWithHits"
+G4WT2 > Accumulable registered as "NScintPhotons"
+G4WT7 > Accumulable registered as "NEndLeft"
+G4WT7 > Accumulable registered as "NEndRight"
+G4WT7 > Accumulable registered as "NTop"
+G4WT7 > Accumulable registered as "NEventsWithHits"
+G4WT7 > Accumulable registered as "NScintPhotons"
+G4WT8 > Accumulable registered as "NScintPhotons"
+G4WT11 > Accumulable registered as "NEndLeft"
+G4WT6 > Accumulable registered as "NEndLeft"
+G4WT6 > Accumulable registered as "NEndRight"
+G4WT14 > Accumulable registered as "NEndLeft"
+G4WT14 > Accumulable registered as "NEndRight"
+G4WT11 > Accumulable registered as "NEndRight"
+G4WT11 > Accumulable registered as "NTop"
+G4WT11 > Accumulable registered as "NEventsWithHits"
+G4WT11 > Accumulable registered as "NScintPhotons"
+G4WT14 > Accumulable registered as "NTop"
+G4WT9 > Accumulable registered as "NEndLeft"
+G4WT6 > Accumulable registered as "NTop"
+G4WT6 > Accumulable registered as "NEventsWithHits"
+G4WT6 > Accumulable registered as "NScintPhotons"
+G4WT9 > Accumulable registered as "NEndRight"
+G4WT9 > Accumulable registered as "NTop"
+G4WT9 > Accumulable registered as "NEventsWithHits"
+G4WT9 > Accumulable registered as "NScintPhotons"
+G4WT14 > Accumulable registered as "NEventsWithHits"
+G4WT14 > Accumulable registered as "NScintPhotons"
+G4WT3 > Accumulable registered as "NEndLeft"
+G4WT3 > Accumulable registered as "NEndRight"
+G4WT3 > Accumulable registered as "NTop"
+G4WT3 > Accumulable registered as "NEventsWithHits"
+G4WT3 > Accumulable registered as "NScintPhotons"
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400 ph/MeV
+  Rise time tau_r       : 0.7 ns
+  Decay time tau_d      : 1.8 ns
+  Attenuation length    : 160 cm
+  Emission peak lambda  : 408 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.98
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28884
+  End-right photons     : 1067836
+  Top SiPM  photons     : 0
+  Scint photons generated: 12066322
+  Total photons detected : 1096720
+  Detection efficiency   : 9.0891 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 29120
+  End-right photons     : 1077184
+  Top SiPM  photons     : 0
+  Scint photons generated: 12178797
+  Total photons detected : 1106304
+  Detection efficiency   : 9.0839 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 32589
+  End-right photons     : 1216430
+  Top SiPM  photons     : 0
+  Scint photons generated: 13749879
+  Total photons detected : 1249019
+  Detection efficiency   : 9.0839 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28637
+  End-right photons     : 1056279
+  Top SiPM  photons     : 0
+  Scint photons generated: 11946171
+  Total photons detected : 1084916
+  Detection efficiency   : 9.0817 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28644
+  End-right photons     : 1060632
+  Top SiPM  photons     : 0
+  Scint photons generated: 12003511
+  Total photons detected : 1089276
+  Detection efficiency   : 9.0746 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28783
+  End-right photons     : 1059361
+  Top SiPM  photons     : 0
+  Scint photons generated: 11976648
+  Total photons detected : 1088144
+  Detection efficiency   : 9.0855 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 32455
+  End-right photons     : 1208534
+  Top SiPM  photons     : 0
+  Scint photons generated: 13653600
+  Total photons detected : 1240989
+  Detection efficiency   : 9.0891 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 32398
+  End-right photons     : 1219502
+  Top SiPM  photons     : 0
+  Scint photons generated: 13763824
+  Total photons detected : 1251900
+  Detection efficiency   : 9.0956 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 27963
+  End-right photons     : 1043710
+  Top SiPM  photons     : 0
+  Scint photons generated: 11785078
+  Total photons detected : 1071673
+  Detection efficiency   : 9.0935 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28412
+  End-right photons     : 1049041
+  Top SiPM  photons     : 0
+  Scint photons generated: 11880234
+  Total photons detected : 1077453
+  Detection efficiency   : 9.0693 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28568
+  End-right photons     : 1051751
+  Top SiPM  photons     : 0
+  Scint photons generated: 11877905
+  Total photons detected : 1080319
+  Detection efficiency   : 9.0952 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 29207
+  End-right photons     : 1080084
+  Top SiPM  photons     : 0
+  Scint photons generated: 12211712
+  Total photons detected : 1109291
+  Detection efficiency   : 9.0838 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 33250
+  End-right photons     : 1221682
+  Top SiPM  photons     : 0
+  Scint photons generated: 13799381
+  Total photons detected : 1254932
+  Detection efficiency   : 9.0941 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28152
+  End-right photons     : 1051675
+  Top SiPM  photons     : 0
+  Scint photons generated: 11885442
+  Total photons detected : 1079827
+  Detection efficiency   : 9.0853 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28246
+  End-right photons     : 1050365
+  Top SiPM  photons     : 0
+  Scint photons generated: 11868357
+  Total photons detected : 1078611
+  Detection efficiency   : 9.0881 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 28590
+  End-right photons     : 1057566
+  Top SiPM  photons     : 0
+  Scint photons generated: 11938307
+  Total photons detected : 1086156
+  Detection efficiency   : 9.0981 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 473898
+  End-right photons     : 17571632
+  Top SiPM  photons     : 0
+  Scint photons generated: 198585168
+  Total photons detected : 18045530
+  Detection efficiency   : 9.0870 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 3615459923
+  Bar -> World (escaped)   : 38040749
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 52041219
+  Killed in WorldLV        : 80201360
+====================================
+

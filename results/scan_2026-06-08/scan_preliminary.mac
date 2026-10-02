@@ -1,0 +1,29 @@
+# ============================================================
+# Scan preliminar EJ-204: 7 posiciones, 200 eventos/posición
+# x=-650,-350,-100,0,100,350,650 mm; mu- de 1 GeV.
+# Jitter fijado a 0 para medir sigma_t intrínseco.
+# ============================================================
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/det/scintillatorMaterial EJ204
+/run/initialize
+/sipm/jitterSigma 0 ns
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+/muon/gunX -650 mm
+/run/beamOn 200
+/muon/gunX -350 mm
+/run/beamOn 200
+/muon/gunX -100 mm
+/run/beamOn 200
+/muon/gunX 0 mm
+/run/beamOn 200
+/muon/gunX 100 mm
+/run/beamOn 200
+/muon/gunX 350 mm
+/run/beamOn 200
+/muon/gunX 650 mm
+/run/beamOn 200

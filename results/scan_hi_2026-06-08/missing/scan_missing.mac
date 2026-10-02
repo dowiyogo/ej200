@@ -1,0 +1,31 @@
+# Reanudacion CODEX_EXEC_03b: solo posiciones incompletas.
+# Configuracion identica al scan original; los comentarios conservan el indice
+# global y las semillas documentadas por posicion.
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/numberOfThreads 16
+
+/det/scintillatorMaterial EJ204
+/run/initialize
+/sipm/jitterSigma 0 ns
+
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+
+# Indice global 28: x = +650 mm, seeds = 338253 738367
+/random/setSeeds 338253 738367
+/muon/gunX 650 mm
+/run/beamOn 10000
+
+# Indice global 29: x = +670 mm, seeds = 339262 739380
+/random/setSeeds 339262 739380
+/muon/gunX 670 mm
+/run/beamOn 10000
+
+# Indice global 30: x = +690 mm, seeds = 340271 740393
+/random/setSeeds 340271 740393
+/muon/gunX 690 mm
+/run/beamOn 10000

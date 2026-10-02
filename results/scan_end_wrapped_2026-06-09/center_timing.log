@@ -1,0 +1,8 @@
+
+Processing /tmp/ej200-wrap-diag-worktree/analysis/endred_photon_budget.C("/home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09","/home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09/center_timing",1000,8)...
+x=0 mm, End PE L/R=209.187/208.603, sigma_single first/sum8/mean=87.5208/83.9553/86.4392 ps
+Info in <TCanvas::Print>: pdf file /home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09/center_timing/endred_comparison_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file /home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09/center_timing/endred_comparison_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file /home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09/center_timing/best_endred_vs_light.pdf has been created
+Info in <TCanvas::Print>: png file /home/reriosto/SHiP/ej200_edge_scan/results/scan_end_wrapped_2026-06-09/center_timing/best_endred_vs_light.png has been created
+ENDRED diagnostic complete: 1 positions

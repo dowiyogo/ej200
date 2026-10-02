@@ -1,0 +1,2841 @@
+
+**************************************************************
+ Geant4 version Name: geant4-11-04 [MT]   (5-December-2025)
+  << in Multi-threaded mode >> 
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+Accumulable registered as "NEndLeft"
+Accumulable registered as "NEndRight"
+Accumulable registered as "NTop"
+Accumulable registered as "NEventsWithHits"
+Accumulable registered as "NScintPhotons"
+Checking overlaps for volume BarPV:0 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorYMinusPV:0 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorZMinusPV:3 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorZPlusPV:4 (G4Box) ... OK! 
+Checking overlaps for volume ReflectorYPlusPV:5 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:0 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:8 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:1 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:9 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:2 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:10 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:3 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:11 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:4 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:12 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:5 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:13 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:6 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:14 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMLeft_PV:7 (G4Box) ... OK! 
+Checking overlaps for volume EndSiPMRight_PV:15 (G4Box) ... OK! 
+### Birks coefficients used in run time
+G4WT9 > Accumulable registered as "NEndLeft"
+G4WT3 > Accumulable registered as "NEndLeft"
+G4WT13 > Accumulable registered as "NEndLeft"
+G4WT4 > Accumulable registered as "NEndLeft"
+G4WT4 > Accumulable registered as "NEndRight"
+G4WT3 > Accumulable registered as "NEndRight"
+G4WT3 > Accumulable registered as "NTop"
+G4WT8 > Accumulable registered as "NEndLeft"
+G4WT8 > Accumulable registered as "NEndRight"
+G4WT8 > Accumulable registered as "NTop"
+G4WT8 > Accumulable registered as "NEventsWithHits"
+G4WT8 > Accumulable registered as "NScintPhotons"
+G4WT13 > Accumulable registered as "NEndRight"
+G4WT3 > Accumulable registered as "NEventsWithHits"
+G4WT3 > Accumulable registered as "NScintPhotons"
+G4WT7 > Accumulable registered as "NEndLeft"
+G4WT7 > Accumulable registered as "NEndRight"
+G4WT7 > Accumulable registered as "NTop"
+G4WT7 > Accumulable registered as "NEventsWithHits"
+G4WT7 > Accumulable registered as "NScintPhotons"
+G4WT4 > Accumulable registered as "NTop"
+G4WT4 > Accumulable registered as "NEventsWithHits"
+G4WT4 > Accumulable registered as "NScintPhotons"
+G4WT15 > Accumulable registered as "NEndLeft"
+G4WT13 > Accumulable registered as "NTop"
+G4WT13 > Accumulable registered as "NEventsWithHits"
+G4WT13 > Accumulable registered as "NScintPhotons"
+G4WT14 > Accumulable registered as "NEndLeft"
+G4WT14 > Accumulable registered as "NEndRight"
+G4WT14 > Accumulable registered as "NTop"
+G4WT14 > Accumulable registered as "NEventsWithHits"
+G4WT14 > Accumulable registered as "NScintPhotons"
+G4WT1 > Accumulable registered as "NEndLeft"
+G4WT2 > Accumulable registered as "NEndLeft"
+G4WT2 > Accumulable registered as "NEndRight"
+G4WT2 > Accumulable registered as "NTop"
+G4WT2 > Accumulable registered as "NEventsWithHits"
+G4WT2 > Accumulable registered as "NScintPhotons"
+G4WT10 > Accumulable registered as "NEndLeft"
+G4WT10 > Accumulable registered as "NEndRight"
+G4WT6 > Accumulable registered as "NEndLeft"
+G4WT6 > Accumulable registered as "NEndRight"
+G4WT6 > Accumulable registered as "NTop"
+G4WT6 > Accumulable registered as "NEventsWithHits"
+G4WT15 > Accumulable registered as "NEndRight"
+G4WT9 > Accumulable registered as "NEndRight"
+G4WT9 > Accumulable registered as "NTop"
+G4WT9 > Accumulable registered as "NEventsWithHits"
+G4WT9 > Accumulable registered as "NScintPhotons"
+G4WT5 > Accumulable registered as "NEndLeft"
+G4WT5 > Accumulable registered as "NEndRight"
+G4WT5 > Accumulable registered as "NTop"
+G4WT5 > Accumulable registered as "NEventsWithHits"
+G4WT5 > Accumulable registered as "NScintPhotons"
+G4WT11 > Accumulable registered as "NEndLeft"
+G4WT12 > Accumulable registered as "NEndLeft"
+G4WT12 > Accumulable registered as "NEndRight"
+G4WT12 > Accumulable registered as "NTop"
+G4WT0 > Accumulable registered as "NEndLeft"
+G4WT6 > Accumulable registered as "NScintPhotons"
+G4WT15 > Accumulable registered as "NTop"
+G4WT11 > Accumulable registered as "NEndRight"
+G4WT10 > Accumulable registered as "NTop"
+G4WT1 > Accumulable registered as "NEndRight"
+G4WT12 > Accumulable registered as "NEventsWithHits"
+G4WT0 > Accumulable registered as "NEndRight"
+G4WT15 > Accumulable registered as "NEventsWithHits"
+G4WT15 > Accumulable registered as "NScintPhotons"
+G4WT10 > Accumulable registered as "NEventsWithHits"
+G4WT1 > Accumulable registered as "NTop"
+G4WT12 > Accumulable registered as "NScintPhotons"
+G4WT0 > Accumulable registered as "NTop"
+G4WT0 > Accumulable registered as "NEventsWithHits"
+G4WT0 > Accumulable registered as "NScintPhotons"
+G4WT1 > Accumulable registered as "NEventsWithHits"
+G4WT11 > Accumulable registered as "NTop"
+G4WT11 > Accumulable registered as "NEventsWithHits"
+G4WT1 > Accumulable registered as "NScintPhotons"
+G4WT10 > Accumulable registered as "NScintPhotons"
+G4WT11 > Accumulable registered as "NScintPhotons"
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400 ph/MeV
+  Rise time tau_r       : 0.7 ns
+  Decay time tau_d      : 1.8 ns
+  Attenuation length    : 160 cm
+  Emission peak lambda  : 408 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.98
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 179030
+  End-right photons     : 88344
+  Top SiPM  photons     : 0
+  Scint photons generated: 11867466
+  Total photons detected : 267374
+  Detection efficiency   : 2.2530 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 180427
+  End-right photons     : 88660
+  Top SiPM  photons     : 0
+  Scint photons generated: 11899879
+  Total photons detected : 269087
+  Detection efficiency   : 2.2613 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 179870
+  End-right photons     : 89297
+  Top SiPM  photons     : 0
+  Scint photons generated: 11947056
+  Total photons detected : 269167
+  Detection efficiency   : 2.2530 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 181330
+  End-right photons     : 89775
+  Top SiPM  photons     : 0
+  Scint photons generated: 12044030
+  Total photons detected : 271105
+  Detection efficiency   : 2.2509 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 184024
+  End-right photons     : 90952
+  Top SiPM  photons     : 0
+  Scint photons generated: 12200107
+  Total photons detected : 274976
+  Detection efficiency   : 2.2539 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 208810
+  End-right photons     : 103148
+  Top SiPM  photons     : 0
+  Scint photons generated: 13812932
+  Total photons detected : 311958
+  Detection efficiency   : 2.2584 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 206396
+  End-right photons     : 101520
+  Top SiPM  photons     : 0
+  Scint photons generated: 13651037
+  Total photons detected : 307916
+  Detection efficiency   : 2.2556 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 179649
+  End-right photons     : 89008
+  Top SiPM  photons     : 0
+  Scint photons generated: 11886855
+  Total photons detected : 268657
+  Detection efficiency   : 2.2601 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 208285
+  End-right photons     : 103064
+  Top SiPM  photons     : 0
+  Scint photons generated: 13780939
+  Total photons detected : 311349
+  Detection efficiency   : 2.2593 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 181864
+  End-right photons     : 90058
+  Top SiPM  photons     : 0
+  Scint photons generated: 12017900
+  Total photons detected : 271922
+  Detection efficiency   : 2.2626 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 207459
+  End-right photons     : 102960
+  Top SiPM  photons     : 0
+  Scint photons generated: 13722174
+  Total photons detected : 310419
+  Detection efficiency   : 2.2622 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 182137
+  End-right photons     : 89425
+  Top SiPM  photons     : 0
+  Scint photons generated: 12037696
+  Total photons detected : 271562
+  Detection efficiency   : 2.2559 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 178961
+  End-right photons     : 88483
+  Top SiPM  photons     : 0
+  Scint photons generated: 11845145
+  Total photons detected : 267444
+  Detection efficiency   : 2.2578 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 182144
+  End-right photons     : 89876
+  Top SiPM  photons     : 0
+  Scint photons generated: 12090071
+  Total photons detected : 272020
+  Detection efficiency   : 2.2499 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 182949
+  End-right photons     : 89729
+  Top SiPM  photons     : 0
+  Scint photons generated: 12068920
+  Total photons detected : 272678
+  Detection efficiency   : 2.2593 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 179690
+  End-right photons     : 88933
+  Top SiPM  photons     : 0
+  Scint photons generated: 11943587
+  Total photons detected : 268623
+  Detection efficiency   : 2.2491 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 0
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 3003025
+  End-right photons     : 1483232
+  Top SiPM  photons     : 0
+  Scint photons generated: 198815794
+  Total photons detected : 4486257
+  Detection efficiency   : 2.2565 %
+  ROOT output           : photon_hits_run000.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5702308335
+  Bar -> World (escaped)   : 11775540
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12870691
+  Killed in WorldLV        : 23596846
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 185599
+  End-right photons     : 116347
+  Top SiPM  photons     : 0
+  Scint photons generated: 13916550
+  Total photons detected : 301946
+  Detection efficiency   : 2.1697 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 161837
+  End-right photons     : 101557
+  Top SiPM  photons     : 0
+  Scint photons generated: 12118702
+  Total photons detected : 263394
+  Detection efficiency   : 2.1735 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 158801
+  End-right photons     : 99466
+  Top SiPM  photons     : 0
+  Scint photons generated: 11912798
+  Total photons detected : 258267
+  Detection efficiency   : 2.1680 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 180982
+  End-right photons     : 113297
+  Top SiPM  photons     : 0
+  Scint photons generated: 13550327
+  Total photons detected : 294279
+  Detection efficiency   : 2.1717 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 159096
+  End-right photons     : 99386
+  Top SiPM  photons     : 0
+  Scint photons generated: 11914502
+  Total photons detected : 258482
+  Detection efficiency   : 2.1695 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 159407
+  End-right photons     : 99672
+  Top SiPM  photons     : 0
+  Scint photons generated: 11942897
+  Total photons detected : 259079
+  Detection efficiency   : 2.1693 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 161050
+  End-right photons     : 99862
+  Top SiPM  photons     : 0
+  Scint photons generated: 12016800
+  Total photons detected : 260912
+  Detection efficiency   : 2.1712 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 161954
+  End-right photons     : 101458
+  Top SiPM  photons     : 0
+  Scint photons generated: 12161156
+  Total photons detected : 263412
+  Detection efficiency   : 2.1660 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 159564
+  End-right photons     : 100331
+  Top SiPM  photons     : 0
+  Scint photons generated: 11929878
+  Total photons detected : 259895
+  Detection efficiency   : 2.1785 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 158109
+  End-right photons     : 98721
+  Top SiPM  photons     : 0
+  Scint photons generated: 11846850
+  Total photons detected : 256830
+  Detection efficiency   : 2.1679 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 158984
+  End-right photons     : 100057
+  Top SiPM  photons     : 0
+  Scint photons generated: 11933886
+  Total photons detected : 259041
+  Detection efficiency   : 2.1706 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 184187
+  End-right photons     : 115654
+  Top SiPM  photons     : 0
+  Scint photons generated: 13840051
+  Total photons detected : 299841
+  Detection efficiency   : 2.1665 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 183633
+  End-right photons     : 115095
+  Top SiPM  photons     : 0
+  Scint photons generated: 13730732
+  Total photons detected : 298728
+  Detection efficiency   : 2.1756 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 162559
+  End-right photons     : 102250
+  Top SiPM  photons     : 0
+  Scint photons generated: 12194976
+  Total photons detected : 264809
+  Detection efficiency   : 2.1715 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 162643
+  End-right photons     : 101674
+  Top SiPM  photons     : 0
+  Scint photons generated: 12183861
+  Total photons detected : 264317
+  Detection efficiency   : 2.1694 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 160634
+  End-right photons     : 100491
+  Top SiPM  photons     : 0
+  Scint photons generated: 12047992
+  Total photons detected : 261125
+  Detection efficiency   : 2.1674 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 1
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 2659039
+  End-right photons     : 1665318
+  Top SiPM  photons     : 0
+  Scint photons generated: 199241958
+  Total photons detected : 4324357
+  Detection efficiency   : 2.1704 %
+  ROOT output           : photon_hits_run001.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5741588954
+  Bar -> World (escaped)   : 11386973
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12392826
+  Killed in WorldLV        : 22789657
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 165823
+  End-right photons     : 130493
+  Top SiPM  photons     : 0
+  Scint photons generated: 13985719
+  Total photons detected : 296316
+  Detection efficiency   : 2.1187 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 163501
+  End-right photons     : 129778
+  Top SiPM  photons     : 0
+  Scint photons generated: 13880755
+  Total photons detected : 293279
+  Detection efficiency   : 2.1128 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 141604
+  End-right photons     : 112329
+  Top SiPM  photons     : 0
+  Scint photons generated: 11987036
+  Total photons detected : 253933
+  Detection efficiency   : 2.1184 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 140303
+  End-right photons     : 111026
+  Top SiPM  photons     : 0
+  Scint photons generated: 11892048
+  Total photons detected : 251329
+  Detection efficiency   : 2.1134 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 143644
+  End-right photons     : 113193
+  Top SiPM  photons     : 0
+  Scint photons generated: 12138766
+  Total photons detected : 256837
+  Detection efficiency   : 2.1158 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 141046
+  End-right photons     : 111872
+  Top SiPM  photons     : 0
+  Scint photons generated: 11943886
+  Total photons detected : 252918
+  Detection efficiency   : 2.1176 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 141884
+  End-right photons     : 111104
+  Top SiPM  photons     : 0
+  Scint photons generated: 11902196
+  Total photons detected : 252988
+  Detection efficiency   : 2.1256 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 163319
+  End-right photons     : 129978
+  Top SiPM  photons     : 0
+  Scint photons generated: 13809036
+  Total photons detected : 293297
+  Detection efficiency   : 2.1239 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 140627
+  End-right photons     : 110692
+  Top SiPM  photons     : 0
+  Scint photons generated: 11888675
+  Total photons detected : 251319
+  Detection efficiency   : 2.1139 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 139769
+  End-right photons     : 110850
+  Top SiPM  photons     : 0
+  Scint photons generated: 11868099
+  Total photons detected : 250619
+  Detection efficiency   : 2.1117 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 140665
+  End-right photons     : 110922
+  Top SiPM  photons     : 0
+  Scint photons generated: 11903220
+  Total photons detected : 251587
+  Detection efficiency   : 2.1136 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 139798
+  End-right photons     : 110602
+  Top SiPM  photons     : 0
+  Scint photons generated: 11782346
+  Total photons detected : 250400
+  Detection efficiency   : 2.1252 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 141606
+  End-right photons     : 112075
+  Top SiPM  photons     : 0
+  Scint photons generated: 11995773
+  Total photons detected : 253681
+  Detection efficiency   : 2.1148 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 140210
+  End-right photons     : 111341
+  Top SiPM  photons     : 0
+  Scint photons generated: 11870853
+  Total photons detected : 251551
+  Detection efficiency   : 2.1191 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 164367
+  End-right photons     : 130577
+  Top SiPM  photons     : 0
+  Scint photons generated: 13934495
+  Total photons detected : 294944
+  Detection efficiency   : 2.1166 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 142489
+  End-right photons     : 112233
+  Top SiPM  photons     : 0
+  Scint photons generated: 12037327
+  Total photons detected : 254722
+  Detection efficiency   : 2.1161 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 2
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 2350655
+  End-right photons     : 1859065
+  Top SiPM  photons     : 0
+  Scint photons generated: 198820230
+  Total photons detected : 4209720
+  Detection efficiency   : 2.1173 %
+  ROOT output           : photon_hits_run002.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5745946883
+  Bar -> World (escaped)   : 11110421
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12073298
+  Killed in WorldLV        : 22228936
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 126073
+  End-right photons     : 126121
+  Top SiPM  photons     : 0
+  Scint photons generated: 11965774
+  Total photons detected : 252194
+  Detection efficiency   : 2.1076 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 124213
+  End-right photons     : 124074
+  Top SiPM  photons     : 0
+  Scint photons generated: 11865856
+  Total photons detected : 248287
+  Detection efficiency   : 2.0924 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 126162
+  End-right photons     : 125846
+  Top SiPM  photons     : 0
+  Scint photons generated: 12005424
+  Total photons detected : 252008
+  Detection efficiency   : 2.0991 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 124667
+  End-right photons     : 125236
+  Top SiPM  photons     : 0
+  Scint photons generated: 11931739
+  Total photons detected : 249903
+  Detection efficiency   : 2.0944 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 128399
+  End-right photons     : 128546
+  Top SiPM  photons     : 0
+  Scint photons generated: 12230013
+  Total photons detected : 256945
+  Detection efficiency   : 2.1009 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 127195
+  End-right photons     : 127956
+  Top SiPM  photons     : 0
+  Scint photons generated: 12131504
+  Total photons detected : 255151
+  Detection efficiency   : 2.1032 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 144341
+  End-right photons     : 145139
+  Top SiPM  photons     : 0
+  Scint photons generated: 13799293
+  Total photons detected : 289480
+  Detection efficiency   : 2.0978 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 126666
+  End-right photons     : 125982
+  Top SiPM  photons     : 0
+  Scint photons generated: 11977765
+  Total photons detected : 252648
+  Detection efficiency   : 2.1093 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 127742
+  End-right photons     : 127139
+  Top SiPM  photons     : 0
+  Scint photons generated: 12133054
+  Total photons detected : 254881
+  Detection efficiency   : 2.1007 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 123977
+  End-right photons     : 123810
+  Top SiPM  photons     : 0
+  Scint photons generated: 11744892
+  Total photons detected : 247787
+  Detection efficiency   : 2.1097 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 124915
+  End-right photons     : 125478
+  Top SiPM  photons     : 0
+  Scint photons generated: 11885195
+  Total photons detected : 250393
+  Detection efficiency   : 2.1068 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 144610
+  End-right photons     : 144901
+  Top SiPM  photons     : 0
+  Scint photons generated: 13804678
+  Total photons detected : 289511
+  Detection efficiency   : 2.0972 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 124826
+  End-right photons     : 124686
+  Top SiPM  photons     : 0
+  Scint photons generated: 11893449
+  Total photons detected : 249512
+  Detection efficiency   : 2.0979 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 145130
+  End-right photons     : 144997
+  Top SiPM  photons     : 0
+  Scint photons generated: 13791105
+  Total photons detected : 290127
+  Detection efficiency   : 2.1037 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 126265
+  End-right photons     : 125946
+  Top SiPM  photons     : 0
+  Scint photons generated: 12017507
+  Total photons detected : 252211
+  Detection efficiency   : 2.0987 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 145300
+  End-right photons     : 145484
+  Top SiPM  photons     : 0
+  Scint photons generated: 13832018
+  Total photons detected : 290784
+  Detection efficiency   : 2.1023 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 3
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 2090481
+  End-right photons     : 2091341
+  Top SiPM  photons     : 0
+  Scint photons generated: 199009266
+  Total photons detected : 4181822
+  Detection efficiency   : 2.1013 %
+  ROOT output           : photon_hits_run003.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5756937387
+  Bar -> World (escaped)   : 11037354
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 11980489
+  Killed in WorldLV        : 22074216
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 111189
+  End-right photons     : 141033
+  Top SiPM  photons     : 0
+  Scint photons generated: 11861249
+  Total photons detected : 252222
+  Detection efficiency   : 2.1264 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 111767
+  End-right photons     : 141582
+  Top SiPM  photons     : 0
+  Scint photons generated: 11954901
+  Total photons detected : 253349
+  Detection efficiency   : 2.1192 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 130497
+  End-right photons     : 165377
+  Top SiPM  photons     : 0
+  Scint photons generated: 14016927
+  Total photons detected : 295874
+  Detection efficiency   : 2.1108 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 112409
+  End-right photons     : 141876
+  Top SiPM  photons     : 0
+  Scint photons generated: 12006840
+  Total photons detected : 254285
+  Detection efficiency   : 2.1178 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 128129
+  End-right photons     : 162307
+  Top SiPM  photons     : 0
+  Scint photons generated: 13715071
+  Total photons detected : 290436
+  Detection efficiency   : 2.1176 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 111954
+  End-right photons     : 141330
+  Top SiPM  photons     : 0
+  Scint photons generated: 11940713
+  Total photons detected : 253284
+  Detection efficiency   : 2.1212 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 113011
+  End-right photons     : 143173
+  Top SiPM  photons     : 0
+  Scint photons generated: 12072492
+  Total photons detected : 256184
+  Detection efficiency   : 2.1220 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 112731
+  End-right photons     : 142594
+  Top SiPM  photons     : 0
+  Scint photons generated: 12056471
+  Total photons detected : 255325
+  Detection efficiency   : 2.1177 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 114126
+  End-right photons     : 144582
+  Top SiPM  photons     : 0
+  Scint photons generated: 12223161
+  Total photons detected : 258708
+  Detection efficiency   : 2.1165 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 113935
+  End-right photons     : 144493
+  Top SiPM  photons     : 0
+  Scint photons generated: 12222187
+  Total photons detected : 258428
+  Detection efficiency   : 2.1144 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 112668
+  End-right photons     : 142420
+  Top SiPM  photons     : 0
+  Scint photons generated: 12040477
+  Total photons detected : 255088
+  Detection efficiency   : 2.1186 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 129124
+  End-right photons     : 163230
+  Top SiPM  photons     : 0
+  Scint photons generated: 13784452
+  Total photons detected : 292354
+  Detection efficiency   : 2.1209 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 112049
+  End-right photons     : 141566
+  Top SiPM  photons     : 0
+  Scint photons generated: 11958297
+  Total photons detected : 253615
+  Detection efficiency   : 2.1208 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 110465
+  End-right photons     : 139757
+  Top SiPM  photons     : 0
+  Scint photons generated: 11843716
+  Total photons detected : 250222
+  Detection efficiency   : 2.1127 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 130106
+  End-right photons     : 163750
+  Top SiPM  photons     : 0
+  Scint photons generated: 13883770
+  Total photons detected : 293856
+  Detection efficiency   : 2.1165 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 111968
+  End-right photons     : 141573
+  Top SiPM  photons     : 0
+  Scint photons generated: 11936896
+  Total photons detected : 253541
+  Detection efficiency   : 2.1240 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 4
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1866128
+  End-right photons     : 2360643
+  Top SiPM  photons     : 0
+  Scint photons generated: 199517620
+  Total photons detected : 4226771
+  Detection efficiency   : 2.1185 %
+  ROOT output           : photon_hits_run004.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5765684704
+  Bar -> World (escaped)   : 11151852
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12112217
+  Killed in WorldLV        : 22305777
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 99806
+  End-right photons     : 159063
+  Top SiPM  photons     : 0
+  Scint photons generated: 11923322
+  Total photons detected : 258869
+  Detection efficiency   : 2.1711 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 102355
+  End-right photons     : 163790
+  Top SiPM  photons     : 0
+  Scint photons generated: 12280711
+  Total photons detected : 266145
+  Detection efficiency   : 2.1672 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 100516
+  End-right photons     : 160590
+  Top SiPM  photons     : 0
+  Scint photons generated: 12032422
+  Total photons detected : 261106
+  Detection efficiency   : 2.1700 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 115519
+  End-right photons     : 184244
+  Top SiPM  photons     : 0
+  Scint photons generated: 13794105
+  Total photons detected : 299763
+  Detection efficiency   : 2.1731 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 116472
+  End-right photons     : 186252
+  Top SiPM  photons     : 0
+  Scint photons generated: 13936309
+  Total photons detected : 302724
+  Detection efficiency   : 2.1722 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 100233
+  End-right photons     : 160059
+  Top SiPM  photons     : 0
+  Scint photons generated: 12006577
+  Total photons detected : 260292
+  Detection efficiency   : 2.1679 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 99636
+  End-right photons     : 158803
+  Top SiPM  photons     : 0
+  Scint photons generated: 11905147
+  Total photons detected : 258439
+  Detection efficiency   : 2.1708 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 114670
+  End-right photons     : 184758
+  Top SiPM  photons     : 0
+  Scint photons generated: 13810291
+  Total photons detected : 299428
+  Detection efficiency   : 2.1682 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 101042
+  End-right photons     : 162798
+  Top SiPM  photons     : 0
+  Scint photons generated: 12143106
+  Total photons detected : 263840
+  Detection efficiency   : 2.1728 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 101623
+  End-right photons     : 162968
+  Top SiPM  photons     : 0
+  Scint photons generated: 12224854
+  Total photons detected : 264591
+  Detection efficiency   : 2.1644 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 99926
+  End-right photons     : 159101
+  Top SiPM  photons     : 0
+  Scint photons generated: 11936750
+  Total photons detected : 259027
+  Detection efficiency   : 2.1700 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 100429
+  End-right photons     : 160581
+  Top SiPM  photons     : 0
+  Scint photons generated: 12076698
+  Total photons detected : 261010
+  Detection efficiency   : 2.1613 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 115538
+  End-right photons     : 184004
+  Top SiPM  photons     : 0
+  Scint photons generated: 13852501
+  Total photons detected : 299542
+  Detection efficiency   : 2.1624 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 99837
+  End-right photons     : 158841
+  Top SiPM  photons     : 0
+  Scint photons generated: 11975099
+  Total photons detected : 258678
+  Detection efficiency   : 2.1601 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 99743
+  End-right photons     : 158112
+  Top SiPM  photons     : 0
+  Scint photons generated: 11858243
+  Total photons detected : 257855
+  Detection efficiency   : 2.1745 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 98989
+  End-right photons     : 159018
+  Top SiPM  photons     : 0
+  Scint photons generated: 11928677
+  Total photons detected : 258007
+  Detection efficiency   : 2.1629 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 5
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1666334
+  End-right photons     : 2662982
+  Top SiPM  photons     : 0
+  Scint photons generated: 199684812
+  Total photons detected : 4329316
+  Detection efficiency   : 2.1681 %
+  ROOT output           : photon_hits_run005.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5755024559
+  Bar -> World (escaped)   : 11407673
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12418370
+  Killed in WorldLV        : 22832123
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 88108
+  End-right photons     : 178655
+  Top SiPM  photons     : 0
+  Scint photons generated: 11824678
+  Total photons detected : 266763
+  Detection efficiency   : 2.2560 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 90148
+  End-right photons     : 182880
+  Top SiPM  photons     : 0
+  Scint photons generated: 12082091
+  Total photons detected : 273028
+  Detection efficiency   : 2.2598 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 89591
+  End-right photons     : 180779
+  Top SiPM  photons     : 0
+  Scint photons generated: 11962639
+  Total photons detected : 270370
+  Detection efficiency   : 2.2601 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 89345
+  End-right photons     : 180344
+  Top SiPM  photons     : 0
+  Scint photons generated: 11901842
+  Total photons detected : 269689
+  Detection efficiency   : 2.2659 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 87887
+  End-right photons     : 178741
+  Top SiPM  photons     : 0
+  Scint photons generated: 11808181
+  Total photons detected : 266628
+  Detection efficiency   : 2.2580 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 88803
+  End-right photons     : 180610
+  Top SiPM  photons     : 0
+  Scint photons generated: 11956169
+  Total photons detected : 269413
+  Detection efficiency   : 2.2533 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 103819
+  End-right photons     : 210283
+  Top SiPM  photons     : 0
+  Scint photons generated: 13876794
+  Total photons detected : 314102
+  Detection efficiency   : 2.2635 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 90106
+  End-right photons     : 182444
+  Top SiPM  photons     : 0
+  Scint photons generated: 12043894
+  Total photons detected : 272550
+  Detection efficiency   : 2.2630 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 90097
+  End-right photons     : 183234
+  Top SiPM  photons     : 0
+  Scint photons generated: 12074344
+  Total photons detected : 273331
+  Detection efficiency   : 2.2637 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 104730
+  End-right photons     : 211488
+  Top SiPM  photons     : 0
+  Scint photons generated: 14049272
+  Total photons detected : 316218
+  Detection efficiency   : 2.2508 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 103849
+  End-right photons     : 209659
+  Top SiPM  photons     : 0
+  Scint photons generated: 13902651
+  Total photons detected : 313508
+  Detection efficiency   : 2.2550 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 88764
+  End-right photons     : 180149
+  Top SiPM  photons     : 0
+  Scint photons generated: 11902752
+  Total photons detected : 268913
+  Detection efficiency   : 2.2593 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 90079
+  End-right photons     : 182742
+  Top SiPM  photons     : 0
+  Scint photons generated: 12102554
+  Total photons detected : 272821
+  Detection efficiency   : 2.2542 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 89943
+  End-right photons     : 181836
+  Top SiPM  photons     : 0
+  Scint photons generated: 12048613
+  Total photons detected : 271779
+  Detection efficiency   : 2.2557 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 102537
+  End-right photons     : 207488
+  Top SiPM  photons     : 0
+  Scint photons generated: 13759011
+  Total photons detected : 310025
+  Detection efficiency   : 2.2533 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 90659
+  End-right photons     : 184320
+  Top SiPM  photons     : 0
+  Scint photons generated: 12168822
+  Total photons detected : 274979
+  Detection efficiency   : 2.2597 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 6
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1488465
+  End-right photons     : 3015652
+  Top SiPM  photons     : 0
+  Scint photons generated: 199464307
+  Total photons detected : 4504117
+  Detection efficiency   : 2.2581 %
+  ROOT output           : photon_hits_run006.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5720654367
+  Bar -> World (escaped)   : 11815832
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 12908074
+  Killed in WorldLV        : 23672612
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 81402
+  End-right photons     : 209772
+  Top SiPM  photons     : 0
+  Scint photons generated: 12206339
+  Total photons detected : 291174
+  Detection efficiency   : 2.3854 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 81347
+  End-right photons     : 209356
+  Top SiPM  photons     : 0
+  Scint photons generated: 12185681
+  Total photons detected : 290703
+  Detection efficiency   : 2.3856 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 92786
+  End-right photons     : 239796
+  Top SiPM  photons     : 0
+  Scint photons generated: 13937766
+  Total photons detected : 332582
+  Detection efficiency   : 2.3862 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 80161
+  End-right photons     : 205720
+  Top SiPM  photons     : 0
+  Scint photons generated: 11977942
+  Total photons detected : 285881
+  Detection efficiency   : 2.3867 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 93334
+  End-right photons     : 240597
+  Top SiPM  photons     : 0
+  Scint photons generated: 13997064
+  Total photons detected : 333931
+  Detection efficiency   : 2.3857 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 92540
+  End-right photons     : 236264
+  Top SiPM  photons     : 0
+  Scint photons generated: 13771730
+  Total photons detected : 328804
+  Detection efficiency   : 2.3875 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 78472
+  End-right photons     : 202523
+  Top SiPM  photons     : 0
+  Scint photons generated: 11819899
+  Total photons detected : 280995
+  Detection efficiency   : 2.3773 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 78990
+  End-right photons     : 202835
+  Top SiPM  photons     : 0
+  Scint photons generated: 11827165
+  Total photons detected : 281825
+  Detection efficiency   : 2.3829 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 80579
+  End-right photons     : 208261
+  Top SiPM  photons     : 0
+  Scint photons generated: 12117018
+  Total photons detected : 288840
+  Detection efficiency   : 2.3838 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 81101
+  End-right photons     : 207047
+  Top SiPM  photons     : 0
+  Scint photons generated: 12080769
+  Total photons detected : 288148
+  Detection efficiency   : 2.3852 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 79815
+  End-right photons     : 205595
+  Top SiPM  photons     : 0
+  Scint photons generated: 11972790
+  Total photons detected : 285410
+  Detection efficiency   : 2.3838 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 80838
+  End-right photons     : 207531
+  Top SiPM  photons     : 0
+  Scint photons generated: 12115602
+  Total photons detected : 288369
+  Detection efficiency   : 2.3801 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 81457
+  End-right photons     : 209004
+  Top SiPM  photons     : 0
+  Scint photons generated: 12194277
+  Total photons detected : 290461
+  Detection efficiency   : 2.3819 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 79371
+  End-right photons     : 205027
+  Top SiPM  photons     : 0
+  Scint photons generated: 11917646
+  Total photons detected : 284398
+  Detection efficiency   : 2.3864 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 92761
+  End-right photons     : 237875
+  Top SiPM  photons     : 0
+  Scint photons generated: 13876342
+  Total photons detected : 330636
+  Detection efficiency   : 2.3827 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 79258
+  End-right photons     : 204551
+  Top SiPM  photons     : 0
+  Scint photons generated: 11894922
+  Total photons detected : 283809
+  Detection efficiency   : 2.3860 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 7
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1334212
+  End-right photons     : 3431754
+  Top SiPM  photons     : 0
+  Scint photons generated: 199892952
+  Total photons detected : 4765966
+  Detection efficiency   : 2.3843 %
+  ROOT output           : photon_hits_run007.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5691592361
+  Bar -> World (escaped)   : 12459897
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 13668472
+  Killed in WorldLV        : 24982384
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 83336
+  End-right photons     : 271944
+  Top SiPM  photons     : 0
+  Scint photons generated: 13893615
+  Total photons detected : 355280
+  Detection efficiency   : 2.5571 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 71663
+  End-right photons     : 233211
+  Top SiPM  photons     : 0
+  Scint photons generated: 11894453
+  Total photons detected : 304874
+  Detection efficiency   : 2.5632 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 82685
+  End-right photons     : 268759
+  Top SiPM  photons     : 0
+  Scint photons generated: 13761566
+  Total photons detected : 351444
+  Detection efficiency   : 2.5538 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72227
+  End-right photons     : 233471
+  Top SiPM  photons     : 0
+  Scint photons generated: 11948010
+  Total photons detected : 305698
+  Detection efficiency   : 2.5586 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72128
+  End-right photons     : 234796
+  Top SiPM  photons     : 0
+  Scint photons generated: 12018776
+  Total photons detected : 306924
+  Detection efficiency   : 2.5537 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 73092
+  End-right photons     : 237185
+  Top SiPM  photons     : 0
+  Scint photons generated: 12136027
+  Total photons detected : 310277
+  Detection efficiency   : 2.5567 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 82832
+  End-right photons     : 270627
+  Top SiPM  photons     : 0
+  Scint photons generated: 13826015
+  Total photons detected : 353459
+  Detection efficiency   : 2.5565 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 71903
+  End-right photons     : 234960
+  Top SiPM  photons     : 0
+  Scint photons generated: 12016632
+  Total photons detected : 306863
+  Detection efficiency   : 2.5537 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 70832
+  End-right photons     : 230658
+  Top SiPM  photons     : 0
+  Scint photons generated: 11781919
+  Total photons detected : 301490
+  Detection efficiency   : 2.5589 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 82902
+  End-right photons     : 269752
+  Top SiPM  photons     : 0
+  Scint photons generated: 13799638
+  Total photons detected : 352654
+  Detection efficiency   : 2.5555 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 71073
+  End-right photons     : 233269
+  Top SiPM  photons     : 0
+  Scint photons generated: 11893188
+  Total photons detected : 304342
+  Detection efficiency   : 2.5590 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 71355
+  End-right photons     : 232491
+  Top SiPM  photons     : 0
+  Scint photons generated: 11919372
+  Total photons detected : 303846
+  Detection efficiency   : 2.5492 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72446
+  End-right photons     : 238183
+  Top SiPM  photons     : 0
+  Scint photons generated: 12167310
+  Total photons detected : 310629
+  Detection efficiency   : 2.5530 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72473
+  End-right photons     : 237129
+  Top SiPM  photons     : 0
+  Scint photons generated: 12111210
+  Total photons detected : 309602
+  Detection efficiency   : 2.5563 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72862
+  End-right photons     : 238980
+  Top SiPM  photons     : 0
+  Scint photons generated: 12215641
+  Total photons detected : 311842
+  Detection efficiency   : 2.5528 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 72341
+  End-right photons     : 236095
+  Top SiPM  photons     : 0
+  Scint photons generated: 12091759
+  Total photons detected : 308436
+  Detection efficiency   : 2.5508 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 8
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1196150
+  End-right photons     : 3901510
+  Top SiPM  photons     : 0
+  Scint photons generated: 199475131
+  Total photons detected : 5097660
+  Detection efficiency   : 2.5555 %
+  ROOT output           : photon_hits_run008.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5625714713
+  Bar -> World (escaped)   : 13250091
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 14639437
+  Killed in WorldLV        : 26624328
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================
+G4WT13 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 66235
+  End-right photons     : 276444
+  Top SiPM  photons     : 0
+  Scint photons generated: 12300041
+  Total photons detected : 342679
+  Detection efficiency   : 2.7860 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT14 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 74238
+  End-right photons     : 309995
+  Top SiPM  photons     : 0
+  Scint photons generated: 13817648
+  Total photons detected : 384233
+  Detection efficiency   : 2.7807 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT4 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64607
+  End-right photons     : 268550
+  Top SiPM  photons     : 0
+  Scint photons generated: 12010253
+  Total photons detected : 333157
+  Detection efficiency   : 2.7739 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT5 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 63368
+  End-right photons     : 265928
+  Top SiPM  photons     : 0
+  Scint photons generated: 11819790
+  Total photons detected : 329296
+  Detection efficiency   : 2.7860 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT12 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64024
+  End-right photons     : 266800
+  Top SiPM  photons     : 0
+  Scint photons generated: 11894568
+  Total photons detected : 330824
+  Detection efficiency   : 2.7813 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT1 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 73515
+  End-right photons     : 305812
+  Top SiPM  photons     : 0
+  Scint photons generated: 13639539
+  Total photons detected : 379327
+  Detection efficiency   : 2.7811 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT10 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64656
+  End-right photons     : 271239
+  Top SiPM  photons     : 0
+  Scint photons generated: 12117486
+  Total photons detected : 335895
+  Detection efficiency   : 2.7720 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT9 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 65135
+  End-right photons     : 271619
+  Top SiPM  photons     : 0
+  Scint photons generated: 12123431
+  Total photons detected : 336754
+  Detection efficiency   : 2.7777 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT0 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64175
+  End-right photons     : 267597
+  Top SiPM  photons     : 0
+  Scint photons generated: 11928154
+  Total photons detected : 331772
+  Detection efficiency   : 2.7814 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT7 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 74223
+  End-right photons     : 309720
+  Top SiPM  photons     : 0
+  Scint photons generated: 13864720
+  Total photons detected : 383943
+  Detection efficiency   : 2.7692 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT11 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64936
+  End-right photons     : 269525
+  Top SiPM  photons     : 0
+  Scint photons generated: 12030923
+  Total photons detected : 334461
+  Detection efficiency   : 2.7800 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT6 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 63607
+  End-right photons     : 266370
+  Top SiPM  photons     : 0
+  Scint photons generated: 11879878
+  Total photons detected : 329977
+  Detection efficiency   : 2.7776 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT3 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 700
+  Events with ≥1 hit    : 700
+  End-left  photons     : 75400
+  End-right photons     : 312610
+  Top SiPM  photons     : 0
+  Scint photons generated: 13949041
+  Total photons detected : 388010
+  Detection efficiency   : 2.7816 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT15 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 63676
+  End-right photons     : 266241
+  Top SiPM  photons     : 0
+  Scint photons generated: 11854731
+  Total photons detected : 329917
+  Detection efficiency   : 2.7830 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT2 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 64997
+  End-right photons     : 271533
+  Top SiPM  photons     : 0
+  Scint photons generated: 12102091
+  Total photons detected : 336530
+  Detection efficiency   : 2.7808 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+G4WT8 > 
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 600
+  Events with ≥1 hit    : 600
+  End-left  photons     : 65179
+  End-right photons     : 272430
+  Top SiPM  photons     : 0
+  Scint photons generated: 12125977
+  Total photons detected : 337609
+  Detection efficiency   : 2.7842 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+
+=== EJ Scintillator Bar Run Summary ===
+  Run ID                : 9
+  Events run            : 10000
+  Events with ≥1 hit    : 10000
+  End-left  photons     : 1071971
+  End-right photons     : 4472413
+  Top SiPM  photons     : 0
+  Scint photons generated: 199458271
+  Total photons detected : 5544384
+  Detection efficiency   : 2.7797 %
+  ROOT output           : photon_hits_run009.root
+==============================
+
+
+=== Boundary Census (diagnostic) ===
+  Bar -> reflector panel   : 5553774862
+  Bar -> World (escaped)   : 14305017
+  Bar -> Bar (TIR/refl)    : 0
+  Bar -> SiPM (entering)   : 15934929
+  Killed in WorldLV        : 28805573
+====================================
+
+
+=== Active Scintillator Baseline ===
+  Material              : EJ204
+  Yield                 : 10400.0000 ph/MeV
+  Rise time tau_r       : 0.7000 ns
+  Decay time tau_d      : 1.8000 ns
+  Attenuation length    : 160.0000 cm
+  Emission peak lambda  : 408.0000 nm
+  Finite rise time      : enabled
+=====================================
+
+=== Active Readout / Wrapping Configuration ===
+  Readout configuration : End
+  -X face               : instrumented
+  +X face               : instrumented
+  -Y face               : wrapped
+  +Y face               : wrapped
+  -Z face               : wrapped
+  +Z face               : wrapped
+  Reflector R           : 0.9800
+  Active End SiPMs      : 16 (L=8, R=8)
+  Active Top SiPMs      : 0
+==============================================

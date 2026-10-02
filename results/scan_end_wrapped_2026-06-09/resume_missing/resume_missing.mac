@@ -1,0 +1,94 @@
+# CODEX_EXEC_03b: high-statistics position scan.
+# Reproducibility requires the fixed 16-thread configuration and the
+# per-position seed pairs below.
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/numberOfThreads 16
+
+/det/readout End
+/det/scintillatorMaterial EJ204
+/run/initialize
+/sipm/jitterSigma 0 ns
+
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+
+# x = -150 mm, seeds = 322109 722159
+/random/setSeeds 322109 722159
+/muon/gunX -150 mm
+/run/beamOn 10000
+# x = -100 mm, seeds = 323118 723172
+/random/setSeeds 323118 723172
+/muon/gunX -100 mm
+/run/beamOn 10000
+# x = -50 mm, seeds = 324127 724185
+/random/setSeeds 324127 724185
+/muon/gunX -50 mm
+/run/beamOn 10000
+# x = 0 mm, seeds = 325136 725198
+/random/setSeeds 325136 725198
+/muon/gunX 0 mm
+/run/beamOn 10000
+# x = 50 mm, seeds = 326145 726211
+/random/setSeeds 326145 726211
+/muon/gunX 50 mm
+/run/beamOn 10000
+# x = 100 mm, seeds = 327154 727224
+/random/setSeeds 327154 727224
+/muon/gunX 100 mm
+/run/beamOn 10000
+# x = 150 mm, seeds = 328163 728237
+/random/setSeeds 328163 728237
+/muon/gunX 150 mm
+/run/beamOn 10000
+# x = 200 mm, seeds = 329172 729250
+/random/setSeeds 329172 729250
+/muon/gunX 200 mm
+/run/beamOn 10000
+# x = 250 mm, seeds = 330181 730263
+/random/setSeeds 330181 730263
+/muon/gunX 250 mm
+/run/beamOn 10000
+# x = 300 mm, seeds = 331190 731276
+/random/setSeeds 331190 731276
+/muon/gunX 300 mm
+/run/beamOn 10000
+# x = 350 mm, seeds = 332199 732289
+/random/setSeeds 332199 732289
+/muon/gunX 350 mm
+/run/beamOn 10000
+# x = 400 mm, seeds = 333208 733302
+/random/setSeeds 333208 733302
+/muon/gunX 400 mm
+/run/beamOn 10000
+# x = 450 mm, seeds = 334217 734315
+/random/setSeeds 334217 734315
+/muon/gunX 450 mm
+/run/beamOn 10000
+# x = 500 mm, seeds = 335226 735328
+/random/setSeeds 335226 735328
+/muon/gunX 500 mm
+/run/beamOn 10000
+# x = 550 mm, seeds = 336235 736341
+/random/setSeeds 336235 736341
+/muon/gunX 550 mm
+/run/beamOn 10000
+# x = 600 mm, seeds = 337244 737354
+/random/setSeeds 337244 737354
+/muon/gunX 600 mm
+/run/beamOn 10000
+# x = 650 mm, seeds = 338253 738367
+/random/setSeeds 338253 738367
+/muon/gunX 650 mm
+/run/beamOn 10000
+# x = 670 mm, seeds = 339262 739380
+/random/setSeeds 339262 739380
+/muon/gunX 670 mm
+/run/beamOn 10000
+# x = 690 mm, seeds = 340271 740393
+/random/setSeeds 340271 740393
+/muon/gunX 690 mm
+/run/beamOn 10000

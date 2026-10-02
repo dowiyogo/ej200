@@ -1,0 +1,15 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/numberOfThreads 16
+/det/readout End
+/det/scintillatorMaterial EJ204
+/run/initialize
+/sipm/jitterSigma 0 ns
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+/random/setSeeds 339262 739380
+/muon/gunX 670 mm
+/run/beamOn 10000

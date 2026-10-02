@@ -1,0 +1,8 @@
+HOOK_MAP=provisional: End SUM4 {0-3},{4-7},{8-11},{12-15}; Top simulation-only split {16-25},{26-35}
+HOOK_SPR=provisional: normalized double exponential, tau_r=0.5 ns, tau_f=5 ns, peak amplitude=1 PE
+HOOK_THR=provisional: absolute leading-edge threshold=4 PE-equivalent amplitude
+HOOK_ENDRED=provisional: first of two SUM4 clusters to cross per end
+HOOK_WALK=not applied in stage 1
+HOOK_TOTCUT=not applied in stage 1; ToT LSB unknown
+HOOK_FIT=provisional: 100 bins over median +/-8*MAD-sigma; 4 iterative Gaussian core fits in +/-2 sigma
+HOOK_LSB=metadata only: approximately 24 ps/time-LSB; no quantization applied

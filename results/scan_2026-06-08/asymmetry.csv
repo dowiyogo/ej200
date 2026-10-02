@@ -1,0 +1,4 @@
+abs_x_mm,end_reliable,asym_sigma_end_cfd,asym_sigma_top_cfd
+100,true,0.251196,-0.203239
+350,false,0.839254,-0.095801
+650,false,0.000000,-0.222647

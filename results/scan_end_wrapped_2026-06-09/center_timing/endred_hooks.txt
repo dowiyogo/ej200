@@ -1,0 +1,6 @@
+HOOK_SUM_WIDTH=8 (accepted values: 4 or 8)
+HOOK_MAP=provisional: End clusters {0-3},{4-7},{8-11},{12-15}
+HOOK_SPR=provisional double exponential tau_r=0.5 ns, tau_f=5 ns
+HOOK_THR=provisional absolute leading-edge threshold=4 PE
+HOOK_ENDRED compared: first SUM4, one SUM8 pulse, mean of two SUM4 times
+Final comparison with 88 ps requires Gerardo measurement position and SUM width.

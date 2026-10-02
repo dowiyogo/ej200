@@ -1,0 +1,8 @@
+kind,label,sim_mean_pe,sim_median_pe,sim_mode_pe,data_mpv_lsb,data_mpv_ns,ps_per_lsb,implied_lsb_per_sim_mean_pe,implied_lsb_per_sim_mode_pe
+simulation_center_sum4,sim_L_0_3,9.916100,9.000000,9,,,,,
+simulation_center_sum4,sim_L_4_7,9.803200,9.000000,9,,,,,
+simulation_center_sum4,sim_R_8_11,9.940200,9.000000,9,,,,,
+simulation_center_sum4,sim_R_12_15,9.889500,9.000000,9,,,,,
+constanza_sum4_mpv,ASIC0_CH1,9.887250,,9,241.540000,5.890000,24.385195,24.429442,26.837778
+constanza_sum4_mpv,ASIC1_CH1,9.887250,,9,207.390000,5.040000,24.302040,20.975499,23.043333
+constanza_sum4_mpv,ASIC1_CH5,9.887250,,9,198.580000,4.840000,24.373049,20.084452,22.064444

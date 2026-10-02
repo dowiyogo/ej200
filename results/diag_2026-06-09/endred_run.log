@@ -1,0 +1,38 @@
+
+Processing analysis/endred_photon_budget.C("results/scan_hi_2026-06-08","results/diag_2026-06-09",10000,8)...
+x=-690 mm, End PE L/R=1921.39/4.9749, sigma_single first/sum8/mean=802.835/731.172/637.798 ps
+x=-670 mm, End PE L/R=1264.01/4.4129, sigma_single first/sum8/mean=662.658/734.467/525.422 ps
+x=-650 mm, End PE L/R=911.487/4.2376, sigma_single first/sum8/mean=819.931/735.456/1303.79 ps
+x=-600 mm, End PE L/R=485.818/4.302, sigma_single first/sum8/mean=720.794/692.749/953.034 ps
+x=-550 mm, End PE L/R=302.022/4.7269, sigma_single first/sum8/mean=714.438/694.857/667.467 ps
+x=-500 mm, End PE L/R=205.226/5.1618, sigma_single first/sum8/mean=704.634/682.604/445.021 ps
+x=-450 mm, End PE L/R=145.931/5.6759, sigma_single first/sum8/mean=752.47/715.061/548.779 ps
+x=-400 mm, End PE L/R=109.218/6.3542, sigma_single first/sum8/mean=721.651/689.935/525.315 ps
+x=-350 mm, End PE L/R=83.6303/7.1643, sigma_single first/sum8/mean=751.369/637.448/482.469 ps
+x=-300 mm, End PE L/R=65.0769/8.1519, sigma_single first/sum8/mean=787.606/581.317/581.206 ps
+x=-250 mm, End PE L/R=51.6745/9.2287, sigma_single first/sum8/mean=619.114/468.997/573.322 ps
+x=-200 mm, End PE L/R=41.9288/10.6156, sigma_single first/sum8/mean=614.225/426.971/563.022 ps
+x=-150 mm, End PE L/R=34.208/12.3393, sigma_single first/sum8/mean=514.031/387.581/515.498 ps
+x=-100 mm, End PE L/R=28.2326/14.2242, sigma_single first/sum8/mean=502.48/350.263/503.42 ps
+x=-50 mm, End PE L/R=23.6145/16.7714, sigma_single first/sum8/mean=471.838/329.197/509.956 ps
+x=0 mm, End PE L/R=19.7193/19.8297, sigma_single first/sum8/mean=467.46/325.054/522.435 ps
+x=50 mm, End PE L/R=16.6715/23.3172, sigma_single first/sum8/mean=470.917/343.859/510.469 ps
+x=100 mm, End PE L/R=14.279/28.1475, sigma_single first/sum8/mean=496.722/341.62/506.472 ps
+x=150 mm, End PE L/R=12.2922/34.2129, sigma_single first/sum8/mean=529.488/366.366/500.466 ps
+x=200 mm, End PE L/R=10.6426/41.8444, sigma_single first/sum8/mean=599.801/395.966/545.844 ps
+x=250 mm, End PE L/R=9.2427/51.8446, sigma_single first/sum8/mean=667.151/492.838/582.006 ps
+x=300 mm, End PE L/R=8.1027/65.3291, sigma_single first/sum8/mean=742.859/537.644/592.134 ps
+x=350 mm, End PE L/R=7.1686/83.2591, sigma_single first/sum8/mean=758.524/670.835/628.983 ps
+x=400 mm, End PE L/R=6.3631/108.459, sigma_single first/sum8/mean=761.575/742.104/550.713 ps
+x=450 mm, End PE L/R=5.6464/146.79, sigma_single first/sum8/mean=681.336/756.914/447.99 ps
+x=500 mm, End PE L/R=5.1889/205.041, sigma_single first/sum8/mean=680/764.611/490.148 ps
+x=550 mm, End PE L/R=4.7708/303.119, sigma_single first/sum8/mean=736.391/673.706/695.091 ps
+x=600 mm, End PE L/R=4.3352/488.784, sigma_single first/sum8/mean=678.969/647.918/259.944 ps
+x=650 mm, End PE L/R=4.3138/910.862, sigma_single first/sum8/mean=829.433/698.685/728.079 ps
+x=670 mm, End PE L/R=4.4006/1259.19, sigma_single first/sum8/mean=686.083/725.626/706.385 ps
+x=690 mm, End PE L/R=4.9481/1910.76, sigma_single first/sum8/mean=652.682/689.363/715.488 ps
+Info in <TCanvas::Print>: pdf file results/diag_2026-06-09/endred_comparison_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/diag_2026-06-09/endred_comparison_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/diag_2026-06-09/best_endred_vs_light.pdf has been created
+Info in <TCanvas::Print>: png file results/diag_2026-06-09/best_endred_vs_light.png has been created
+ENDRED diagnostic complete: 31 positions

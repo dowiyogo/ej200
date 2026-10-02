@@ -1,0 +1,8 @@
+
+Processing analysis/tb_mirror_deep_dive.C("scan_resume_2_audit.csv","results/analysis_sigma_vs_x_2026-06-10/deep_dive")...
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/deltaT_fit_x0_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/npe_landau_fit_x0_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/deltaT_fit_x350_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/npe_landau_fit_x350_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/deltaT_fit_x690_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deep_dive/npe_landau_fit_x690_End.png has been created

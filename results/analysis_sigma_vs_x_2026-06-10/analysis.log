@@ -1,0 +1,43 @@
+
+Processing analysis/tb_mirror_sigma_vs_x.C("scan_resume_2_audit.csv","results/analysis_sigma_vs_x_2026-06-10")...
+x=-690 mm: N_eff=10000, sigma_single=201.415 ps
+x=-670 mm: N_eff=10000, sigma_single=195.066 ps
+x=-650 mm: N_eff=10000, sigma_single=188.082 ps
+x=-600 mm: N_eff=10000, sigma_single=171.862 ps
+x=-550 mm: N_eff=10000, sigma_single=164.811 ps
+x=-500 mm: N_eff=10000, sigma_single=151.926 ps
+x=-450 mm: N_eff=10000, sigma_single=144.241 ps
+x=-400 mm: N_eff=10000, sigma_single=132.395 ps
+x=-350 mm: N_eff=10000, sigma_single=123.8 ps
+x=-300 mm: N_eff=10000, sigma_single=115.794 ps
+x=-250 mm: N_eff=10000, sigma_single=109.636 ps
+x=-200 mm: N_eff=10000, sigma_single=106.455 ps
+x=-150 mm: N_eff=10000, sigma_single=102.324 ps
+x=-100 mm: N_eff=10000, sigma_single=99.7296 ps
+x=-50 mm: N_eff=10000, sigma_single=98.8079 ps
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deltaT_vs_NPE_x0_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/muon_0mm_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deltaT_vs_NPE_x350_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/muon_350mm_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/deltaT_vs_NPE_x690_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/muon_690mm_End.png has been created
+x=0 mm: N_eff=10000, sigma_single=97.9183 ps
+x=50 mm: N_eff=10000, sigma_single=99.1936 ps
+x=100 mm: N_eff=10000, sigma_single=98.7329 ps
+x=150 mm: N_eff=10000, sigma_single=102.89 ps
+x=200 mm: N_eff=10000, sigma_single=106.731 ps
+x=250 mm: N_eff=10000, sigma_single=112.014 ps
+x=300 mm: N_eff=10000, sigma_single=114.931 ps
+x=350 mm: N_eff=10000, sigma_single=125.372 ps
+x=400 mm: N_eff=10000, sigma_single=135.195 ps
+x=450 mm: N_eff=10000, sigma_single=139.2 ps
+x=500 mm: N_eff=10000, sigma_single=153.747 ps
+x=550 mm: N_eff=10000, sigma_single=167.001 ps
+x=600 mm: N_eff=10000, sigma_single=173.134 ps
+x=650 mm: N_eff=10000, sigma_single=188.727 ps
+x=670 mm: N_eff=10000, sigma_single=198.094 ps
+x=690 mm: N_eff=10000, sigma_single=203.004 ps
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/sigma_vs_x_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/muon_longitudinal_scan_End.png has been created
+Info in <TCanvas::Print>: png file results/analysis_sigma_vs_x_2026-06-10/npe_vs_x_End.png has been created
+TB-mirror analysis complete: 31 positions

@@ -1,0 +1,9 @@
+
+Processing analysis/preliminary_position_scan.C("results/scan_2026-06-08",200)...
+Info in <TCanvas::Print>: pdf file results/scan_2026-06-08/yield_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_2026-06-08/yield_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_2026-06-08/sigma_intrinsic_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_2026-06-08/sigma_intrinsic_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_2026-06-08/efficiency_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_2026-06-08/efficiency_vs_position.png has been created
+Analisis completado: 7 posiciones; salida en results/scan_2026-06-08

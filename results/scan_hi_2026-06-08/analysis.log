@@ -1,0 +1,44 @@
+
+Processing analysis/high_stats_position_scan.C("results/scan_hi_2026-06-08",10000)...
+Run 0: x=-690 mm, N_eff End/Top=479/10000
+Run 1: x=-670 mm, N_eff End/Top=326/10000
+Run 2: x=-650 mm, N_eff End/Top=249/10000
+Run 3: x=-600 mm, N_eff End/Top=275/10000
+Run 4: x=-550 mm, N_eff End/Top=390/10000
+Run 5: x=-500 mm, N_eff End/Top=587/10000
+Run 6: x=-450 mm, N_eff End/Top=854/10000
+Run 7: x=-400 mm, N_eff End/Top=1352/10000
+Run 8: x=-350 mm, N_eff End/Top=1963/10000
+Run 9: x=-300 mm, N_eff End/Top=2986/10000
+Run 10: x=-250 mm, N_eff End/Top=4098/10000
+Run 11: x=-200 mm, N_eff End/Top=5578/10000
+Run 12: x=-150 mm, N_eff End/Top=7250/10000
+Run 13: x=-100 mm, N_eff End/Top=8450/10000
+Run 14: x=-50 mm, N_eff End/Top=9374/10000
+Run 15: x=0 mm, N_eff End/Top=9662/10000
+Run 16: x=50 mm, N_eff End/Top=9350/10000
+Run 17: x=100 mm, N_eff End/Top=8500/10000
+Run 18: x=150 mm, N_eff End/Top=7191/10000
+Run 19: x=200 mm, N_eff End/Top=5646/10000
+Run 20: x=250 mm, N_eff End/Top=4156/10000
+Run 21: x=300 mm, N_eff End/Top=2872/10000
+Run 22: x=350 mm, N_eff End/Top=2017/10000
+Run 23: x=400 mm, N_eff End/Top=1352/10000
+Run 24: x=450 mm, N_eff End/Top=875/10000
+Run 25: x=500 mm, N_eff End/Top=638/10000
+Run 26: x=550 mm, N_eff End/Top=407/10000
+Run 27: x=600 mm, N_eff End/Top=272/10000
+Run 28: x=650 mm, N_eff End/Top=291/10000
+Run 29: x=670 mm, N_eff End/Top=272/10000
+Run 30: x=690 mm, N_eff End/Top=458/10000
+Info in <TCanvas::Print>: pdf file results/scan_hi_2026-06-08/yield_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_hi_2026-06-08/yield_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_hi_2026-06-08/efficiency_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_hi_2026-06-08/efficiency_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_hi_2026-06-08/sigma_cfd_folded_vs_abs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_hi_2026-06-08/sigma_cfd_folded_vs_abs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_hi_2026-06-08/sigma_cfd_unfolded_vs_position.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_hi_2026-06-08/sigma_cfd_unfolded_vs_position.png has been created
+Info in <TCanvas::Print>: pdf file results/scan_hi_2026-06-08/sigma_fpt_vs_cfd_folded.pdf has been created
+Info in <TCanvas::Print>: png file results/scan_hi_2026-06-08/sigma_fpt_vs_cfd_folded.png has been created
+Analisis completado: 31 posiciones; salida en results/scan_hi_2026-06-08
