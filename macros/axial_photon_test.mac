@@ -1,0 +1,41 @@
+# axial_photon_test.mac
+# Fire a single optical photon at 391 nm (EJ-230 emission peak) along the bar
+# axis (+X direction) from the bar center to the right EndSiPM.
+#
+# Purpose: directly measure the photon propagation velocity from step timing.
+# Expected:
+#   v_phot = c/n = 18.97 cm/ns → arrival at 699.75 mm in 3.690 ns
+#   v_phot ≈ 27.7 cm/ns (empirical from t_min) → arrival in ≈ 2.527 ns
+#
+# Usage (from build directory):
+#   ./ej230_endonly_mylar_sim -m macros/axial_photon_test.mac 2>&1 | grep -E "GROUPVEL_DIAG|Step#|Track|Velocity|GlobalTime"
+#
+# Interpretation:
+#   In tracking verbose output, look for "Step# 1" inside BarLV to find step time
+#   and velocity. The velocity column gives v_phot directly.
+#   Alternatively, the last step before EndSiPMLV gives the travel time.
+
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+
+/run/initialize
+
+# ── Gun setup: single optical photon ─────────────────────────────────────────
+# 391 nm = 3.171 eV (EJ-230 emission peak from scntComp1.txt)
+/gun/particle opticalphoton
+/gun/energy 3.171 eV
+
+# Start at bar center (0,0,0), propagate toward +X (right SiPM)
+/gun/position 0 0 0 mm
+/gun/direction 1 0 0
+
+# Polarization: required for optical photon tracking; transverse to direction
+/gun/polarization 0 1 0
+
+# ── Tracking verbose: prints step-by-step position, time, velocity ────────────
+# Level 2: prints all steps including material, volume, processes, velocity
+/tracking/verbose 2
+
+# ── Single event ─────────────────────────────────────────────────────────────
+/run/beamOn 1

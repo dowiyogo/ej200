@@ -1,0 +1,33 @@
+# quick_groupvel_test.mac
+# Minimal run to trigger PrintGroupVelDiagnostic output without full scan.
+# Runs 3 events with x=-600, 0, +600 mm to get basic timing statistics.
+#
+# Usage (from build directory):
+#   ./ej230_endonly_mylar_sim -m macros/quick_groupvel_test.mac 2>&1 | grep GROUPVEL_DIAG
+#
+# Expected output if GROUPVEL = 18.97 cm/ns:
+#   [GROUPVEL_DIAG] GROUPVEL at 3.17 eV (391 nm): 18.97 cm/ns
+#   [GROUPVEL_DIAG] Expected c/n (n=1.58):         18.97 cm/ns
+#
+# If GROUPVEL is missing or wrong, the actual value will differ.
+
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+/run/initialize
+
+/gun/particle mu-
+/gun/energy 1 GeV
+/muon/angle 0
+
+# 3 positions: near-left, center, near-right
+/muon/gunX -600 mm
+/run/beamOn 50
+
+/muon/gunX 0 mm
+/run/beamOn 50
+
+/muon/gunX 600 mm
+/run/beamOn 50
