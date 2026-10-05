@@ -113,3 +113,9 @@ build_t0minidaq/
 
 # informes de procedencia de figuras (CSV grandes; viven en disco y en el espejo MSI)
 docs/reports/figures_provenance_*/
+
+# Artefactos de compilación ACLiC (higiene 2026-10-05); *.so y *.root ya estaban ignorados
+*_C.d
+*_cxx.d
+*_cc.d
+*_ACLiC_dict_rdict.pcm
